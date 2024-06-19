@@ -1,0 +1,5 @@
+cha_lv,이름,등급,속성,주 장비,역할
+int,int,int,int,int,int
+cha_id,Cha_Name,Cha_Grade,Cha_Attribute,Cha_Equipment,Cha_Role
+11001011,1,1,1,1,1
+11002011,2,1,1,1,1

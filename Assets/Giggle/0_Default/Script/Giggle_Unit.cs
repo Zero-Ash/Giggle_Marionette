@@ -1,0 +1,347 @@
+using UnityEngine;
+
+//
+using System;
+using System.Collections;
+
+public class Giggle_Unit : MonoBehaviour
+{
+    #region BASIC
+
+    [Serializable]
+    public class Save : IDisposable
+    {
+        [SerializeField] int Basic_id;
+        [SerializeField] int Basic_lv;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public void Dispose()
+        {
+
+        }
+    }
+    
+    [SerializeField] Giggle_Battle  Basic_Battle;
+    [Header("RUNNING")]
+    [SerializeField] Save Basic_Save;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    public void Basic_Init(Giggle_Battle _battle, Giggle_Character.Database _database)
+    {
+        Basic_Battle = _battle;
+
+        Status_database = _database;
+
+        this.transform.localPosition = Vector3.zero;
+        this.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        this.transform.localScale    = Vector3.one;
+    }
+
+    IEnumerator Basic_Coroutine()
+    {
+        float time      = Time.time;
+        float lastTime  = Time.time;
+
+        bool isWhile = true;
+        while(isWhile)
+        {
+            time = Time.time;
+
+            Active_Coroutine(time - lastTime);
+
+            lastTime = time;
+            yield return null;
+        }
+    }
+
+    ////////// Unity            //////////
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        Active_Start();
+
+        StartCoroutine(Basic_Coroutine());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    #endregion
+
+    #region STATUS
+
+    [Header("STATUS ==================================================")]
+    // DB에 저장된 능력치
+    [SerializeField] Giggle_Character.Database  Status_database;
+    [Header("RUNNING")]
+    // 장비 능력치
+    [SerializeField] Giggle_Character.Status            Status_equipStatus;
+    // 보너스 능력치 ( %로 저장 )
+    [SerializeField] Giggle_Character.Status            Status_bonusStatus;
+    // 능력치들을 종합한 최종 능력치 ( 게임에서 사용되는 능력치 )
+    [SerializeField] Giggle_Character.Status            Status_totalStatus;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    void Status_Init(Giggle_Character.Database _database)
+    {
+        Status_database = _database;
+    }
+
+    ////////// Unity            //////////
+
+    #endregion
+
+    #region ACTIVE
+    public enum Active_PHASE
+    {
+        WAIT = 0,
+        WALK,
+        ATTACK,
+        HIT,
+        DEFEAT,
+
+        ATTACK_DOING
+    }
+    [Header("ACTIVE ==================================================")]
+    [SerializeField] Active_PHASE Active_phase;
+
+    [Header("RUNNING")]
+    [SerializeField] Giggle_Unit Active_target;
+
+    [SerializeField] float Active_timer;
+    [SerializeField] float Active_time;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+
+    void Active_Coroutine(float _deltaTime)
+    {
+        switch(Active_phase)
+        {
+            //
+            case Active_PHASE.WAIT: { Active_Coroutine__WAIT(); }   break;
+            //
+            case Active_PHASE.WALK: {                                       }   break;
+            //
+            case Active_PHASE.ATTACK:       { Active_Coroutine__ATTACK(_deltaTime);         }   break;
+            case Active_PHASE.ATTACK_DOING: { Active_Coroutine__ATTACK_DOING(_deltaTime);   }   break;
+            //
+            case Active_PHASE.HIT:  {                                       }   break;
+            //
+            case Active_PHASE.DEFEAT:   {                                       }   break;
+        }
+    }
+
+    // WAIT
+    void Active_Coroutine__WAIT()
+    {
+        // 피아구분
+        Giggle_Battle.Formation targetFormation = Basic_Battle.Formation_VarEnemy;
+        switch(this.transform.parent.parent.name.Split('/')[1])
+        {
+            case "PLAYER":  { targetFormation = Basic_Battle.Formation_VarEnemy; }   break;
+            case "ENEMY":   { targetFormation = Basic_Battle.Formation_VarAlly;  }   break;
+        }
+
+        // 타겟 찾기
+        // 앞줄부터 타겟 찾기
+        Active_target = Active_Coroutine__WAIT_FindTarget(targetFormation, 2);
+        if(Active_target == null)
+        {
+            Active_target = Active_Coroutine__WAIT_FindTarget(targetFormation, 1);
+            if(Active_target == null)
+            {
+                Active_target = Active_Coroutine__WAIT_FindTarget(targetFormation, 0);
+            }
+        }
+
+        if(Active_target != null)
+        {
+            Active_phase = Active_PHASE.ATTACK;
+
+            Model_SetMotion();
+
+            Active_timer = 0.0f;
+            Active_time = 1.0f / Status_database.Basic_GetStatusList(0).Basic_VarAttackSpeed;
+        }
+    }
+
+    // FindTarget
+    Giggle_Unit Active_Coroutine__WAIT_FindTarget(Giggle_Battle.Formation _targetFormation, int _num)
+    {
+        Giggle_Unit res = null;
+
+        //
+        float distance = -1.0f;
+
+        Active_Coroutine__FindTarget0(
+            _targetFormation.Basic_GetTile(6 + _num),
+            ref res, ref distance);
+        
+        Active_Coroutine__FindTarget0(
+            _targetFormation.Basic_GetTile(3 + _num),
+            ref res, ref distance);
+
+        Active_Coroutine__FindTarget0(
+            _targetFormation.Basic_GetTile(0 + _num),
+            ref res, ref distance);
+
+        //
+        return res;
+    }
+
+    void Active_Coroutine__FindTarget0(
+        Transform _tile,
+        //
+        ref Giggle_Unit _unit, ref float _distance)
+    {
+        if(_tile.childCount > 0)
+        {
+            float distance = Vector3.Distance(this.transform.position, _tile.position);
+            if((_distance < 0.0f) || (distance < _distance))
+            {
+                _unit = _tile.GetChild(0).GetComponent<Giggle_Unit>();
+                _distance = distance;
+            }
+        }
+    }
+
+    // WALK
+
+    // ATTACK
+    void Active_Coroutine__ATTACK(float _deltaTime)
+    {
+        Active_timer += _deltaTime;
+
+        Model_SetMotionTime("attack");
+        if(Model_motionTime > 0.0f)
+        {
+            Active_phase = Active_PHASE.ATTACK_DOING;
+        }
+    }
+
+    void Active_Coroutine__ATTACK_DOING(float _deltaTime)
+    {
+        Active_timer += _deltaTime;
+
+        if(Model_VarMotionName.Equals("attack"))
+        {
+            switch(Model_motionPhase)
+            {
+                case 0:
+                    {
+                        if(Active_timer >= Active_time * 0.7f)
+                        {
+                            Basic_Battle.Bullet_Launch(this, Active_target);
+                            
+                            Model_motionPhase = 1;
+                        }
+                    }
+                    break;
+                case 1:
+                    {
+                        if(Active_timer >= Active_time)
+                        {
+                            Active_timer = Active_time;
+
+                            Active_phase = Active_PHASE.WAIT;
+                            Model_SetMotion();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        Model_animator.SetFloat( "MotionTimer", Model_motionTime * Active_timer / Active_time );
+
+        #region 1안
+        //Active_timer += _deltaTime;
+        //if(Active_timer >= Active_time)
+        //{
+        //    Active_timer = Active_time;
+//
+        //    Basic_Battle.Bullet_Launch(this, Active_target);
+//
+        //    Active_phase = Active_PHASE.WAIT;
+        //    Model_SetMotion();
+        //}
+//
+        //Model_animator.SetFloat( "MotionTimer", Model_motionTime * Active_timer / Active_time );
+        #endregion
+    }
+
+    // HIT
+
+    // DEFEAT
+
+    ////////// Unity            //////////
+    void Active_Start()
+    {
+        Active_phase = Active_PHASE.WAIT;
+    }
+
+    #endregion
+
+    #region MODEL
+    [Header("MODEL ==================================================")]
+    [SerializeField] Animator   Model_animator;
+    [SerializeField] float  Model_motionTime;
+    [SerializeField] int    Model_motionPhase;
+
+    ////////// Getter & Setter  //////////
+    string Model_VarMotionName
+    {
+        get
+        {
+            string res = "NONE";
+
+            AnimatorClipInfo[] clipInfo = Model_animator.GetCurrentAnimatorClipInfo(0);
+            if(clipInfo != null)
+            {
+                if(clipInfo.Length > 0)
+                {
+                    string[] names = clipInfo[0].clip.name.Split('_');
+                    res = names[names.Length - 1];
+                }
+            }
+
+            return res;
+        }
+    }
+
+    void Model_SetMotion()
+    {
+        Model_animator.SetInteger(  "MotionNumber", (int)Active_phase   );
+        Model_animator.SetTrigger(  "Change"                            );
+        Model_animator.SetFloat(    "MotionTimer",  0.0f                );
+        Model_motionPhase = 0;
+    }
+
+    void Model_SetMotionTime(string _motionName)
+    {
+        Model_motionTime = 0.0f;
+
+        if(Model_VarMotionName.Equals(_motionName))
+        {
+            Model_motionTime = Model_animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        }
+    }
+
+    ////////// Method           //////////
+
+    ////////// Unity            //////////
+
+    #endregion
+}

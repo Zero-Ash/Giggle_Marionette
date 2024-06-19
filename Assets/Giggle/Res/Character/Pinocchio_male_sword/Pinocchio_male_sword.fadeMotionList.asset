@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Pinocchio_male_sword.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 18edffffe2ecffffbaecffff92ecffffece9ffff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: f7be122e696344748a5c9497fb2ebd94, type: 2}
+  - {fileID: 11400000, guid: 9ae84358fbd8a4a34b1cbb480e63c2b2, type: 2}
+  - {fileID: 11400000, guid: 8a8c9cc04bb914720b3dce39457f4205, type: 2}
+  - {fileID: 11400000, guid: 68fc5151b4afa405e9499f58b49a74ad, type: 2}
+  - {fileID: 11400000, guid: b79b60ca7e3b74903a835afb8cccbbd2, type: 2}
