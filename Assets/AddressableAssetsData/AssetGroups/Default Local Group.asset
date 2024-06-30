@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 8b90b6efd79344dd3b08c6c01f3c9dae
   m_SerializeEntries:
+  - m_GUID: 503e3d7dde071402ea81b182b5ff66b3
+    m_Address: CHARACTER/FIRE_CSV_SKILL_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70b54fbb9f5ff4ad3b939478cd400798
+    m_Address: CHARACTER/FIRE_CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b72d9b1d9db14d64a85ba97ee5a732b
     m_Address: CHARACTER/FIRE_MODEL
     m_ReadOnly: 0

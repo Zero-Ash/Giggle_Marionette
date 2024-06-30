@@ -227,56 +227,73 @@ namespace Giggle_Character
 
         public void Basic_Calculate(Status _database, Status _equipStatus, Status _bonusStatus)
         {
-            //Basic_Calculate_Attack( _database,  _equipStatus,   _bonusStatus    );
             //
-            //Basic_Calculate_Defence(    _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_Attack( _database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_Calculate_Hp( _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_Defence(    _database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_Calculate_AttackSpeed(
-            //    _database, _equipStatus, _bonusStatus);
+            Basic_Calculate_Hp( _database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_Calculate_CriticalChance(             _database,  _equipStatus,   _bonusStatus    );
-            //Basic_Calculate_CriticalDamage(             _database,  _equipStatus,   _bonusStatus    );
-            //Basic_Calculate_CriticalDamageReduction(    _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_AttackSpeed(
+                _database, _equipStatus, _bonusStatus);
+            
             //
-            //Basic_Calculate_LuckyChance(    _database,  _equipStatus,   _bonusStatus    );
-            //Basic_Calculate_LuckyDamage(    _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_CriticalChance(         _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_CriticalDamage(         _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_CriticalDamageReduction(_database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_Calculate_DamageTakenReduction(   _database,  _equipStatus,   _bonusStatus    );
-            ////Basic_damageIncrease = 0;
+            Basic_Calculate_LuckyChance(_database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_LuckyDamage(_database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_Calculate_HpRegenPerSecond(   _database,  _equipStatus,   _bonusStatus    );
-            //Basic_Calculate_HpRegenAmount(      _database,  _equipStatus,   _bonusStatus    );
-            //Basic_Calculate_HpLifeSteal(        _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_DamageTakenReduction(   _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_DamageIncrease(         _database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_goldGainIncrease = 0;
+            Basic_Calculate_HpRegenPerSecond(   _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_HpRegenAmount(      _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_HpLifeSteal(        _database,  _equipStatus,   _bonusStatus    );
+            
             //
-            //Basic_allDamageIncrease = 0;
+            Basic_Calculate_GoldGainIncrease(_database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_normalMonsterDamageIncrease = 0;
-            //Basic_bossDamageIncrease = 0;
+            Basic_Calculate_AllDamageIncrease(_database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_skillCooldownReduction = 0;
-            //Basic_skillDamageIncrease = 0;
-            //Basic_skillDamageReduction = 0;
-            //Basic_skillCritical = 0;
-            //Basic_skillCriticalDamage = 0;
+            Basic_Calculate_NormalMonsterDamageIncrease(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_BossDamageIncrease(         _database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_stun = 0;
-            //Basic_stunResistance = 0;
+            Basic_Calculate_SkillCooldownReduction( _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_SkillDamageIncrease(    _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_SkillDamageReduction(   _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_SkillCritical(          _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_SkillCriticalDamage(    _database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_multiHit = 0;
-            //Basic_multiHitDamage = 0;
-            //Basic_multiHitDamageReduction = 0;
+            Basic_Calculate_Stun(           _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_StunResistance( _database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_counterAttackPer = 0;
-            //Basic_counterAttackDamage = 0;
-            //Basic_counterAttackDamageReduction = 0;
+            Basic_Calculate_MultiHit(               _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_MultiHitDamage(         _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_MultiHitDamageReduction(_database,  _equipStatus,   _bonusStatus);
+
             //
-            //Basic_evasion = 0;
+            Basic_Calculate_CounterAttack(                  _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_CounterAttackDamage(            _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_CounterAttackDamageReduction(   _database,  _equipStatus,   _bonusStatus);
+            
             //
-            //Basic_accuracy = 0;
+            Basic_Calculate_Evasion(_database,  _equipStatus,   _bonusStatus);
+            
+            //
+            Basic_Calculate_Accuracy(_database,  _equipStatus,   _bonusStatus);
         }
 
         //
@@ -593,14 +610,25 @@ namespace Giggle_Character
         [SerializeField] Giggle_Unit    Basic_unit;
         [SerializeField] List<Status>   Basic_statusList;
 
+        [SerializeField] List<Skill>    Basic_skillList;
+
         ////////// Getter & Setter          //////////
         // Basic_id
         public int  Basic_VarId { get { return Basic_id;    }   }
 
         public bool Basic_GetIdIsSame(int _id)  { return Basic_id.Equals(_id);  }
 
+        // Basic_name
+        public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        // Basic_attribute
+        public int  Basic_VarAttribute  { get { return Basic_attribute; }   }
+
+        // Basic_role
+        public int  Basic_VarRole   { get { return Basic_role;  }   }
+
         // Basic_unit
-        public Giggle_Unit Basic_VarUnit    { get { return Basic_unit;  } set { Basic_unit = value; }   }
+        public Giggle_Unit  Basic_VarUnit   { get { return Basic_unit;  } set { Basic_unit = value; }   }
 
         // Basic_statusList
         public Status Basic_GetStatusList(int _level)
@@ -625,6 +653,37 @@ namespace Giggle_Character
             Basic_statusList[level - 1] = new Status(_data);
         }
 
+        // Basic_skillList
+        public Skill Basic_GetSkillListFromId(int _id)
+        {
+            Skill res = null;
+
+            //
+            for(int for0 = 0; for0 < Basic_skillList.Count; for0++)
+            {
+                if(Basic_skillList[for0].Basic_VarId.Equals(_id))
+                {
+                    res = Basic_skillList[for0];
+                }
+            }
+
+            //
+            return res;
+        }
+
+        public Skill Basic_GetSkillListFromCount(int _count)    { return Basic_skillList[_count];   }
+
+        public void Basic_SetSkillList(Dictionary<string, string> _data)
+        {
+            if(Basic_skillList == null)
+            {
+                Basic_skillList = new List<Skill>();
+            }
+
+            //
+            Basic_skillList.Add(new Skill(_data));
+        }
+
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
@@ -647,6 +706,146 @@ namespace Giggle_Character
         public void Dispose()
         {
 
+        }
+    }
+
+    #endregion
+
+    #region SKILL
+
+    [Serializable]
+    public class Skill : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] string Basic_name;
+
+        [SerializeField] int    Basic_class;
+        [SerializeField] int    Basic_rank;
+
+        [SerializeField] List<Skill_Lv>  Basic_lvList;
+
+        ////////// Getter & Setter          //////////
+        // Basic_id
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        // Basic_lvList
+        public Skill_Lv Basic_GetLvFromCount(int _count)    { return Basic_lvList[_count]; }
+
+        ////////// Method                   //////////
+
+        public void Basic_SetLvList(Dictionary<string, string> _data)
+        {
+            if(Basic_lvList == null)
+            {
+                Basic_lvList = new List<Skill_Lv>();
+            }
+
+            //
+            int level = int.Parse(_data["cha_skill_lv"]);
+            while(Basic_lvList.Count < level)
+            {
+                Basic_lvList.Add(null);
+            }
+
+            Basic_lvList[level - 1] = new Skill_Lv(_data);
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        public Skill(Dictionary<string, string> _data)
+        {
+            // cha_id
+            Basic_id = int.Parse(_data["skill_id"]);
+
+            Basic_name = _data["cha_skill_name"];
+
+            Basic_class = int.Parse(_data["cha_skill_class"]);
+            Basic_rank  = int.Parse(_data["cha_skill_rank"]);
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
+
+    [Serializable]
+    public class Skill_Lv : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] List<int>  Basic_values;
+
+        [SerializeField] float  Basic_coolTime;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+        public float    Basic_VarCoolTime   { get { return Basic_coolTime;  }   }
+
+        ////////// Constructor & Destroyer  //////////
+        public Skill_Lv(Dictionary<string, string> _data)
+        {
+            Basic_id = int.Parse(_data["skill_id"]);
+            //
+            if(Basic_values == null)
+            {
+                Basic_values = new List<int>();
+            }
+            Skill_Lv__AddValue(_data, 1);
+            Skill_Lv__AddValue(_data, 2);
+            Skill_Lv__AddValue(_data, 3);
+
+            // TODO: 쿨타임
+            Basic_coolTime = 5.0f;
+            //Basic_coolTime = float.Parse(_data["cha_skill_cool"]);
+        }
+
+        void Skill_Lv__AddValue(
+            Dictionary<string, string> _data,
+            int _count)
+        {
+            while(_count > Basic_values.Count)
+            {
+                Basic_values.Add(0);
+            }
+
+            Basic_values[_count - 1] = int.Parse(_data["value_0" + _count]);
+        }
+
+        public void Dispose()
+        {
+            
+        }
+    }
+
+    #endregion
+
+    #region SAVE
+    
+    [Serializable]
+    public class Save : IDisposable
+    {
+        [SerializeField] int    Basic_inventoryId;
+        [SerializeField] int    Basic_dataId;
+
+        ////////// Getter & Setter          //////////
+        public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
+
+        public int  Basic_VarDataId { get { return Basic_dataId;    }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Save(int _inventoryId, int _dataId)
+        {
+            Basic_inventoryId = _inventoryId;
+            Basic_dataId = _dataId;
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 

@@ -26,6 +26,8 @@ public class Giggle_Unit : MonoBehaviour
     }
     
     [SerializeField] Giggle_Battle  Basic_Battle;
+    IEnumerator Basic_coroutine;
+
     [Header("RUNNING")]
     [SerializeField] Save Basic_Save;
 
@@ -36,11 +38,19 @@ public class Giggle_Unit : MonoBehaviour
     {
         Basic_Battle = _battle;
 
-        Status_database = _database;
+        Status_Init(_database);
 
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.Euler(Vector3.zero);
         this.transform.localScale    = Vector3.one;
+
+        Basic_coroutine = Basic_Coroutine();
+        StartCoroutine(Basic_coroutine);
+    }
+
+    public void Basic_Release()
+    {
+        StopCoroutine(Basic_coroutine);
     }
 
     IEnumerator Basic_Coroutine()
@@ -53,6 +63,7 @@ public class Giggle_Unit : MonoBehaviour
         {
             time = Time.time;
 
+            Status_Coroutine(time - lastTime);
             Active_Coroutine(time - lastTime);
 
             lastTime = time;
@@ -65,8 +76,6 @@ public class Giggle_Unit : MonoBehaviour
     void Start()
     {
         Active_Start();
-
-        StartCoroutine(Basic_Coroutine());
     }
 
     // Update is called once per frame
@@ -90,12 +99,28 @@ public class Giggle_Unit : MonoBehaviour
     // 능력치들을 종합한 최종 능력치 ( 게임에서 사용되는 능력치 )
     [SerializeField] Giggle_Character.Status            Status_totalStatus;
 
+    [SerializeField] int Status_hp;
+    [SerializeField] float Status_coolTimer;
+
     ////////// Getter & Setter  //////////
+    public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
 
     ////////// Method           //////////
     void Status_Init(Giggle_Character.Database _database)
     {
         Status_database = _database;
+        Status_totalStatus.Basic_Calculate(Status_database.Basic_GetStatusList(0), Status_equipStatus, Status_bonusStatus);
+        Status_hp = Status_totalStatus.Basic_VarHp;
+    }
+
+    void Status_Coroutine(float _deltaTime)
+    {
+        Status_coolTimer -= _deltaTime;
+
+        if(Status_coolTimer < 0.0f)
+        {
+            Status_coolTimer = 0.0f;
+        }
     }
 
     ////////// Unity            //////////
@@ -244,8 +269,27 @@ public class Giggle_Unit : MonoBehaviour
                     {
                         if(Active_timer >= Active_time * 0.7f)
                         {
-                            Basic_Battle.Bullet_Launch(this, Active_target);
-                            
+                            // 최종 데미지 연산
+                            int damage = 0;
+                            if(Status_VarTotalStatus.Basic_VarAttack != 0)
+                            {
+                                damage
+                                    = (Status_VarTotalStatus.Basic_VarAttack * Status_VarTotalStatus.Basic_VarAttack)
+                                    / (Status_VarTotalStatus.Basic_VarAttack + Active_target.Status_VarTotalStatus.Basic_VarDefence);
+                            }
+
+                            if(Status_coolTimer <= 0.0f)
+                            {
+                                Debug.Log(this.name + "스킬 " + Status_database.Basic_GetSkillListFromCount(0).Basic_VarId);
+                                Status_coolTimer += Status_database.Basic_GetSkillListFromCount(0).Basic_GetLvFromCount(0).Basic_VarCoolTime;
+                            }
+                            else
+                            {
+                                Basic_Battle.Bullet_Launch(
+                                    this, Active_target,
+                                    damage);
+                            }
+
                             Model_motionPhase = 1;
                         }
                     }

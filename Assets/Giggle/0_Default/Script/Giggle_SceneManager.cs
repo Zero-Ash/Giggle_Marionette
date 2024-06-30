@@ -71,7 +71,7 @@ public class Giggle_SceneManager : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public void Basic_Active(string _name)
+        public virtual void Basic_Active(string _name)
         {
             Basic_parent.gameObject.SetActive(true);
 
@@ -96,6 +96,11 @@ public class Giggle_SceneManager : MonoBehaviour
         }
 
         ////////// Constructor & Destroyer  //////////
+        public virtual void Basic_Init()
+        {
+            Basic_DeActive();
+        }
+        
         public void Dispose()
         {
 
@@ -106,6 +111,11 @@ public class Giggle_SceneManager : MonoBehaviour
 
     ////////// Method           //////////
     public virtual void UI_BtnClick(GameObject _btn)
+    {
+
+    }
+    
+    public virtual void UI_PopUpBtnClick(GameObject _btn)
     {
 
     }

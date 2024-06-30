@@ -60,7 +60,7 @@ public class Giggle_Database : IDisposable
         [SerializeField] List<Giggle_Character.Database> Basic_characters;
 
         ////////// Getter & Setter          //////////
-        public Giggle_Character.Database Basic_GetData(int _id)
+        public Giggle_Character.Database Basic_GetDataFromId(int _id)
         {
             Giggle_Character.Database res = null;
 
@@ -77,6 +77,10 @@ public class Giggle_Database : IDisposable
             //
             return res;
         }
+
+        public Giggle_Character.Database    Basic_GetDataFromCount(int _count)  { return Basic_characters[_count];  }
+
+        public int                          Basic_VarCount                      { get{ return Basic_characters.Count;   }   }
 
         public void Basic_SetData(Dictionary<string, string> _data)
         {
@@ -97,7 +101,7 @@ public class Giggle_Database : IDisposable
 
         public void Dispose()
         {
-            
+
         }
     }
 
@@ -112,7 +116,7 @@ public class Giggle_Database : IDisposable
         return Character_isOpen;
     }
 
-    object Character_GetData(params object[] _args)
+    object Character_GetDataFromId(params object[] _args)
     {
         Giggle_Character.Database res = Character_empty;
 
@@ -123,7 +127,7 @@ public class Giggle_Database : IDisposable
         int attribute = id % 10;
         if (attribute < Character_datas.Count)
         {
-            res = Character_datas[attribute].Basic_GetData(id);
+            res = Character_datas[attribute].Basic_GetDataFromId(id);
             if(res == null)
             {
                 res = Character_empty;
@@ -132,13 +136,38 @@ public class Giggle_Database : IDisposable
 
         if(res.Equals(Character_empty))
         {
-            IEnumerator coroutine = Character_LoadData__Coroutine(attribute);
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+            if(Character_isOpen)
+            {
+                IEnumerator coroutine = Character_LoadData__Coroutine(attribute);
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+            }
         }
 
         //
         return res;
     }
+
+    object Character_GetDatasFromAttribute(params object[] _args)
+    {
+        List<Giggle_Character.Database> res = new List<Giggle_Character.Database>();
+
+        //
+        string[] attributes = ((string)_args[0]).Split('|');
+        for(int for0 = 0; for0 < attributes.Length; for0++)
+        {
+            Giggle_Character.ATTRIBUTE attribute = (Giggle_Character.ATTRIBUTE)Enum.Parse(typeof(Giggle_Character.ATTRIBUTE), attributes[for0]);
+            Character_Data data = Character_datas[(int)attribute];
+            for(int for1 = 0; for1 < data.Basic_VarCount; for1++)
+            {
+                res.Add(data.Basic_GetDataFromCount(for1));
+            }
+        }
+
+        //
+        return res;
+    }
+
+    ////////// Method                   //////////
 
     IEnumerator Character_LoadData__Coroutine(int _attribute)
     {
@@ -151,7 +180,8 @@ public class Giggle_Database : IDisposable
         {
             switch(phase)
             {
-                // 
+                // 캐릭터 데이터
+                // 리스트
                 case 0:
                     {
                         phase = 1;
@@ -171,19 +201,14 @@ public class Giggle_Database : IDisposable
                                 Character_datas[_attribute].Basic_SetData(data[for0]);
                             }
 
-                            phase = 100;
+                            phase = 2;
                         };
                     }
                     break;
-                //
-                case 100:
+                // 캐릭터 레벨
+                case 2:
                     {
-                        phase = 101;
-
-                        while(Character_datas.Count <= _attribute)
-                        {
-                            Character_datas.Add(new Character_Data());
-                        }
+                        phase = 3;
 
                         Giggle_Character.ATTRIBUTE attribute = (Giggle_Character.ATTRIBUTE)_attribute;
                         Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_LV").Completed
@@ -193,14 +218,86 @@ public class Giggle_Database : IDisposable
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
                                 int id = int.Parse(data[for0]["cha_id"]);
-                                Character_datas[_attribute].Basic_GetData(id).Basic_SetStatusList(data[for0]);
+                                Character_datas[_attribute].Basic_GetDataFromId(id).Basic_SetStatusList(data[for0]);
+                            }
+
+                            phase = 100;
+                        };
+                    }
+                    break;
+                // 스킬
+                // 리스트
+                case 100:
+                    {
+                        phase = 101;
+
+                        Giggle_Character.ATTRIBUTE attribute = (Giggle_Character.ATTRIBUTE)_attribute;
+                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_SKILL_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["cha_id"]);
+                                Character_datas[_attribute].Basic_GetDataFromId(id).Basic_SetSkillList(data[for0]);
+                            }
+
+                            phase = 102;
+                        };
+                    }
+                    break;
+                // 스킬 레벨
+                case 102:
+                    {
+                        phase = 103;
+
+                        Giggle_Character.ATTRIBUTE attribute = (Giggle_Character.ATTRIBUTE)_attribute;
+                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_SKILL_LV").Completed
+                        += handle =>
+                        {
+                            List<Giggle_Character.Skill> skills = new List<Giggle_Character.Skill>();
+
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["cha_skill_id"]);
+
+                                Giggle_Character.Skill whileSkill = null;
+                                while(whileSkill == null)
+                                {
+                                    for(int for1 = 0; for1 < skills.Count; for1++)
+                                    {
+                                        if(skills[for1].Basic_VarId.Equals(id))
+                                        {
+                                            whileSkill = skills[for1];
+                                            break;
+                                        }
+                                    }
+
+                                    if(whileSkill == null)
+                                    {
+                                        for(int for2 = 0; for2 < Character_datas[_attribute].Basic_VarCount; for2++)
+                                        {
+                                            Giggle_Character.Skill element = Character_datas[_attribute].Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id);
+                                            if(element != null)
+                                            {
+                                                skills.Add(Character_datas[_attribute].Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        whileSkill.Basic_SetLvList(data[for0]);
+                                    }
+                                }
                             }
 
                             phase = 200;
                         };
                     }
                     break;
-                //
+                // 캐릭터 모델링
                 case 200:
                     {
                         phase = 201;
@@ -219,7 +316,7 @@ public class Giggle_Database : IDisposable
                             {
                                 Transform child = res.transform.GetChild(for0);
                                 int id = int.Parse(child.name);
-                                Character_datas[_attribute].Basic_GetData(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
+                                Character_datas[_attribute].Basic_GetDataFromId(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
                             }
 
                             Character_isOpen = true;
@@ -233,8 +330,6 @@ public class Giggle_Database : IDisposable
         }
     }
 
-    ////////// Method                   //////////
-
     ////////// Constructor & Destroyer  //////////
     void Character_Init()
     {
@@ -244,9 +339,10 @@ public class Giggle_Database : IDisposable
             Character_empty = new Giggle_Character.Database();
         }
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN,   Character_GetIsOpen );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN,       Character_GetIsOpen     );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA,  Character_GetData   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,          Character_GetDataFromId         );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,  Character_GetDatasFromAttribute );
     }
 
     #endregion

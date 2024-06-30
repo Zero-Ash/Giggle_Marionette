@@ -10,6 +10,7 @@ public class Giggle_Master : MonoBehaviour
 {
     #region BASIC
     [SerializeField] Giggle_Database Basic_Database;
+    [SerializeField] Giggle_Player  Basic_player;
 
     ////////// Getter & Setter  //////////
 
@@ -47,6 +48,14 @@ public class Giggle_Master : MonoBehaviour
         {
             Basic_Database = new Giggle_Database();
         }
+        
+        if(Basic_player == null)
+        {
+            Basic_player = new Giggle_Player();
+        }
+        Basic_player.Basic_Init();
+
+        Garbage_Start();
         UI_Start();
         Battle_Start();
     }
@@ -59,6 +68,48 @@ public class Giggle_Master : MonoBehaviour
 
     #endregion
 
+    #region GARBAGE
+
+    [Header("GARBAGE ==================================================")]
+    [SerializeField] Transform Garbage_parent;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+
+    object Garbage_Remove(params object[] _args)
+    {
+        Transform garbage = (Transform)_args[0];
+
+        //
+        if(Garbage_parent == null)
+        {
+            GameObject obj = new GameObject();
+            obj.name = "garbage";
+            obj.SetActive(false);
+            Garbage_parent = obj.transform;
+        }
+
+        garbage.parent = Garbage_parent;
+
+        if(Garbage_parent.childCount > 100)
+        {
+            Destroy(Garbage_parent);
+            Garbage_parent = null;
+        }
+
+        //
+        return true;
+    }
+
+    ////////// Unity            //////////
+    void Garbage_Start()
+    {
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE, Garbage_Remove);
+    }
+
+    #endregion
+
     #region UI
 
     [Header("UI ==================================================")]
@@ -67,6 +118,43 @@ public class Giggle_Master : MonoBehaviour
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
+
+    // UI_CharacterInstantiate
+    object UI_CharacterInstantiate(params object[] _args)
+    {
+        int         id      = (int      )_args[0];
+        Transform   parent  = (Transform)_args[1];
+        float       rot_x   = (float    )_args[2];
+        float       scale   = (float    )_args[3];
+
+        //
+        Giggle_Character.Database data
+            = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+                //
+                id);
+
+        Giggle_Unit res = GameObject.Instantiate(data.Basic_VarUnit, parent);
+        UI_CharacterInstantiate__ChangeModelLayer(res.transform);
+        res.transform.localPosition = Vector3.zero;
+        res.transform.localRotation = Quaternion.Euler(rot_x,0,0);
+        res.transform.localScale = new Vector3(scale, scale, scale);
+
+        //
+        return res;
+    }
+
+    void UI_CharacterInstantiate__ChangeModelLayer(Transform _parent)
+    {
+        _parent.gameObject.layer = 5;
+
+        for(int for0 = 0; for0 < _parent.childCount; for0++)
+        {
+            UI_CharacterInstantiate__ChangeModelLayer(_parent.GetChild(for0));
+        }
+    }
+    
+    // UI_ValueText
     public string UI_ValueText(List<int> _values)
     {
         string res = "";
@@ -121,6 +209,8 @@ public class Giggle_Master : MonoBehaviour
             rs.y = UI_canvasScaler.referenceResolution.x / screenRatio;
             UI_canvasScaler.referenceResolution = rs;
         }
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
     }
 
     #endregion
@@ -131,6 +221,17 @@ public class Giggle_Master : MonoBehaviour
     [SerializeField] Giggle_Battle Battle_data;
 
     ////////// Getter & Setter  //////////
+    object Battle_VarCoroutinePhase(params object[] _args)
+    {
+        if(_args.Length > 0)
+        {
+            Giggle_Battle.Basic__COROUTINE_PHASE phase = (Giggle_Battle.Basic__COROUTINE_PHASE)_args[0];
+            Battle_data.Basic_VarCoroutinePhase = phase;
+        }
+
+        //
+        return Battle_data.Basic_VarCoroutinePhase;
+    }
 
     ////////// Method           //////////
 
@@ -138,6 +239,8 @@ public class Giggle_Master : MonoBehaviour
     void Battle_Start()
     {
         Battle_data.Basic_Init();
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE,    Battle_VarCoroutinePhase    );
     }
 
     // Update
