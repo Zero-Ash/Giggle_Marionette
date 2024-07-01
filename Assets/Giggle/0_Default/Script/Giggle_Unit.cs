@@ -63,8 +63,19 @@ public class Giggle_Unit : MonoBehaviour
         {
             time = Time.time;
 
-            Status_Coroutine(time - lastTime);
-            Active_Coroutine(time - lastTime);
+            if(Basic_Battle.Basic_VarCoroutinePhase.Equals(Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE))
+            {
+                Status_Coroutine(time - lastTime);
+                Active_Coroutine(time - lastTime);
+            }
+            else
+            {
+                if(!Active_phase.Equals(Active_PHASE.WAIT))
+                {
+                    Active_phase = Active_PHASE.WAIT;
+                    Model_SetMotion();
+                }
+            }
 
             lastTime = time;
             yield return null;

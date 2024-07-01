@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 [Serializable]
 public class Giggle_Battle : IDisposable
@@ -11,9 +12,24 @@ public class Giggle_Battle : IDisposable
     public enum Basic__COROUTINE_PHASE
     {
         INIT,
+
+        //
+        PLAYER_SETTING_START,
+        PLAYER_FADE_OUT,
+        PLAYER_DATA_CHECK,
+        PLAYER_SETTING,
+
+        //
+        STAGE_SETTING_START,
+        STAGE_FADE_OUT,
         STAGE_DATA_CHECK,
         STAGE_SETTING,
 
+        //
+        FADE_IN_START,
+        FADE_IN,
+
+        //
         ACTIVE
     }
     [SerializeField] Basic__COROUTINE_PHASE Basic_coroutinePhase;
@@ -49,8 +65,20 @@ public class Giggle_Battle : IDisposable
             switch(Basic_coroutinePhase)
             {
                 case Basic__COROUTINE_PHASE.INIT:               { Basic_Coroutine__INIT(ref phase);     }   break;
-                case Basic__COROUTINE_PHASE.STAGE_DATA_CHECK:   { Basic_Coroutine__STAGE_DATA_CHECK();  }   break;
-                case Basic__COROUTINE_PHASE.STAGE_SETTING:      { Basic_Coroutine__STAGE_SETTING();     }   break;
+
+                case Basic__COROUTINE_PHASE.PLAYER_SETTING_START:   { Basic_Coroutine__PLAYER_SETTING_START();              }   break;
+                case Basic__COROUTINE_PHASE.PLAYER_FADE_OUT:        { Basic_Coroutine__PLAYER_FADE_OUT(time - lastTime);    }   break;
+                case Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK:      { Basic_Coroutine__PLAYER_DATA_CHECK();                 }   break;
+                case Basic__COROUTINE_PHASE.PLAYER_SETTING:         { Basic_Coroutine__PLAYER_SETTING();                    }   break;
+
+                case Basic__COROUTINE_PHASE.STAGE_SETTING_START:    {                                       }   break;
+                case Basic__COROUTINE_PHASE.STAGE_FADE_OUT:         {                                       }   break;
+                case Basic__COROUTINE_PHASE.STAGE_DATA_CHECK:       { Basic_Coroutine__STAGE_DATA_CHECK();  }   break;
+                case Basic__COROUTINE_PHASE.STAGE_SETTING:          { Basic_Coroutine__STAGE_SETTING();     }   break;
+
+                case Basic__COROUTINE_PHASE.FADE_IN_START:  { Basic_Coroutine__FADE_IN_START();             }   break;
+                case Basic__COROUTINE_PHASE.FADE_IN:        { Basic_Coroutine__FADE_IN(time - lastTime);    }   break;
+
                 case Basic__COROUTINE_PHASE.ACTIVE:
                     {
                         Bullet_Coroutine(time - lastTime);
@@ -64,6 +92,7 @@ public class Giggle_Battle : IDisposable
         }
     }
 
+    // INIT ==========
     void Basic_Coroutine__INIT(ref int _phase)
     {
         switch(_phase)
@@ -81,15 +110,34 @@ public class Giggle_Battle : IDisposable
                     if(Formation_CotoutineInit1())
                     {
                         _phase = 0;
-                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_DATA_CHECK;
+                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK;
                     }
                 }
                 break;
         }
     }
 
-    // STAGE_DATA_CHECK
-    void Basic_Coroutine__STAGE_DATA_CHECK()
+    // PLAYER_SETTING ==========
+    // PLAYER_SETTING_START
+    void Basic_Coroutine__PLAYER_SETTING_START()
+    {
+        UI_FadeOutStart();
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_FADE_OUT;
+    }
+
+    // PLAYER_SETTING_START
+    void Basic_Coroutine__PLAYER_FADE_OUT(float _timer)
+    {
+        UI_FadeOut(_timer);
+
+        if(UI_fadeTime >= 1.0f)
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK;
+        }
+    }
+
+    // PLAYER_DATA_CHECK
+    void Basic_Coroutine__PLAYER_DATA_CHECK()
     {
         object isOnObj
             = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
@@ -98,26 +146,15 @@ public class Giggle_Battle : IDisposable
         {
             if((bool)isOnObj)
             {
-                if(Basic_Coroutine__STAGE_DATA_CHECK__Player())
+                if(Basic_Coroutine__PLAYER_DATA_CHECK__Player())
                 {
-                    //
-                    object dataObj1
-                        = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                            Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
-                            11002011);
-                    Giggle_Character.Database data1 = (Giggle_Character.Database)dataObj1;
-
-                    if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN))
-                    {
-                        //
-                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_SETTING;
-                    }
+                    Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_SETTING;
                 }
             }
         }
     }
 
-    bool Basic_Coroutine__STAGE_DATA_CHECK__Player()
+    bool Basic_Coroutine__PLAYER_DATA_CHECK__Player()
     {
         bool res = true;
 
@@ -154,8 +191,8 @@ public class Giggle_Battle : IDisposable
         return res;
     }
 
-    //
-    void Basic_Coroutine__STAGE_SETTING()
+    // PLAYER_SETTING
+    void Basic_Coroutine__PLAYER_SETTING()
     {
         //
         int formationSelect
@@ -204,6 +241,32 @@ public class Giggle_Battle : IDisposable
             whileCount++;
         }
 
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_DATA_CHECK;
+    }
+
+    // STAGE_SETTING ==========
+    // STAGE_DATA_CHECK
+    void Basic_Coroutine__STAGE_DATA_CHECK()
+    {
+        object isOnObj
+            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
+        
+        if(isOnObj != null)
+        {
+            if((bool)isOnObj)
+            {
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_SETTING;
+            }
+        }
+    }
+
+    //
+    void Basic_Coroutine__STAGE_SETTING()
+    {
+        // 캐릭터 생성
+        Giggle_Character.Database data = null;
+        Giggle_Unit unit = null;
+
         // enemy
         // 기존 데이터 날리기
         while(Formation_Enemy.Basic_GetTile(0).childCount > 0)
@@ -227,7 +290,25 @@ public class Giggle_Battle : IDisposable
         Bullet_Reset();
 
         //
-        Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE;
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN_START;
+    }
+
+    //
+    void Basic_Coroutine__FADE_IN_START()
+    {
+        UI_FadeInStart();
+
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN;
+    }
+
+    void Basic_Coroutine__FADE_IN(float _timer)
+    {
+        UI_FadeIn(_timer);
+
+        if(UI_fadeTime <= 0.0f)
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE;
+        }
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -461,6 +542,71 @@ public class Giggle_Battle : IDisposable
 
             whileCount++;
         }
+    }
+
+    ////////// Constructor & Destroyer  //////////
+
+    #endregion
+
+    #region UI
+
+    [Header("UI ==================================================")]
+    [SerializeField] Image UI_fade;
+
+    [Header("RUNNING")]
+    [SerializeField] float UI_fadeTime;
+
+    ////////// Getter & Setter          //////////
+
+    ////////// Method                   //////////
+    // UI_FadeOut
+    void UI_FadeOutStart()
+    {
+        UI_fadeTime = 0.0f;
+
+        Color c = UI_fade.color;
+        c.a = 0.0f;
+        UI_fade.color = c;
+        UI_fade.gameObject.SetActive(true);
+    }
+
+    void UI_FadeOut(float _timer)
+    {
+        UI_fadeTime += _timer;
+
+        if(UI_fadeTime >= 1.0f)
+        {
+            UI_fadeTime = 1.0f;
+        }
+
+        Color c = UI_fade.color;
+        c.a = UI_fadeTime;
+        UI_fade.color = c;
+    }
+
+    // UI_FadeIn
+    void UI_FadeInStart()
+    {
+        UI_fadeTime = 1.0f;
+
+        Color c = UI_fade.color;
+        c.a = 1.0f;
+        UI_fade.color = c;
+    }
+
+    void UI_FadeIn(float _timer)
+    {
+        UI_fadeTime -= _timer;
+
+        if(UI_fadeTime <= 0.0f)
+        {
+            UI_fadeTime = 0.0f;
+            UI_fade.gameObject.SetActive(false);
+        }
+
+        Color c = UI_fade.color;
+        c.a = UI_fadeTime;
+        UI_fade.color = c;
     }
 
     ////////// Constructor & Destroyer  //////////

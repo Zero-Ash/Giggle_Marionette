@@ -239,7 +239,7 @@ public class Giggle_MainManager : Giggle_SceneManager
             Marionette_ui.SetActive(false);
 
             //
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.STAGE_DATA_CHECK);
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.PLAYER_SETTING_START);
         }
 
         void Marionette_SelectMenu(int _count)
