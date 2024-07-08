@@ -15,13 +15,43 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 8b90b6efd79344dd3b08c6c01f3c9dae
   m_SerializeEntries:
+  - m_GUID: 07eb4410ff9c947b98bc3925f837ba00
+    m_Address: PINOCCHIO/CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14881186133394e05ba26daa5f425739
+    m_Address: PINOCCHIO/CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24a2c5072330943a0bf2d8ede010cd22
+    m_Address: PINOCCHIO/CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33a1413e5b89743969999ec6f9a8338a
+    m_Address: ITEM/WEAPON_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 503e3d7dde071402ea81b182b5ff66b3
     m_Address: CHARACTER/FIRE_CSV_SKILL_LV
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57419d3f807e14b489d5d9f94d03afe5
+    m_Address: PINOCCHIO/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70b54fbb9f5ff4ad3b939478cd400798
     m_Address: CHARACTER/FIRE_CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ad88b9d28db94b49b6a4afddb604ec3
+    m_Address: PINOCCHIO/CSV_SKILL_LV
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

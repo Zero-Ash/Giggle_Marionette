@@ -38,7 +38,7 @@ public class Giggle_MainManager : Giggle_SceneManager
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init()
         {
-            Pinocchio_Init();
+            Pinocchio_data.Basic_Init();
             Marionette_Init();
         }
         
@@ -91,9 +91,7 @@ public class Giggle_MainManager : Giggle_SceneManager
 
         void Area7_PinocchioOn()
         {
-            Pinocchio_ui.SetActive(true);
-            Pinocchio_SelectMenu(0);
-            PinocchioEquipment_SelectMenu(0);
+            Pinocchio_data.Basic_Active();
         }
 
         void Area7_MarionetteOn()
@@ -107,98 +105,530 @@ public class Giggle_MainManager : Giggle_SceneManager
 
         #region PINOCCHIO
 
-        [Header("PINOCCHIO ==================================================")]
-        [SerializeField] GameObject Pinocchio_ui;
-        // Area1
-        // Pinocchio_menuBar
-        [SerializeField] Giggle_UI.MenuBar Pinocchio_menuBar;
-
-        ////////// Getter & Setter          //////////
-        //public bool Pinocchio_VarUiActive   { set { Pinocchio_ui.SetActive(value);   }   }
-
-        ////////// Method                   //////////
-
-        public void Pinocchio_BtnClick(string[] _names)
+        [Serializable]
+        public class Pinocchio : IDisposable
         {
-            switch(_names[2])
-            {
-                case "CLOSE":       { Pinocchio_ui.SetActive(false);                }   break;
-                case "MENU_BAR":    { Pinocchio_SelectMenu(int.Parse(_names[3]));   }   break;
-                //
-                case "EQUIPMENT_AREA3_MENU_BAR":    { PinocchioEquipment_SelectMenu(int.Parse(_names[3])); }   break;
-            }
-        }
+            [SerializeField] GameObject Basic_ui;
 
-        public void Pinocchio_SelectMenu(int _count)
-        {
-            Pinocchio_menuBar.Basic_SelectMenu(_count);
-        }
-
-        ////////// Constructor & Destroyer  //////////
-        void Pinocchio_Init()
-        {
-            Pinocchio_ui.SetActive(false);
-
-            // Area1
-            // Pinocchio_menuBar
-            Pinocchio_menuBar.Basic_Init();
-            for(int for0 = 0; for0 < Pinocchio_menuBar.Basic_VarListCount; for0++)
-            {
-                Pinocchio_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/MENU_BAR/" + for0.ToString();
-            }
-
-            PinocchioEquipment_Init();
-        }
-
-            #region EQUIPMENT
-
-            // Area2
-            // Area3
-            [SerializeField] RectTransform  PinocchioEquipmentArea3_menuBarParent;
-            [SerializeField] List<Button>   PinocchioEquipmentArea3_menuBarList;
+            [SerializeField] Giggle_UI.MenuBar BasicArea1_menuBar;
 
             ////////// Getter & Setter          //////////
-
+            
             ////////// Method                   //////////
-            public void PinocchioEquipment_SelectMenu(int _count)
+            
+            public void Basic_BtnClick(string[] _names)
             {
-                for(int for0 = 0; for0 < PinocchioEquipmentArea3_menuBarList.Count; for0++)
+                switch(_names[2])
                 {
-                    bool isClick = for0.Equals(_count);
-
-                    PinocchioEquipmentArea3_menuBarList[for0].gameObject.SetActive(!isClick);
-                    //Pinocchio_menuParent.Find(for0.ToString()).gameObject.SetActive(isClick);
+                    case "CLOSE":       { Basic_Close();                                }   break;
+                    case "MENU_BAR":    { BasicArea1_SelectMenu(int.Parse(_names[3]));  }   break;
+                    //
+                    case "JOB__MENU_BAR":       { JobArea3_menuBar.Basic_SelectMenu(int.Parse(_names[3]));  }   break;
+                    case "JOB__SCROLL_VIEW":    { JobArea3_scrollView.Basic_ClickBtn(int.Parse(_names[3])); }   break;
+                    //
+                    case "EQUIPMENT__MENU_BAR":     { EquipmentArea3_menuBar.Basic_SelectMenu(int.Parse(_names[3]));    }   break;
+                    case "EQUIPMENT__EQUIPMENT":    {   }   break;
                 }
+            }
+
+            void Basic_Close()
+            {
+                Basic_ui.SetActive(false);
+
+                //
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.PLAYER_SETTING_START);
+            }
+
+            void BasicArea1_SelectMenu(int _count)
+            {
+                BasicArea1_menuBar.Basic_SelectMenu(_count);
+            }
+
+            //
+            public void Basic_Active()
+            {
+                Equipment_Active();
+
+                BasicArea1_SelectMenu(0);
+                Job_SelectMenu(0);
+                Job_InfoSetting();
+
+                Basic_ui.SetActive(true);
+            }
+
+            public void Basic_Init()
+            {
+                Basic_ui.SetActive(false);
+
+                BasicArea1_menuBar.Basic_Init();
+                for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
+                {
+                    BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/MENU_BAR/" + for0.ToString();
+                }
+
+                Job_Init();
+                Equipment_Init();
             }
 
             ////////// Constructor & Destroyer  //////////
-            void PinocchioEquipment_Init()
+            
+            public void Dispose()
             {
-                // Area2
-                // Area3
-                if(PinocchioEquipmentArea3_menuBarList == null)
+
+            }
+
+            #region JOB
+
+            [Serializable]
+            public class MenuBar_Job : Giggle_UI.MenuBar
+            {
+                [SerializeField] Pinocchio Basic_parentClass;
+
+                ////////// Getter & Setter          //////////
+
+                ////////// Method                   //////////
+
+                public void Basic_Init(Pinocchio _parentClass)
                 {
-                    PinocchioEquipmentArea3_menuBarList = new List<Button>();
+                    Basic_parentClass = _parentClass;
+                    Basic_Init();
                 }
 
-                float width = PinocchioEquipmentArea3_menuBarParent.sizeDelta.x / PinocchioEquipmentArea3_menuBarParent.childCount;
-                for(int for0 = 0; for0 < PinocchioEquipmentArea3_menuBarParent.childCount; for0++)
+                public override void Basic_SelectMenu(int _count)
                 {
-                    RectTransform element = PinocchioEquipmentArea3_menuBarParent.Find(for0.ToString()).GetComponent<RectTransform>();
-                    element.anchoredPosition = new Vector2(width * (for0 + 0.5f), 0);
-                    element.sizeDelta = new Vector2(width, element.sizeDelta.y);
+                    for(int for0 = 0; for0 < Basic_list.Count; for0++)
+                    {
+                        bool isClick = for0.Equals(_count);
 
-                    element = element.transform.Find("Button").GetComponent<RectTransform>();
-                    element.name = "Button/PINOCCHIO/EQUIPMENT_AREA3_MENU_BAR/" + for0.ToString();
-                    PinocchioEquipmentArea3_menuBarList.Add(element.GetComponent<Button>());
+                        Basic_list[for0].gameObject.SetActive(!isClick);
+                    }
+
+                    //
+                    Basic_parentClass.Job_VarScrollView.Basic_SelectMenuBar(_count);
+                }
+
+                ////////// Constructor & Destroyer  //////////
+                
+            }
+
+            [Serializable]
+            public class ScrollView_Job : Giggle_UI.ScrollView
+            {
+                [SerializeField] Pinocchio  Basic_parentClass;
+
+                ////////// Getter & Setter          //////////
+
+                ////////// Method                   //////////
+
+                public void Basic_Init(Pinocchio _parentClass)
+                {
+                    Basic_parentClass = _parentClass;
+                    Basic_Init();
+                }
+
+                protected override void Basic_Init__SetName()
+                {
+                    Basic_list[0].Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/0";
+                    Basic_list[1].Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/1";
+                }
+
+                protected override void Basic_AddList__SetName(Transform _element)
+                {
+                    _element.Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/" + Basic_list.Count;
+                }
+
+                public override void Basic_ClickBtn(int _count)
+                {
+                    //
+                    if(!_count.Equals(-1))
+                    {
+                        Giggle_Character.Save pinocchioData
+                            = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                        List<int> jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);
+
+                        //
+                        pinocchioData.Basic_VarDataId = jobList[_count];
+                        Basic_parentClass.Job_InfoSetting();
+                        Basic_CheckCover();
+                    }
+                }
+
+                // Basic_SelectMenuBar
+                public void Basic_SelectMenuBar(int _count)
+                {
+                    Basic_parentClass.Job_ListSetting(0);
+                    Basic_SelectMenuBar__Check();
+
+                    Basic_ClickBtn(-1);
+                }
+
+                void Basic_SelectMenuBar__Check()
+                {
+                    int finalCount = 0;
+                    int whileCount = 0;
+                    while(whileCount < Basic_list.Count)
+                    {
+                        if(whileCount < Basic_parentClass.Job_VarJobList.Count)
+                        {
+                            Basic_list[whileCount].gameObject.SetActive(true);
+
+                            // 기존 데이터 날리기
+                            while(Basic_list[whileCount].Find("Obj").childCount > 0)
+                            {
+                                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                                    //
+                                    Basic_list[whileCount].Find("Obj").GetChild(0));
+                            }
+
+                            //
+                            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
+                                //
+                                Basic_parentClass.Job_VarJobList[whileCount],
+                                Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                            
+                            finalCount = whileCount;
+                        }
+                        else
+                        {
+                            Basic_list[whileCount].gameObject.SetActive(false);
+                        }
+
+                        //
+                        whileCount++;
+                    }
+
+                    Basic_content.sizeDelta
+                        = new Vector2(
+                            0,
+                            (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + Basic_list[finalCount].localPosition.y);
+
+                    Basic_CheckCover();
+                }
+
+                //
+                void Basic_CheckCover()
+                {
+                    Giggle_Character.Save pinocchioData
+                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                    List<int> jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);
+
+                    int whileCount = 0;
+                    while(whileCount < jobList.Count)
+                    {
+                        Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
+                        if(jobList[whileCount].Equals(pinocchioData.Basic_VarDataId))
+                        {
+                            Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
+                        }
+
+                        //
+                        whileCount++;
+                    }
+                }
+
+                ////////// Constructor & Destroyer  //////////
+            }
+
+            [Header("JOB ==========")]
+            [SerializeField] Transform  JobArea2_objParent;
+
+            [SerializeField] MenuBar_Job    JobArea3_menuBar;
+            [SerializeField] ScrollView_Job JobArea3_scrollView;
+
+            [SerializeField] List<int>  Job_jobList;
+
+            ////////// Getter & Setter          //////////
+
+            //
+            public ScrollView_Job   Job_VarScrollView   { get { return JobArea3_scrollView; }   }
+
+            //
+            public List<int>    Job_VarJobList  { get { return Job_jobList; }   }
+
+            ////////// Method                   //////////
+            void Job_SelectMenu(int _count)
+            {
+                JobArea3_menuBar.Basic_SelectMenu(_count);
+            }
+
+            void Job_Active()
+            {
+                //
+                //Equipment_inventoryItems
+                //    = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                //        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
+
+                //Equipment_characterList
+                //    = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                //        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
+            }
+
+            public void Job_ListSetting(int _selectType)
+            {
+                Job_jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);
+                switch(_selectType)
+                {
+                    case 0: {   }   break;
                 }
             }
 
+            public void Job_InfoSetting()
+            {
+                while(JobArea2_objParent.childCount > 0)
+                {
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                        //
+                        JobArea2_objParent.GetChild(0));
+                }
+
+                Giggle_Character.Save pinocchioData
+                    = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
+                    //
+                    pinocchioData.Basic_VarDataId,
+                    JobArea2_objParent, -90.0f, 900.0f);
+            }
+
+            void Job_Init()
+            {
+                // Area2
+                // Area3
+                JobArea3_menuBar.Basic_Init(this);
+                for(int for0 = 0; for0 < JobArea3_menuBar.Basic_VarListCount; for0++)
+                {
+                    JobArea3_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/JOB__MENU_BAR/" + for0.ToString();
+                }
+                JobArea3_scrollView.Basic_Init(this);
+            }
+
+            ////////// Constructor & Destroyer  //////////
+
             #endregion
 
-            #region SKILL
+            #region EQUIPMENT
+
+            [Serializable]
+            public class MenuBar_Equipment : Giggle_UI.MenuBar
+            {
+                [SerializeField] Pinocchio Basic_parentClass;
+
+                ////////// Getter & Setter          //////////
+
+                ////////// Method                   //////////
+
+                public override void Basic_SelectMenu(int _count)
+                {
+                    for(int for0 = 0; for0 < Basic_list.Count; for0++)
+                    {
+                        bool isClick = for0.Equals(_count);
+
+                        Basic_list[for0].gameObject.SetActive(!isClick);
+                    }
+
+                    //
+                    Basic_parentClass.Equipment_VarScrollView.Basic_SelectMenuBar(_count);
+                }
+
+                public void Basic_Init(Pinocchio _parentClass)
+                {
+                    Basic_parentClass = _parentClass;
+                }
+
+                ////////// Constructor & Destroyer  //////////
+            }
+
+            [Serializable]
+            public class ScrollView_Equipment : Giggle_UI.ScrollView
+            {
+                [SerializeField] Pinocchio  Basic_parentClass;
+
+                ////////// Getter & Setter          //////////
+
+                ////////// Method                   //////////
+
+                protected override void Basic_Init__SetName()
+                {
+                    Basic_list[0].Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/0";
+                    Basic_list[1].Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/1";
+                }
+
+                protected override void Basic_AddList__SetName(Transform _element)
+                {
+                    _element.Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/" + Basic_list.Count;
+                }
+
+                public override void Basic_ClickBtn(int _count)
+                {
+                    // ui 그래픽 갱신
+                    for(int for0 = 0; for0 < Basic_list.Count; for0++)
+                    {
+                        Basic_list[for0].Find("Select").gameObject.SetActive(for0.Equals(_count));
+                    }
+
+                    //
+                    //Basic_manager.UI_VarBasicData.MarionetteFormation_VarSelectMarionette = _count;
+                }
+
+                // Basic_SelectMenuBar
+                public void Basic_SelectMenuBar(int _count)
+                {
+                    switch(_count)
+                    {
+                        case 0: { Basic_SelectMenuBar__All();   }   break;
+                        case 1: {   }   break;
+                        case 2: {   }   break;
+                        case 3: {   }   break;
+                    }
+
+                    Basic_ClickBtn(-1);
+                }
+
+                void Basic_SelectMenuBar__All()
+                {
+                    List<Giggle_Character.Save> characterList   = Basic_parentClass.Equipment_characterList;
+                    
+                    Basic_SelectMenuBar__Check(characterList);
+                }
+
+                void Basic_SelectMenuBar__Check(List<Giggle_Character.Save> _characterList)
+                {
+                    int finalCount = 0;
+                    int whileCount = 0;
+                    while(whileCount < Basic_list.Count)
+                    {
+                        if(whileCount < _characterList.Count)
+                        {
+                            Basic_list[whileCount].gameObject.SetActive(true);
+
+                            // 기존 데이터 날리기
+                            while(Basic_list[whileCount].Find("Obj").childCount > 0)
+                            {
+                                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                                    //
+                                    Basic_list[whileCount].Find("Obj").GetChild(0));
+                            }
+
+                            //
+                            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
+                                //
+                                _characterList[whileCount].Basic_VarDataId,
+                                Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                            
+                            finalCount = whileCount;
+                        }
+                        else
+                        {
+                            Basic_list[whileCount].gameObject.SetActive(false);
+                        }
+
+                        //
+                        whileCount++;
+                    }
+
+                    Basic_content.sizeDelta
+                        = new Vector2(
+                            0,
+                            (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + Basic_list[finalCount].localPosition.y);
+
+                    Basic_CheckCover();
+                }
+
+                //
+                public void Basic_CheckCover()
+                {
+                    List<Giggle_Item.Inventory> itemList    = Basic_parentClass.Equipment_VarInventoryItems;
+
+                    int whileCount = 0;
+                    while(whileCount < itemList.Count)
+                    {
+                        Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
+                        //for(int for0 = 0; for0 < formation.Basic_VarFormation.Count; for0++)
+                        //{
+                        //    if( characterList[whileCount].Basic_VarInventoryId.Equals(
+                        //            formation.Basic_VarFormation[for0]))
+                        //    {
+                        //        Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
+                        //        break;
+                        //    }
+                        //}
+
+                        //
+                        whileCount++;
+                    }
+                }
+
+                ////////// Constructor & Destroyer  //////////
+
+            }
+
+            [Header("EQUIPMENT ==========")]
+            [SerializeField] MenuBar_Equipment      EquipmentArea3_menuBar;
+            [SerializeField] ScrollView_Equipment   EquipmentArea3_scrollView;
+
+            [SerializeField] List<Giggle_Item.Inventory>    Equipment_inventoryItems;
+            [SerializeField] List<Giggle_Character.Save>    Equipment_characterList;
+
+            ////////// Getter & Setter          //////////
+            public ScrollView_Equipment Equipment_VarScrollView { get { return EquipmentArea3_scrollView;   }   }
+
+            public List<Giggle_Item.Inventory>  Equipment_VarInventoryItems { get { return Equipment_inventoryItems;    }   }
+            
+            ////////// Method                   //////////
+            void Equipment_SelectMenu(int _count)
+            {
+                EquipmentArea3_menuBar.Basic_SelectMenu(_count);
+            }
+
+            void Equipment_Active()
+            {
+                //
+                Equipment_inventoryItems
+                    = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
+
+                Equipment_characterList
+                    = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
+            }
+
+            void Equipment_Init()
+            {
+                // Area2
+                // Area3
+                EquipmentArea3_menuBar.Basic_Init(this);
+                for(int for0 = 0; for0 < EquipmentArea3_menuBar.Basic_VarListCount; for0++)
+                {
+                    EquipmentArea3_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/EQUIPMENT__MENU_BAR/" + for0.ToString();
+                }
+                EquipmentArea3_scrollView.Basic_Init();
+            }
+
+            ////////// Constructor & Destroyer  //////////
 
             #endregion
+        }
+
+        [Header("PINOCCHIO ==================================================")]
+        [SerializeField] Pinocchio Pinocchio_data;
+
+        ////////// Getter & Setter          //////////
+        public Pinocchio Pinocchio_VarData   { get { return Pinocchio_data; }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
 
         #endregion
 
@@ -212,6 +642,8 @@ public class Giggle_MainManager : Giggle_SceneManager
 
         // Marionette
         [SerializeField] List<Giggle_Character.Save>    Marionette_marionetteList;
+        [SerializeField] int                            Marionette_formationSelect;
+        [SerializeField] List<Giggle_Player.Formation>  Marionette_formationList;
 
         ////////// Getter & Setter          //////////
         public List<Giggle_Character.Save> Marionette_VarMarionetteList { get { return Marionette_marionetteList;   }   }
@@ -255,12 +687,18 @@ public class Giggle_MainManager : Giggle_SceneManager
         //
         void Marionette_Active()
         {
-            MarionetteFormation_Active();
-
             //
             Marionette_marionetteList
                 = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
+
+            Marionette_formationSelect
+                = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT);
+
+            Marionette_formationList
+                = (List<Giggle_Player.Formation>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST);
 
             Marionette_SelectMenu(0);
             MarionetteFormation_SelectMenu(0);
@@ -338,7 +776,7 @@ public class Giggle_MainManager : Giggle_SceneManager
                     }
 
                     //
-                    Basic_manager.UI_VarBasicData.MarionetteFormation_VarSelectMarionette = _count;
+                    Basic_manager.UI_VarBasicData.MarionetteFormation_VarSelectMarionette = _count + 1;
                 }
 
                 // Basic_SelectMenuBar
@@ -358,11 +796,17 @@ public class Giggle_MainManager : Giggle_SceneManager
                 void Basic_SelectMenuBar__All()
                 {
                     List<Giggle_Character.Save> characterList   = Basic_manager.UI_VarBasicData.Marionette_VarMarionetteList;
+                    
+                    Basic_SelectMenuBar__Check(characterList);
+                }
 
+                void Basic_SelectMenuBar__Check(List<Giggle_Character.Save> _characterList)
+                {
+                    int finalCount = 0;
                     int whileCount = 0;
                     while(whileCount < Basic_list.Count)
                     {
-                        if(whileCount < characterList.Count)
+                        if(whileCount < _characterList.Count)
                         {
                             Basic_list[whileCount].gameObject.SetActive(true);
 
@@ -379,8 +823,10 @@ public class Giggle_MainManager : Giggle_SceneManager
                             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                                 Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                                 //
-                                characterList[whileCount].Basic_VarDataId,
+                                _characterList[whileCount].Basic_VarDataId,
                                 Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                            
+                            finalCount = whileCount;
                         }
                         else
                         {
@@ -390,6 +836,11 @@ public class Giggle_MainManager : Giggle_SceneManager
                         //
                         whileCount++;
                     }
+
+                    Basic_content.sizeDelta
+                        = new Vector2(
+                            0,
+                            (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + Basic_list[finalCount].localPosition.y);
 
                     Basic_CheckCover();
                 }
@@ -424,18 +875,15 @@ public class Giggle_MainManager : Giggle_SceneManager
             }
             
             [Header("FORMATION ==========")]
-            
             // Area2
             [SerializeField] Transform       MarionetteFormation_formationParent;
             [SerializeField] List<Transform> MarionetteFormation_formationList;
+            
             // Area3
             [SerializeField] MenuBar_MarionetteFormation    MarionetteFormation_menuBar;
             [SerializeField] ScrollView_MarionetteFormation MarionetteFormation_scrollView;
 
             [Header("RUNNING")]
-            [SerializeField] int                            Marionette_formationSelect;
-            [SerializeField] List<Giggle_Player.Formation>  Marionette_formationList;
-
             [SerializeField] int MarionetteFormation_selectFormation;
             [SerializeField] int MarionetteFormation_selectMarionette;
 
@@ -454,16 +902,6 @@ public class Giggle_MainManager : Giggle_SceneManager
             public int  MarionetteFormation_VarSelectMarionette { set { MarionetteFormation_selectMarionette = value;   }   }
 
             ////////// Method                   //////////
-            void MarionetteFormation_Active()
-            {
-                Marionette_formationSelect
-                    = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT);
-
-                Marionette_formationList
-                    = (List<Giggle_Player.Formation>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST);
-            }
 
             void MarionetteFormation_Select()
             {
@@ -559,15 +997,24 @@ public class Giggle_MainManager : Giggle_SceneManager
                     int tileId = Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[for0];
                     if(!tileId.Equals(-1))
                     {
-                        for(int for1 = 0; for1 < Marionette_marionetteList.Count; for1++)
+                        // 주인공
+                        if(tileId.Equals(0))
                         {
-                            if(Marionette_marionetteList[for1].Basic_VarInventoryId.Equals(tileId))
+
+                        }
+                        else
+                        {
+                            tileId -= 1;
+                            for(int for1 = 0; for1 < Marionette_marionetteList.Count; for1++)
                             {
-                                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                    Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
-                                    //
-                                    Marionette_marionetteList[for1].Basic_VarDataId,
-                                    MarionetteFormation_formationList[for0].Find("Obj"), -90.0f, 300.0f);
+                                if(Marionette_marionetteList[for1].Basic_VarInventoryId.Equals(tileId))
+                                {
+                                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
+                                        //
+                                        Marionette_marionetteList[for1].Basic_VarDataId,
+                                        MarionetteFormation_formationList[for0].Find("Obj"), -90.0f, 300.0f);
+                                }
                             }
                         }
                     }
@@ -622,6 +1069,23 @@ public class Giggle_MainManager : Giggle_SceneManager
                 MarionetteFormation_scrollView.Basic_Init();
             }
 
+            #endregion
+
+
+            #region MARIONETTE_INFO
+            
+            [Header("INFO ==========")]
+            [SerializeField] int MarionetteInfo_0;
+            
+            [Header("RUNNING")]
+            [SerializeField] int MarionetteInfo_1;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+            
+            ////////// Constructor & Destroyer  //////////
+            
             #endregion
 
         #endregion
@@ -704,8 +1168,8 @@ public class Giggle_MainManager : Giggle_SceneManager
                 model.transform.localScale = new Vector3(600, 600, 600);
 
                 Basic_infoName.text      = Basic_character.Basic_VarName;
-                Basic_infoType.text      = Basic_character.Basic_VarRole.ToString();
-                Basic_infoAttribute.text = Basic_character.Basic_VarAttribute.ToString();
+                Basic_infoType.text      = Basic_character.Marionette_VarRole.ToString();
+                Basic_infoAttribute.text = Basic_character.Marionette_VarAttribute.ToString();
 
                 Basic_statusList[0].text = Basic_character.Basic_GetStatusList(0).Basic_VarAttack.ToString();
                 Basic_statusList[1].text = Basic_character.Basic_GetStatusList(0).Basic_VarDefence.ToString();
@@ -836,7 +1300,7 @@ public class Giggle_MainManager : Giggle_SceneManager
             List<Giggle_Character.Database> list
                 = (List<Giggle_Character.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,
-                    Giggle_Character.ATTRIBUTE.FIRE.ToString());
+                    Giggle_Master.ATTRIBUTE.FIRE.ToString());
             
             for(int for0 = 0; for0 < Gacha_list.Count; for0++)
             {
@@ -905,7 +1369,7 @@ public class Giggle_MainManager : Giggle_SceneManager
             case "AREA4":   { UI_basicData.Area4_BtnClick(names);   }   break;
             case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
             //
-            case "PINOCCHIO":   { UI_basicData.Pinocchio_BtnClick(names);   }   break;
+            case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names); }   break;
             case "MARIONETTE":  { UI_basicData.Marionette_BtnClick(names);  }   break;
         }
     }

@@ -8,6 +8,17 @@ using System.Collections.Generic;
 
 public class Giggle_Master : MonoBehaviour
 {
+    public enum ATTRIBUTE
+    {
+        FIRE = 1,
+        WATER,
+        WIND,
+        EARTH,
+
+        DARK,
+        LIGHT
+    }
+
     #region BASIC
     [SerializeField] Giggle_Database Basic_Database;
     [SerializeField] Giggle_Player  Basic_player;
@@ -118,6 +129,31 @@ public class Giggle_Master : MonoBehaviour
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
+    // UI_PinocchioInstantiate
+    object UI_PinocchioInstantiate(params object[] _args)
+    {
+        int         id      = (int      )_args[0];
+        Transform   parent  = (Transform)_args[1];
+        float       rot_x   = (float    )_args[2];
+        float       scale   = (float    )_args[3];
+
+        //
+        Giggle_Character.Database data
+            = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+                //
+                id);
+
+        Giggle_Unit res = GameObject.Instantiate(data.Basic_VarUnit, parent);
+        UI_CharacterInstantiate__ChangeModelLayer(res.transform);
+        res.transform.localPosition = Vector3.zero;
+        res.transform.localRotation = Quaternion.Euler(rot_x,0,0);
+        res.transform.localScale = new Vector3(scale, scale, scale);
+
+        //
+        return res;
+    }
+    
 
     // UI_CharacterInstantiate
     object UI_CharacterInstantiate(params object[] _args)
@@ -146,7 +182,7 @@ public class Giggle_Master : MonoBehaviour
 
     void UI_CharacterInstantiate__ChangeModelLayer(Transform _parent)
     {
-        _parent.gameObject.layer = 5;
+        _parent.gameObject.layer = 6;
 
         for(int for0 = 0; for0 < _parent.childCount; for0++)
         {
@@ -210,6 +246,7 @@ public class Giggle_Master : MonoBehaviour
             UI_canvasScaler.referenceResolution = rs;
         }
 
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
     }
 

@@ -35,6 +35,13 @@ public class Giggle_ScriptBridge
         /// 매개변수 : int - 캐릭터 데이터 id, Transform - 오브젝트의 부모, float - 각도, float - 크기<br/>
         /// return type : Giggle_Unit
         /// </summary>
+        MASTER__UI__PINOCCHIO_INSTANTIATE,
+
+        /// <summary>
+        /// UI용 캐릭터 오브젝트 생성<br/>
+        /// 매개변수 : int - 캐릭터 데이터 id, Transform - 오브젝트의 부모, float - 각도, float - 크기<br/>
+        /// return type : Giggle_Unit
+        /// </summary>
         MASTER__UI__CHARACTER_INSTANTIATE,
 
         /// <summary>
@@ -47,6 +54,19 @@ public class Giggle_ScriptBridge
         #endregion
 
         #region Giggle_Database
+
+        /// <summary>
+        /// 캐릭터 데이터의 개방 여부<br/>
+        /// 매개변수<br/>
+        /// return type : bool
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_IS_OPEN,
+        /// <summary>
+        /// 캐릭터 데이터<br/>
+        /// 매개변수 : int - 캐릭터id<br/>
+        /// return type : Giggle_Character.Database
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
 
         /// <summary>
         /// 캐릭터 데이터의 개방 여부<br/>
@@ -67,9 +87,36 @@ public class Giggle_ScriptBridge
         /// </summary>
         DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,
 
+        /// <summary>
+        /// 아이템 데이터의 개방 여부<br/>
+        /// 매개변수<br/>
+        /// return type : bool
+        /// </summary>
+        DATABASE__ITEM__GET_IS_OPEN,
+        /// <summary>
+        /// 아이템 데이터<br/>
+        /// 매개변수 : int - 캐릭터id<br/>
+        /// return type : Giggle_Character.Database
+        /// </summary>
+        DATABASE__ITEM__GET_DATA_FROM_ID,
+
         #endregion
 
         #region Giggle_Player
+
+        /// <summary>
+        /// 피노키오 데이터<br/>
+        /// 매개변수 : <br/>
+        /// return type : Giggle_Character.Save
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_DATA,
+
+        /// <summary>
+        /// 피노키오 보유 직업 리스트<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(int)
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_JOBS,
 
         /// <summary>
         /// 마리오네트 추가<br/>
@@ -105,6 +152,13 @@ public class Giggle_ScriptBridge
         /// return type : List(int)
         /// </summary>
         PLAYER__FORMATION__GET_FORMATION_FROM_COUNT,
+
+        /// <summary>
+        /// 아이템 리스트 가져오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Item.Inventory)
+        /// </summary>
+        PLAYER__ITEM__GET_ITEM_LIST,
 
         #endregion
     }

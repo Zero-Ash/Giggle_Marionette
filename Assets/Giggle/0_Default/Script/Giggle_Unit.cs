@@ -262,6 +262,7 @@ public class Giggle_Unit : MonoBehaviour
         Active_timer += _deltaTime;
 
         Model_SetMotionTime("attack");
+        
         if(Model_motionTime > 0.0f)
         {
             Active_phase = Active_PHASE.ATTACK_DOING;
@@ -386,11 +387,11 @@ public class Giggle_Unit : MonoBehaviour
 
     void Model_SetMotionTime(string _motionName)
     {
-        Model_motionTime = 0.0f;
+        Model_motionTime = 1.0f;
 
         if(Model_VarMotionName.Equals(_motionName))
         {
-            Model_motionTime = Model_animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+            //Model_motionTime = Model_animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
         }
     }
 

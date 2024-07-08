@@ -6,17 +6,6 @@ using System.Collections.Generic;
 
 namespace Giggle_Character
 {
-    public enum ATTRIBUTE
-    {
-        FIRE = 1,
-        WATER,
-        WIND,
-        EARTH,
-
-        LIGHT,
-        DARK
-    }
-
     #region STATUS
 
     [Serializable]
@@ -597,15 +586,15 @@ namespace Giggle_Character
         }
     }
 
+    #endregion
+
+    #region Database
+
     [Serializable]
     public class Database : IDisposable
     {
         [SerializeField] protected int      Basic_id;
         [SerializeField] protected string   Basic_name;
-        [SerializeField] protected int      Basic_grade;
-        [SerializeField] protected int      Basic_attribute;
-        [SerializeField] protected int      Basic_equipment;
-        [SerializeField] protected int      Basic_role;
 
         [SerializeField] Giggle_Unit    Basic_unit;
         [SerializeField] List<Status>   Basic_statusList;
@@ -614,18 +603,12 @@ namespace Giggle_Character
 
         ////////// Getter & Setter          //////////
         // Basic_id
-        public int  Basic_VarId { get { return Basic_id;    }   }
+        public int  Basic_VarId                 { get { return Basic_id;    }   }
 
         public bool Basic_GetIdIsSame(int _id)  { return Basic_id.Equals(_id);  }
 
         // Basic_name
         public string   Basic_VarName   { get { return Basic_name;  }   }
-
-        // Basic_attribute
-        public int  Basic_VarAttribute  { get { return Basic_attribute; }   }
-
-        // Basic_role
-        public int  Basic_VarRole   { get { return Basic_role;  }   }
 
         // Basic_unit
         public Giggle_Unit  Basic_VarUnit   { get { return Basic_unit;  } set { Basic_unit = value; }   }
@@ -684,6 +667,14 @@ namespace Giggle_Character
             Basic_skillList.Add(new Skill(_data));
         }
 
+        // Marionette
+        //
+        public virtual int  Marionette_VarAttribute { get { return -1;  }   }
+
+        //
+        public virtual int  Marionette_VarRole      { get { return -1;  }   }
+
+
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
@@ -696,16 +687,70 @@ namespace Giggle_Character
         {
             Basic_id        = int.Parse(_data["cha_id"]);
             Basic_name      = _data["Cha_Name"];
-            Basic_grade     = int.Parse(_data["Cha_Grade"]);
-            Basic_attribute = int.Parse(_data["Cha_Attribute"]);
-            Basic_equipment = int.Parse(_data["Cha_Equipment"]);
-            Basic_role      = int.Parse(_data["Cha_Role"]);
         }
 
         //
         public void Dispose()
         {
 
+        }
+    }
+
+    [Serializable]
+    public class Database_Marionette : Database
+    {
+        [SerializeField] protected int  Basic_grade;
+        [SerializeField] protected int  Basic_attribute;
+        [SerializeField] protected int  Basic_equipment;
+        [SerializeField] protected int  Basic_role;
+
+        ////////// Getter & Setter          //////////
+
+        // Basic_attribute
+        public override int Marionette_VarAttribute { get { return Basic_attribute; }   }
+
+        // Basic_role
+        public override int Marionette_VarRole      { get { return Basic_role;      }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Database_Marionette(Dictionary<string, string> _data) : base(_data)
+        {
+            Basic_grade     = int.Parse(_data["Cha_Grade"]);
+            Basic_attribute = int.Parse(_data["Cha_Attribute"]);
+            Basic_equipment = int.Parse(_data["Cha_Equipment"]);
+            Basic_role      = int.Parse(_data["Cha_Role"]);
+        }
+    }
+
+    [Serializable]
+    public class Database_Pinocchio : Database
+    {
+        [SerializeField] protected Giggle_Player.Pinocchio_GENDER   Basic_gender;
+        [SerializeField] protected int                              Basic_attack;
+        [SerializeField] protected int                              Basic_defence;
+        [SerializeField] protected int                              Basic_hp;
+        [SerializeField] protected float                            Basic_attackSpeed;
+        [SerializeField] protected float                            Basic_doubleAttackChance;
+        [SerializeField] protected int                              Basic_counterAttackChance;
+        [SerializeField] protected int                              Basic_criticalAttackchance;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Database_Pinocchio(Dictionary<string, string> _data) : base(_data)
+        {
+            Basic_gender                = (Giggle_Player.Pinocchio_GENDER)int.Parse(_data["cha_gender"]);
+            Basic_attack                = int.Parse(_data["cha_basic_attack"]);
+            Basic_defence               = int.Parse(_data["cha_basic_defense"]);
+            Basic_hp                    = int.Parse(_data["cha_basic_hp"]);
+            Basic_attackSpeed           = float.Parse(_data["cha_basic_attack_speed"]);
+            Basic_doubleAttackChance    = float.Parse(_data["cha_basic_double_attack_chance"]);
+            Basic_counterAttackChance   = int.Parse(_data["cha_basic_counter_attack_chance"]);
+            Basic_criticalAttackchance  = int.Parse(_data["cha_basic_critical_attack_chance"]);
         }
     }
 
@@ -832,7 +877,7 @@ namespace Giggle_Character
         ////////// Getter & Setter          //////////
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
 
-        public int  Basic_VarDataId { get { return Basic_dataId;    }   }
+        public int  Basic_VarDataId { get { return Basic_dataId;    } set { Basic_dataId = value;   }   }
 
         ////////// Method                   //////////
 

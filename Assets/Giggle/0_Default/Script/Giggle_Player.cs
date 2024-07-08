@@ -15,8 +15,10 @@ public class Giggle_Player : IDisposable
     ////////// Method                   //////////
     public void Basic_Init()
     {
+        Pinocchio_Contructor();
         Marionette_Contructor();
         Formation_Contructor();
+        Item_Contructor();
         Power_Contructor();
     }
 
@@ -28,6 +30,59 @@ public class Giggle_Player : IDisposable
     public void Dispose()
     {
 
+    }
+
+    #endregion
+
+    #region PINOCCHIO
+
+    public enum Pinocchio_GENDER
+    {
+        MALE = 1,
+        FEMALE
+    }
+
+    [Header("PINOCCHIO ==================================================")]
+    [SerializeField] Giggle_Character.Save  Pinocchio_data;
+    [SerializeField] Pinocchio_GENDER       Pinocchio_gender;
+    [SerializeField] List<int>              Pinocchio_jobs;
+
+    ////////// Getter & Setter          //////////
+    object Pinocchio_VarData(params object[] _args)
+    {
+        return Pinocchio_data;
+    }
+
+    object Pinocchio_VarJobs(params object[] _args)
+    {
+        List<int> res = new List<int>();
+
+        for(int for0 = 0; for0 < Pinocchio_jobs.Count; for0++)
+        {
+            res.Add(Pinocchio_jobs[for0]);
+        }
+
+        return res;
+    }
+
+    ////////// Method                   //////////
+
+    ////////// Constructor & Destroyer  //////////
+    void Pinocchio_Contructor()
+    {
+        Pinocchio_data = new Giggle_Character.Save(0,1111);
+        Pinocchio_gender = Pinocchio_GENDER.MALE;
+        if(Pinocchio_jobs == null)
+        {
+            Pinocchio_jobs = new List<int>();
+        }
+        Pinocchio_jobs.Add(1111);
+        Pinocchio_jobs.Add(1121);
+        Pinocchio_jobs.Add(1131);
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,    Pinocchio_VarData   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS,    Pinocchio_VarJobs   );
     }
 
     #endregion
@@ -140,7 +195,6 @@ public class Giggle_Player : IDisposable
 
     ////////// Method                   //////////
     
-
     ////////// Constructor & Destroyer  //////////
     void Formation_Contructor()
     {
@@ -157,6 +211,29 @@ public class Giggle_Player : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT,                  Formation_GetSelect             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST,          Formation_GetFormationList      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_FROM_COUNT,    Formation_GetFormationFromCount );
+    }
+
+    #endregion
+
+    #region ITEM
+    [SerializeField] List<Giggle_Item.Inventory>    Item_list;
+
+    ////////// Getter & Setter          //////////
+
+    // Item_list
+    object Item_GetItemList(params object[] _args)  { return Item_list; }
+
+    ////////// Method                   //////////
+    
+    ////////// Constructor & Destroyer  //////////
+    void Item_Contructor()
+    {
+        if(Item_list == null)
+        {
+            Item_list = new List<Giggle_Item.Inventory>();
+        }
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,    Item_GetItemList    );
     }
 
     #endregion

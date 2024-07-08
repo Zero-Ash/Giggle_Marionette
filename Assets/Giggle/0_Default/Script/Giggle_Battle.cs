@@ -172,20 +172,39 @@ public class Giggle_Battle : IDisposable
                     Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
 
         //
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+            1111);
+
+        //
         int whileCount = 0;
         while(whileCount < formationList[formationSelect].Basic_VarFormation.Count)
         {
-            if(!formationList[formationSelect].Basic_VarFormation[whileCount].Equals(-1))
+            int characterId = formationList[formationSelect].Basic_VarFormation[whileCount];
+            if(characterId > 0)
             {
+                characterId -= 1;
+                for(int for0 = 0; for0 < marionetteList.Count; for0++)
+                {
+                    if(marionetteList[for0].Basic_VarInventoryId.Equals(characterId))
+                    {
+                        characterId = marionetteList[for0].Basic_VarDataId;
+                        break;
+                    }
+                }
                 Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
-                    marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount]].Basic_VarDataId);
+                    characterId);
             }
 
             whileCount++;
         }
 
-        res = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
+        //
+        res =
+            (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_IS_OPEN) &&
+            (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
 
         //
         return res;
@@ -195,6 +214,12 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__PLAYER_SETTING()
     {
         //
+        //
+        Giggle_Character.Save pinocchioData
+            = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+        //
         int formationSelect
             = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT);
@@ -203,6 +228,7 @@ public class Giggle_Battle : IDisposable
             = (List<Giggle_Player.Formation>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST);
 
+        //
         List<Giggle_Character.Save> marionetteList
                 = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
@@ -228,11 +254,28 @@ public class Giggle_Battle : IDisposable
             }
 
             //
-            if(!formationList[formationSelect].Basic_VarFormation[whileCount].Equals(-1))
+            int formationId = formationList[formationSelect].Basic_VarFormation[whileCount];
+            if(!formationId.Equals(-1))
             {
-                data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
-                    marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount]].Basic_VarDataId);
+                switch(formationId)
+                {
+                    case 0:
+                        {
+                            data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+                                //
+                                pinocchioData.Basic_VarDataId);
+                        }
+                        break;
+                    default:
+                        {
+                            data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+                                //
+                                marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount] - 1].Basic_VarDataId);
+                        }
+                        break;
+                }
 
                 unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Ally.Basic_GetTile(whileCount));
                 unit.Basic_Init(this, data);
@@ -248,6 +291,10 @@ public class Giggle_Battle : IDisposable
     // STAGE_DATA_CHECK
     void Basic_Coroutine__STAGE_DATA_CHECK()
     {
+        Giggle_Character.Database data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+            11002011);
+            
         object isOnObj
             = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
         
