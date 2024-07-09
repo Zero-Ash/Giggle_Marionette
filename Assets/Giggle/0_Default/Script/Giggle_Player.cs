@@ -67,6 +67,18 @@ public class Giggle_Player : IDisposable
 
     ////////// Method                   //////////
 
+    object Pinocchio_EquipmentItem(params object[] _args)
+    {
+        string  socketName  = (string)_args[0];
+        int     inventoryId = (int)_args[1];
+
+        //
+        Pinocchio_data.Basic_Equipment(socketName, inventoryId);
+
+        //
+        return true;
+    }
+
     ////////// Constructor & Destroyer  //////////
     void Pinocchio_Contructor()
     {
@@ -83,6 +95,8 @@ public class Giggle_Player : IDisposable
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,    Pinocchio_VarData   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS,    Pinocchio_VarJobs   );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,   Pinocchio_EquipmentItem );
     }
 
     #endregion
@@ -216,12 +230,23 @@ public class Giggle_Player : IDisposable
     #endregion
 
     #region ITEM
+
     [SerializeField] List<Giggle_Item.Inventory>    Item_list;
 
     ////////// Getter & Setter          //////////
 
     // Item_list
-    object Item_GetItemList(params object[] _args)  { return Item_list; }
+    object Item_GetItemList(params object[] _args)
+    {
+        List<Giggle_Item.Inventory> res = new List<Giggle_Item.Inventory>();
+
+        for(int for0 = 0; for0 < Item_list.Count; for0++)
+        {
+            res.Add(Item_list[for0]);
+        }
+
+        return res;
+    }
 
     ////////// Method                   //////////
     
@@ -232,6 +257,7 @@ public class Giggle_Player : IDisposable
         {
             Item_list = new List<Giggle_Item.Inventory>();
         }
+        Item_list.Add(new Giggle_Item.Inventory(0, 701101001));
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,    Item_GetItemList    );
     }

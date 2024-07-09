@@ -665,7 +665,7 @@ public class Giggle_Database : IDisposable
             if(Item_isOpen)
             {
                 IEnumerator coroutine = Item_LoadData__Coroutine(itemType);
-                //Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
             }
         }
 

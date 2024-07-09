@@ -873,6 +873,7 @@ namespace Giggle_Character
     {
         [SerializeField] int    Basic_inventoryId;
         [SerializeField] int    Basic_dataId;
+        [SerializeField] List<int>  Basic_equipments;
 
         ////////// Getter & Setter          //////////
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
@@ -880,6 +881,30 @@ namespace Giggle_Character
         public int  Basic_VarDataId { get { return Basic_dataId;    } set { Basic_dataId = value;   }   }
 
         ////////// Method                   //////////
+        public void Basic_Equipment(string _socketName, int _inventoryId)
+        {
+            string[] socketNames = _socketName.Split('_');
+            Giggle_Item.TYPE itemType = (Giggle_Item.TYPE)Enum.Parse(typeof(Giggle_Item.TYPE), socketNames[0]);
+
+            int count = (int)itemType;
+            if(itemType.Equals(Giggle_Item.TYPE.ACCESSORY))
+            {
+                count += int.Parse(socketNames[1]);
+            }
+
+            // Basic_equipments
+            if(Basic_equipments == null)
+            {
+                Basic_equipments = new List<int>();
+            }
+
+            if(Basic_equipments.Count <= count)
+            {
+                Basic_equipments.Add(-1);
+            }
+
+            Basic_equipments[count] = _inventoryId;
+        }
 
         ////////// Constructor & Destroyer  //////////
         public Save(int _inventoryId, int _dataId)

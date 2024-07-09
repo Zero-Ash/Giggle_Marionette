@@ -96,7 +96,7 @@ public class Giggle_ScriptBridge
         /// <summary>
         /// 아이템 데이터<br/>
         /// 매개변수 : int - 캐릭터id<br/>
-        /// return type : Giggle_Character.Database
+        /// return type : Giggle_Item.List
         /// </summary>
         DATABASE__ITEM__GET_DATA_FROM_ID,
 
@@ -117,6 +117,13 @@ public class Giggle_ScriptBridge
         /// return type : List(int)
         /// </summary>
         PLAYER__PINOCCHIO__VAR_JOBS,
+
+        /// <summary>
+        /// 피노키오 장비 장착<br/>
+        /// 매개변수 : string - 소켓 이름, int - 인벤토리 id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__EUIPMENT_ITEM,
 
         /// <summary>
         /// 마리오네트 추가<br/>

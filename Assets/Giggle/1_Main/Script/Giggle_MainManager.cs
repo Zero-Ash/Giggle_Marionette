@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Unity.Mathematics;
+using System.Collections;
+using Unity.VisualScripting;
+using TMPro;
 
 public class Giggle_MainManager : Giggle_SceneManager
 {
@@ -108,9 +111,13 @@ public class Giggle_MainManager : Giggle_SceneManager
         [Serializable]
         public class Pinocchio : IDisposable
         {
+            [SerializeField] GameObject Basic_back;
             [SerializeField] GameObject Basic_ui;
 
             [SerializeField] Giggle_UI.MenuBar BasicArea1_menuBar;
+
+            [Header("RUNNING")]
+            [SerializeField] IEnumerator    Basic_coroutine;
 
             ////////// Getter & Setter          //////////
             
@@ -127,12 +134,14 @@ public class Giggle_MainManager : Giggle_SceneManager
                     case "JOB__SCROLL_VIEW":    { JobArea3_scrollView.Basic_ClickBtn(int.Parse(_names[3])); }   break;
                     //
                     case "EQUIPMENT__MENU_BAR":     { EquipmentArea3_menuBar.Basic_SelectMenu(int.Parse(_names[3]));    }   break;
-                    case "EQUIPMENT__EQUIPMENT":    {   }   break;
+                    case "EQUIPMENT__SCROLL_VIEW":  { EquipmentArea3_scrollView.Basic_ClickBtn(int.Parse(_names[3]));   }   break;
+                    case "EQUIPMENT__EQUIPMENT":    { Equipment_SelectEquipItem(_names[3]);                             }   break;
                 }
             }
 
             void Basic_Close()
             {
+                Basic_back.SetActive(false);
                 Basic_ui.SetActive(false);
 
                 //
@@ -144,9 +153,53 @@ public class Giggle_MainManager : Giggle_SceneManager
                 BasicArea1_menuBar.Basic_SelectMenu(_count);
             }
 
-            //
+            // Basic_Active
             public void Basic_Active()
             {
+                Basic_back.SetActive(true);
+
+                Basic_coroutine = Basic_Active__Coroutine();
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_coroutine);
+            }
+
+            IEnumerator Basic_Active__Coroutine()
+            {
+                int phase = 0;
+
+                while(phase >= 0)
+                {
+                    switch(phase)
+                    {
+                        // 아이템
+                        case 0:
+                            {
+                                if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN))
+                                {
+                                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID, 701101001);
+
+                                    phase = 1;
+                                }
+                            }
+                            break;
+                        case 1:
+                            {
+                                if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN))
+                                {
+                                    phase = -1;
+                                }
+                            }
+                            break;
+                        // 캐릭터
+                        case 100:
+                            {
+                                phase = -1;
+                            }
+                            break;
+                    }
+                    yield return null;
+                }
+
+                //
                 Equipment_Active();
 
                 BasicArea1_SelectMenu(0);
@@ -154,10 +207,14 @@ public class Giggle_MainManager : Giggle_SceneManager
                 Job_InfoSetting();
 
                 Basic_ui.SetActive(true);
+
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE, Basic_coroutine);
             }
 
+            // Basic_Init
             public void Basic_Init()
             {
+                Basic_back.SetActive(false);
                 Basic_ui.SetActive(false);
 
                 BasicArea1_menuBar.Basic_Init();
@@ -258,7 +315,7 @@ public class Giggle_MainManager : Giggle_SceneManager
                 // Basic_SelectMenuBar
                 public void Basic_SelectMenuBar(int _count)
                 {
-                    Basic_parentClass.Job_ListSetting(0);
+                    Basic_parentClass.Job_ListSetting(_count);
                     Basic_SelectMenuBar__Check();
 
                     Basic_ClickBtn(-1);
@@ -426,6 +483,12 @@ public class Giggle_MainManager : Giggle_SceneManager
 
                 ////////// Method                   //////////
 
+                public void Basic_Init(Pinocchio _parentClass)
+                {
+                    Basic_parentClass = _parentClass;
+                    Basic_Init();
+                }
+
                 public override void Basic_SelectMenu(int _count)
                 {
                     for(int for0 = 0; for0 < Basic_list.Count; for0++)
@@ -436,12 +499,7 @@ public class Giggle_MainManager : Giggle_SceneManager
                     }
 
                     //
-                    Basic_parentClass.Equipment_VarScrollView.Basic_SelectMenuBar(_count);
-                }
-
-                public void Basic_Init(Pinocchio _parentClass)
-                {
-                    Basic_parentClass = _parentClass;
+                    Basic_parentClass.Equipment_SelectMenu(_count);
                 }
 
                 ////////// Constructor & Destroyer  //////////
@@ -476,56 +534,33 @@ public class Giggle_MainManager : Giggle_SceneManager
                     }
 
                     //
-                    //Basic_manager.UI_VarBasicData.MarionetteFormation_VarSelectMarionette = _count;
+                    Basic_parentClass.Equipment_SelectInventoryItem(_count);
                 }
 
                 // Basic_SelectMenuBar
-                public void Basic_SelectMenuBar(int _count)
-                {
-                    switch(_count)
-                    {
-                        case 0: { Basic_SelectMenuBar__All();   }   break;
-                        case 1: {   }   break;
-                        case 2: {   }   break;
-                        case 3: {   }   break;
-                    }
-
-                    Basic_ClickBtn(-1);
-                }
-
-                void Basic_SelectMenuBar__All()
-                {
-                    List<Giggle_Character.Save> characterList   = Basic_parentClass.Equipment_characterList;
-                    
-                    Basic_SelectMenuBar__Check(characterList);
-                }
-
-                void Basic_SelectMenuBar__Check(List<Giggle_Character.Save> _characterList)
+                public void Basic_SelectMenuBar()
                 {
                     int finalCount = 0;
                     int whileCount = 0;
                     while(whileCount < Basic_list.Count)
                     {
-                        if(whileCount < _characterList.Count)
+                        if(whileCount < Basic_parentClass.Equipment_inventoryItems.Count)
                         {
                             Basic_list[whileCount].gameObject.SetActive(true);
 
                             // 기존 데이터 날리기
-                            while(Basic_list[whileCount].Find("Obj").childCount > 0)
-                            {
-                                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                                    //
-                                    Basic_list[whileCount].Find("Obj").GetChild(0));
-                            }
+                            Basic_list[whileCount].Find("Portrait").GetComponent<Image>().sprite = null;
+                            Basic_list[whileCount].Find("Name").GetComponent<TextMeshProUGUI>().text = "";
+
+                            //TODO:아이템 포트레이트가 아직 안나왔어요!
+                            Giggle_Item.List database = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                                //
+                                Basic_parentClass.Equipment_inventoryItems[whileCount].Basic_VarDataId);
+                                Debug.Log(Basic_parentClass.Equipment_inventoryItems[whileCount].Basic_VarDataId + " " + database.Basic_VarId);
+                            Basic_list[whileCount].Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
 
                             //
-                            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
-                                //
-                                _characterList[whileCount].Basic_VarDataId,
-                                Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
-                            
                             finalCount = whileCount;
                         }
                         else
@@ -543,6 +578,8 @@ public class Giggle_MainManager : Giggle_SceneManager
                             (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + Basic_list[finalCount].localPosition.y);
 
                     Basic_CheckCover();
+
+                    Basic_ClickBtn(-1);
                 }
 
                 //
@@ -554,19 +591,18 @@ public class Giggle_MainManager : Giggle_SceneManager
                     while(whileCount < itemList.Count)
                     {
                         Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
-                        //for(int for0 = 0; for0 < formation.Basic_VarFormation.Count; for0++)
-                        //{
-                        //    if( characterList[whileCount].Basic_VarInventoryId.Equals(
-                        //            formation.Basic_VarFormation[for0]))
-                        //    {
-                        //        Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
-                        //        break;
-                        //    }
-                        //}
+
+                        // TODO:장비여부에 따라 커버를 씌워주세요
 
                         //
                         whileCount++;
                     }
+                }
+
+                public void Basic_Init(Pinocchio _parentClass)
+                {
+                    Basic_parentClass = _parentClass;
+                    Basic_Init();
                 }
 
                 ////////// Constructor & Destroyer  //////////
@@ -577,42 +613,106 @@ public class Giggle_MainManager : Giggle_SceneManager
             [SerializeField] MenuBar_Equipment      EquipmentArea3_menuBar;
             [SerializeField] ScrollView_Equipment   EquipmentArea3_scrollView;
 
+            [Header("RUNNING")]
             [SerializeField] List<Giggle_Item.Inventory>    Equipment_inventoryItems;
+            [SerializeField] Giggle_Character.Save          Equipment_pinocchioData;
             [SerializeField] List<Giggle_Character.Save>    Equipment_characterList;
+            
+            [SerializeField] string                         Equipment_selectEquipment;
+            [SerializeField] int                            Equipment_selectItem;
 
             ////////// Getter & Setter          //////////
-            public ScrollView_Equipment Equipment_VarScrollView { get { return EquipmentArea3_scrollView;   }   }
-
             public List<Giggle_Item.Inventory>  Equipment_VarInventoryItems { get { return Equipment_inventoryItems;    }   }
+
+            public Giggle_Character.Save        Equipment_VarPinocchioData  { get { return Equipment_pinocchioData;     }   }
+
+            public List<Giggle_Character.Save>  Equipment_VarCharacterList  { get { return Equipment_characterList;     }   }
+
+            //public int                          Equipment_VarSelectItem     { get { return Equipment_selectItem;        } set { Equipment_selectItem = value;   }   }
             
             ////////// Method                   //////////
-            void Equipment_SelectMenu(int _count)
-            {
-                EquipmentArea3_menuBar.Basic_SelectMenu(_count);
-            }
-
-            void Equipment_Active()
-            {
-                //
-                Equipment_inventoryItems
-                    = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
-
-                Equipment_characterList
-                    = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
-            }
 
             void Equipment_Init()
             {
                 // Area2
+
                 // Area3
                 EquipmentArea3_menuBar.Basic_Init(this);
                 for(int for0 = 0; for0 < EquipmentArea3_menuBar.Basic_VarListCount; for0++)
                 {
                     EquipmentArea3_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/EQUIPMENT__MENU_BAR/" + for0.ToString();
                 }
-                EquipmentArea3_scrollView.Basic_Init();
+
+                EquipmentArea3_scrollView.Basic_Init(this);
+
+                Equipment_Reset();
+            }
+
+            void Equipment_Active()
+            {
+                Equipment_pinocchioData
+                    = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                Equipment_characterList
+                    = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
+
+                //
+                EquipmentArea3_menuBar.Basic_SelectMenu(0);
+            }
+
+            //
+            void Equipment_SelectEquipItem(string _itemType)
+            {
+                if(Equipment_selectItem.Equals(-1))
+                {
+                    Equipment_selectEquipment = _itemType;
+                }
+                else
+                {
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,
+                        _itemType, Equipment_inventoryItems[Equipment_selectItem].Basic_VarInventoryId);
+
+                    Equipment_Reset();
+                }
+            }
+
+            //
+            void Equipment_SelectInventoryItem(int _itemId)
+            {
+                if(_itemId != -1)
+                {
+                    if(Equipment_selectEquipment.Equals("NONE"))
+                    {
+                        Equipment_selectItem = _itemId;
+                    }
+                    else
+                    {
+                        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,
+                            Equipment_selectEquipment, Equipment_inventoryItems[_itemId].Basic_VarInventoryId);
+
+                        Equipment_Reset();
+                    }
+                }
+            }
+
+            //
+            void Equipment_SelectMenu(int _count)
+            {
+                Equipment_inventoryItems
+                    = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
+
+                EquipmentArea3_scrollView.Basic_SelectMenuBar();
+            }
+
+            //
+            void Equipment_Reset()
+            {
+                Equipment_selectEquipment = "NONE";
+                EquipmentArea3_scrollView.Basic_ClickBtn(-1);
             }
 
             ////////// Constructor & Destroyer  //////////
