@@ -10,6 +10,9 @@ public class Giggle_Master : MonoBehaviour
 {
     public enum ATTRIBUTE
     {
+
+        NONE,
+
         FIRE = 1,
         WATER,
         WIND,

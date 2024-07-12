@@ -644,8 +644,10 @@ public class Giggle_Database : IDisposable
         //
         int id = (int)_args[0];
 
+        // 아이디의 자릿수 구하기
+        double idLength = Math.Floor(Math.Log10(id));
         // 찾고자 하는 캐릭터가 존재하는가?
-        int itemType = (id / 10000000) % 10;
+        int itemType = (id / (int)Math.Pow(10, idLength - 1)) % 10;
         if(itemType > 0)
         {
             itemType /= 2;

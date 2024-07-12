@@ -258,6 +258,13 @@ public class Giggle_Player : IDisposable
             Item_list = new List<Giggle_Item.Inventory>();
         }
         Item_list.Add(new Giggle_Item.Inventory(0, 701101001));
+        Item_list.Add(new Giggle_Item.Inventory(1, 72101001 ));
+        Item_list.Add(new Giggle_Item.Inventory(2, 74101001 ));
+        Item_list.Add(new Giggle_Item.Inventory(3, 76101001));
+        Item_list.Add(new Giggle_Item.Inventory(4, 78101001));
+        Item_list.Add(new Giggle_Item.Inventory(5, 78101001));
+        //Item_list.Add(new Giggle_Item.Inventory(6, 72101001));
+        //Item_list.Add(new Giggle_Item.Inventory(7, 72101001));
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,    Item_GetItemList    );
     }

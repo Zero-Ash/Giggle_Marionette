@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 165183e984c5c497397ee82017a6ec08
+    m_Address: ITEM/BRACE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 24a2c5072330943a0bf2d8ede010cd22
     m_Address: PINOCCHIO/CSV_LV
     m_ReadOnly: 0
@@ -35,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b3019f1db9ed4c4c9d5540ebcb9a8b9
+    m_Address: ITEM/ACCESSORY_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 503e3d7dde071402ea81b182b5ff66b3
     m_Address: CHARACTER/FIRE_CSV_SKILL_LV
     m_ReadOnly: 0
@@ -42,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 57419d3f807e14b489d5d9f94d03afe5
     m_Address: PINOCCHIO/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e418c25b3239425c8f42116b649e63b
+    m_Address: ITEM/HELMET_CSV_LIST
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -57,6 +72,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b72d9b1d9db14d64a85ba97ee5a732b
     m_Address: CHARACTER/FIRE_MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a01b4b8383221490990dd1d5061632d2
+    m_Address: ITEM/ARMOR_CSV_LIST
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

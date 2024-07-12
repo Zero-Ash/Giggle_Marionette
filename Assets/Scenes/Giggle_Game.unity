@@ -6813,7 +6813,7 @@ GameObject:
   - component: {fileID: 163486078}
   - component: {fileID: 163486077}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/ACCESSORY_3_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6832,6 +6832,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 416610501}
+  - {fileID: 1343410976}
+  - {fileID: 1288968692}
+  - {fileID: 565417234}
   m_Father: {fileID: 1118228603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -7890,6 +7893,7 @@ MonoBehaviour:
     Pinocchio_data:
       Basic_inventoryId: 0
       Basic_dataId: 0
+      Basic_equipments: 
     Pinocchio_gender: 0
     Pinocchio_jobs: 
     Marionette_list: []
@@ -10362,7 +10366,7 @@ GameObject:
   - component: {fileID: 218286057}
   - component: {fileID: 218286056}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/WAEPON
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/WEAPON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10383,6 +10387,7 @@ RectTransform:
   - {fileID: 90539109}
   - {fileID: 273845953}
   - {fileID: 643432589}
+  - {fileID: 440347205}
   m_Father: {fileID: 1603844821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -11469,7 +11474,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -16915,7 +16920,7 @@ GameObject:
   - component: {fileID: 312719061}
   - component: {fileID: 312719060}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/ACCESSORY_0_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16934,6 +16939,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 320844032}
+  - {fileID: 1231444618}
+  - {fileID: 1908254828}
+  - {fileID: 572040875}
   m_Father: {fileID: 1118228603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -17642,7 +17650,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -19438,7 +19446,7 @@ GameObject:
   - component: {fileID: 355635690}
   - component: {fileID: 355635689}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/ACCESSORY_2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19457,6 +19465,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 234436280}
+  - {fileID: 433925874}
+  - {fileID: 1965730343}
+  - {fileID: 1217176892}
   m_Father: {fileID: 1118228603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -22745,6 +22756,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406068530}
   m_CullTransparentMesh: 1
+--- !u!1 &406448018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 406448019}
+  - component: {fileID: 406448021}
+  - component: {fileID: 406448020}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &406448019
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406448018}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1386127297}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &406448020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406448018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &406448021
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406448018}
+  m_CullTransparentMesh: 1
 --- !u!1 &408505011
 GameObject:
   m_ObjectHideFlags: 0
@@ -23065,7 +23151,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -23720,6 +23806,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &433925873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 433925874}
+  - component: {fileID: 433925876}
+  - component: {fileID: 433925875}
+  m_Layer: 5
+  m_Name: Alert
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &433925874
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433925873}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 355635688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &433925875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433925873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &433925876
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433925873}
+  m_CullTransparentMesh: 1
 --- !u!1 &434063543
 GameObject:
   m_ObjectHideFlags: 0
@@ -24202,6 +24363,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439925670}
+  m_CullTransparentMesh: 1
+--- !u!1 &440347204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 440347205}
+  - component: {fileID: 440347207}
+  - component: {fileID: 440347206}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &440347205
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440347204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 218286055}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &440347206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440347204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &440347207
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440347204}
   m_CullTransparentMesh: 1
 --- !u!1 &443756272
 GameObject:
@@ -29609,7 +29845,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Helmet
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -33331,6 +33567,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565090361}
   m_CullTransparentMesh: 1
+--- !u!1 &565417233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565417234}
+  - component: {fileID: 565417236}
+  - component: {fileID: 565417235}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &565417234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565417233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 163486076}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &565417235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565417233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &565417236
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565417233}
+  m_CullTransparentMesh: 1
 --- !u!1 &567080119
 GameObject:
   m_ObjectHideFlags: 0
@@ -33677,6 +33988,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568418523}
+  m_CullTransparentMesh: 1
+--- !u!1 &572040874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572040875}
+  - component: {fileID: 572040877}
+  - component: {fileID: 572040876}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &572040875
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572040874}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 312719059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &572040876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572040874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &572040877
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572040874}
   m_CullTransparentMesh: 1
 --- !u!1 &573096830
 GameObject:
@@ -42871,7 +43257,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -43396,6 +43782,34 @@ MonoBehaviour:
     Basic_manager: {fileID: 722272183}
     Area4_exMenu: {fileID: 1698321419}
     Area7_exMenu: {fileID: 0}
+    Marionette_ui: {fileID: 221110499}
+    Marionette_menuBar:
+      Basic_parent: {fileID: 2064396510}
+      Basic_list: []
+      Basic_menuParent: {fileID: 207838143}
+    Marionette_marionetteList: []
+    Marionette_formationSelect: 0
+    Marionette_formationList: []
+    MarionetteFormation_formationParent: {fileID: 626835736}
+    MarionetteFormation_formationList: []
+    MarionetteFormation_menuBar:
+      Basic_parent: {fileID: 1948673979}
+      Basic_list: []
+      Basic_menuParent: {fileID: 904286042}
+      Basic_manager: {fileID: 722272183}
+    MarionetteFormation_scrollView:
+      Basic_content: {fileID: 1465234093}
+      Basic_list:
+      - {fileID: 1841035501}
+      - {fileID: 173989101}
+      Basic_x: 7
+      Basic_startPos: {x: 0, y: 0}
+      Basic_varPos: {x: 0, y: 0}
+      Basic_manager: {fileID: 722272183}
+    MarionetteFormation_selectFormation: 0
+    MarionetteFormation_selectMarionette: 0
+    MarionetteInfo_0: 0
+    MarionetteInfo_1: 0
     Pinocchio_data:
       Basic_back: {fileID: 463052727}
       Basic_ui: {fileID: 1512978652}
@@ -43453,6 +43867,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43479,6 +43894,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43491,6 +43907,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -43504,6 +43921,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43530,6 +43948,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43545,6 +43964,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -43575,6 +43995,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43601,6 +44022,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43613,6 +44035,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -43626,6 +44049,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43652,6 +44076,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43667,10 +44092,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -43696,6 +44123,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43722,6 +44150,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43734,6 +44163,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -43747,6 +44177,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43773,6 +44204,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43788,6 +44220,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -43818,6 +44251,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43844,6 +44278,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43856,6 +44291,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -43869,6 +44305,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43895,6 +44332,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43910,6 +44348,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -43917,6 +44356,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -43959,6 +44399,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43985,6 +44426,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -43997,6 +44439,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44010,6 +44453,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44036,6 +44480,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44051,6 +44496,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44081,6 +44527,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44107,6 +44554,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44119,6 +44567,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44132,6 +44581,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44158,6 +44608,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44173,10 +44624,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -44202,6 +44655,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44228,6 +44682,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44240,6 +44695,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44253,6 +44709,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44279,6 +44736,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44294,6 +44752,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44324,6 +44783,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44350,6 +44810,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44362,6 +44823,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44375,6 +44837,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44401,6 +44864,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44416,6 +44880,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44423,10 +44888,12 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
           Job_jobList: 
+          EquipmentArea2_equipmentBtns: []
           EquipmentArea3_menuBar:
             Basic_parent: {fileID: 0}
             Basic_list: []
@@ -44464,6 +44931,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44490,6 +44958,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44502,6 +44971,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44515,6 +44985,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44541,6 +45012,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44556,6 +45028,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44586,6 +45059,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44612,6 +45086,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44624,6 +45099,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44637,6 +45113,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44663,6 +45140,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44678,10 +45156,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -44707,6 +45187,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44733,6 +45214,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44745,6 +45227,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44758,6 +45241,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44784,6 +45268,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44799,6 +45284,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44829,6 +45315,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44855,6 +45342,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44867,6 +45355,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -44880,6 +45369,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44906,6 +45396,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44921,6 +45412,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -44928,6 +45420,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -44970,6 +45463,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -44996,6 +45490,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45008,6 +45503,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45021,6 +45517,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45047,6 +45544,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45062,6 +45560,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45092,6 +45591,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45118,6 +45618,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45130,6 +45631,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45143,6 +45645,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45169,6 +45672,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45184,10 +45688,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -45213,6 +45719,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45239,6 +45746,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45251,6 +45759,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45264,6 +45773,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45290,6 +45800,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45305,6 +45816,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45335,6 +45847,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45361,6 +45874,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45373,6 +45887,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45386,6 +45901,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45412,6 +45928,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45427,6 +45944,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45434,6 +45952,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -45441,6 +45960,7 @@ MonoBehaviour:
           Equipment_pinocchioData:
             Basic_inventoryId: 0
             Basic_dataId: 0
+            Basic_equipments: 
           Equipment_characterList: []
           Equipment_selectEquipment: 0
           Equipment_selectItem: 0
@@ -45497,6 +46017,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45523,6 +46044,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45535,6 +46057,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45548,6 +46071,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45574,6 +46098,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45589,6 +46114,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45619,6 +46145,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45645,6 +46172,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45657,6 +46185,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45670,6 +46199,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45696,6 +46226,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45711,10 +46242,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -45740,6 +46273,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45766,6 +46300,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45778,6 +46313,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45791,6 +46327,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45817,6 +46354,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45832,6 +46370,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45862,6 +46401,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45888,6 +46428,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45900,6 +46441,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -45913,6 +46455,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45939,6 +46482,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -45954,6 +46498,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -45961,6 +46506,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -46003,6 +46549,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46029,6 +46576,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46041,6 +46589,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46054,6 +46603,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46080,6 +46630,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46095,6 +46646,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46125,6 +46677,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46151,6 +46704,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46163,6 +46717,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46176,6 +46731,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46202,6 +46758,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46217,10 +46774,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -46246,6 +46805,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46272,6 +46832,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46284,6 +46845,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46297,6 +46859,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46323,6 +46886,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46338,6 +46902,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46368,6 +46933,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46394,6 +46960,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46406,6 +46973,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46419,6 +46987,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46445,6 +47014,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46460,6 +47030,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46467,10 +47038,12 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
           Job_jobList: 
+          EquipmentArea2_equipmentBtns: []
           EquipmentArea3_menuBar:
             Basic_parent: {fileID: 0}
             Basic_list: []
@@ -46508,6 +47081,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46534,6 +47108,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46546,6 +47121,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46559,6 +47135,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46585,6 +47162,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46600,6 +47178,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46630,6 +47209,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46656,6 +47236,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46668,6 +47249,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46681,6 +47263,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46707,6 +47290,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46722,10 +47306,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -46751,6 +47337,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46777,6 +47364,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46789,6 +47377,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46802,6 +47391,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46828,6 +47418,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46843,6 +47434,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46873,6 +47465,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46899,6 +47492,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46911,6 +47505,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -46924,6 +47519,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46950,6 +47546,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -46965,6 +47562,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -46972,6 +47570,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -47014,6 +47613,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47040,6 +47640,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47052,6 +47653,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47065,6 +47667,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47091,6 +47694,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47106,6 +47710,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -47136,6 +47741,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47162,6 +47768,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47174,6 +47781,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47187,6 +47795,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47213,6 +47822,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47228,10 +47838,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -47257,6 +47869,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47283,6 +47896,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47295,6 +47909,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47308,6 +47923,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47334,6 +47950,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47349,6 +47966,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -47379,6 +47997,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47405,6 +48024,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47417,6 +48037,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47430,6 +48051,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47456,6 +48078,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47471,6 +48094,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -47478,6 +48102,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -47485,10 +48110,20 @@ MonoBehaviour:
           Equipment_pinocchioData:
             Basic_inventoryId: 0
             Basic_dataId: 0
+            Basic_equipments: 
           Equipment_characterList: []
           Equipment_selectEquipment: 0
           Equipment_selectItem: 0
       Job_jobList: 
+      EquipmentArea2_equipmentBtns:
+      - {fileID: 218286056}
+      - {fileID: 1386127298}
+      - {fileID: 1663313224}
+      - {fileID: 1332787297}
+      - {fileID: 312719060}
+      - {fileID: 1469544502}
+      - {fileID: 355635689}
+      - {fileID: 163486077}
       EquipmentArea3_menuBar:
         Basic_parent: {fileID: 853600498}
         Basic_list: []
@@ -47538,6 +48173,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47564,6 +48200,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47576,6 +48213,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47589,6 +48227,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47615,6 +48254,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47630,6 +48270,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -47660,6 +48301,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47686,6 +48328,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47698,6 +48341,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47711,6 +48355,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47737,6 +48382,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47752,10 +48398,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -47781,6 +48429,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47807,6 +48456,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47819,6 +48469,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47832,6 +48483,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47858,6 +48510,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47873,6 +48526,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -47903,6 +48557,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47929,6 +48584,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47941,6 +48597,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -47954,6 +48611,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47980,6 +48638,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -47995,6 +48654,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48002,6 +48662,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -48044,6 +48705,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48070,6 +48732,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48082,6 +48745,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48095,6 +48759,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48121,6 +48786,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48136,6 +48802,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48166,6 +48833,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48192,6 +48860,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48204,6 +48873,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48217,6 +48887,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48243,6 +48914,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48258,10 +48930,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -48287,6 +48961,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48313,6 +48988,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48325,6 +49001,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48338,6 +49015,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48364,6 +49042,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48379,6 +49058,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48409,6 +49089,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48435,6 +49116,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48447,6 +49129,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48460,6 +49143,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48486,6 +49170,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48501,6 +49186,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48508,10 +49194,12 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
           Job_jobList: 
+          EquipmentArea2_equipmentBtns: []
           EquipmentArea3_menuBar:
             Basic_parent: {fileID: 0}
             Basic_list: []
@@ -48549,6 +49237,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48575,6 +49264,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48587,6 +49277,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48600,6 +49291,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48626,6 +49318,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48641,6 +49334,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48671,6 +49365,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48697,6 +49392,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48709,6 +49405,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48722,6 +49419,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48748,6 +49446,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48763,10 +49462,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -48792,6 +49493,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48818,6 +49520,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48830,6 +49533,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48843,6 +49547,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48869,6 +49574,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48884,6 +49590,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -48914,6 +49621,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48940,6 +49648,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48952,6 +49661,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -48965,6 +49675,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -48991,6 +49702,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49006,6 +49718,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49013,6 +49726,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -49055,6 +49769,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49081,6 +49796,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49093,6 +49809,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49106,6 +49823,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49132,6 +49850,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49147,6 +49866,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49177,6 +49897,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49203,6 +49924,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49215,6 +49937,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49228,6 +49951,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49254,6 +49978,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49269,10 +49994,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -49298,6 +50025,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49324,6 +50052,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49336,6 +50065,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49349,6 +50079,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49375,6 +50106,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49390,6 +50122,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49420,6 +50153,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49446,6 +50180,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49458,6 +50193,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49471,6 +50207,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49497,6 +50234,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49512,6 +50250,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49519,6 +50258,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -49526,6 +50266,7 @@ MonoBehaviour:
           Equipment_pinocchioData:
             Basic_inventoryId: 0
             Basic_dataId: 0
+            Basic_equipments: 
           Equipment_characterList: []
           Equipment_selectEquipment: 0
           Equipment_selectItem: 0
@@ -49582,6 +50323,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49608,6 +50350,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49620,6 +50363,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49633,6 +50377,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49659,6 +50404,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49674,6 +50420,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49704,6 +50451,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49730,6 +50478,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49742,6 +50491,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49755,6 +50505,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49781,6 +50532,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49796,10 +50548,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -49825,6 +50579,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49851,6 +50606,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49863,6 +50619,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49876,6 +50633,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49902,6 +50660,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49917,6 +50676,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -49947,6 +50707,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49973,6 +50734,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -49985,6 +50747,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -49998,6 +50761,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50024,6 +50788,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50039,6 +50804,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50046,6 +50812,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -50088,6 +50855,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50114,6 +50882,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50126,6 +50895,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50139,6 +50909,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50165,6 +50936,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50180,6 +50952,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50210,6 +50983,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50236,6 +51010,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50248,6 +51023,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50261,6 +51037,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50287,6 +51064,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50302,10 +51080,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -50331,6 +51111,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50357,6 +51138,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50369,6 +51151,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50382,6 +51165,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50408,6 +51192,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50423,6 +51208,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50453,6 +51239,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50479,6 +51266,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50491,6 +51279,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50504,6 +51293,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50530,6 +51320,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50545,6 +51336,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50552,10 +51344,12 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
           Job_jobList: 
+          EquipmentArea2_equipmentBtns: []
           EquipmentArea3_menuBar:
             Basic_parent: {fileID: 0}
             Basic_list: []
@@ -50593,6 +51387,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50619,6 +51414,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50631,6 +51427,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50644,6 +51441,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50670,6 +51468,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50685,6 +51484,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50715,6 +51515,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50741,6 +51542,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50753,6 +51555,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50766,6 +51569,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50792,6 +51596,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50807,10 +51612,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -50836,6 +51643,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50862,6 +51670,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50874,6 +51683,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -50887,6 +51697,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50913,6 +51724,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50928,6 +51740,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -50958,6 +51771,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50984,6 +51798,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -50996,6 +51811,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -51009,6 +51825,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51035,6 +51852,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51050,6 +51868,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -51057,6 +51876,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -51099,6 +51919,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51125,6 +51946,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51137,6 +51959,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -51150,6 +51973,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51176,6 +52000,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51191,6 +52016,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -51221,6 +52047,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51247,6 +52074,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51259,6 +52087,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -51272,6 +52101,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51298,6 +52128,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51313,10 +52144,12 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
               Job_jobList: 
+              EquipmentArea2_equipmentBtns: []
               EquipmentArea3_menuBar:
                 Basic_parent: {fileID: 0}
                 Basic_list: []
@@ -51342,6 +52175,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51368,6 +52202,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51380,6 +52215,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -51393,6 +52229,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51419,6 +52256,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51434,6 +52272,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -51464,6 +52303,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51490,6 +52330,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51502,6 +52343,7 @@ MonoBehaviour:
                       Equipment_selectEquipment: 0
                       Equipment_selectItem: 0
                   Job_jobList: 
+                  EquipmentArea2_equipmentBtns: []
                   EquipmentArea3_menuBar:
                     Basic_parent: {fileID: 0}
                     Basic_list: []
@@ -51515,6 +52357,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51541,6 +52384,7 @@ MonoBehaviour:
                         Basic_startPos: {x: 0, y: 0}
                         Basic_varPos: {x: 0, y: 0}
                       Job_jobList: 
+                      EquipmentArea2_equipmentBtns: []
                       EquipmentArea3_scrollView:
                         Basic_x: 0
                         Basic_startPos: {x: 0, y: 0}
@@ -51556,6 +52400,7 @@ MonoBehaviour:
                   Equipment_pinocchioData:
                     Basic_inventoryId: 0
                     Basic_dataId: 0
+                    Basic_equipments: 
                   Equipment_characterList: []
                   Equipment_selectEquipment: 0
                   Equipment_selectItem: 0
@@ -51563,6 +52408,7 @@ MonoBehaviour:
               Equipment_pinocchioData:
                 Basic_inventoryId: 0
                 Basic_dataId: 0
+                Basic_equipments: 
               Equipment_characterList: []
               Equipment_selectEquipment: 0
               Equipment_selectItem: 0
@@ -51570,6 +52416,7 @@ MonoBehaviour:
           Equipment_pinocchioData:
             Basic_inventoryId: 0
             Basic_dataId: 0
+            Basic_equipments: 
           Equipment_characterList: []
           Equipment_selectEquipment: 0
           Equipment_selectItem: 0
@@ -51577,37 +52424,10 @@ MonoBehaviour:
       Equipment_pinocchioData:
         Basic_inventoryId: 0
         Basic_dataId: 0
+        Basic_equipments: 
       Equipment_characterList: []
       Equipment_selectEquipment: 0
-      Equipment_selectItem: 0
-    Marionette_ui: {fileID: 221110499}
-    Marionette_menuBar:
-      Basic_parent: {fileID: 2064396510}
-      Basic_list: []
-      Basic_menuParent: {fileID: 207838143}
-    Marionette_marionetteList: []
-    Marionette_formationSelect: 0
-    Marionette_formationList: []
-    MarionetteFormation_formationParent: {fileID: 626835736}
-    MarionetteFormation_formationList: []
-    MarionetteFormation_menuBar:
-      Basic_parent: {fileID: 1948673979}
-      Basic_list: []
-      Basic_menuParent: {fileID: 904286042}
-      Basic_manager: {fileID: 722272183}
-    MarionetteFormation_scrollView:
-      Basic_content: {fileID: 1465234093}
-      Basic_list:
-      - {fileID: 1841035501}
-      - {fileID: 173989101}
-      Basic_x: 7
-      Basic_startPos: {x: 0, y: 0}
-      Basic_varPos: {x: 0, y: 0}
-      Basic_manager: {fileID: 722272183}
-    MarionetteFormation_selectFormation: 0
-    MarionetteFormation_selectMarionette: 0
-    MarionetteInfo_0: 0
-    MarionetteInfo_1: 0
+      Equipment_selectItem: -1
   UI_popUpData:
     Basic_parent: {fileID: 1395365611}
     Gacha_list: []
@@ -54761,6 +55581,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777469847}
+  m_CullTransparentMesh: 1
+--- !u!1 &779069288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 779069289}
+  - component: {fileID: 779069291}
+  - component: {fileID: 779069290}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &779069289
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779069288}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1663313223}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &779069290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779069288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &779069291
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779069288}
   m_CullTransparentMesh: 1
 --- !u!1 &782202285
 GameObject:
@@ -64240,6 +65135,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978934733}
   m_CullTransparentMesh: 1
+--- !u!1 &982496372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 982496373}
+  - component: {fileID: 982496375}
+  - component: {fileID: 982496374}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &982496373
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982496372}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1332787296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &982496374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982496372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &982496375
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982496372}
+  m_CullTransparentMesh: 1
 --- !u!1 &982719081
 GameObject:
   m_ObjectHideFlags: 0
@@ -71004,7 +71974,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Brace
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -78304,6 +79274,81 @@ RectTransform:
   m_AnchoredPosition: {x: 550, y: 0}
   m_SizeDelta: {x: 1100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1217176891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1217176892}
+  - component: {fileID: 1217176894}
+  - component: {fileID: 1217176893}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1217176892
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217176891}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 355635688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1217176893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217176891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1217176894
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217176891}
+  m_CullTransparentMesh: 1
 --- !u!1 &1218076144
 GameObject:
   m_ObjectHideFlags: 0
@@ -79319,6 +80364,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2000}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &1231444617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1231444618}
+  - component: {fileID: 1231444620}
+  - component: {fileID: 1231444619}
+  m_Layer: 5
+  m_Name: Alert
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1231444618
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231444617}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 312719059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1231444619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231444617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1231444620
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231444617}
+  m_CullTransparentMesh: 1
 --- !u!1 &1232588502
 GameObject:
   m_ObjectHideFlags: 0
@@ -81781,6 +82901,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287190969}
+  m_CullTransparentMesh: 1
+--- !u!1 &1288968691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1288968692}
+  - component: {fileID: 1288968694}
+  - component: {fileID: 1288968693}
+  m_Layer: 5
+  m_Name: Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1288968692
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288968691}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 163486076}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1288968693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288968691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1288968694
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288968691}
   m_CullTransparentMesh: 1
 --- !u!1 &1289736393
 GameObject:
@@ -84880,7 +86075,7 @@ GameObject:
   - component: {fileID: 1332787298}
   - component: {fileID: 1332787297}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/BRACE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84901,6 +86096,7 @@ RectTransform:
   - {fileID: 1089115063}
   - {fileID: 773609155}
   - {fileID: 1180023984}
+  - {fileID: 982496373}
   m_Father: {fileID: 1603844821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -85287,6 +86483,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342182418}
+  m_CullTransparentMesh: 1
+--- !u!1 &1343410975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343410976}
+  - component: {fileID: 1343410978}
+  - component: {fileID: 1343410977}
+  m_Layer: 5
+  m_Name: Alert
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1343410976
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343410975}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 163486076}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1343410977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343410975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1343410978
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343410975}
   m_CullTransparentMesh: 1
 --- !u!1 &1343818449
 GameObject:
@@ -87191,6 +88462,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &1380102325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1380102326}
+  - component: {fileID: 1380102328}
+  - component: {fileID: 1380102327}
+  m_Layer: 5
+  m_Name: Alert
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1380102326
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380102325}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1469544501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1380102327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380102325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1380102328
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380102325}
+  m_CullTransparentMesh: 1
 --- !u!1 &1380266175
 GameObject:
   m_ObjectHideFlags: 0
@@ -87448,7 +88794,7 @@ GameObject:
   - component: {fileID: 1386127299}
   - component: {fileID: 1386127298}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/HELMET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87469,6 +88815,7 @@ RectTransform:
   - {fileID: 518817042}
   - {fileID: 693947198}
   - {fileID: 211434110}
+  - {fileID: 406448019}
   m_Father: {fileID: 1603844821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -91579,7 +92926,7 @@ GameObject:
   - component: {fileID: 1469544503}
   - component: {fileID: 1469544502}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/ACCESSORY_1_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91598,6 +92945,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 715082078}
+  - {fileID: 1380102326}
+  - {fileID: 1922654043}
+  - {fileID: 1594985727}
   m_Father: {fileID: 1118228603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -98885,6 +100235,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594847981}
   m_CullTransparentMesh: 1
+--- !u!1 &1594985726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1594985727}
+  - component: {fileID: 1594985729}
+  - component: {fileID: 1594985728}
+  m_Layer: 5
+  m_Name: Cover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1594985727
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594985726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1469544501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1594985728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594985726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1594985729
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594985726}
+  m_CullTransparentMesh: 1
 --- !u!1 &1596671422
 GameObject:
   m_ObjectHideFlags: 0
@@ -102949,7 +104374,7 @@ GameObject:
   - component: {fileID: 1663313225}
   - component: {fileID: 1663313224}
   m_Layer: 5
-  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/
+  m_Name: Button/PINOCCHIO/EQUIPMENT__EQUIPMENT/ARMOR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102970,6 +104395,7 @@ RectTransform:
   - {fileID: 2009562924}
   - {fileID: 992056524}
   - {fileID: 942348099}
+  - {fileID: 779069289}
   m_Father: {fileID: 1603844821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -117531,6 +118957,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906963314}
   m_CullTransparentMesh: 1
+--- !u!1 &1908254827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1908254828}
+  - component: {fileID: 1908254830}
+  - component: {fileID: 1908254829}
+  m_Layer: 5
+  m_Name: Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1908254828
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908254827}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 312719059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1908254829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908254827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1908254830
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908254827}
+  m_CullTransparentMesh: 1
 --- !u!1 &1908794527
 GameObject:
   m_ObjectHideFlags: 0
@@ -118019,6 +119520,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921475205}
+  m_CullTransparentMesh: 1
+--- !u!1 &1922654042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1922654043}
+  - component: {fileID: 1922654045}
+  - component: {fileID: 1922654044}
+  m_Layer: 5
+  m_Name: Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1922654043
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922654042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1469544501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1922654044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922654042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1922654045
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922654042}
   m_CullTransparentMesh: 1
 --- !u!1 &1925821525
 GameObject:
@@ -120088,6 +121664,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964656335}
+  m_CullTransparentMesh: 1
+--- !u!1 &1965730342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1965730343}
+  - component: {fileID: 1965730345}
+  - component: {fileID: 1965730344}
+  m_Layer: 5
+  m_Name: Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1965730343
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965730342}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 355635688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1965730344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965730342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1965730345
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965730342}
   m_CullTransparentMesh: 1
 --- !u!1 &1967583262
 GameObject:
@@ -123052,7 +124703,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Armor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

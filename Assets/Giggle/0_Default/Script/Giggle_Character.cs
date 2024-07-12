@@ -880,6 +880,8 @@ namespace Giggle_Character
 
         public int  Basic_VarDataId { get { return Basic_dataId;    } set { Basic_dataId = value;   }   }
 
+        public List<int>    Basic_VarEquipments { get { return Basic_equipments;    }   }
+
         ////////// Method                   //////////
         public void Basic_Equipment(string _socketName, int _inventoryId)
         {
@@ -893,12 +895,7 @@ namespace Giggle_Character
             }
 
             // Basic_equipments
-            if(Basic_equipments == null)
-            {
-                Basic_equipments = new List<int>();
-            }
-
-            if(Basic_equipments.Count <= count)
+            while(Basic_equipments.Count <= count)
             {
                 Basic_equipments.Add(-1);
             }
@@ -911,6 +908,10 @@ namespace Giggle_Character
         {
             Basic_inventoryId = _inventoryId;
             Basic_dataId = _dataId;
+            if(Basic_equipments == null)
+            {
+                Basic_equipments = new List<int>();
+            }
         }
 
         public void Dispose()
