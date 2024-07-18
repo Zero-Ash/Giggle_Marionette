@@ -3,33 +3,17 @@ using UnityEngine;
 //
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Giggle_Unit : MonoBehaviour
 {
     #region BASIC
-
-    [Serializable]
-    public class Save : IDisposable
-    {
-        [SerializeField] int Basic_id;
-        [SerializeField] int Basic_lv;
-
-        ////////// Getter & Setter          //////////
-
-        ////////// Method                   //////////
-
-        ////////// Constructor & Destroyer  //////////
-        public void Dispose()
-        {
-
-        }
-    }
     
     [SerializeField] Giggle_Battle  Basic_Battle;
     IEnumerator Basic_coroutine;
 
     [Header("RUNNING")]
-    [SerializeField] Save Basic_Save;
+    [SerializeField] Giggle_Character.Save Basic_Save;
 
     ////////// Getter & Setter  //////////
 
@@ -99,6 +83,37 @@ public class Giggle_Unit : MonoBehaviour
 
     #region STATUS
 
+    [Serializable]
+    public class Status_CoolTimer : IDisposable
+    {
+        [SerializeField] bool   Basic_isOn;
+        [SerializeField] float  Basic_timer;
+
+        ////////// Getter & Setter          //////////
+        
+        public bool Basic_VarIsOn   { get { return Basic_isOn;  }   set { Basic_isOn = value;   }   }
+
+        public float    Basic_VarTimer  { get { return Basic_timer; }   set { Basic_timer = value;  }   }
+
+        ////////// Method                   //////////
+        public void Status_CoolTime(float _deltaTime)
+        {
+            Basic_timer -= _deltaTime;
+        }
+        
+        ////////// Constructor & Destroyer  //////////
+        public Status_CoolTimer()
+        {
+            Basic_isOn = true;
+            Basic_timer = 0.0f;
+        }
+        
+        public void Dispose()
+        {
+
+        }
+    }
+
     [Header("STATUS ==================================================")]
     // DB에 저장된 능력치
     [SerializeField] Giggle_Character.Database  Status_database;
@@ -111,7 +126,7 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] Giggle_Character.Status            Status_totalStatus;
 
     [SerializeField] int Status_hp;
-    [SerializeField] float Status_coolTimer;
+    [SerializeField] List<Status_CoolTimer> Status_coolTimers;
 
     ////////// Getter & Setter  //////////
     public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
@@ -122,15 +137,43 @@ public class Giggle_Unit : MonoBehaviour
         Status_database = _database;
         Status_totalStatus.Basic_Calculate(Status_database.Basic_GetStatusList(0), Status_equipStatus, Status_bonusStatus);
         Status_hp = Status_totalStatus.Basic_VarHp;
+
+        if(Status_coolTimers == null)
+        {
+            Status_coolTimers = new List<Status_CoolTimer>();
+        }
+
+        Status_coolTimers.Add(new Status_CoolTimer());
+        if(Basic_Save.Basic_VarSkillLv.Equals(-1))
+        {
+            while(Status_coolTimers.Count < 6)
+            {
+                Status_coolTimers.Add(new Status_CoolTimer());
+            }
+
+            List<int> skills
+                = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+            for(int for0 = 0; for0 < skills.Count; for0++)
+            {
+                Status_coolTimers[for0].Basic_VarIsOn = !skills[for0].Equals(-1);
+            }
+        }
     }
 
     void Status_Coroutine(float _deltaTime)
     {
-        Status_coolTimer -= _deltaTime;
-
-        if(Status_coolTimer < 0.0f)
+        for(int for0 = 0; for0 < Status_coolTimers.Count; for0++)
         {
-            Status_coolTimer = 0.0f;
+            if(Status_coolTimers[for0].Basic_VarIsOn)
+            {
+                Status_coolTimers[for0].Status_CoolTime(_deltaTime);
+
+                if(Status_coolTimers[for0].Basic_VarTimer < 0.0f)
+                {
+                    Status_coolTimers[for0].Basic_VarTimer = 0.0f;
+                }
+            }
         }
     }
 
@@ -281,22 +324,47 @@ public class Giggle_Unit : MonoBehaviour
                     {
                         if(Active_timer >= Active_time * 0.7f)
                         {
-                            // 최종 데미지 연산
-                            int damage = 0;
-                            if(Status_VarTotalStatus.Basic_VarAttack != 0)
+
+                            // Skill
+                            int skillCount = -1;
+                            for(int for0 = 0; for0 < Status_coolTimers.Count; for0++)
                             {
-                                damage
-                                    = (Status_VarTotalStatus.Basic_VarAttack * Status_VarTotalStatus.Basic_VarAttack)
-                                    / (Status_VarTotalStatus.Basic_VarAttack + Active_target.Status_VarTotalStatus.Basic_VarDefence);
+                                if(Status_coolTimers[for0].Basic_VarIsOn)
+                                {
+                                    if(Status_coolTimers[for0].Basic_VarTimer <= 0.0f)
+                                    {
+                                        skillCount = for0;
+                                        break;
+                                    }
+                                }
                             }
 
-                            if(Status_coolTimer <= 0.0f)
+                            if(skillCount >= 0)
                             {
-                                Debug.Log(this.name + "스킬 " + Status_database.Basic_GetSkillListFromCount(0).Basic_VarId);
-                                Status_coolTimer += Status_database.Basic_GetSkillListFromCount(0).Basic_GetLvFromCount(0).Basic_VarCoolTime;
+                                // 피노키오일 때
+                                if(Status_database.Basic_GetSkillListCount() <= 0)
+                                {
+                                    Debug.Log(this.name + "스킬");
+                                    Status_coolTimers[skillCount].Basic_VarTimer += 5.0f;
+                                }
+                                // 마리오네트일 때
+                                else
+                                {
+                                    Debug.Log(this.name + "스킬 " + Status_database.Basic_GetSkillListFromCount(0).Basic_VarId);
+                                    Status_coolTimers[skillCount].Basic_VarTimer += Status_database.Basic_GetSkillListFromCount(0).Basic_GetLvFromCount(0).Basic_VarCoolTime;
+                                }
                             }
                             else
                             {
+                                // 최종 데미지 연산
+                                int damage = 0;
+                                if(Status_VarTotalStatus.Basic_VarAttack != 0)
+                                {
+                                    damage
+                                        = (Status_VarTotalStatus.Basic_VarAttack * Status_VarTotalStatus.Basic_VarAttack)
+                                        / (Status_VarTotalStatus.Basic_VarAttack + Active_target.Status_VarTotalStatus.Basic_VarDefence);
+                                }
+
                                 Basic_Battle.Bullet_Launch(
                                     this, Active_target,
                                     damage);

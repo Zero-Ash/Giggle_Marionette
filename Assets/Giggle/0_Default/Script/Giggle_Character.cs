@@ -656,13 +656,10 @@ namespace Giggle_Character
 
         public Skill Basic_GetSkillListFromCount(int _count)    { return Basic_skillList[_count];   }
 
+        public int Basic_GetSkillListCount()    { return Basic_skillList.Count; }
+
         public void Basic_SetSkillList(Dictionary<string, string> _data)
         {
-            if(Basic_skillList == null)
-            {
-                Basic_skillList = new List<Skill>();
-            }
-
             //
             Basic_skillList.Add(new Skill(_data));
         }
@@ -681,12 +678,24 @@ namespace Giggle_Character
         public Database()
         {
             Basic_id = -1;
+
+            Basic_Constructor();
         }
 
         public Database(Dictionary<string, string> _data)
         {
             Basic_id        = int.Parse(_data["cha_id"]);
             Basic_name      = _data["Cha_Name"];
+
+            Basic_Constructor();
+        }
+
+        void Basic_Constructor()
+        {
+            if(Basic_skillList == null)
+            {
+                Basic_skillList = new List<Skill>();
+            }
         }
 
         //
@@ -774,7 +783,18 @@ namespace Giggle_Character
         // Basic_id
         public int  Basic_VarId { get { return Basic_id;    }   }
 
+        //
+        // Basic_name
+        public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        //
+        // Basic_rank
+        public int  Basic_VarRank   { get { return Basic_rank;  }   }
+
+        //
         // Basic_lvList
+        public int      Basic_VarLvCount                    { get { return Basic_lvList.Count;  }   }
+
         public Skill_Lv Basic_GetLvFromCount(int _count)    { return Basic_lvList[_count]; }
 
         ////////// Method                   //////////
@@ -871,16 +891,47 @@ namespace Giggle_Character
     [Serializable]
     public class Save : IDisposable
     {
+        public class Skill : IDisposable
+        {
+            [SerializeField] int    Basic_id;
+            [SerializeField] int    Basic_level;
+
+            ////////// Getter & Setter          //////////
+            public int  Basic_VarId     { get { return Basic_id;    } set { Basic_id = value;   }  }
+
+            public int  Basic_VarLevel  { get { return Basic_level; }   }
+        
+            ////////// Method                   //////////
+        
+            ////////// Constructor & Destroyer  //////////
+            public Skill()
+            {
+                Basic_id = -1;
+            }
+
+            public void Dispose()
+            {
+
+            }
+        }
+
         [SerializeField] int    Basic_inventoryId;
         [SerializeField] int    Basic_dataId;
+
         [SerializeField] List<int>  Basic_equipments;
+        
+        [SerializeField] int    Basic_skillLv;
 
         ////////// Getter & Setter          //////////
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
 
         public int  Basic_VarDataId { get { return Basic_dataId;    } set { Basic_dataId = value;   }   }
 
+        //
         public List<int>    Basic_VarEquipments { get { return Basic_equipments;    }   }
+
+        //
+        public int  Basic_VarSkillLv    { get { return Basic_skillLv;   }   }
 
         ////////// Method                   //////////
         public void Basic_Equipment(string _socketName, int _inventoryId)
@@ -904,16 +955,38 @@ namespace Giggle_Character
         }
 
         ////////// Constructor & Destroyer  //////////
+        
+        ////////// Constructor
+        //
+        public Save(int _dataId)
+        {
+            Basic_Constructor();
+
+            Basic_dataId = _dataId;
+            
+            Basic_skillLv = -1;
+        }
+
         public Save(int _inventoryId, int _dataId)
         {
+            Basic_Constructor();
+
             Basic_inventoryId = _inventoryId;
             Basic_dataId = _dataId;
+            
+            Basic_skillLv = 1;
+        }
+
+        void Basic_Constructor()
+        {
             if(Basic_equipments == null)
             {
                 Basic_equipments = new List<int>();
             }
         }
 
+        //////////
+        //
         public void Dispose()
         {
             

@@ -67,6 +67,12 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Character.Database
         /// </summary>
         DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+        /// <summary>
+        /// 캐릭터 데이터<br/>
+        /// 매개변수 : int - 스킬id<br/>
+        /// return type : Giggle_Character.Skill
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
 
         /// <summary>
         /// 캐릭터 데이터의 개방 여부<br/>
@@ -117,6 +123,34 @@ public class Giggle_ScriptBridge
         /// return type : List(int)
         /// </summary>
         PLAYER__PINOCCHIO__VAR_JOBS,
+
+        /// <summary>
+        /// 피노키오 스킬 데이터<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Player.Pinocchio_Skill)
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_SKILLS,
+
+        /// <summary>
+        /// 피노키오 스킬 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Player.Pinocchio_Skill
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,
+
+        /// <summary>
+        /// 피노키오 스킬 슬롯 데이터<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(int)
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,
+
+        /// <summary>
+        /// 피노키오 스킬 슬롯 데이터<br/>
+        /// 매개변수 : int - count, (params)int - id<br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
 
         /// <summary>
         /// 피노키오 장비 장착<br/>

@@ -84,6 +84,7 @@ public class Giggle_Database : IDisposable
 
     [Header("PINOCCHIO ==========")]
     [SerializeField] Character_Data Pinocchio_data;
+    [SerializeField] List<Giggle_Character.Skill> Pinocchio_skills;
     [SerializeField] bool Pinocchio_isOpen;
 
     ////////// Getter & Setter          //////////
@@ -92,6 +93,7 @@ public class Giggle_Database : IDisposable
         return Pinocchio_isOpen;
     }
 
+    //
     object Pinocchio_GetDataFromId(params object[] _args)
     {
         Giggle_Character.Database res = Character_empty;
@@ -114,6 +116,37 @@ public class Giggle_Database : IDisposable
                 Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
             }
         }
+
+        //
+        return res;
+    }
+
+    //
+    object Pinocchio_GetSkillFromId(params object[] _args)
+    {
+        Giggle_Character.Skill res = null;
+
+        //
+        int id = (int)_args[0];
+
+        for(int for0 = 0; for0 < Pinocchio_skills.Count; for0++)
+        {
+            if(Pinocchio_skills[for0].Basic_VarId.Equals(id))
+            {
+                res = Pinocchio_skills[for0];
+                break;
+            }
+        }
+
+        // 찾고자 하는 캐릭터가 존재하는가?
+        //if(res.Equals(Character_empty))
+        //{
+        //    if(Pinocchio_isOpen)
+        //    {
+        //        IEnumerator coroutine = Pinocchio_LoadData__Coroutine();
+        //        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+        //    }
+        //}
 
         //
         return res;
@@ -197,14 +230,18 @@ public class Giggle_Database : IDisposable
                     {
                         phase = 201;
 
+                        if(Pinocchio_skills == null)
+                        {
+                            Pinocchio_skills = new List<Giggle_Character.Skill>();
+                        }
+
                         Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_SKILL_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
-                                int id = int.Parse(data[for0]["cha_id"]);
-                                Pinocchio_data.Basic_GetDataFromId(id).Basic_SetSkillList(data[for0]);
+                                Pinocchio_skills.Add(new Giggle_Character.Skill(data[for0]));
                             }
 
                             phase = 202;
@@ -219,40 +256,17 @@ public class Giggle_Database : IDisposable
                         Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_SKILL_LV").Completed
                         += handle =>
                         {
-                            List<Giggle_Character.Skill> skills = new List<Giggle_Character.Skill>();
-
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
                                 int id = int.Parse(data[for0]["cha_skill_id"]);
 
-                                Giggle_Character.Skill whileSkill = null;
-                                while(whileSkill == null)
+                                for(int for1 = 0; for1 < Pinocchio_skills.Count; for1++)
                                 {
-                                    for(int for1 = 0; for1 < skills.Count; for1++)
+                                    if(Pinocchio_skills[for1].Basic_VarId.Equals(id))
                                     {
-                                        if(skills[for1].Basic_VarId.Equals(id))
-                                        {
-                                            whileSkill = skills[for1];
-                                            break;
-                                        }
-                                    }
-
-                                    if(whileSkill == null)
-                                    {
-                                        for(int for2 = 0; for2 < Pinocchio_data.Basic_VarCount; for2++)
-                                        {
-                                            Giggle_Character.Skill element = Pinocchio_data.Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id);
-                                            if(element != null)
-                                            {
-                                                skills.Add(Pinocchio_data.Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id));
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        whileSkill.Basic_SetLvList(data[for0]);
+                                        Pinocchio_skills[for1].Basic_SetLvList(data[for0]);
+                                        break;
                                     }
                                 }
                             }
@@ -279,7 +293,8 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_IS_OPEN,   Pinocchio_GetIsOpen );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,  Pinocchio_GetDataFromId );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,  Pinocchio_GetDataFromId     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID, Pinocchio_GetSkillFromId    );
     }
     
     #endregion
