@@ -56,23 +56,35 @@ public class Giggle_ScriptBridge
         #region Giggle_Database
 
         /// <summary>
-        /// 캐릭터 데이터의 개방 여부<br/>
+        /// 피노키오 데이터의 개방 여부<br/>
         /// 매개변수<br/>
         /// return type : bool
         /// </summary>
         DATABASE__PINOCCHIO__GET_IS_OPEN,
         /// <summary>
-        /// 캐릭터 데이터<br/>
+        /// 피노키오 데이터<br/>
         /// 매개변수 : int - 캐릭터id<br/>
         /// return type : Giggle_Character.Database
         /// </summary>
         DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
         /// <summary>
-        /// 캐릭터 데이터<br/>
+        /// 피노키오 데이터<br/>
         /// 매개변수 : int - 스킬id<br/>
         /// return type : Giggle_Character.Skill
         /// </summary>
         DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
+        /// <summary>
+        /// 공격 특성 데이터 리스트<br/>
+        /// 매개변수 :<br/>
+        /// return type : List(Giggle_Character.Attribute)
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK,
+        /// <summary>
+        /// 공격 특성 데이터<br/>
+        /// 매개변수 : int - 스킬id<br/>
+        /// return type : Giggle_Character.Attribute
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK_FROM_ID,
 
         /// <summary>
         /// 캐릭터 데이터의 개방 여부<br/>
@@ -201,6 +213,20 @@ public class Giggle_ScriptBridge
         /// </summary>
         PLAYER__ITEM__GET_ITEM_LIST,
 
+        /// <summary>
+        /// 공격 특성 가져오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : Giggle_Player.Pinocchio_Skill
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,
+
+        /// <summary>
+        /// 공격 특성 가져오기<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP
+        
         #endregion
     }
 

@@ -80,8 +80,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdeea94c4e5874a3d833d3b888f0e7e6
+    m_Address: PINOCCHIO/CSV_ATTRIBUTE_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c31f98823e6f64687b4c5d6a865967d7
     m_Address: CHARACTER/FIRE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de5106c5098864547bfb515b5af25316
+    m_Address: PINOCCHIO/CSV_ATTRIBUTE_LIST
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

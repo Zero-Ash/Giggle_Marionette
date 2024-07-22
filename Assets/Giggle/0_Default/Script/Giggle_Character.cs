@@ -886,6 +886,153 @@ namespace Giggle_Character
 
     #endregion
 
+    #region ATTRIBUTE
+
+    [Serializable]
+    public class Attribute : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] string Basic_name;
+
+        [SerializeField] int    Basic_class;
+
+        [SerializeField] int    Basic_conditionId;
+        [SerializeField] int    Basic_conditionLv;
+
+        [SerializeField] List<Attribute_Lv>  Basic_lvList;
+
+        ////////// Getter & Setter          //////////
+        // Basic_id
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        // Basic_name
+        public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        // Basic_class
+        public int  Basic_VarClass  { get { return Basic_class; }   }
+
+        // Basic_conditionId
+        public int  Basic_VarConditionId    { get { return Basic_conditionId;   }   }
+
+        // Basic_conditionLv
+        public int  Basic_VarConditionLv    { get { return Basic_conditionLv;   }   }
+
+        // Basic_lvList
+        public int  Basic_VarLvListCount    { get { return Basic_lvList.Count;  }   }
+
+        ////////// Method                   //////////
+        public void Basic_AddLv(Dictionary<string, string> _data)
+        {
+            Attribute_Lv element = new Attribute_Lv(_data);
+
+            int level = int.Parse(_data["cha_attribute_lv"]);
+            while(Basic_lvList.Count < level)
+            {
+                Basic_lvList.Add(null);
+            }
+            Basic_lvList[level - 1] = element;
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        public Attribute(Dictionary<string, string> _data)
+        {
+            // cha_id
+            Basic_id = int.Parse(_data["attribute_id"]);
+
+            Basic_name = _data["cha_attribute_name"];
+
+            Basic_class = int.Parse(_data["cha_attribute_class"]);
+            
+            Basic_conditionId = int.Parse(_data["attribute_condition_01"]);
+            Basic_conditionLv = int.Parse(_data["condition_value_01"]);
+
+            if(Basic_lvList == null)
+            {
+                Basic_lvList = new List<Attribute_Lv>();
+            }
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
+
+    [Serializable]
+    public class Attribute_Lv : IDisposable
+    {
+        public class Mateiral : IDisposable
+        {
+            [SerializeField] int    Basic_materialId;
+
+            [SerializeField] int    Basic_count;
+
+            ////////// Getter & Setter          //////////
+            public int  Basic_VarMaterialId { get { return Basic_materialId;    }   }
+
+            public int  Basic_VarCount      { get { return Basic_count;         }   }
+
+            ////////// Method                   //////////
+
+            ////////// Constructor & Destroyer  //////////
+
+            public Mateiral(
+                Dictionary<string, string> _data,
+                int _count)
+            {
+                string countStr = "";
+                int count = _count;
+                int value = 10;
+                while(value > 0)
+                {
+                    countStr += (count / value).ToString();
+                    value /= 10;
+                }
+                
+                Basic_materialId = int.Parse(_data["attribute_LvMaterials_" + countStr]);
+                Basic_count      = int.Parse(_data["Materials_Value_" + countStr]);
+            }
+
+            public void Dispose()
+            {
+
+            }
+        }
+        
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] int    Basic_class;
+
+        [SerializeField] List<Mateiral> Basic_mateirals;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        public Attribute_Lv(Dictionary<string, string> _data)
+        {
+            Basic_id = int.Parse(_data["attributeLv_id"]);
+
+            Basic_class = int.Parse(_data["cha_attribute_class"]);
+
+            if(Basic_mateirals == null)
+            {
+                Basic_mateirals = new List<Mateiral>();
+            }
+            Basic_mateirals.Add(new Mateiral(_data, 1));
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
+    
+    #endregion
+
     #region SAVE
     
     [Serializable]

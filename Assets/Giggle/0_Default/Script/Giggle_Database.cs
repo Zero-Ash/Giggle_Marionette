@@ -84,7 +84,13 @@ public class Giggle_Database : IDisposable
 
     [Header("PINOCCHIO ==========")]
     [SerializeField] Character_Data Pinocchio_data;
+
     [SerializeField] List<Giggle_Character.Skill> Pinocchio_skills;
+
+    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeAttacks;
+    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeDefences;
+    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeSupports;
+
     [SerializeField] bool Pinocchio_isOpen;
 
     ////////// Getter & Setter          //////////
@@ -93,7 +99,7 @@ public class Giggle_Database : IDisposable
         return Pinocchio_isOpen;
     }
 
-    //
+    // Pinocchio_data
     object Pinocchio_GetDataFromId(params object[] _args)
     {
         Giggle_Character.Database res = Character_empty;
@@ -121,7 +127,7 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
-    //
+    // Pinocchio_skills
     object Pinocchio_GetSkillFromId(params object[] _args)
     {
         Giggle_Character.Skill res = null;
@@ -138,22 +144,42 @@ public class Giggle_Database : IDisposable
             }
         }
 
-        // 찾고자 하는 캐릭터가 존재하는가?
-        //if(res.Equals(Character_empty))
-        //{
-        //    if(Pinocchio_isOpen)
-        //    {
-        //        IEnumerator coroutine = Pinocchio_LoadData__Coroutine();
-        //        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
-        //    }
-        //}
+        //
+        return res;
+    }
+
+    // Pinocchio_attributeAttacks
+    object Pinocchio_GetAttributeAttack(params object[] _args)
+    {
+        return Pinocchio_attributeAttacks;
+    }
+
+    object Pinocchio_GetAttributeAttackFromId(params object[] _args)
+    {
+        Giggle_Character.Attribute res = null;
+
+        //
+        int id = (int)_args[0];
+
+        for(int for0 = 0; for0 < Pinocchio_attributeAttacks.Count; for0++)
+        {
+            if(Pinocchio_attributeAttacks[for0].Basic_VarId.Equals(id))
+            {
+                res = Pinocchio_attributeAttacks[for0];
+                break;
+            }
+        }
 
         //
         return res;
     }
+
+    // Pinocchio_attributeDefences
+    // Pinocchio_attributeSupports
     
     ////////// Method                   //////////
 
+    // Pinocchio_LoadData__Coroutine
     IEnumerator Pinocchio_LoadData__Coroutine()
     {
         Pinocchio_isOpen = false;
@@ -271,6 +297,86 @@ public class Giggle_Database : IDisposable
                                 }
                             }
 
+                            phase = 300;
+                        };
+                    }
+                    break;
+                // 특성
+                case 300:
+                    {
+                        phase = 301;
+                        
+                        if(Pinocchio_attributeAttacks == null)
+                        {
+                            Pinocchio_attributeAttacks = new List<Giggle_Character.Attribute>();
+                        }
+
+                        if(Pinocchio_attributeDefences == null)
+                        {
+                            Pinocchio_attributeDefences = new List<Giggle_Character.Attribute>();
+                        }
+
+                        if(Pinocchio_attributeSupports == null)
+                        {
+                            Pinocchio_attributeSupports = new List<Giggle_Character.Attribute>();
+                        }
+
+                        Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_ATTRIBUTE_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["attribute_id"]);
+
+                                int attributeClass = id / 1000;
+                                attributeClass %= 10;
+
+                                switch(attributeClass)
+                                {
+                                    case 1: { Pinocchio_attributeAttacks.Add(   new Giggle_Character.Attribute(data[for0]));    }   break;
+                                    case 2: { Pinocchio_attributeDefences.Add(  new Giggle_Character.Attribute(data[for0]));    }   break;
+                                    case 3: { Pinocchio_attributeSupports.Add(  new Giggle_Character.Attribute(data[for0]));    }   break;
+                                }
+                            }
+
+                            phase = 302;
+                        };
+                    }
+                    break;
+                // 스킬 레벨
+                case 302:
+                    {
+                        phase = 303;
+
+                        Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_ATTRIBUTE_LV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["cha_attribute_id"]);
+
+                                int attributeClass = id / 1000;
+                                attributeClass %= 10;
+
+                                List<Giggle_Character.Attribute> list = Pinocchio_attributeAttacks;
+                                switch(attributeClass)
+                                {
+                                    case 2: { list = Pinocchio_attributeDefences;   }   break;
+                                    case 3: { list = Pinocchio_attributeSupports;   }   break;
+                                }
+
+                                for(int for1 = 0; for1 < list.Count; for1++)
+                                {
+                                    if(list[for1].Basic_VarId.Equals(id))
+                                    {
+                                        list[for1].Basic_AddLv(data[for0]);
+                                        break;
+                                    }
+                                }
+                            }
+
                             Pinocchio_isOpen = true;
                             phase = -1;
                         };
@@ -293,8 +399,10 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_IS_OPEN,   Pinocchio_GetIsOpen );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,  Pinocchio_GetDataFromId     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID, Pinocchio_GetSkillFromId    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,              Pinocchio_GetDataFromId             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,             Pinocchio_GetSkillFromId            );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK,          Pinocchio_GetAttributeAttack        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK_FROM_ID,  Pinocchio_GetAttributeAttackFromId  );
     }
     
     #endregion
