@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90a19f553d6974950a8816975816bcbd
+    m_Address: PINOCCHIO/CSV_ABILITY_PROBABILITY
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a01b4b8383221490990dd1d5061632d2
     m_Address: ITEM/ARMOR_CSV_LIST
     m_ReadOnly: 0
@@ -87,6 +92,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c31f98823e6f64687b4c5d6a865967d7
     m_Address: CHARACTER/FIRE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4f51e9d416bf40a792224d1df830e36
+    m_Address: PINOCCHIO/CSV_ABILITY_LIST
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

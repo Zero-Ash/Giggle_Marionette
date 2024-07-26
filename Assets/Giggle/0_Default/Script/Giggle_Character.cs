@@ -1033,6 +1033,156 @@ namespace Giggle_Character
     
     #endregion
 
+    #region ABILITY
+
+    [Serializable]
+    public class Ability : IDisposable
+    {
+        [SerializeField] List<AbilityClass> Basic_classList;
+
+        ////////// Getter & Setter          //////////
+        //
+        public AbilityClass Basic_GetListFromCount(int _count)  { return Basic_classList[_count];   }
+        public AbilityClass Basic_GetRandomData
+        {
+            get
+            {
+                return Basic_classList[UnityEngine.Random.Range(0, Basic_classList.Count)];
+            }
+        }
+
+        public int          Basic_VarListCount                  { get { return Basic_classList.Count;   }   }
+
+        ////////// Method                   //////////
+        public void Basic_Add(Dictionary<string, string> _data)
+        {
+            Basic_classList.Add(new AbilityClass(_data));
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        public Ability()
+        {
+            if(Basic_classList == null)
+            {
+                Basic_classList = new List<AbilityClass>();
+            }
+        }
+
+        public void Dispose()
+        {
+            
+        }
+    }
+
+    [Serializable]
+    public class AbilityClass : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] string Basic_name;
+
+        [SerializeField] float  Basic_minValue;
+        [SerializeField] float  Basic_maxValue;
+
+        ////////// Getter & Setter          //////////
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        public float    Basic_VarMinValue   { get { return Basic_minValue;  }   }
+        public float    Basic_VarMaxValue   { get { return Basic_maxValue;  }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public AbilityClass(Dictionary<string, string> _data)
+        {
+            Basic_id = int.Parse(_data["ability_id"]);
+
+            Basic_name = _data["cha_ability_name"];
+
+            Basic_minValue = int.Parse(_data["cha_ability_increase_min"]);
+            Basic_maxValue = int.Parse(_data["cha_ability_increase_max"]);
+        }
+
+        public void Dispose()
+        {
+            
+        }
+    }
+
+    public enum Ability_Probability_GRADE
+    {
+        E   = 0,
+        D,
+        C,
+        B,
+        A,
+        S,
+        SS,
+        SSS
+    }
+
+    [Serializable]
+    public class Ability_Probability : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+        
+        [SerializeField] List<int>  Basic_percentage;
+
+        ////////// Getter & Setter          //////////
+        //
+        public int Basic_VarLevel
+        {
+            get
+            {
+                return Basic_id % 100;
+            }
+        }
+
+        public int  Basic_GetPercentageFromCount(int _count)    { return Basic_percentage[_count];  }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        
+        //
+        public Ability_Probability(Dictionary<string, string> _data)
+        {
+            // Basic_id
+            Basic_id = int.Parse(_data["abilityLv"]);
+
+            // Basic_percentage
+            if(Basic_percentage == null)        { Basic_percentage = new List<int>();   }
+            while(Basic_percentage.Count < 8)   { Basic_percentage.Add(0);              }
+
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.E     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.D     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.C     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.B     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.A     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.S     );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.SS    );
+            Ability_Probability__Grade(_data,   Ability_Probability_GRADE.SSS   );
+        }
+
+        void Ability_Probability__Grade(
+            Dictionary<string, string> _data,
+            //
+            Ability_Probability_GRADE _grade)
+        {
+            Basic_percentage[(int)_grade] = int.Parse(_data["cha_ability_" + _grade.ToString()]);
+        }
+
+        //
+        public void Dispose()
+        {
+            
+        }
+    }
+
+    #endregion
+
     #region SAVE
     
     [Serializable]

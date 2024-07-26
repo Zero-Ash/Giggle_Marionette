@@ -87,6 +87,34 @@ public class Giggle_ScriptBridge
         DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK_FROM_ID,
 
         /// <summary>
+        /// 재능 리스트<br/>
+        /// 매개변수 : int - grade<br/>
+        /// return type : Giggle_Character.Ability
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_ABILITYS_FROM_GRADE,
+
+        /// <summary>
+        /// 등급 내 재능 무작위 리턴<br/>
+        /// 매개변수 : int - grade<br/>
+        /// return type : Giggle_Character.AbilityClass
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_ABILITY_RANDOM_FROM_GRADE,
+
+        /// <summary>
+        /// 재능 가져오기<br/>
+        /// 매개변수 : int - id, int - grade<br/>
+        /// return type : Giggle_Character.AbilityClass
+        /// </summary>
+        DATABASE__PINOCCHIO__ABILITY_GET_ABILITY_FROM_ELEMENT,
+
+        /// <summary>
+        /// 재능 확률 리스트<br/>
+        /// 매개변수 : int - level<br/>
+        /// return type : Giggle_Character.Ability_Probability
+        /// </summary>
+        DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,
+
+        /// <summary>
         /// 캐릭터 데이터의 개방 여부<br/>
         /// 매개변수<br/>
         /// return type : bool
@@ -172,6 +200,48 @@ public class Giggle_ScriptBridge
         PLAYER__PINOCCHIO__EUIPMENT_ITEM,
 
         /// <summary>
+        /// 공격 특성 가져오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : Giggle_Player.Pinocchio_Skill
+        /// </summary>
+        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,
+
+        /// <summary>
+        /// 공격 특성 가져오기<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP,
+
+        /// <summary>
+        /// 플레이어 재능 가져오기<br/>
+        /// 매개변수 : int - 카운트<br/>
+        /// return type : Giggle_Player.Pinocchio_Ability
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_GET_ABILITY_FROM_COUNT,
+
+        /// <summary>
+        /// 플레이어 재능 갯수<br/>
+        /// 매개변수 : <br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_GET_ABILITYS_COUNT,
+
+        /// <summary>
+        /// 플레이어 재능 레벨<br/>
+        /// 매개변수 : <br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_GET_LEVEL,
+
+        /// <summary>
+        /// 플레이어 재능 변경<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_CHANGE,
+
+        /// <summary>
         /// 마리오네트 추가<br/>
         /// 매개변수 : int - 캐릭터 id<br/>
         /// return type : 
@@ -213,20 +283,6 @@ public class Giggle_ScriptBridge
         /// </summary>
         PLAYER__ITEM__GET_ITEM_LIST,
 
-        /// <summary>
-        /// 공격 특성 가져오기<br/>
-        /// 매개변수 : <br/>
-        /// return type : Giggle_Player.Pinocchio_Skill
-        /// </summary>
-        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,
-
-        /// <summary>
-        /// 공격 특성 가져오기<br/>
-        /// 매개변수 : int - id<br/>
-        /// return type : 
-        /// </summary>
-        PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP
-        
         #endregion
     }
 
