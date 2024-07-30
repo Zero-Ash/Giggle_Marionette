@@ -115,6 +115,13 @@ public class Giggle_ScriptBridge
         DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,
 
         /// <summary>
+        /// 유물 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : 
+        /// </summary>
+        DATABASE__PINOCCHIO__RELIC_VAR_DATA_FROM_ID,
+
+        /// <summary>
         /// 캐릭터 데이터의 개방 여부<br/>
         /// 매개변수<br/>
         /// return type : bool
@@ -240,6 +247,34 @@ public class Giggle_ScriptBridge
         /// return type : 
         /// </summary>
         PLAYER__PINOCCHIO__ABILITY_CHANGE,
+
+        /// <summary>
+        /// 유물 리스트<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Player.Pinocchio_Relic)
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_VAR_RELICS,
+
+        /// <summary>
+        /// 유물 장착 리스트<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Player.Pinocchio_RelicSlot)
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOTS,
+
+        /// <summary>
+        /// 유물 색상 체크<br/>
+        /// 매개변수 : int - 슬롯 번호, int - 슬롯 번호<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_VAR_SLOTS_COLOR_IS_SAME,
+
+        /// <summary>
+        /// 유물 변경<br/>
+        /// 매개변수 : int - 인벤토리 번호, int - 슬롯 번호<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_SLOT_CHANGE,
 
         /// <summary>
         /// 마리오네트 추가<br/>

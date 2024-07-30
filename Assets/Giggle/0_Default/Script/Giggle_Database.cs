@@ -94,6 +94,8 @@ public class Giggle_Database : IDisposable
     [SerializeField] List<Giggle_Character.Ability>             Pinocchio_abilitys;
     [SerializeField] List<Giggle_Character.Ability_Probability> Pinocchio_abilityProbabilitys;
 
+    [SerializeField] List<Giggle_Character.Relic>   Pinocchio_relics;
+
     [SerializeField] bool Pinocchio_isOpen;
 
     ////////// Getter & Setter          //////////
@@ -236,6 +238,31 @@ public class Giggle_Database : IDisposable
         //
         return Pinocchio_abilityProbabilitys[level - 1];
     }
+
+    object Pinocchio_RelicGetDataFromId(params object[] _args)
+    {
+        int id = (int)_args[0];
+
+        //
+        Giggle_Character.Relic res = null;
+
+        for(int for0 = 0; for0 < Pinocchio_relics.Count; for0++)
+        {
+            if(Pinocchio_relics[for0].Basic_VarId.Equals(id))
+            {
+                res = Pinocchio_relics[for0];
+                break;
+            }
+        }
+
+        if(res == null)
+        {
+            res = new Giggle_Character.Relic();
+        }
+
+        //
+        return res;
+    }
     
     ////////// Method                   //////////
 
@@ -311,6 +338,8 @@ public class Giggle_Database : IDisposable
                     }
                     break;
                 // 스킬
+                #region SKILL
+
                 // 리스트
                 case 200:
                     {
@@ -334,7 +363,7 @@ public class Giggle_Database : IDisposable
                         };
                     }
                     break;
-                // 스킬 레벨
+                // 레벨
                 case 202:
                     {
                         phase = 203;
@@ -361,6 +390,8 @@ public class Giggle_Database : IDisposable
                         };
                     }
                     break;
+                
+                #endregion
                 // 특성
                 case 300:
                     {
@@ -442,6 +473,8 @@ public class Giggle_Database : IDisposable
                     }
                     break;
                 // 재능
+                #region ABILITY
+
                 case 400:
                     {
                         phase = 401;
@@ -494,11 +527,63 @@ public class Giggle_Database : IDisposable
                                 Pinocchio_abilityProbabilitys[element.Basic_VarLevel - 1] = element;
                             }
 
-                            phase = 404;
+                            phase = 500;
                         };
                     }
                     break;
-                case 404:
+
+                #endregion
+                // 유물
+                // 목록
+                case 500:
+                    {
+                        phase = 501;
+
+                        if(Pinocchio_relics == null)
+                        {
+                            Pinocchio_relics = new List<Giggle_Character.Relic>();
+                        }
+
+                        Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_RELIC_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Pinocchio_relics.Add(new Giggle_Character.Relic(data[for0]));
+                            }
+
+                            phase = 502;
+                        };
+                    }
+                    break;
+                case 502:
+                    {
+                        phase = 503;
+
+                        Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_RELIC_LV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["cha_relic_id"]);
+
+                                for(int for1 = 0; for1 < Pinocchio_relics.Count; for1++)
+                                {
+                                    if(Pinocchio_relics[for1].Basic_VarId.Equals(id))
+                                    {
+                                        Pinocchio_relics[for1].Basic_SetLvList(data[for0]);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            phase = 504;
+                        };
+                    }
+                    break;
+                case 504:
                     {
                         Pinocchio_isOpen = true;
                         phase = -1;
@@ -529,6 +614,7 @@ public class Giggle_Database : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ABILITY_RANDOM_FROM_GRADE,         Pinocchio_GetAbilityRandomFromGrade         );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_ABILITY_FROM_ELEMENT,      Pinocchio_GetAbilityFromElement             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,    Pinocchio_AbilityGetProbabilityFromLevel    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__RELIC_VAR_DATA_FROM_ID,                Pinocchio_RelicGetDataFromId                );
     }
     
     #endregion

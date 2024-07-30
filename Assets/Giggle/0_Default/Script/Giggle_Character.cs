@@ -1183,6 +1183,138 @@ namespace Giggle_Character
 
     #endregion
 
+    #region RELIC
+
+    public enum Relic_COLOR
+    {
+        BLACK = 1,
+        WHITE,
+
+        TOTAL
+    }
+
+    public enum Relic_CLASS
+    {
+        NORMAL = 1,
+        RARE
+    }
+
+    [Serializable]
+    public class Relic : IDisposable
+    {
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] string Basic_name;
+
+        [SerializeField] Relic_COLOR    Basic_color;
+        [SerializeField] Relic_CLASS    Basic_class;
+        [SerializeField] int            Basic_index;
+
+        [SerializeField] List<RelicLv>  Basic_lvs;
+
+        ////////// Getter & Setter          //////////
+        //
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        public Relic_COLOR  Basic_VarColor  { get { return Basic_color; }   }
+
+        ////////// Method                   //////////
+        public void Basic_SetLvList(Dictionary<string, string> _data)
+        {
+            if(Basic_lvs == null)
+            {
+                Basic_lvs = new List<RelicLv>();
+            }
+
+            Basic_lvs.Add(new RelicLv(_data));
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        public Relic()
+        {
+            Basic_id = -1;
+        }
+
+        public Relic(Dictionary<string, string> _data)
+        {
+            Basic_id = int.Parse(_data["relic_id"]);
+
+            Basic_name = _data["cha_relic_name"];
+
+            Basic_color = (Relic_COLOR) int.Parse(_data["cha_relic_color"]);
+            Basic_class = (Relic_CLASS) int.Parse(_data["cha_relic_class"]);
+            Basic_index =               int.Parse(_data["cha_relic_index"]);
+        }
+        
+        //
+        public void Dispose()
+        {
+
+        }
+    
+    }
+
+    [Serializable]
+    public class RelicLv : IDisposable
+    {
+        public class Material : IDisposable
+        {
+            [SerializeField] int    Basic_id;
+            [SerializeField] int    Basic_value;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            ////////// Constructor & Destroyer  //////////
+            
+            public Material(Dictionary<string, string> _data, int _count)
+            {
+                string value = (_count / 10).ToString() + (_count % 10).ToString();
+                Basic_id    = int.Parse(_data["relic_LvMaterials_" + value]);
+                Basic_value = int.Parse(_data["Materials_Value_"   + value]);
+            }
+
+            public void Dispose()
+            {
+
+            }
+        }
+
+        [SerializeField] int    Basic_id;
+
+        [SerializeField] List<Material> Basic_materials;
+
+        ////////// Getter & Setter          //////////
+        //
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public RelicLv(Dictionary<string, string> _data)
+        {
+            Basic_id = int.Parse(_data["relicLv_id"]);
+
+            if(Basic_materials == null)
+            {
+                Basic_materials = new List<Material>();
+            }
+            Basic_materials.Add(new Material(_data, 1));
+            Basic_materials.Add(new Material(_data, 2));
+        }
+        
+        public void Dispose()
+        {
+
+        }
+    
+    }
+
+    #endregion
+
     #region SAVE
     
     [Serializable]
