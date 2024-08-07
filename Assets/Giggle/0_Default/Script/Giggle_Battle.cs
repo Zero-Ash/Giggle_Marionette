@@ -182,9 +182,9 @@ public class Giggle_Battle : IDisposable
         while(whileCount < formationList[formationSelect].Basic_VarFormation.Count)
         {
             int characterId = formationList[formationSelect].Basic_VarFormation[whileCount];
-            if(characterId > 0)
+            if(characterId >= 0)
             {
-                characterId -= 1;
+                //characterId -= 1;
                 for(int for0 = 0; for0 < marionetteList.Count; for0++)
                 {
                     if(marionetteList[for0].Basic_VarInventoryId.Equals(characterId))
@@ -259,7 +259,7 @@ public class Giggle_Battle : IDisposable
             {
                 switch(formationId)
                 {
-                    case 0:
+                    case -2:
                         {
                             data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                                 Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,

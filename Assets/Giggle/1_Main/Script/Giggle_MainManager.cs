@@ -41,7 +41,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         public void Basic_Init()
         {
             Pinocchio_data.Basic_Init();
-            Marionette_Init();
+            Marionette_data.Basic_Init();
         }
         
         #region AREA4
@@ -98,7 +98,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         void Area7_MarionetteOn()
         {
-            Marionette_Active();
+            Marionette_data.Basic_Active();
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -842,8 +842,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             case "AREA4":   { UI_basicData.Area4_BtnClick(names);   }   break;
             case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
             //
-            case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names); }   break;
-            case "MARIONETTE":  { UI_basicData.Marionette_BtnClick(names);  }   break;
+            case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
+            case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;
         }
     }
     

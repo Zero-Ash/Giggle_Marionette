@@ -277,18 +277,25 @@ public class Giggle_ScriptBridge
         PLAYER__PINOCCHIO__RELIC_SLOT_CHANGE,
 
         /// <summary>
-        /// 마리오네트 추가<br/>
-        /// 매개변수 : int - 캐릭터 id<br/>
-        /// return type : 
-        /// </summary>
-        PLAYER__MARIONETTE__ADD,
-
-        /// <summary>
         /// 마리오네트 리스트 가져오기<br/>
         /// 매개변수 : <br/>
         /// return type : List(Giggle_Character.Save)
         /// </summary>
         PLAYER__MARIONETTE__GET_LIST,
+
+        /// <summary>
+        /// 마리오네트 데이터 가져오기<br/>
+        /// 매개변수 : int - inventoryId <br/>
+        /// return type : Giggle_Character.Save
+        /// </summary>
+        PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
+
+        /// <summary>
+        /// 마리오네트 추가<br/>
+        /// 매개변수 : int - 캐릭터 id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__MARIONETTE__ADD,
 
         /// <summary>
         /// 마리오네트 리스트 가져오기<br/>
@@ -305,11 +312,18 @@ public class Giggle_ScriptBridge
         PLAYER__FORMATION__GET_FORMATION_LIST,
 
         /// <summary>
-        /// 마리오네트 리스트 가져오기<br/>
-        /// 매개변수 : int - 진영 번호<br/>
+        /// 선택한 진영 가져오기<br/>
+        /// 매개변수 :<br/>
         /// return type : List(int)
         /// </summary>
-        PLAYER__FORMATION__GET_FORMATION_FROM_COUNT,
+        PLAYER__FORMATION__GET_SELECT_FORMATION,
+
+        /// <summary>
+        /// 진영 위치 변경<br/>
+        /// 매개변수 : int - 마리오네트 인벤토르 id, int - 배치할 자리<br/>
+        /// return type :
+        /// </summary>
+        PLAYER__FORMATION__FORMATION_SETTING,
 
         /// <summary>
         /// 아이템 리스트 가져오기<br/>

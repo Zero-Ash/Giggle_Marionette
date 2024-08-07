@@ -755,6 +755,31 @@ public class Giggle_Player : IDisposable
         return Marionette_list;
     }
 
+    object Marionette_GetDataFromInventoryId(params object[] _args)
+    {
+        int id = (int)_args[0];
+
+        //
+        Giggle_Character.Save res = null;
+
+        for(int for0 = 0; for0 < Marionette_list.Count; for0++)
+        {
+            if(Marionette_list[for0].Basic_VarInventoryId.Equals(id))
+            {
+                res = Marionette_list[for0];
+                break;
+            }
+        }
+
+        if(res == null)
+        {
+            res = new Giggle_Character.Save(-1);
+        }
+
+        //
+        return res;
+    }
+
     ////////// Method                   //////////
     
     // Marionette_Add
@@ -795,7 +820,8 @@ public class Giggle_Player : IDisposable
 
         Marionette_Add(11001011);
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,   Marionette_GetList  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList                  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,    Marionette_Add__Script  );
     }
@@ -827,7 +853,7 @@ public class Giggle_Player : IDisposable
             {
                 Basic_formation.Add(-1);
             }
-            Basic_formation[4] = 0;
+            Basic_formation[4] = -2;
         }
     }
     
@@ -842,16 +868,37 @@ public class Giggle_Player : IDisposable
     // Formation_list
     object Formation_GetFormationList(params object[] _args)    { return Formation_list;    }
 
-    object Formation_GetFormationFromCount(params object[] _args)
+    object Formation_GetSelectFormation(params object[] _args)
     {
-        int count = (int)_args[0];
-
         //
-        return Formation_list[count].Basic_VarFormation;
+        return Formation_list[Formation_select].Basic_VarFormation;
     }
 
     ////////// Method                   //////////
     
+    object Formation_FormationSetting(params object[] _args)
+    {
+        int id          = (int)_args[0];
+        int formation   = (int)_args[1];
+
+        //
+        // 배치되어 있다면 교체
+        for (int for0 = 0; for0 < Formation_list[Formation_select].Basic_VarFormation.Count; for0++)
+        {
+            if(Formation_list[Formation_select].Basic_VarFormation[for0].Equals(id))
+            {
+                Formation_list[Formation_select].Basic_VarFormation[for0] = Formation_list[Formation_select].Basic_VarFormation[formation];
+                break;
+            }
+        }
+
+        // 자리 갱신
+        Formation_list[Formation_select].Basic_VarFormation[formation] = id;
+
+        //
+        return true;
+    }
+
     ////////// Constructor & Destroyer  //////////
     void Formation_Contructor()
     {
@@ -865,9 +912,11 @@ public class Giggle_Player : IDisposable
             Formation_list.Add(new Formation());
         }
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT,                  Formation_GetSelect             );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST,          Formation_GetFormationList      );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_FROM_COUNT,    Formation_GetFormationFromCount );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT,              Formation_GetSelect             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST,      Formation_GetFormationList      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION,    Formation_GetSelectFormation    );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,       Formation_FormationSetting      );
     }
 
     #endregion
