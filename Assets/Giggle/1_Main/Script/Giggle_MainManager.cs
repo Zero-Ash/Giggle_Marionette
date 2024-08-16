@@ -32,6 +32,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     public partial class UI_MainBasicData : UI_BasicData
     {
         [SerializeField] Giggle_MainManager Basic_manager;
+        [SerializeField] Giggle_MainManager_Marionette Basic_marionetteManager;
 
         ////////// Getter & Setter          //////////
 
@@ -41,7 +42,6 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         public void Basic_Init()
         {
             Pinocchio_data.Basic_Init();
-            Marionette_data.Basic_Init();
         }
         
         #region AREA4
@@ -98,470 +98,13 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         void Area7_MarionetteOn()
         {
-            Marionette_data.Basic_Active();
+            Basic_marionetteManager.Basic_Active();
         }
 
         ////////// Constructor & Destroyer  //////////
 
         #endregion
 
-        #region MARIONETTE
-
-        [Header("MARIONETTE ==================================================")]
-        [SerializeField] GameObject Marionette_ui;
-
-        // Area1
-        [SerializeField] Giggle_UI.MenuBar  Marionette_menuBar;
-
-        // Marionette
-        [SerializeField] List<Giggle_Character.Save>    Marionette_marionetteList;
-        [SerializeField] int                            Marionette_formationSelect;
-        [SerializeField] List<Giggle_Player.Formation>  Marionette_formationList;
-
-        ////////// Getter & Setter          //////////
-        public List<Giggle_Character.Save> Marionette_VarMarionetteList { get { return Marionette_marionetteList;   }   }
-
-        ////////// Method                   //////////
-
-        public void Marionette_BtnClick(string[] _names)
-        {
-            switch(_names[2])
-            {
-                case "CLOSE":       { Marionette_Close();                           }   break;
-                case "MENU_BAR":    { Marionette_SelectMenu(int.Parse(_names[3]));  }   break;
-                //
-                case "FORMATION__PRESET":       { MarionetteFormation_Preset(int.Parse(_names[3]));     }   break;
-                case "FORMATION__TILE":         { MarionetteFormation_Tile(int.Parse(_names[3]));       }   break;
-                case "FORMATION__MENU_BAR":     { MarionetteFormation_SelectMenu(int.Parse(_names[3])); }   break;
-                case "FORMATION__SCROLL_VIEW":  { MarionetteFormation_ClickBtn(int.Parse(_names[3]));   }   break;
-                //
-                //case "SKIN_MENU_BAR":   { Marionette_SkinSelectMenu(int.Parse(_names[3]));  }   break;
-            }
-        }
-
-        void Marionette_Close()
-        {
-            Marionette_ui.SetActive(false);
-
-            //
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.PLAYER_SETTING_START);
-        }
-
-        void Marionette_SelectMenu(int _count)
-        {
-            Marionette_menuBar.Basic_SelectMenu(_count);
-
-            switch(_count)
-            {
-                case 0: { MarionetteFormation_Select(); }   break;
-            }
-        }
-
-        //
-        void Marionette_Active()
-        {
-            //
-            Marionette_marionetteList
-                = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
-
-            Marionette_formationSelect
-                = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT);
-
-            Marionette_formationList
-                = (List<Giggle_Player.Formation>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST);
-
-            Marionette_SelectMenu(0);
-            MarionetteFormation_SelectMenu(0);
-
-            Marionette_ui.SetActive(true);
-        }
-
-        ////////// Constructor & Destroyer  //////////
-        void Marionette_Init()
-        {
-            Marionette_ui.SetActive(false);
-            Marionette_menuBar.Basic_Init();
-            for(int for0 = 0; for0 < Marionette_menuBar.Basic_VarListCount; for0++)
-            {
-                Marionette_menuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/MENU_BAR/" + for0.ToString();
-            }
-
-            MarionetteFormation_Init();
-        }
-
-            #region MARIONETTE_FORMATION
-
-            [Serializable]
-            public class MenuBar_MarionetteFormation : Giggle_UI.MenuBar
-            {
-                [SerializeField] Giggle_MainManager Basic_manager;
-
-                ////////// Getter & Setter          //////////
-
-                ////////// Method                   //////////
-
-                public override void Basic_SelectMenu(int _count)
-                {
-                    for(int for0 = 0; for0 < Basic_list.Count; for0++)
-                    {
-                        bool isClick = for0.Equals(_count);
-
-                        Basic_list[for0].gameObject.SetActive(!isClick);
-                    }
-
-                    //
-                    Basic_manager.UI_VarBasicData.MarionetteFormation_VarScrollView.Basic_SelectMenuBar(_count);
-                }
-
-                ////////// Constructor & Destroyer  //////////
-
-            }
-
-            [Serializable]
-            public class ScrollView_MarionetteFormation : Giggle_UI.ScrollView
-            {
-                [SerializeField] Giggle_MainManager Basic_manager;
-
-                ////////// Getter & Setter          //////////
-
-                ////////// Method                   //////////
-
-                protected override void Basic_Init__SetName()
-                {
-                    Basic_list[0].Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/0";
-                    Basic_list[1].Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/1";
-                }
-
-                protected override void Basic_AddList__SetName(Transform _element)
-                {
-                    _element.Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/" + Basic_list.Count;
-                }
-
-                public override void Basic_ClickBtn(int _count)
-                {
-                    // ui 그래픽 갱신
-                    for(int for0 = 0; for0 < Basic_list.Count; for0++)
-                    {
-                        Basic_list[for0].Find("Select").gameObject.SetActive(for0.Equals(_count));
-                    }
-
-                    //
-                    Basic_manager.UI_VarBasicData.MarionetteFormation_VarSelectMarionette = _count + 1;
-                }
-
-                // Basic_SelectMenuBar
-                public void Basic_SelectMenuBar(int _count)
-                {
-                    switch(_count)
-                    {
-                        case 0: { Basic_SelectMenuBar__All();   }   break;
-                        case 1: {   }   break;
-                        case 2: {   }   break;
-                        case 3: {   }   break;
-                    }
-
-                    Basic_ClickBtn(-1);
-                }
-
-                void Basic_SelectMenuBar__All()
-                {
-                    List<Giggle_Character.Save> characterList   = Basic_manager.UI_VarBasicData.Marionette_VarMarionetteList;
-                    
-                    Basic_SelectMenuBar__Check(characterList);
-                }
-
-                void Basic_SelectMenuBar__Check(List<Giggle_Character.Save> _characterList)
-                {
-                    int finalCount = 0;
-                    int whileCount = 0;
-                    while(whileCount < Basic_list.Count)
-                    {
-                        if(whileCount < _characterList.Count)
-                        {
-                            Basic_list[whileCount].gameObject.SetActive(true);
-
-                            // 기존 데이터 날리기
-                            while(Basic_list[whileCount].Find("Obj").childCount > 0)
-                            {
-                                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                                    //
-                                    Basic_list[whileCount].Find("Obj").GetChild(0));
-                            }
-
-                            //
-                            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
-                                //
-                                _characterList[whileCount].Basic_VarDataId,
-                                Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
-                            
-                            finalCount = whileCount;
-                        }
-                        else
-                        {
-                            Basic_list[whileCount].gameObject.SetActive(false);
-                        }
-
-                        //
-                        whileCount++;
-                    }
-
-                    Basic_content.sizeDelta
-                        = new Vector2(
-                            0,
-                            (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + Basic_list[finalCount].localPosition.y);
-
-                    Basic_CheckCover();
-                }
-
-                //
-                public void Basic_CheckCover()
-                {
-                    Giggle_Player.Formation     formation       = Basic_manager.UI_VarBasicData.Marionette_formationList[Basic_manager.UI_VarBasicData.Marionette_formationSelect];
-                    List<Giggle_Character.Save> characterList   = Basic_manager.UI_VarBasicData.Marionette_VarMarionetteList;
-
-                    int whileCount = 0;
-                    while(whileCount < characterList.Count)
-                    {
-                        Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
-                        for(int for0 = 0; for0 < formation.Basic_VarFormation.Count; for0++)
-                        {
-                            if( characterList[whileCount].Basic_VarInventoryId.Equals(
-                                    formation.Basic_VarFormation[for0]))
-                            {
-                                Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
-                                break;
-                            }
-                        }
-
-                        //
-                        whileCount++;
-                    }
-                }
-
-                ////////// Constructor & Destroyer  //////////
-
-            }
-            
-            [Header("FORMATION ==========")]
-            // Area2
-            [SerializeField] Transform       MarionetteFormation_formationParent;
-            [SerializeField] List<Transform> MarionetteFormation_formationList;
-            
-            // Area3
-            [SerializeField] MenuBar_MarionetteFormation    MarionetteFormation_menuBar;
-            [SerializeField] ScrollView_MarionetteFormation MarionetteFormation_scrollView;
-
-            [Header("RUNNING")]
-            [SerializeField] int MarionetteFormation_selectFormation;
-            [SerializeField] int MarionetteFormation_selectMarionette;
-
-            ////////// Getter & Setter          //////////
-            
-            //
-            public ScrollView_MarionetteFormation   MarionetteFormation_VarScrollView   { get { return MarionetteFormation_scrollView;  }   }
-            
-            //
-            public int  Marionette_VarFormationSelect   { get { return Marionette_formationSelect; }   }
-
-            //
-            public List<Giggle_Player.Formation>    Marionette_VarFormationList { get { return Marionette_formationList;    }   }
-
-            //
-            public int  MarionetteFormation_VarSelectMarionette { set { MarionetteFormation_selectMarionette = value;   }   }
-
-            ////////// Method                   //////////
-
-            void MarionetteFormation_Select()
-            {
-                MarionetteFormation_Reset();
-            }
-
-            // MarionetteFormation_Preset
-            void MarionetteFormation_Preset(int _count)
-            {
-                Marionette_formationSelect = _count;
-
-                MarionetteFormation_Reset();
-            }
-
-            // MarionetteFormation_Tile
-            void MarionetteFormation_Tile(int _count)
-            {
-                MarionetteFormation_selectFormation = _count;
-
-                switch(MarionetteFormation_selectMarionette)
-                {
-                    case -1: { MarionetteFormation_Tile__Select(_count);    }   break;
-                    default: { MarionetteFormation_Tile__Change(_count);    }   break;
-                }
-            }
-
-            void MarionetteFormation_Tile__Select(int _count)
-            {
-                for (int for0 = 0; for0 < MarionetteFormation_formationList.Count; for0++)
-                {
-                    MarionetteFormation_formationList[for0].Find("Select").gameObject.SetActive(for0.Equals(_count));
-                }
-
-                //
-                MarionetteFormation_selectFormation = _count;
-                if(!_count.Equals(-1))
-                {
-                    MarionetteFormation_selectMarionette = Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[_count];
-                }
-
-                // UI갱신
-                //MarionetteFormation_Reset();
-            }
-
-            void MarionetteFormation_Tile__Change(int _count)
-            {
-                // 배치되어 있다면 비활성화
-                for (int for0 = 0; for0 < MarionetteFormation_formationList.Count; for0++)
-                {
-                    if(Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[for0].Equals(MarionetteFormation_selectMarionette))
-                    {
-                        Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[for0] = -1;
-                        break;
-                    }
-                }
-
-                // 자리 갱신
-                Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[_count] = MarionetteFormation_selectMarionette;
-
-                // UI갱신
-                MarionetteFormation_Reset();
-            }
-
-            // MarionetteFormation_SelectMenu
-            void MarionetteFormation_SelectMenu(int _count)
-            {
-                MarionetteFormation_menuBar.Basic_SelectMenu(_count);
-            }
-
-            void MarionetteFormation_ClickBtn(int _count)
-            {
-                MarionetteFormation_scrollView.Basic_ClickBtn(_count);
-            }
-
-            void MarionetteFormation_Reset()
-            {
-                MarionetteFormation_scrollView.Basic_ClickBtn(-1);
-                MarionetteFormation_scrollView.Basic_CheckCover();
-                MarionetteFormation_Tile(-1);
-
-                // 타일 처리
-                for(int for0 = 0; for0 < MarionetteFormation_formationList.Count; for0++)
-                {
-                    // 기존 마리오네트 모델링 날리기
-                    while(MarionetteFormation_formationList[for0].Find("Obj").childCount > 0)
-                    {
-                        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                            Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                            MarionetteFormation_formationList[for0].Find("Obj").GetChild(0));
-                    }
-
-                    // 배치된 모델링이 있다면 모델링 배치
-                    int tileId = Marionette_formationList[Marionette_formationSelect].Basic_VarFormation[for0];
-                    if(!tileId.Equals(-1))
-                    {
-                        // 주인공
-                        if(tileId.Equals(0))
-                        {
-
-                        }
-                        else
-                        {
-                            tileId -= 1;
-                            for(int for1 = 0; for1 < Marionette_marionetteList.Count; for1++)
-                            {
-                                if(Marionette_marionetteList[for1].Basic_VarInventoryId.Equals(tileId))
-                                {
-                                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                        Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
-                                        //
-                                        Marionette_marionetteList[for1].Basic_VarDataId,
-                                        MarionetteFormation_formationList[for0].Find("Obj"), -90.0f, 300.0f);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            ////////// Constructor & Destroyer  //////////
-            void MarionetteFormation_Init()
-            {
-                // Area2
-                if(MarionetteFormation_formationList == null)
-                {
-                    MarionetteFormation_formationList = new List<Transform>();
-                }
-
-                int whileCount = 0;
-                while(whileCount < MarionetteFormation_formationParent.childCount)
-                {
-                    Transform for0Child = MarionetteFormation_formationParent.GetChild(whileCount);
-                    for(int for0 = 0; for0 < for0Child.childCount; for0++)
-                    {
-                        MarionetteFormation_formationList.Add(for0Child.GetChild(for0));
-                    }
-
-                    whileCount++;
-                }
-
-                whileCount = 0;
-                while(whileCount < MarionetteFormation_formationList.Count)
-                {
-                    for(int for0 = whileCount; for0 < MarionetteFormation_formationList.Count; for0++)
-                    {
-                        Transform element = MarionetteFormation_formationList[for0];
-                        if(element.name.Equals(whileCount.ToString()))
-                        {
-                            element.Find("Button").name = "Button/MARIONETTE/FORMATION__TILE/" + whileCount;
-                            MarionetteFormation_formationList.RemoveAt(for0);
-                            MarionetteFormation_formationList.Insert(whileCount, element);
-                        }
-                    }
-
-                    whileCount++;
-                }
-
-                // Area3
-                MarionetteFormation_menuBar.Basic_Init();
-                for(int for0 = 0; for0 < MarionetteFormation_menuBar.Basic_VarListCount; for0++)
-                {
-                    MarionetteFormation_menuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/FORMATION__MENU_BAR/" + for0.ToString();
-                }
-
-                MarionetteFormation_scrollView.Basic_Init();
-            }
-
-            #endregion
-
-
-            #region MARIONETTE_INFO
-            
-            [Header("INFO ==========")]
-            [SerializeField] int MarionetteInfo_0;
-            
-            [Header("RUNNING")]
-            [SerializeField] int MarionetteInfo_1;
-
-            ////////// Getter & Setter          //////////
-
-            ////////// Method                   //////////
-            
-            ////////// Constructor & Destroyer  //////////
-            
-            #endregion
-
-        #endregion
     }
 
     [Serializable]
@@ -641,8 +184,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 model.transform.localScale = new Vector3(600, 600, 600);
 
                 Basic_infoName.text      = Basic_character.Basic_VarName;
-                Basic_infoType.text      = Basic_character.Marionette_VarRole.ToString();
-                Basic_infoAttribute.text = Basic_character.Marionette_VarAttribute.ToString();
+                Basic_infoType.text      = Basic_character.Basic_VarCategory.ToString();
+                Basic_infoAttribute.text = Basic_character.Basic_VarAttribute.ToString();
 
                 Basic_statusList[0].text = Basic_character.Basic_GetStatusList(0).Basic_VarAttack.ToString();
                 Basic_statusList[1].text = Basic_character.Basic_GetStatusList(0).Basic_VarDefence.ToString();
@@ -772,7 +315,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             // 가챠 리스트 불러오기
             List<Giggle_Character.Database> list
                 = (List<Giggle_Character.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
                     Giggle_Master.ATTRIBUTE.FIRE.ToString());
             
             for(int for0 = 0; for0 < Gacha_list.Count; for0++)
@@ -843,7 +386,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
             //
             case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
-            case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;
+            //case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;
         }
     }
     

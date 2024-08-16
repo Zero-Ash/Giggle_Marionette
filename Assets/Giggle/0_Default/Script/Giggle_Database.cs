@@ -56,6 +56,67 @@ public class Giggle_Database : IDisposable
 
     #region CHARACTER
 
+    [Serializable]
+    public class Character_Data : IDisposable
+    {
+        [SerializeField] List<Giggle_Character.Database> Basic_characters;
+
+        ////////// Getter & Setter          //////////
+        public Giggle_Character.Database Basic_GetDataFromId(int _id)
+        {
+            Giggle_Character.Database res = null;
+
+            //
+            for(int for0 = 0; for0 < Basic_characters.Count; for0++)
+            {
+                if(Basic_characters[for0].Basic_GetIdIsSame(_id))
+                {
+                    res = Basic_characters[for0];
+                    break;
+                }
+            }
+
+            //
+            return res;
+        }
+
+        public Giggle_Character.Database    Basic_GetDataFromCount(int _count)  { return Basic_characters[_count];  }
+
+        public int                          Basic_VarCount                      { get{ return Basic_characters.Count;   }   }
+
+        public void Basic_SetData(Dictionary<string, string> _data)
+        {
+            Giggle_Character.Database element = null;
+
+            if(_data.ContainsKey("cha_gender"))
+            {
+                element = new Giggle_Character.Database_Pinocchio(_data);
+            }
+            else
+            {
+                element = new Giggle_Character.Database_Marionette(_data);
+            }
+
+            Basic_characters.Add(element);
+        }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Character_Data()
+        {
+            if(Basic_characters == null)
+            {
+                Basic_characters = new List<Giggle_Character.Database>();
+            }
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
+
     [Header("CHARACTER ==================================================")]
     [SerializeField] Giggle_Character.Database Character_empty;
 
@@ -66,18 +127,13 @@ public class Giggle_Database : IDisposable
     ////////// Constructor & Destroyer  //////////
     void Character_Init()
     {
-        Character_isOpen = true;
         if(Character_empty == null)
         {
             Character_empty = new Giggle_Character.Database();
         }
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN,   Character_GetIsOpen );
-
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,          Character_GetDataFromId         );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,  Character_GetDatasFromAttribute );
-
         Pinocchio_Init();
+        Marionette_Init();
     }
 
     #region PINOCCHIO
@@ -94,7 +150,7 @@ public class Giggle_Database : IDisposable
     [SerializeField] List<Giggle_Character.Ability>             Pinocchio_abilitys;
     [SerializeField] List<Giggle_Character.Ability_Probability> Pinocchio_abilityProbabilitys;
 
-    [SerializeField] List<Giggle_Character.Relic>   Pinocchio_relics;
+    [SerializeField] List<Giggle_Item.Relic>   Pinocchio_relics;
 
     [SerializeField] bool Pinocchio_isOpen;
 
@@ -244,7 +300,7 @@ public class Giggle_Database : IDisposable
         int id = (int)_args[0];
 
         //
-        Giggle_Character.Relic res = null;
+        Giggle_Item.Relic res = null;
 
         for(int for0 = 0; for0 < Pinocchio_relics.Count; for0++)
         {
@@ -257,7 +313,7 @@ public class Giggle_Database : IDisposable
 
         if(res == null)
         {
-            res = new Giggle_Character.Relic();
+            res = new Giggle_Item.Relic();
         }
 
         //
@@ -541,7 +597,7 @@ public class Giggle_Database : IDisposable
 
                         if(Pinocchio_relics == null)
                         {
-                            Pinocchio_relics = new List<Giggle_Character.Relic>();
+                            Pinocchio_relics = new List<Giggle_Item.Relic>();
                         }
 
                         Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_RELIC_LIST").Completed
@@ -550,7 +606,7 @@ public class Giggle_Database : IDisposable
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
-                                Pinocchio_relics.Add(new Giggle_Character.Relic(data[for0]));
+                                Pinocchio_relics.Add(new Giggle_Item.Relic(data[for0]));
                             }
 
                             phase = 502;
@@ -621,77 +677,19 @@ public class Giggle_Database : IDisposable
 
     //[Header("CHARACTER ==================================================")]
 
-    [Serializable]
-    public class Character_Data : IDisposable
-    {
-        [SerializeField] List<Giggle_Character.Database> Basic_characters;
+    [SerializeField] Character_Data                     Marionette_data;
+    [SerializeField] List<Giggle_Character.Skill>       Marionette_skills;
+    [SerializeField] List<Giggle_Item.Constellation>    Marionette_constellations;
 
-        ////////// Getter & Setter          //////////
-        public Giggle_Character.Database Basic_GetDataFromId(int _id)
-        {
-            Giggle_Character.Database res = null;
-
-            //
-            for(int for0 = 0; for0 < Basic_characters.Count; for0++)
-            {
-                if(Basic_characters[for0].Basic_GetIdIsSame(_id))
-                {
-                    res = Basic_characters[for0];
-                    break;
-                }
-            }
-
-            //
-            return res;
-        }
-
-        public Giggle_Character.Database    Basic_GetDataFromCount(int _count)  { return Basic_characters[_count];  }
-
-        public int                          Basic_VarCount                      { get{ return Basic_characters.Count;   }   }
-
-        public void Basic_SetData(Dictionary<string, string> _data)
-        {
-            Giggle_Character.Database element = null;
-
-            if(_data.ContainsKey("cha_gender"))
-            {
-                element = new Giggle_Character.Database_Pinocchio(_data);
-            }
-            else
-            {
-                element = new Giggle_Character.Database_Marionette(_data);
-            }
-
-            Basic_characters.Add(element);
-        }
-
-        ////////// Method                   //////////
-
-        ////////// Constructor & Destroyer  //////////
-        public Character_Data()
-        {
-            if(Basic_characters == null)
-            {
-                Basic_characters = new List<Giggle_Character.Database>();
-            }
-        }
-
-        public void Dispose()
-        {
-
-        }
-    }
-
-    [SerializeField] List<Character_Data> Character_datas;
-    [SerializeField] bool Character_isOpen;
+    [SerializeField] bool Marionette_isOpen;
 
     ////////// Getter & Setter          //////////
-    object Character_GetIsOpen(params object[] _args)
+    object Marionette_GetIsOpen(params object[] _args)
     {
-        return Character_isOpen;
+        return Marionette_isOpen;
     }
 
-    object Character_GetDataFromId(params object[] _args)
+    object Marionette_GetDataFromId(params object[] _args)
     {
         Giggle_Character.Database res = Character_empty;
 
@@ -699,21 +697,17 @@ public class Giggle_Database : IDisposable
         int id = (int)_args[0];
 
         // 찾고자 하는 캐릭터가 존재하는가?
-        int attribute = id % 10;
-        if (attribute < Character_datas.Count)
+        res = Marionette_data.Basic_GetDataFromId(id);
+        if(res == null)
         {
-            res = Character_datas[attribute].Basic_GetDataFromId(id);
-            if(res == null)
-            {
-                res = Character_empty;
-            }
+            res = Character_empty;
         }
 
         if(res.Equals(Character_empty))
         {
-            if(Character_isOpen)
+            if(Marionette_isOpen)
             {
-                IEnumerator coroutine = Character_LoadData__Coroutine(attribute);
+                IEnumerator coroutine = Marionette_LoadData__Coroutine();
                 Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
             }
         }
@@ -722,7 +716,7 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
-    object Character_GetDatasFromAttribute(params object[] _args)
+    object Marionette_GetDatasFromAttribute(params object[] _args)
     {
         List<Giggle_Character.Database> res = new List<Giggle_Character.Database>();
 
@@ -731,10 +725,53 @@ public class Giggle_Database : IDisposable
         for(int for0 = 0; for0 < attributes.Length; for0++)
         {
             Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)Enum.Parse(typeof(Giggle_Master.ATTRIBUTE), attributes[for0]);
-            Character_Data data = Character_datas[(int)attribute];
-            for(int for1 = 0; for1 < data.Basic_VarCount; for1++)
+            for(int for1 = 0; for1 < Marionette_data.Basic_VarCount; for1++)
             {
-                res.Add(data.Basic_GetDataFromCount(for1));
+                Giggle_Character.Database data = Marionette_data.Basic_GetDataFromCount(for1);
+                if(data.Basic_VarAttribute.Equals(attribute))
+                {
+                    res.Add(data);
+                }
+            }
+        }
+
+        //
+        return res;
+    }
+
+    object Marionette_GetSkillFromId(params object[] _args)
+    {
+        Giggle_Character.Skill res = null;
+
+        //
+        int id = (int)_args[0];
+        for(int for0 = 0; for0 < Marionette_skills.Count; for0++)
+        {
+            if(Marionette_skills[for0].Basic_VarId.Equals(id))
+            {
+                res = Marionette_skills[for0];
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
+    //
+
+    object Marionette_GetConstellationFromId(params object[] _args)
+    {
+        Giggle_Item.Constellation res = null;
+
+        //
+        int id = (int)_args[0];
+        for(int for0 = 0; for0 < Marionette_constellations.Count; for0++)
+        {
+            if(Marionette_constellations[for0].Basic_VarId.Equals(id))
+            {
+                res = Marionette_constellations[for0];
+                break;
             }
         }
 
@@ -744,9 +781,9 @@ public class Giggle_Database : IDisposable
 
     ////////// Method                   //////////
 
-    IEnumerator Character_LoadData__Coroutine(int _attribute)
+    IEnumerator Marionette_LoadData__Coroutine()
     {
-        Character_isOpen = false;
+        Marionette_isOpen = false;
 
         //
         int phase = 0;
@@ -761,19 +798,13 @@ public class Giggle_Database : IDisposable
                     {
                         phase = 1;
 
-                        while(Character_datas.Count <= _attribute)
-                        {
-                            Character_datas.Add(new Character_Data());
-                        }
-
-                        Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)_attribute;
-                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_LIST").Completed
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
-                                Character_datas[_attribute].Basic_SetData(data[for0]);
+                                Marionette_data.Basic_SetData(data[for0]);
                             }
 
                             phase = 2;
@@ -785,100 +816,26 @@ public class Giggle_Database : IDisposable
                     {
                         phase = 3;
 
-                        Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)_attribute;
-                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_LV").Completed
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_LV").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
                             for(int for0 = 0; for0 < data.Count; for0++)
                             {
                                 int id = int.Parse(data[for0]["cha_id"]);
-                                Character_datas[_attribute].Basic_GetDataFromId(id).Basic_SetStatusList(data[for0]);
+                                Marionette_data.Basic_GetDataFromId(id).Basic_SetStatusList(data[for0]);
                             }
 
                             phase = 100;
                         };
                     }
                     break;
-                // 스킬
-                // 리스트
+                // 캐릭터 모델링
                 case 100:
                     {
                         phase = 101;
 
-                        Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)_attribute;
-                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_SKILL_LIST").Completed
-                        += handle =>
-                        {
-                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
-                            {
-                                int id = int.Parse(data[for0]["cha_id"]);
-                                Character_datas[_attribute].Basic_GetDataFromId(id).Basic_SetSkillList(data[for0]);
-                            }
-
-                            phase = 102;
-                        };
-                    }
-                    break;
-                // 스킬 레벨
-                case 102:
-                    {
-                        phase = 103;
-
-                        Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)_attribute;
-                        Addressables.LoadAssetAsync<TextAsset>("CHARACTER/" + attribute.ToString() + "_CSV_SKILL_LV").Completed
-                        += handle =>
-                        {
-                            List<Giggle_Character.Skill> skills = new List<Giggle_Character.Skill>();
-
-                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
-                            {
-                                int id = int.Parse(data[for0]["cha_skill_id"]);
-
-                                Giggle_Character.Skill whileSkill = null;
-                                while(whileSkill == null)
-                                {
-                                    for(int for1 = 0; for1 < skills.Count; for1++)
-                                    {
-                                        if(skills[for1].Basic_VarId.Equals(id))
-                                        {
-                                            whileSkill = skills[for1];
-                                            break;
-                                        }
-                                    }
-
-                                    if(whileSkill == null)
-                                    {
-                                        for(int for2 = 0; for2 < Character_datas[_attribute].Basic_VarCount; for2++)
-                                        {
-                                            Giggle_Character.Skill element = Character_datas[_attribute].Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id);
-                                            if(element != null)
-                                            {
-                                                skills.Add(Character_datas[_attribute].Basic_GetDataFromCount(for2).Basic_GetSkillListFromId(id));
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        whileSkill.Basic_SetLvList(data[for0]);
-                                    }
-                                }
-                            }
-
-                            phase = 200;
-                        };
-                    }
-                    break;
-                // 캐릭터 모델링
-                case 200:
-                    {
-                        phase = 201;
-
-                        Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)_attribute;
-                        Addressables.LoadAssetAsync<GameObject>("CHARACTER/" + attribute.ToString() + "_MODEL").Completed
+                        Addressables.LoadAssetAsync<GameObject>("MARIONETTE/MODEL").Completed
                         += handle =>
                         {
                             GameObject res = handle.Result;
@@ -888,11 +845,118 @@ public class Giggle_Database : IDisposable
                                 if(child.gameObject.activeSelf)
                                 {
                                     int id = int.Parse(child.name);
-                                    Character_datas[_attribute].Basic_GetDataFromId(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
                                 }
                             }
 
-                            Character_isOpen = true;
+                            phase = 200;
+                        };
+                    }
+                    break;
+                // 스킬
+                // 리스트
+                case 200:
+                    {
+                        phase = 201;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_SKILL_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Marionette_skills.Add(new Giggle_Character.Skill(data[for0]));
+                            }
+
+                            phase = 202;
+                        };
+                    }
+                    break;
+                // 스킬 레벨
+                case 202:
+                    {
+                        phase = 203;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_SKILL_LV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                for(int for1 = 0; for1 < Marionette_skills.Count; for1++)
+                                {
+                                    if(Marionette_skills[for1].Basic_VarId.Equals(int.Parse(data[for0]["cha_skill_id"])))
+                                    {
+                                        Marionette_skills[for1].Basic_SetLvList(data[for0]);
+                                    }
+                                }
+                            }
+
+                            phase = 300;
+                        };
+                    }
+                    break;
+                // 별자리
+                case 300:
+                    {
+                        phase = 301;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Marionette_constellations.Add(new Giggle_Item.Constellation(data[for0]));
+                            }
+
+                            phase = 302;
+                        };
+                    }
+                    break;
+                case 302:
+                    {
+                        phase = 303;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_VALUE").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                for(int for1 = 0; for1 < Marionette_constellations.Count; for1++)
+                                {
+                                    if(Marionette_constellations[for1].Basic_SettingValue(data[for0]))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            phase = 304;
+                        };
+                    }
+                    break;
+                case 304:
+                    {
+                        phase = 305;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_VALUE_LV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                for(int for1 = 0; for1 < Marionette_constellations.Count; for1++)
+                                {
+                                    if(Marionette_constellations[for1].Basic_SettingLv(data[for0]))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            Marionette_isOpen = true;
                             phase = -1;
                         };
                     }
@@ -904,6 +968,21 @@ public class Giggle_Database : IDisposable
     }
 
     ////////// Constructor & Destroyer  //////////
+    void Marionette_Init()
+    {
+        Marionette_isOpen = true;
+
+        Marionette_data             = new Character_Data();
+        Marionette_skills           = new List<Giggle_Character.Skill>();
+        Marionette_constellations   = new List<Giggle_Item.Constellation>();
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN,  Marionette_GetIsOpen );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,             Marionette_GetDataFromId            );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,     Marionette_GetDatasFromAttribute    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,            Marionette_GetSkillFromId           );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,    Marionette_GetConstellationFromId   );
+    }
 
     #endregion
 

@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 8b90b6efd79344dd3b08c6c01f3c9dae
   m_SerializeEntries:
+  - m_GUID: 019f25fe566c64ba88a1a5e2ca7b201e
+    m_Address: MARIONETTE/CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 02c3ee5ad57c54904aae1630a0c0bdff
     m_Address: PINOCCHIO/CSV_RELIC_LV
     m_ReadOnly: 0
@@ -45,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3adeb85777574405498c6f40e7b1906e
+    m_Address: MARIONETTE/CSV_SKILL_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3b3019f1db9ed4c4c9d5540ebcb9a8b9
     m_Address: ITEM/ACCESSORY_CSV_LIST
     m_ReadOnly: 0
@@ -65,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d387675310f74708a0ee5e7364bad73
+    m_Address: MARIONETTE/CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e418c25b3239425c8f42116b649e63b
     m_Address: ITEM/HELMET_CSV_LIST
     m_ReadOnly: 0
@@ -75,13 +90,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7570e1fcfd1b94554b0c9e7810c2fcc5
+    m_Address: MARIONETTE/CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78f5aea19abf945feb3c4af35647505c
+    m_Address: MARIONETTE/CONSTELLATION__CSV_VALUE
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7ad88b9d28db94b49b6a4afddb604ec3
     m_Address: PINOCCHIO/CSV_SKILL_LV
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b72d9b1d9db14d64a85ba97ee5a732b
-    m_Address: CHARACTER/FIRE_MODEL
+    m_Address: MARIONETTE/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87e2c679d78b1430aa5bae5bdda2c626
+    m_Address: CHARACTER/CONSTELLATION_UI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -95,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a85dd4dafb3654f0a8ae8a0029cba3d7
+    m_Address: MARIONETTE/CONSTELLATION__CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bdeea94c4e5874a3d833d3b888f0e7e6
     m_Address: PINOCCHIO/CSV_ATTRIBUTE_LV
     m_ReadOnly: 0
@@ -102,6 +137,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c31f98823e6f64687b4c5d6a865967d7
     m_Address: CHARACTER/FIRE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cde0d8a1834a6492792a25835c05ceaf
+    m_Address: MARIONETTE/CONSTELLATION__CSV_VALUE_LV
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

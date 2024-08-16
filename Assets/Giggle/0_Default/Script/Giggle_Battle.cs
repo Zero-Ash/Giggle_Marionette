@@ -140,7 +140,7 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__PLAYER_DATA_CHECK()
     {
         object isOnObj
-            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
+            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN);
         
         if(isOnObj != null)
         {
@@ -194,7 +194,7 @@ public class Giggle_Battle : IDisposable
                     }
                 }
                 Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                     characterId);
             }
 
@@ -204,7 +204,7 @@ public class Giggle_Battle : IDisposable
         //
         res =
             (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_IS_OPEN) &&
-            (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
+            (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN);
 
         //
         return res;
@@ -270,7 +270,7 @@ public class Giggle_Battle : IDisposable
                     default:
                         {
                             data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+                                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                                 //
                                 marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount] - 1].Basic_VarDataId);
                         }
@@ -292,11 +292,11 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__STAGE_DATA_CHECK()
     {
         Giggle_Character.Database data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
-            11002011);
+            Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+            21001);
             
         object isOnObj
-            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_IS_OPEN);
+            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN);
         
         if(isOnObj != null)
         {
@@ -327,8 +327,8 @@ public class Giggle_Battle : IDisposable
         }
 
         data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
-            11002011);
+            Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+            21001);
 
         unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Enemy.Basic_GetTile(0));
         unit.Basic_Init(this, data);

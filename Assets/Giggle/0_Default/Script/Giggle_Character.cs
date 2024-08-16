@@ -6,6 +6,33 @@ using System.Collections.Generic;
 
 namespace Giggle_Character
 {
+    public enum TYPE
+    {
+        SWORD = 1,
+        THROWING_STAR,
+        STAFF
+    }
+
+    public enum ATTRIBUTE
+    {
+        NONE = 0,
+
+        //
+        FIRE = 1,
+        WATER,
+        WIND,
+        EARTH,
+        DARK,
+        LIGHT
+    }
+    
+    public enum CATEGORY
+    {
+        ATTACK = 1,
+        DEFENCE,
+        SUPPORT
+    }
+
     #region STATUS
 
     [Serializable]
@@ -528,55 +555,55 @@ namespace Giggle_Character
         {
             Basic_Reset();
 
-            Basic_attack    = int.Parse(_data["Cha_Attack"]);
+            Basic_attack    = int.Parse(_data["cha_attack"]);
 
-            Basic_defence   = int.Parse(_data["Cha_Defense"]);
+            Basic_defence   = int.Parse(_data["cha_defense"]);
 
-            Basic_hp    = int.Parse(_data["Cha_HP"]);
+            Basic_hp    = int.Parse(_data["cha_hp"]);
 
-            Basic_attackSpeed   = float.Parse(_data["Cha_Attack_Speed"]);
+            Basic_attackSpeed   = float.Parse(_data["cha_attack_speed"]);
 
-            Basic_criticalChance            = int.Parse(_data["Cha_CriticalChance"]         );
-            Basic_criticalDamage            = int.Parse(_data["Cha_CriticalDamage"]         );
-            Basic_criticalDamageReduction   = int.Parse(_data["Cha_CriticalDamageReduction"]);
+            Basic_criticalChance            = int.Parse(_data["cha_criticalchance"]         );
+            Basic_criticalDamage            = int.Parse(_data["cha_criticaldamage"]         );
+            Basic_criticalDamageReduction   = int.Parse(_data["cha_criticaldamagereduction"]);
 
-            Basic_luckyChance   = int.Parse(_data["Cha_LuckyChance"]);
-            Basic_luckyDamage   = int.Parse(_data["Cha_LuckyDamage"]);
+            Basic_luckyChance   = int.Parse(_data["cha_luckychance"]);
+            Basic_luckyDamage   = int.Parse(_data["cha_luckydamage"]);
 
-            Basic_damageTakenReduction  = int.Parse(_data["Cha_DamageTakenReduction"]   );
-            Basic_damageIncrease        = int.Parse(_data["Cha_DamageIncrease"]         );
+            Basic_damageTakenReduction  = int.Parse(_data["cha_damagetakenreduction"]   );
+            Basic_damageIncrease        = int.Parse(_data["cha_damageincrease"]         );
 
-            Basic_hpRegenPerSecond  = int.Parse(_data["Cha_HPRegenPerSecond"]   );
-            Basic_hpRegenAmount     = int.Parse(_data["Cha_HPRegenAmount"]      );
-            Basic_hpLifeSteal       = int.Parse(_data["Cha_LifeSteal"]          );
+            Basic_hpRegenPerSecond  = int.Parse(_data["cha_hpregenpersecond"]   );
+            Basic_hpRegenAmount     = int.Parse(_data["cha_hpregenamount"]      );
+            Basic_hpLifeSteal       = int.Parse(_data["cha_lifesteal"]          );
 
-            Basic_goldGainIncrease = int.Parse(_data["Cha_GoldGainIncrease"]);
+            Basic_goldGainIncrease = int.Parse(_data["cha_goldgainincrease"]);
 
-            Basic_allDamageIncrease = int.Parse(_data["Cha_AllDamageIncrease"]);
+            Basic_allDamageIncrease = int.Parse(_data["cha_alldamageincrease"]);
 
-            Basic_normalMonsterDamageIncrease   = int.Parse(_data["Cha_NormalMonsterDamageIncrease"]);
-            Basic_bossDamageIncrease            = int.Parse(_data["Cha_BossDamageIncrease"]         );
+            Basic_normalMonsterDamageIncrease   = int.Parse(_data["cha_normalmonsterdamageincrease"]);
+            Basic_bossDamageIncrease            = int.Parse(_data["cha_bossdamageincrease"]         );
 
-            Basic_skillCooldownReduction    = int.Parse(_data["Cha_CooldownReduction"]      );
-            Basic_skillDamageIncrease       = int.Parse(_data["Cha_SkillDamageIncrease"]    );
-            Basic_skillDamageReduction      = int.Parse(_data["Cha_SkillDamageReduction"]   );
-            Basic_skillCritical             = int.Parse(_data["Cha_SkillCritical"]          );
-            Basic_skillCriticalDamage       = int.Parse(_data["Cha_SkillCriticalDamage"]    );
+            Basic_skillCooldownReduction    = int.Parse(_data["cha_cooldownreduction"]      );
+            Basic_skillDamageIncrease       = int.Parse(_data["cha_skilldamageincrease"]    );
+            Basic_skillDamageReduction      = int.Parse(_data["cha_skilldamagereduction"]   );
+            Basic_skillCritical             = int.Parse(_data["cha_skillcritical"]          );
+            Basic_skillCriticalDamage       = int.Parse(_data["cha_skillcriticaldamage"]    );
 
-            Basic_stun              = int.Parse(_data["Cha_Stun"]           );
-            Basic_stunResistance    = int.Parse(_data["Cha_StunResistance"] );
+            Basic_stun              = int.Parse(_data["cha_stun"]           );
+            Basic_stunResistance    = int.Parse(_data["cha_stunresistance"] );
 
-            Basic_multiHit                  = int.Parse(_data["Cha_MultiHit"]               );
-            Basic_multiHitDamage            = int.Parse(_data["Cha_MultiHitDamage"]         );
-            Basic_multiHitDamageReduction   = int.Parse(_data["Cha_MultiHitDamageReduction"]);
+            Basic_multiHit                  = int.Parse(_data["cha_multihit"]               );
+            Basic_multiHitDamage            = int.Parse(_data["cha_multihitdamage"]         );
+            Basic_multiHitDamageReduction   = int.Parse(_data["cha_multihitdamagereduction"]);
 
-            Basic_counterAttack                 = int.Parse(_data["Cha_Counterattack"]                  );
-            Basic_counterAttackDamage           = int.Parse(_data["Cha_CounterattackDamage"]            );
-            Basic_counterAttackDamageReduction  = int.Parse(_data["Cha_CounterattackDamageReduction"]   );
+            Basic_counterAttack                 = int.Parse(_data["cha_counterattack"]                  );
+            Basic_counterAttackDamage           = int.Parse(_data["cha_counterattackdamage"]            );
+            Basic_counterAttackDamageReduction  = int.Parse(_data["cha_counterattackdamagereduction"]   );
 
-            Basic_evasion = int.Parse(_data["Cha_Evasion"]);
+            Basic_evasion = int.Parse(_data["cha_evasion"]);
 
-            Basic_accuracy = int.Parse(_data["Cha_Accuracy"]);
+            Basic_accuracy = int.Parse(_data["cha_accuracy"]);
         }
 
         //
@@ -599,7 +626,13 @@ namespace Giggle_Character
         [SerializeField] Giggle_Unit    Basic_unit;
         [SerializeField] List<Status>   Basic_statusList;
 
-        [SerializeField] List<Skill>    Basic_skillList;
+        [SerializeField] protected ATTRIBUTE    Basic_attribute;
+        [SerializeField] protected TYPE         Basic_type;
+        [SerializeField] protected CATEGORY     Basic_category;
+
+        [SerializeField] int    Basic_mana;
+        [SerializeField] int    Basic_manaAttackRecovery;
+        [SerializeField] int    Basic_manaHitRecovery;
 
         ////////// Getter & Setter          //////////
         // Basic_id
@@ -627,7 +660,7 @@ namespace Giggle_Character
             }
 
             //
-            int level = int.Parse(_data["Cha_Level"]);
+            int level = int.Parse(_data["cha_level"]);
             while(Basic_statusList.Count < level)
             {
                 Basic_statusList.Add(null);
@@ -636,40 +669,15 @@ namespace Giggle_Character
             Basic_statusList[level - 1] = new Status(_data);
         }
 
-        // Basic_skillList
-        public Skill Basic_GetSkillListFromId(int _id)
-        {
-            Skill res = null;
-
-            //
-            for(int for0 = 0; for0 < Basic_skillList.Count; for0++)
-            {
-                if(Basic_skillList[for0].Basic_VarId.Equals(_id))
-                {
-                    res = Basic_skillList[for0];
-                }
-            }
-
-            //
-            return res;
-        }
-
-        public Skill Basic_GetSkillListFromCount(int _count)    { return Basic_skillList[_count];   }
-
-        public int Basic_GetSkillListCount()    { return Basic_skillList.Count; }
-
-        public void Basic_SetSkillList(Dictionary<string, string> _data)
-        {
-            //
-            Basic_skillList.Add(new Skill(_data));
-        }
-
-        // Marionette
         //
-        public virtual int  Marionette_VarAttribute { get { return -1;  }   }
+        public ATTRIBUTE    Basic_VarAttribute  { get { return Basic_attribute; }   }
 
         //
-        public virtual int  Marionette_VarRole      { get { return -1;  }   }
+        public CATEGORY     Basic_VarCategory   { get { return Basic_category;  }   }
+
+        public virtual int  Basic_VarSkillId { get { return -1; }   }
+
+        public virtual int  Basic_VarConstellation  { get { return -1;  }   }
 
 
         ////////// Method                   //////////
@@ -685,17 +693,21 @@ namespace Giggle_Character
         public Database(Dictionary<string, string> _data)
         {
             Basic_id        = int.Parse(_data["cha_id"]);
-            Basic_name      = _data["Cha_Name"];
+            Basic_name      = _data["cha_name"];
 
             Basic_Constructor();
+            
+            Basic_attribute = ATTRIBUTE.NONE;
+            Basic_type      = TYPE.SWORD;
+            Basic_category  = CATEGORY.ATTACK;
+
+            Basic_mana               = int.Parse(_data["cha_mana"]);
+            Basic_manaAttackRecovery = int.Parse(_data["cha_attack_recovery"]);
+            Basic_manaHitRecovery    = int.Parse(_data["cha_hit_recovery"]);
         }
 
         void Basic_Constructor()
         {
-            if(Basic_skillList == null)
-            {
-                Basic_skillList = new List<Skill>();
-            }
         }
 
         //
@@ -708,28 +720,27 @@ namespace Giggle_Character
     [Serializable]
     public class Database_Marionette : Database
     {
-        [SerializeField] protected int  Basic_grade;
-        [SerializeField] protected int  Basic_attribute;
-        [SerializeField] protected int  Basic_equipment;
-        [SerializeField] protected int  Basic_role;
+        [SerializeField] protected int  Basic_skillId;
+
+        [SerializeField] protected int  Basic_constellation;
 
         ////////// Getter & Setter          //////////
+        public override int Basic_VarSkillId    { get { return Basic_skillId;   }   }
 
-        // Basic_attribute
-        public override int Marionette_VarAttribute { get { return Basic_attribute; }   }
-
-        // Basic_role
-        public override int Marionette_VarRole      { get { return Basic_role;      }   }
+        public override int Basic_VarConstellation  { get { return Basic_constellation; }   }
 
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
         public Database_Marionette(Dictionary<string, string> _data) : base(_data)
         {
-            Basic_grade     = int.Parse(_data["Cha_Grade"]);
-            Basic_attribute = int.Parse(_data["Cha_Attribute"]);
-            Basic_equipment = int.Parse(_data["Cha_Equipment"]);
-            Basic_role      = int.Parse(_data["Cha_Role"]);
+            Basic_attribute = (ATTRIBUTE)int.Parse(_data["cha_attribute"]);
+            Basic_type      = (TYPE)int.Parse(_data["cha_type"]);
+            Basic_category  = (CATEGORY)int.Parse(_data["cha_category"]);
+
+            Basic_skillId   = int.Parse(_data["cha_skill_id"]);
+
+            Basic_constellation = int.Parse(_data["constellation_b_id"]);
         }
     }
 
@@ -820,7 +831,7 @@ namespace Giggle_Character
         public Skill(Dictionary<string, string> _data)
         {
             // cha_id
-            Basic_id = int.Parse(_data["skill_id"]);
+            Basic_id = int.Parse(_data["cha_skill_id"]);
 
             Basic_name = _data["cha_skill_name"];
 
@@ -851,7 +862,7 @@ namespace Giggle_Character
         ////////// Constructor & Destroyer  //////////
         public Skill_Lv(Dictionary<string, string> _data)
         {
-            Basic_id = int.Parse(_data["skill_id"]);
+            Basic_id = int.Parse(_data["cha_skill_lv_id"]);
             //
             if(Basic_values == null)
             {
@@ -1183,138 +1194,6 @@ namespace Giggle_Character
 
     #endregion
 
-    #region RELIC
-
-    public enum Relic_COLOR
-    {
-        BLACK = 1,
-        WHITE,
-
-        TOTAL
-    }
-
-    public enum Relic_CLASS
-    {
-        NORMAL = 1,
-        RARE
-    }
-
-    [Serializable]
-    public class Relic : IDisposable
-    {
-        [SerializeField] int    Basic_id;
-
-        [SerializeField] string Basic_name;
-
-        [SerializeField] Relic_COLOR    Basic_color;
-        [SerializeField] Relic_CLASS    Basic_class;
-        [SerializeField] int            Basic_index;
-
-        [SerializeField] List<RelicLv>  Basic_lvs;
-
-        ////////// Getter & Setter          //////////
-        //
-        public int  Basic_VarId { get { return Basic_id;    }   }
-
-        public string   Basic_VarName   { get { return Basic_name;  }   }
-
-        public Relic_COLOR  Basic_VarColor  { get { return Basic_color; }   }
-
-        ////////// Method                   //////////
-        public void Basic_SetLvList(Dictionary<string, string> _data)
-        {
-            if(Basic_lvs == null)
-            {
-                Basic_lvs = new List<RelicLv>();
-            }
-
-            Basic_lvs.Add(new RelicLv(_data));
-        }
-
-        ////////// Constructor & Destroyer  //////////
-        public Relic()
-        {
-            Basic_id = -1;
-        }
-
-        public Relic(Dictionary<string, string> _data)
-        {
-            Basic_id = int.Parse(_data["relic_id"]);
-
-            Basic_name = _data["cha_relic_name"];
-
-            Basic_color = (Relic_COLOR) int.Parse(_data["cha_relic_color"]);
-            Basic_class = (Relic_CLASS) int.Parse(_data["cha_relic_class"]);
-            Basic_index =               int.Parse(_data["cha_relic_index"]);
-        }
-        
-        //
-        public void Dispose()
-        {
-
-        }
-    
-    }
-
-    [Serializable]
-    public class RelicLv : IDisposable
-    {
-        public class Material : IDisposable
-        {
-            [SerializeField] int    Basic_id;
-            [SerializeField] int    Basic_value;
-
-            ////////// Getter & Setter          //////////
-
-            ////////// Method                   //////////
-
-            ////////// Constructor & Destroyer  //////////
-            
-            public Material(Dictionary<string, string> _data, int _count)
-            {
-                string value = (_count / 10).ToString() + (_count % 10).ToString();
-                Basic_id    = int.Parse(_data["relic_LvMaterials_" + value]);
-                Basic_value = int.Parse(_data["Materials_Value_"   + value]);
-            }
-
-            public void Dispose()
-            {
-
-            }
-        }
-
-        [SerializeField] int    Basic_id;
-
-        [SerializeField] List<Material> Basic_materials;
-
-        ////////// Getter & Setter          //////////
-        //
-        public int  Basic_VarId { get { return Basic_id;    }   }
-
-        ////////// Method                   //////////
-
-        ////////// Constructor & Destroyer  //////////
-        public RelicLv(Dictionary<string, string> _data)
-        {
-            Basic_id = int.Parse(_data["relicLv_id"]);
-
-            if(Basic_materials == null)
-            {
-                Basic_materials = new List<Material>();
-            }
-            Basic_materials.Add(new Material(_data, 1));
-            Basic_materials.Add(new Material(_data, 2));
-        }
-        
-        public void Dispose()
-        {
-
-        }
-    
-    }
-
-    #endregion
-
     #region SAVE
     
     [Serializable]
@@ -1351,6 +1230,8 @@ namespace Giggle_Character
         
         [SerializeField] int    Basic_skillLv;
 
+        [SerializeField] List<int>  Basic_contellationLvs;
+
         ////////// Getter & Setter          //////////
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
 
@@ -1361,6 +1242,22 @@ namespace Giggle_Character
 
         //
         public int  Basic_VarSkillLv    { get { return Basic_skillLv;   }   }
+
+        //
+        public int  Basic_GetConstellationLv(int _count)
+        {
+            int res = 0;
+
+            //
+            while(Basic_contellationLvs.Count <= _count)
+            {
+                Basic_contellationLvs.Add(1);
+            }
+            res = Basic_contellationLvs[_count];
+
+            //
+            return res;
+        }
 
         ////////// Method                   //////////
         public void Basic_Equipment(string _socketName, int _inventoryId)
@@ -1411,6 +1308,11 @@ namespace Giggle_Character
             if(Basic_equipments == null)
             {
                 Basic_equipments = new List<int>();
+            }
+
+            if(Basic_contellationLvs == null)
+            {
+                Basic_contellationLvs = new List<int>();
             }
         }
 

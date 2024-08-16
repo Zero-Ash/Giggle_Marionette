@@ -342,7 +342,7 @@ public class Giggle_Unit : MonoBehaviour
                             if(skillCount >= 0)
                             {
                                 // 피노키오일 때
-                                if(Status_database.Basic_GetSkillListCount() <= 0)
+                                if(Status_database.Basic_VarSkillId.Equals(-1))
                                 {
                                     Debug.Log(this.name + "스킬");
                                     Status_coolTimers[skillCount].Basic_VarTimer += 5.0f;
@@ -350,8 +350,12 @@ public class Giggle_Unit : MonoBehaviour
                                 // 마리오네트일 때
                                 else
                                 {
-                                    Debug.Log(this.name + "스킬 " + Status_database.Basic_GetSkillListFromCount(0).Basic_VarId);
-                                    Status_coolTimers[skillCount].Basic_VarTimer += Status_database.Basic_GetSkillListFromCount(0).Basic_GetLvFromCount(0).Basic_VarCoolTime;
+                                    Debug.Log(this.name + "스킬 " + Status_database.Basic_VarSkillId);
+                                    Giggle_Character.Skill skill
+                                        = (Giggle_Character.Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                            Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,
+                                            Status_database.Basic_VarSkillId);
+                                    Status_coolTimers[skillCount].Basic_VarTimer += skill.Basic_GetLvFromCount(0).Basic_VarCoolTime;
                                 }
                             }
                             else

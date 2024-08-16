@@ -122,23 +122,35 @@ public class Giggle_ScriptBridge
         DATABASE__PINOCCHIO__RELIC_VAR_DATA_FROM_ID,
 
         /// <summary>
-        /// 캐릭터 데이터의 개방 여부<br/>
+        /// 마리오네트 데이터의 개방 여부<br/>
         /// 매개변수<br/>
         /// return type : bool
         /// </summary>
-        DATABASE__CHARACTER__GET_IS_OPEN,
+        DATABASE__MARIONETTE__GET_IS_OPEN,
         /// <summary>
-        /// 캐릭터 데이터<br/>
+        /// 마리오네트 데이터<br/>
         /// 매개변수 : int - 캐릭터id<br/>
         /// return type : Giggle_Character.Database
         /// </summary>
-        DATABASE__CHARACTER__GET_DATA_FROM_ID,
+        DATABASE__MARIONETTE__GET_DATA_FROM_ID,
         /// <summary>
-        /// 캐릭터 데이터<br/>
+        /// 마리오네트 데이터 리스트<br/>
         /// 매개변수 : Giggle_Character.ATTRIBUTE - 캐릭터 속성(복수 기입 가능)<br/>
         /// return type : List(Giggle_Character.Database)
         /// </summary>
-        DATABASE__CHARACTER__GET_DATAS_FROM_ATTRIBUTE,
+        DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
+        /// <summary>
+        /// 마리오네트 스킬 데이터<br/>
+        /// 매개변수<br/>
+        /// return type : Giggle_Character.Skill
+        /// </summary>
+        DATABASE__MARIONETTE__GET_SKILL_FROM_ID,
+        /// <summary>
+        /// 마리오네트 별자리 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Item.Constellation
+        /// </summary>
+        DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,
 
         /// <summary>
         /// 아이템 데이터의 개방 여부<br/>

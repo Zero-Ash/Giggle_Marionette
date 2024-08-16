@@ -169,7 +169,7 @@ public class Giggle_Master : MonoBehaviour
         //
         Giggle_Character.Database data
             = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_DATA_FROM_ID,
+                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                 //
                 id);
 
