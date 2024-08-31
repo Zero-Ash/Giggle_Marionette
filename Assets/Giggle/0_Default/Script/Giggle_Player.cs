@@ -547,6 +547,21 @@ public class Giggle_Player : IDisposable
         //
         return Pinocchio_skillSlots[Pinocchio_selectSkillSlot].Basic_VarList[count];
     }
+
+    // Pinocchio_selectSkillSlot
+    object Pinocchio_VarSelectSkillSlot(params object[] _args)
+    {
+        if(_args.Length > 0)
+        {
+            int select = (int)_args[0];
+
+            //
+            Pinocchio_selectSkillSlot = select;
+        }
+
+        //
+        return Pinocchio_selectSkillSlot;
+    }
     
     ////////// Method                   //////////
     
@@ -562,12 +577,15 @@ public class Giggle_Player : IDisposable
         {
             Pinocchio_skillSlots.Add(new Pinocchio_SkillSlots());
         }
+        //
+        Pinocchio_selectSkillSlot = 0;
 
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS,                  Pinocchio_VarSkills             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,           Pinocchio_VarSkillFromId        );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,             Pinocchio_VarSkillSlots         );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,   Pinocchio_VarSkillSlotFromCount );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SELECT_SKILL_SLOT, Pinocchio_VarSelectSkillSlot    );
     }
     
         #endregion

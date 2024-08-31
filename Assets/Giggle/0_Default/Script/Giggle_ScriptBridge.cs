@@ -249,6 +249,13 @@ public class Giggle_ScriptBridge
         /// 매개변수 : int - count<br/>
         /// return type : int
         /// </summary>
+        PLAYER__PINOCCHIO__SKILL_VAR_SELECT_SKILL_SLOT,
+
+        /// <summary>
+        /// 피노키오 장비 id<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : int
+        /// </summary>
         PLAYER__PINOCCHIO__EUIPMENT_VAR_SELECT_FROM_COUNT,
 
         /// <summary>
