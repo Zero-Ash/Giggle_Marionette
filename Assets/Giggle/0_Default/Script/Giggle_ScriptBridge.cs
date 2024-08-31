@@ -46,6 +46,13 @@ public class Giggle_ScriptBridge
 
         /// <summary>
         /// UI용 캐릭터 오브젝트 생성<br/>
+        /// 매개변수 : int - 캐릭터 데이터 id, Transform - 오브젝트의 부모, float - 각도, float - 크기<br/>
+        /// return type : Giggle_Unit
+        /// </summary>
+        MASTER__UI__VALUE_TEXT,
+
+        /// <summary>
+        /// UI용 캐릭터 오브젝트 생성<br/>
         /// 매개변수 : Giggle_Battle.Basic__COROUTINE_PHASE - 진행시키고자 하는 단계<br/>
         /// return type : Giggle_Battle.Basic__COROUTINE_PHASE
         /// </summary>
@@ -151,6 +158,25 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Item.Constellation
         /// </summary>
         DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,
+        /// <summary>
+        /// 마리오네트 카드 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Item.Card
+        /// </summary>
+        DATABASE__MARIONETTE__GET_CARD_FROM_ID,
+
+        /// <summary>
+        /// 스테이지 데이터의 개방 여부<br/>
+        /// 매개변수<br/>
+        /// return type : bool
+        /// </summary>
+        DATABASE__STAGE__GET_IS_OPEN,
+        /// <summary>
+        /// 스테이지 데이터 불러오기<br/>
+        /// 매개변수<br/>
+        /// return type : GameObject
+        /// </summary>
+        DATABASE__STAGE__GET_DATA_FROM_SAVE,
 
         /// <summary>
         /// 아이템 데이터의 개방 여부<br/>
@@ -168,6 +194,13 @@ public class Giggle_ScriptBridge
         #endregion
 
         #region Giggle_Player
+
+        /// <summary>
+        /// 선택된 스테이지 번호<br/>
+        /// 매개변수 : <br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__STAGE__VAR_SELECT,
 
         /// <summary>
         /// 피노키오 데이터<br/>
@@ -210,6 +243,20 @@ public class Giggle_ScriptBridge
         /// return type : int
         /// </summary>
         PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
+
+        /// <summary>
+        /// 피노키오 장비 id<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__PINOCCHIO__EUIPMENT_VAR_SELECT_FROM_COUNT,
+
+        /// <summary>
+        /// 피노키오 장비 장착<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__EUIPMENT_SAVE_SELECT,
 
         /// <summary>
         /// 피노키오 장비 장착<br/>
@@ -310,6 +357,13 @@ public class Giggle_ScriptBridge
         PLAYER__MARIONETTE__ADD,
 
         /// <summary>
+        /// 마리오네트 카드 장비<br/>
+        /// 매개변수 : int - 캐릭터 인벤토리 id, int - 슬롯, int - 카드 data id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__MARIONETTE__CARD_EQUIP,
+
+        /// <summary>
         /// 마리오네트 리스트 가져오기<br/>
         /// 매개변수 : <br/>
         /// return type : int
@@ -343,6 +397,27 @@ public class Giggle_ScriptBridge
         /// return type : List(Giggle_Item.Inventory)
         /// </summary>
         PLAYER__ITEM__GET_ITEM_LIST,
+
+        /// <summary>
+        /// 아이템 가져오기<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Item.Inventory
+        /// </summary>
+        PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,
+
+        /// <summary>
+        /// 카드 리스트 가져오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Item.Inventory)
+        /// </summary>
+        PLAYER__ITEM__GET_CARD_LIST,
+
+        /// <summary>
+        /// 카드 리스트 가져오기<br/>
+        /// 매개변수 : int - 카드 데이터 id<br/>
+        /// return type : Giggle_Item.Inventory
+        /// </summary>
+        PLAYER__CARD__GET_DATA_FROM_DATA_ID,
 
         #endregion
     }
@@ -385,6 +460,13 @@ public class Giggle_ScriptBridge
             Basic_methods.Add(_event, _method);
         }
     }
+
+    //
+    public bool Basic_GetIsInMethod(EVENT _event)
+    {
+        return Basic_methods.ContainsKey(_event);
+    }
+
 
     ////////// Constructor & Destroyer  //////////
     public Giggle_ScriptBridge()

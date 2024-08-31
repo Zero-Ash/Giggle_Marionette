@@ -58,10 +58,7 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_StartCoroutine);
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,  Basic_StopCoroutine );
 
-        if(Basic_Database == null)
-        {
-            Basic_Database = new Giggle_Database();
-        }
+        Basic_Database = new Giggle_Database(this.gameObject);
         
         if(Basic_player == null)
         {
@@ -69,6 +66,7 @@ public class Giggle_Master : MonoBehaviour
         }
         Basic_player.Basic_Init();
 
+        Scene_Start();
         Garbage_Start();
         UI_Start();
         Battle_Start();
@@ -78,6 +76,23 @@ public class Giggle_Master : MonoBehaviour
     void Update()
     {
         
+    }
+
+    #endregion
+
+    #region SCENE
+
+    [Header("SCENE ==================================================")]
+    [SerializeField] GameObject Scene_parent;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+
+    ////////// Unity            //////////
+    void Scene_Start()
+    {
+        //Scene_parent.SetActive(true);
     }
 
     #endregion
@@ -194,30 +209,26 @@ public class Giggle_Master : MonoBehaviour
     }
     
     // UI_ValueText
-    public string UI_ValueText(List<int> _values)
+    object UI_ValueText(params object[] _args)
     {
-        string res = "";
+        string res = "0";
 
         //
-        int for0 = 0;
-        for (for0 = _values.Count - 1; for0 >= 0; for0--)
+        List<int> values = (List<int>)_args[0];
+        for(int for0 = values.Count - 1; for0 <= 0; for0--)
         {
-            if (_values[for0] > 0)
+            if(values[for0] > 0)
             {
+                res = values[for0].ToString();
+                switch(for0)
+                {
+                    case 1: { res += "K";   }   break;
+                    case 2: { res += "M";   }   break;
+                    case 3: { res += "G";   }   break;
+                    case 4: { res += "T";   }   break;
+                }
                 break;
             }
-        }
-
-        //
-        res = _values[for0].ToString();
-        // 단위 삽입
-        switch (for0)
-        {
-            case 0: { } break;
-            case 1: { res += "K"; } break;
-            case 2: { res += "M"; } break;
-            case 3: { res += "G"; } break;
-            case 4: { res += "T"; } break;
         }
 
         //
@@ -251,6 +262,7 @@ public class Giggle_Master : MonoBehaviour
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,             UI_ValueText            );
     }
 
     #endregion

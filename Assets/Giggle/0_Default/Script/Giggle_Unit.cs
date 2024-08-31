@@ -10,10 +10,10 @@ public class Giggle_Unit : MonoBehaviour
     #region BASIC
     
     [SerializeField] Giggle_Battle  Basic_Battle;
-    IEnumerator Basic_coroutine;
 
     [Header("RUNNING")]
     [SerializeField] Giggle_Character.Save Basic_Save;
+    IEnumerator Basic_coroutine;
 
     ////////// Getter & Setter  //////////
 
@@ -37,6 +37,7 @@ public class Giggle_Unit : MonoBehaviour
         StopCoroutine(Basic_coroutine);
     }
 
+    // Basic_Coroutine
     IEnumerator Basic_Coroutine()
     {
         float time      = Time.time;
@@ -47,22 +48,55 @@ public class Giggle_Unit : MonoBehaviour
         {
             time = Time.time;
 
-            if(Basic_Battle.Basic_VarCoroutinePhase.Equals(Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE))
+            switch(Basic_Battle.Basic_VarCoroutinePhase)
             {
-                Status_Coroutine(time - lastTime);
-                Active_Coroutine(time - lastTime);
-            }
-            else
-            {
-                if(!Active_phase.Equals(Active_PHASE.WAIT))
-                {
-                    Active_phase = Active_PHASE.WAIT;
-                    Model_SetMotion();
-                }
+                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_BATTLE:    { Basic_Coroutine__ACTIVE_BATTLE(time - lastTime);  }   break;
+                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_MOVE:      { Basic_Coroutine__ACTIVE_MOVE();                   }   break;
+                default:                                                    { Basic_Coroutine__default();                       }   break;
             }
 
             lastTime = time;
             yield return null;
+        }
+    }
+
+    void Basic_Coroutine__ACTIVE_BATTLE(float _time)
+    {
+        Status_Coroutine(_time);
+        Active_Coroutine(_time);
+    }
+
+    void Basic_Coroutine__ACTIVE_MOVE()
+    {
+        switch(this.transform.parent.parent.name.Split('/')[1])
+        {
+            case "PLAYER":
+                {
+                    if(!Active_phase.Equals(Active_PHASE.WALK))
+                    {
+                        Active_phase = Active_PHASE.WALK;
+                        Model_SetMotion();
+                    }
+                }
+                break;
+            case "ENEMY":
+                {
+                    if(!Active_phase.Equals(Active_PHASE.WAIT))
+                    {
+                        Active_phase = Active_PHASE.WAIT;
+                        Model_SetMotion();
+                    }
+                }
+                break;
+        }
+    }
+
+    void Basic_Coroutine__default()
+    {
+        if(!Active_phase.Equals(Active_PHASE.WAIT))
+        {
+            Active_phase = Active_PHASE.WAIT;
+            Model_SetMotion();
         }
     }
 

@@ -1232,6 +1232,8 @@ namespace Giggle_Character
 
         [SerializeField] List<int>  Basic_contellationLvs;
 
+        [SerializeField] protected List<int>    Basic_cards;
+
         ////////// Getter & Setter          //////////
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
 
@@ -1259,7 +1261,18 @@ namespace Giggle_Character
             return res;
         }
 
+        //
+        public void Basic_SetCard(int _count, int _id)  { Basic_cards[_count] = _id;    }
+
         ////////// Method                   //////////
+        public void Basic_EquipmentReset()
+        {
+            for(int for0 = 0; for0 < Basic_equipments.Count; for0++)
+            {
+                Basic_equipments[for0] = -1;
+            }
+        }
+
         public void Basic_Equipment(string _socketName, int _inventoryId)
         {
             string[] socketNames = _socketName.Split('_');
@@ -1271,13 +1284,19 @@ namespace Giggle_Character
                 count += int.Parse(socketNames[1]);
             }
 
+            //
+            Basic_Equipment(count, _inventoryId);
+        }
+
+        public void Basic_Equipment(int _count, int _inventoryId)
+        {
             // Basic_equipments
-            while(Basic_equipments.Count <= count)
+            while(Basic_equipments.Count <= _count)
             {
                 Basic_equipments.Add(-1);
             }
 
-            Basic_equipments[count] = _inventoryId;
+            Basic_equipments[_count] = _inventoryId;
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1313,6 +1332,15 @@ namespace Giggle_Character
             if(Basic_contellationLvs == null)
             {
                 Basic_contellationLvs = new List<int>();
+            }
+
+            if(Basic_cards == null)
+            {
+                Basic_cards = new List<int>();
+            }
+            while(Basic_cards.Count < 3)
+            {
+                Basic_cards.Add(-1);
             }
         }
 

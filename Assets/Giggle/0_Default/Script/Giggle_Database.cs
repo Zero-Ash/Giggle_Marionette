@@ -41,9 +41,10 @@ public class Giggle_Database : IDisposable
     ////////// Method                   //////////
 
     ////////// Constructor & Destroyer  //////////
-    public Giggle_Database()
+    public Giggle_Database(GameObject _obj)
     {
         Character_Init();
+        Stage_Init(_obj);
         Item_Init();
     }
 
@@ -680,6 +681,8 @@ public class Giggle_Database : IDisposable
     [SerializeField] Character_Data                     Marionette_data;
     [SerializeField] List<Giggle_Character.Skill>       Marionette_skills;
     [SerializeField] List<Giggle_Item.Constellation>    Marionette_constellations;
+    [SerializeField] List<Giggle_Item.Card>             Marionette_cards;
+    [SerializeField] List<Giggle_Item.CardSet>          Marionette_cardSets;
 
     [SerializeField] bool Marionette_isOpen;
 
@@ -759,7 +762,6 @@ public class Giggle_Database : IDisposable
     }
 
     //
-
     object Marionette_GetConstellationFromId(params object[] _args)
     {
         Giggle_Item.Constellation res = null;
@@ -771,6 +773,26 @@ public class Giggle_Database : IDisposable
             if(Marionette_constellations[for0].Basic_VarId.Equals(id))
             {
                 res = Marionette_constellations[for0];
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
+    //
+    object Marionette_GetCardFromId(params object[] _args)
+    {
+        Giggle_Item.Card res = null;
+
+        //
+        int id = (int)_args[0];
+        for(int for0 = 0; for0 < Marionette_cards.Count; for0++)
+        {
+            if(Marionette_cards[for0].Basic_VarId.Equals(id))
+            {
+                res = Marionette_cards[for0];
                 break;
             }
         }
@@ -956,9 +978,69 @@ public class Giggle_Database : IDisposable
                                 }
                             }
 
-                            Marionette_isOpen = true;
-                            phase = -1;
+                            phase = 400;
                         };
+                    }
+                    break;
+                // 카드
+                case 400:
+                    {
+                        phase = 401;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_LIST").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Marionette_cards.Add(new Giggle_Item.Card(data[for0]));
+                            }
+
+                            phase = 402;
+                        };
+                    }
+                    break;
+                case 402:
+                    {
+                        phase = 403;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_LV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                for(int for1 = 0; for1 < Marionette_cards.Count; for1++)
+                                {
+                                    if(Marionette_cards[for1].Basic_VarId.Equals(int.Parse(data[for0]["card_id"])))
+                                    {
+                                        Marionette_cards[for1].Basic_SettingLv(data[for0]);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            phase = 404;
+                        };
+                    }
+                    break;
+                case 404:
+                    {
+                        phase = 405;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_SET").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Marionette_cardSets.Add(new Giggle_Item.CardSet(data[for0]));
+                            }
+
+                            phase = 402;
+                        };
+                        Marionette_isOpen = true;
+                        phase = -1;
                     }
                     break;
             }
@@ -975,6 +1057,8 @@ public class Giggle_Database : IDisposable
         Marionette_data             = new Character_Data();
         Marionette_skills           = new List<Giggle_Character.Skill>();
         Marionette_constellations   = new List<Giggle_Item.Constellation>();
+        Marionette_cards            = new List<Giggle_Item.Card>();
+        Marionette_cardSets         = new List<Giggle_Item.CardSet>();
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN,  Marionette_GetIsOpen );
 
@@ -982,6 +1066,112 @@ public class Giggle_Database : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,     Marionette_GetDatasFromAttribute    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,            Marionette_GetSkillFromId           );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,    Marionette_GetConstellationFromId   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CARD_FROM_ID,             Marionette_GetCardFromId            );
+    }
+
+    #endregion
+
+    #region STAGE
+
+    [Header("STAGE ==================================================")]
+    [SerializeField] List<GameObject> Stage_objs;
+    [SerializeField] GameObject Stage_empty;
+
+    [SerializeField] bool Stage_isOpen;
+
+    ////////// Getter & Setter          //////////
+    object Stage_GetIsOpen(params object[] _args)
+    {
+        return Stage_isOpen;
+    }
+
+    object Stage_GetDataFromSave(params object[] _args)
+    {
+        GameObject res = Stage_empty;
+
+        //
+        int select = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
+        select++;
+
+        // 찾고자 하는 캐릭터가 존재하는가?
+        for(int for0 = 0; for0 < Stage_objs.Count; for0++)
+        {
+            if(Stage_objs[for0].name.Equals("Stage_" + (select / 10).ToString() + (select % 10).ToString()))
+            {
+                res = Stage_objs[for0];
+                break;
+            }
+        }
+
+        if(res.Equals(Stage_empty))
+        {
+            if(Stage_isOpen)
+            {
+                IEnumerator coroutine = Stage_LoadData__Coroutine();
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+            }
+        }
+
+        //
+        return res;
+    }
+    
+    ////////// Method                   //////////
+
+    IEnumerator Stage_LoadData__Coroutine()
+    {
+        Stage_isOpen = false;
+
+        //
+        int phase = 0;
+
+        while (phase != -1)
+        {
+            switch(phase)
+            {
+                case 0:
+                    {
+                        phase = 1;
+
+                        Addressables.LoadAssetAsync<GameObject>("STAGE/MODEL").Completed
+                        += handle =>
+                        {
+                            GameObject res = handle.Result;
+                            for(int for0 = 0; for0 < res.transform.childCount; for0++)
+                            {
+                                Transform child = res.transform.GetChild(for0);
+                                if(child.gameObject.activeSelf)
+                                {
+                                    Stage_objs.Add(child.gameObject);
+                                }
+                            }
+
+                            Stage_isOpen = true;
+                            phase = -1;
+                        };
+                    }
+                    break;
+            }
+
+            yield return null;
+        }
+    }
+
+    ////////// Constructor & Destroyer  //////////
+    void Stage_Init(GameObject _obj)
+    {
+        if(Stage_objs == null)
+        {
+            Stage_objs = new List<GameObject>();
+        }
+        Stage_empty = _obj;
+
+        Stage_isOpen = true;
+        
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN,   Stage_GetIsOpen );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE,    Stage_GetDataFromSave   );
     }
 
     #endregion
@@ -1141,6 +1331,10 @@ public class Giggle_Database : IDisposable
         if(Item_empty == null)
         {
             Item_empty = new Giggle_Item.List();
+        }
+        if(Item_datas == null)
+        {
+            Item_datas = new List<Item_Data>();
         }
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN,    Item_GetIsOpen  );

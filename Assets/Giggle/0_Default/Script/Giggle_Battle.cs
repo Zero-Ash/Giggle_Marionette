@@ -14,23 +14,39 @@ public class Giggle_Battle : IDisposable
         INIT,
 
         //
-        PLAYER_SETTING_START,
-        PLAYER_FADE_OUT,
-        PLAYER_DATA_CHECK,
-        PLAYER_SETTING,
+        RESET,
 
         //
-        STAGE_SETTING_START,
-        STAGE_FADE_OUT,
-        STAGE_DATA_CHECK,
-        STAGE_SETTING,
+        SETTING_FADE_OUT_START,
+        SETTING_FADE_OUT,
+
+        //
+        SETTING_STAGE_START,
+        SETTING_STAGE_DATA_CHECK,
+        SETTING_STAGE,
+
+        //
+        SETTING_PLAYER_START,
+        SETTING_PLAYER_DATA_CHECK,
+        SETTING_PLAYER,
+
+        //
+        SETTING_ENEMY_START,
+        SETTING_ENEMY_DATA_CHECK,
+        SETTING_ENEMY,
 
         //
         FADE_IN_START,
         FADE_IN,
 
         //
-        ACTIVE
+        SETTING_END,
+
+        //
+        ACTIVE_BATTLE,
+        ACTIVE_MOVE_READY,
+        ACTIVE_MOVE,
+        ACTIVE_MOVE_END
     }
     [SerializeField] Basic__COROUTINE_PHASE Basic_coroutinePhase;
 
@@ -66,24 +82,35 @@ public class Giggle_Battle : IDisposable
             {
                 case Basic__COROUTINE_PHASE.INIT:               { Basic_Coroutine__INIT(ref phase);     }   break;
 
-                case Basic__COROUTINE_PHASE.PLAYER_SETTING_START:   { Basic_Coroutine__PLAYER_SETTING_START();              }   break;
-                case Basic__COROUTINE_PHASE.PLAYER_FADE_OUT:        { Basic_Coroutine__PLAYER_FADE_OUT(time - lastTime);    }   break;
-                case Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK:      { Basic_Coroutine__PLAYER_DATA_CHECK();                 }   break;
-                case Basic__COROUTINE_PHASE.PLAYER_SETTING:         { Basic_Coroutine__PLAYER_SETTING();                    }   break;
+                // SETTING
+                case Basic__COROUTINE_PHASE.RESET:  { Basic_Coroutine__RESET(); }   break;
 
-                case Basic__COROUTINE_PHASE.STAGE_SETTING_START:    {                                       }   break;
-                case Basic__COROUTINE_PHASE.STAGE_FADE_OUT:         {                                       }   break;
-                case Basic__COROUTINE_PHASE.STAGE_DATA_CHECK:       { Basic_Coroutine__STAGE_DATA_CHECK();  }   break;
-                case Basic__COROUTINE_PHASE.STAGE_SETTING:          { Basic_Coroutine__STAGE_SETTING();     }   break;
+                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START: { Basic_Coroutine__SETTING_FADE_OUT_START();            }   break;
+                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT:       { Basic_Coroutine__SETTING_FADE_OUT(time - lastTime);   }   break;
+
+                case Basic__COROUTINE_PHASE.SETTING_STAGE_START:        { Basic_Coroutine__SETTING_STAGE_START();       }   break;
+                case Basic__COROUTINE_PHASE.SETTING_STAGE_DATA_CHECK:   { Basic_Coroutine__SETTING_STAGE_DATA_CHECK();  }   break;
+                case Basic__COROUTINE_PHASE.SETTING_STAGE:              { Basic_Coroutine__SETTING_STAGE();             }   break;
+
+                case Basic__COROUTINE_PHASE.SETTING_PLAYER_START:       { Basic_Coroutine__SETTING_PLAYER_START();      }   break;
+                case Basic__COROUTINE_PHASE.SETTING_PLAYER_DATA_CHECK:  { Basic_Coroutine__SETTING_PLAYER_DATA_CHECK(); }   break;
+                case Basic__COROUTINE_PHASE.SETTING_PLAYER:             { Basic_Coroutine__SETTING_PLAYER();            }   break;
+
+                case Basic__COROUTINE_PHASE.SETTING_ENEMY_START:        { Basic_Coroutine__SETTING_ENEMY_START();       }   break;
+                case Basic__COROUTINE_PHASE.SETTING_ENEMY_DATA_CHECK:   { Basic_Coroutine__SETTING_ENEMY_DATA_CHECK();  }   break;
+                case Basic__COROUTINE_PHASE.SETTING_ENEMY:              { Basic_Coroutine__SETTING_ENEMY();             }   break;
 
                 case Basic__COROUTINE_PHASE.FADE_IN_START:  { Basic_Coroutine__FADE_IN_START();             }   break;
                 case Basic__COROUTINE_PHASE.FADE_IN:        { Basic_Coroutine__FADE_IN(time - lastTime);    }   break;
 
-                case Basic__COROUTINE_PHASE.ACTIVE:
-                    {
-                        Bullet_Coroutine(time - lastTime);
-                    }
-                    break;
+                case Basic__COROUTINE_PHASE.SETTING_END:    { Basic_Coroutine__SETTING_END();   }   break;
+
+                // ACTIVE
+                case Basic__COROUTINE_PHASE.ACTIVE_BATTLE:  { Basic_Coroutine__ACTIVE_BATTLE(time - lastTime);  }   break;
+
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY:  { Basic_Coroutine__ACTIVE_MOVE_READY();             }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE:        { Basic_Coroutine__ACTIVE_MOVE(time - lastTime);    }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();               }   break;
             }
 
             lastTime = time;
@@ -110,34 +137,81 @@ public class Giggle_Battle : IDisposable
                     if(Formation_CotoutineInit1())
                     {
                         _phase = 0;
-                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK;
+                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
                     }
                 }
                 break;
         }
     }
 
-    // PLAYER_SETTING ==========
-    // PLAYER_SETTING_START
-    void Basic_Coroutine__PLAYER_SETTING_START()
+    // RESET ==========
+    void Basic_Coroutine__RESET()
     {
-        UI_FadeOutStart();
-        Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_FADE_OUT;
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START;
     }
 
-    // PLAYER_SETTING_START
-    void Basic_Coroutine__PLAYER_FADE_OUT(float _timer)
+    // FADE_OUT ==========
+    void Basic_Coroutine__SETTING_FADE_OUT_START()
+    {
+        UI_FadeOutStart();
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_FADE_OUT;
+    }
+
+    void Basic_Coroutine__SETTING_FADE_OUT(float _timer)
     {
         UI_FadeOut(_timer);
 
         if(UI_fadeTime >= 1.0f)
         {
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_DATA_CHECK;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
         }
     }
 
+    // SETTING_STAGE ==========
+    void Basic_Coroutine__SETTING_STAGE_START()
+    {
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_DATA_CHECK;
+    }
+
+    // STAGE_DATA_CHECK
+    void Basic_Coroutine__SETTING_STAGE_DATA_CHECK()
+    {
+        GameObject obj = (GameObject)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE);
+        
+        object isOnObj
+            = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN);
+        
+        if(isOnObj != null)
+        {
+            if((bool)isOnObj)
+            {
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE;
+            }
+        }
+    }
+
+    // SETTING_STAGE
+    void Basic_Coroutine__SETTING_STAGE()
+    {
+        GameObject obj = (GameObject)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE);
+
+        Map_Load(obj);
+
+        //
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
+    }
+
+    // SETTING_PLAYER ==========
+    // SETTING_PLAYER_START
+    void Basic_Coroutine__SETTING_PLAYER_START()
+    {
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_DATA_CHECK;
+    }
+
     // PLAYER_DATA_CHECK
-    void Basic_Coroutine__PLAYER_DATA_CHECK()
+    void Basic_Coroutine__SETTING_PLAYER_DATA_CHECK()
     {
         object isOnObj
             = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN);
@@ -148,7 +222,7 @@ public class Giggle_Battle : IDisposable
             {
                 if(Basic_Coroutine__PLAYER_DATA_CHECK__Player())
                 {
-                    Basic_coroutinePhase = Basic__COROUTINE_PHASE.PLAYER_SETTING;
+                    Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER;
                 }
             }
         }
@@ -211,7 +285,7 @@ public class Giggle_Battle : IDisposable
     }
 
     // PLAYER_SETTING
-    void Basic_Coroutine__PLAYER_SETTING()
+    void Basic_Coroutine__SETTING_PLAYER()
     {
         //
         //
@@ -284,12 +358,21 @@ public class Giggle_Battle : IDisposable
             whileCount++;
         }
 
-        Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_DATA_CHECK;
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_ENEMY_START;
     }
 
-    // STAGE_SETTING ==========
+    // ENEMY_SETTING ==========
+
+    void Basic_Coroutine__SETTING_ENEMY_START()
+    {
+        Formation_Enemy.Basic_VarParent.localScale = Vector3.zero;
+
+        //
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_ENEMY_DATA_CHECK;
+    }
+
     // STAGE_DATA_CHECK
-    void Basic_Coroutine__STAGE_DATA_CHECK()
+    void Basic_Coroutine__SETTING_ENEMY_DATA_CHECK()
     {
         Giggle_Character.Database data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
             Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
@@ -302,13 +385,13 @@ public class Giggle_Battle : IDisposable
         {
             if((bool)isOnObj)
             {
-                Basic_coroutinePhase = Basic__COROUTINE_PHASE.STAGE_SETTING;
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_ENEMY;
             }
         }
     }
 
     //
-    void Basic_Coroutine__STAGE_SETTING()
+    void Basic_Coroutine__SETTING_ENEMY()
     {
         // 캐릭터 생성
         Giggle_Character.Database data = null;
@@ -337,7 +420,14 @@ public class Giggle_Battle : IDisposable
         Bullet_Reset();
 
         //
-        Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN_START;
+        if(UI_fade.gameObject.activeSelf)
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN_START;
+        }
+        else
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_END;
+        }
     }
 
     //
@@ -354,8 +444,42 @@ public class Giggle_Battle : IDisposable
 
         if(UI_fadeTime <= 0.0f)
         {
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_END;
         }
+    }
+
+    //
+    void Basic_Coroutine__SETTING_END()
+    {
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY;
+    }
+
+    // ACTIVE_BATTLE ==========
+    void Basic_Coroutine__ACTIVE_BATTLE(float _timer)
+    {
+        Bullet_Coroutine(_timer);
+    }
+
+    // ACTIVE_MOVE ==========
+    void Basic_Coroutine__ACTIVE_MOVE_READY()
+    {
+        Map_Coroutine__ACTIVE_MOVE_READY();
+        Formation_Coroutine__ACTIVE_MOVE_READY();
+
+        Formation_Enemy.Basic_VarParent.localScale = new Vector3(-1,1,1);
+
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_MOVE;
+    }
+
+    void Basic_Coroutine__ACTIVE_MOVE(float _timer)
+    {
+        Map_Coroutine__ACTIVE_MOVE(_timer);
+        Formation_Coroutine__ACTIVE_MOVE();
+    }
+
+    void Basic_Coroutine__ACTIVE_MOVE_END()
+    {
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_BATTLE;
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -382,6 +506,8 @@ public class Giggle_Battle : IDisposable
         [SerializeField] List<Giggle_Unit> Basic_units;
 
         ////////// Getter & Setter          //////////
+        // Basic_parent
+        public Transform    Basic_VarParent { get { return Basic_parent;    }   }
         // Basic_tiles
         public Transform    Basic_GetTile(int _count)   { return Basic_tiles[_count];   }
 
@@ -437,6 +563,23 @@ public class Giggle_Battle : IDisposable
         }
 
         return res;
+    }
+
+    // ACTIVE_MOVE
+    void Formation_Coroutine__ACTIVE_MOVE_READY()
+    {
+        Formation_Enemy.Basic_VarParent.position = Map_ground.position;
+        float x = Formation_Enemy.Basic_VarParent.localPosition.x;
+        x += 2.73f;
+        Formation_Enemy.Basic_VarParent.localPosition = new Vector3(x, 0.0f, 0.0f);
+    }
+
+    void Formation_Coroutine__ACTIVE_MOVE()
+    {
+        Formation_Enemy.Basic_VarParent.position = Map_ground.position;
+        float x = Formation_Enemy.Basic_VarParent.localPosition.x;
+        x += 2.73f;
+        Formation_Enemy.Basic_VarParent.localPosition = new Vector3(x, 0.0f, 0.0f);
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -595,13 +738,63 @@ public class Giggle_Battle : IDisposable
 
     #endregion
 
+    #region MAP
+
+    [Header("MAP ==================================================")]
+    [SerializeField] Transform  Map_parent;
+    [SerializeField] float      Map_time;
+
+    [Header("RUNNING")]
+    [SerializeField] Transform  Map_ground;
+    [SerializeField] float      Map_speed;
+
+    ////////// Getter & Setter          //////////
+
+    ////////// Method                   //////////
+    void Map_Load(GameObject _obj)
+    {
+        while(Map_parent.childCount > 0)
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                Map_parent.GetChild(0));
+        }
+
+        //
+        GameObject obj = GameObject.Instantiate(_obj, Map_parent);
+        Map_ground = obj.transform.Find("Ground");
+    }
+
+    void Map_Coroutine__ACTIVE_MOVE_READY()
+    {
+        Map_ground.localPosition = new Vector3(30, 0, 0);
+        Map_speed = Map_ground.localPosition.x / Map_time;
+    }
+
+    void Map_Coroutine__ACTIVE_MOVE(float _timer)
+    {
+        float x = Map_ground.localPosition.x;
+        x -= _timer * Map_speed;
+        if(x <= 0.0f)
+        {
+            x = 0.0f;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_MOVE_END;
+        }
+
+        Map_ground.localPosition = new Vector3(x, 0.0f, 0.0f);
+    }
+
+    ////////// Constructor & Destroyer  //////////
+
+    #endregion
+
     #region UI
 
     [Header("UI ==================================================")]
     [SerializeField] Image UI_fade;
 
     [Header("RUNNING")]
-    [SerializeField] float UI_fadeTime;
+    [SerializeField] float  UI_fadeTime;
 
     ////////// Getter & Setter          //////////
 

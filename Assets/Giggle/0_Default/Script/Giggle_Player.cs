@@ -15,6 +15,7 @@ public class Giggle_Player : IDisposable
     ////////// Method                   //////////
     public void Basic_Init()
     {
+        Stage_Contructor();
         Pinocchio_Contructor();
         Marionette_Contructor();
         Formation_Contructor();
@@ -34,6 +35,31 @@ public class Giggle_Player : IDisposable
 
     #endregion
 
+    #region STAGE
+
+    [Header("STAGE ==================================================")]
+    [SerializeField] int    Stage_max;
+    [SerializeField] int    Stage_select;
+
+    ////////// Getter & Setter          //////////
+    // Stage_select
+    object Stage_VarSelect(params object[] _args)
+    {
+        return Stage_select;
+    }
+
+    ////////// Method                   //////////
+    
+    ////////// Constructor & Destroyer  //////////
+    void Stage_Contructor()
+    {
+        Stage_max = Stage_select = 0;
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT,  Stage_VarSelect );
+    }
+    
+    #endregion
+
     #region PINOCCHIO
 
     public enum Pinocchio_GENDER
@@ -41,6 +67,43 @@ public class Giggle_Player : IDisposable
         MALE = 1,
         FEMALE
     }
+
+        #region PINOCCHIO_EQUIPMENT
+
+    [Serializable]
+    public class Pinocchio_Equipment : IDisposable
+    {
+        [SerializeField] List<int>  Basic_equips;
+
+        ////////// Getter & Setter          //////////
+
+        // Basic_equips
+        public int  Basic_VarEquipsCount    { get { return Basic_equips.Count;  }   }
+
+        public int  Basic_GetEquipmentId(int _count)                { return Basic_equips[_count];      }
+        public void Basic_SetEquipmentId(int _count, int _value)    { Basic_equips[_count] = _value;    }
+
+        ////////// Method                   //////////
+
+        // Basic_equips
+        public void Basic_EquipmentAdd()    { Basic_equips.Add(-1); }
+
+        ////////// Constructor & Destroyer  //////////
+        public Pinocchio_Equipment()
+        {
+            if(Basic_equips == null)
+            {
+                Basic_equips = new List<int>();
+            }
+        }
+
+        //
+        public void Dispose()
+        {
+
+        }
+    }
+        #endregion
 
         #region PINOCCHIO_SKILL
         
@@ -245,22 +308,7 @@ public class Giggle_Player : IDisposable
     [Header("PINOCCHIO ==================================================")]
     [SerializeField] Giggle_Character.Save  Pinocchio_data;
 
-    [SerializeField] Pinocchio_GENDER       Pinocchio_gender;
-
-    [SerializeField] List<int>              Pinocchio_jobs;
-
-    [SerializeField] List<Pinocchio_Skill>      Pinocchio_skills;
-    [SerializeField] List<Pinocchio_SkillSlots> Pinocchio_skillSlots;
-    [SerializeField] int                        Pinocchio_selectSkillSlot;
-
-    [SerializeField] List<Pinocchio_Skill>  Pinocchio_attributeAttacks;
-
-    [SerializeField] List<Pinocchio_Ability>    Pinocchio_abilitys;
-    [SerializeField] int                        Pinocchio_abilityLevel;
-    [SerializeField] int                        Pinocchio_abilityExp;
-
-    [SerializeField] List<Pinocchio_Relic>      Pinocchio_relics;
-    [SerializeField] List<Pinocchio_RelicSlot>  Pinocchio_relicSlots;
+    [SerializeField] Pinocchio_GENDER   Pinocchio_gender;
 
     ////////// Getter & Setter          //////////
     // Pinocchio_data
@@ -268,6 +316,43 @@ public class Giggle_Player : IDisposable
     {
         return Pinocchio_data;
     }
+    ////////// Method                   //////////
+
+    ////////// Constructor & Destroyer  //////////
+    void Pinocchio_Contructor()
+    {
+        Pinocchio_data = new Giggle_Character.Save(1111);
+
+        //
+        Pinocchio_gender = Pinocchio_GENDER.MALE;
+
+        PinocchioJobs_Contructor();
+        PinocchioEquips_Contructor();
+        PinocchioSkills_Contructor();
+        PinocchioAttributes_Contructor();
+        PinocchioAbility_Contructor();
+        PinocchioRelic_Contructor();
+
+        // TODO:테스트용 임시데이터
+        Pinocchio_jobs.Add(1111);
+        Pinocchio_jobs.Add(1112);
+        Pinocchio_jobs.Add(1113);
+
+        Pinocchio_skills.Add(new Pinocchio_Skill(1310011));
+
+        Pinocchio_RelicInsert(1611001);
+        Pinocchio_RelicInsert(1611001);
+        Pinocchio_RelicInsert(1611001);
+        Pinocchio_RelicInsert(1612001);
+        Pinocchio_RelicInsert(1612001);
+        Pinocchio_RelicInsert(1612001);
+    }
+
+        #region PINOCCHIO_JOBS
+
+    [SerializeField] List<int>  Pinocchio_jobs;
+
+    ////////// Getter & Setter          //////////
 
     // Pinocchio_jobs
     object Pinocchio_VarJobs(params object[] _args)
@@ -281,8 +366,119 @@ public class Giggle_Player : IDisposable
 
         return res;
     }
+    
+    ////////// Method                   //////////
+    
+    ////////// Constructor & Destroyer  //////////
+    void PinocchioJobs_Contructor()
+    {
+        if(Pinocchio_jobs == null)  { Pinocchio_jobs = new List<int>(); }
 
-    #region SKILL
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS,    Pinocchio_VarJobs   );
+    }
+    
+        #endregion
+
+        #region PINOCCHIO_EQUIPS
+
+    [SerializeField] List<Pinocchio_Equipment>  Pinocchio_equips;
+    [SerializeField] int                        Pinocchio_equipSelect;
+
+    ////////// Getter & Setter          //////////
+    
+    object Pinocchio_EquipmentVarSelectFromCount(params object[] _args)
+    {
+        int count = (int)_args[0];
+
+        //
+        int res = -1;
+        if(Pinocchio_equips[Pinocchio_equipSelect].Basic_VarEquipsCount > count)
+        {
+            res = Pinocchio_equips[Pinocchio_equipSelect].Basic_GetEquipmentId(count);
+        }
+
+        //
+        return res;
+    }
+
+    ////////// Method                   //////////
+
+    object Pinocchio_EquipmentSaveSelect(params object[] _args)
+    {
+        int id = (int)_args[0];
+
+        //
+        Pinocchio_equipSelect = id;
+
+        //
+        Pinocchio_data.Basic_EquipmentReset();
+        for(int for0 = 0; for0 < Pinocchio_equips[Pinocchio_equipSelect].Basic_VarEquipsCount; for0++)
+        {
+            Pinocchio_data.Basic_Equipment(for0, Pinocchio_equips[Pinocchio_equipSelect].Basic_GetEquipmentId(for0));
+        }
+
+        //
+        return true;
+    }
+
+    object Pinocchio_EquipmentItem(params object[] _args)
+    {
+        string  socketName  = (string)_args[0];
+        int     inventoryId = (int)_args[1];
+
+        //
+        string[] socketNames = socketName.Split('_');
+        Giggle_Item.TYPE itemType = (Giggle_Item.TYPE)Enum.Parse(typeof(Giggle_Item.TYPE), socketNames[0]);
+
+        int count = (int)itemType;
+        if(itemType.Equals(Giggle_Item.TYPE.ACCESSORY))
+        {
+            count += int.Parse(socketNames[1]);
+        }
+
+        // Basic_equipments
+        while(Pinocchio_equips[Pinocchio_equipSelect].Basic_VarEquipsCount <= count)
+        {
+            Pinocchio_equips[Pinocchio_equipSelect].Basic_EquipmentAdd();
+        }
+
+        Pinocchio_equips[Pinocchio_equipSelect].Basic_SetEquipmentId(count, inventoryId);
+
+        //
+        Pinocchio_data.Basic_Equipment(count, Pinocchio_equips[Pinocchio_equipSelect].Basic_GetEquipmentId(count));
+
+        //
+        return true;
+    }
+    
+    ////////// Constructor & Destroyer  //////////
+    void PinocchioEquips_Contructor()
+    {
+        if(Pinocchio_equips == null)    { Pinocchio_equips = new List<Pinocchio_Equipment>(); }
+        while(Pinocchio_equips.Count < 3)
+        {
+            Pinocchio_equips.Add(new Pinocchio_Equipment());
+        }
+        //
+        Pinocchio_equipSelect = 0;
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_VAR_SELECT_FROM_COUNT,  Pinocchio_EquipmentVarSelectFromCount   );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_SAVE_SELECT,            Pinocchio_EquipmentSaveSelect           );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,                   Pinocchio_EquipmentItem                 );
+    }
+    
+        #endregion
+
+        #region PINOCCHIO_SKILLS
+
+    [SerializeField] List<Pinocchio_Skill>      Pinocchio_skills;
+    [SerializeField] List<Pinocchio_SkillSlots> Pinocchio_skillSlots;
+    [SerializeField] int                        Pinocchio_selectSkillSlot;
+
+    ////////// Getter & Setter          //////////
 
     // Pinocchio_skills
     object Pinocchio_VarSkills(params object[] _args)
@@ -351,8 +547,36 @@ public class Giggle_Player : IDisposable
         //
         return Pinocchio_skillSlots[Pinocchio_selectSkillSlot].Basic_VarList[count];
     }
+    
+    ////////// Method                   //////////
+    
+    ////////// Constructor & Destroyer  //////////
 
-    #endregion
+    void PinocchioSkills_Contructor()
+    {
+        //
+        if(Pinocchio_skills == null)    { Pinocchio_skills = new List<Pinocchio_Skill>();   }
+        //
+        if(Pinocchio_skillSlots == null)    { Pinocchio_skillSlots = new List<Pinocchio_SkillSlots>();  }
+        while(Pinocchio_skillSlots.Count < 3)
+        {
+            Pinocchio_skillSlots.Add(new Pinocchio_SkillSlots());
+        }
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS,                  Pinocchio_VarSkills             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,           Pinocchio_VarSkillFromId        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,             Pinocchio_VarSkillSlots         );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,   Pinocchio_VarSkillSlotFromCount );
+    }
+    
+        #endregion
+
+        #region PINOCCHIO_ATTRIBUTES
+
+    [SerializeField] List<Pinocchio_Skill>  Pinocchio_attributeAttacks;
+
+    ////////// Getter & Setter          //////////
 
     // Pinocchio_attributeAttacks
     object Pinocchio_VarAttributeAttackFromId(params object[] _args)
@@ -381,8 +605,54 @@ public class Giggle_Player : IDisposable
         //
         return res;
     }
+    
+    ////////// Method                   //////////
+    
+    // Pinocchio_attributeAttacks
+    object Pinocchio_AttributeAttackLevelUp(params object[] _args)
+    {
+        int id = (int)_args[0];
 
-    #region ABILITY
+        //
+        Pinocchio_Skill element = null;
+
+        for(int for0 = 0; for0 < Pinocchio_attributeAttacks.Count; for0++)
+        {
+            if(Pinocchio_attributeAttacks[for0].Basic_VarId.Equals(id))
+            {
+                element = Pinocchio_attributeAttacks[for0];
+                break;
+            }
+        }
+
+        element.Basic_VarLv += 1;
+
+        //
+        return true;
+    }
+    
+    ////////// Constructor & Destroyer  //////////
+
+    void PinocchioAttributes_Contructor()
+    {
+        //
+        if(Pinocchio_attributeAttacks == null)  { Pinocchio_attributeAttacks = new List<Pinocchio_Skill>(); }
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,    Pinocchio_VarAttributeAttackFromId  );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP,       Pinocchio_AttributeAttackLevelUp    );
+    }
+    
+        #endregion
+
+        #region PINOCCHIO_ABILITY
+
+    [SerializeField] List<Pinocchio_Ability>    Pinocchio_abilitys;
+    [SerializeField] int                        Pinocchio_abilityLevel;
+    [SerializeField] int                        Pinocchio_abilityExp;
+
+    ////////// Getter & Setter          //////////
 
     // Pinocchio_abilitys
     object Pinocchio_AbilityGetAbilityFromCount(params object[] _args)
@@ -400,10 +670,76 @@ public class Giggle_Player : IDisposable
     {
         return Pinocchio_abilityLevel;
     }
+    
+    ////////// Method                   //////////
+    
+    //
+    object Pinocchio_AbilityChange(params object[] _args)
+    {
+        Giggle_Character.Ability_Probability perData
+            = (Giggle_Character.Ability_Probability)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,
+                Pinocchio_abilityLevel);
+        int perValue = UnityEngine.Random.Range(0, 100);
+        int whileCount0 = 0;
+        int whileCount1 = 0;
+        while(whileCount0 < Pinocchio_abilitys.Count)
+        {
+            if(!Pinocchio_abilitys[whileCount0].Basic_VarIsLock)
+            {
+                whileCount1 = 0;
+            
+                while(whileCount1 <= (int)Giggle_Character.Ability_Probability_GRADE.SSS)
+                {
+                    if(perValue < perData.Basic_GetPercentageFromCount(whileCount1))
+                    {
+                        Pinocchio_abilitys[whileCount0].Basic_Change(whileCount1);
+                        break;
+                    }
+                    else
+                    {
+                        perValue -= perData.Basic_GetPercentageFromCount(whileCount1);
+                        whileCount1++;
+                    }
+                }
+            }
 
-    #endregion
+            whileCount0++;
+        }
 
-    #region RELIC
+        //
+        return true;
+    }
+    
+    ////////// Constructor & Destroyer  //////////
+
+    void PinocchioAbility_Contructor()
+    {
+        //
+        if(Pinocchio_abilitys == null)  { Pinocchio_abilitys = new List<Pinocchio_Ability>();   }
+        while(Pinocchio_abilitys.Count < 6)
+        {
+            Pinocchio_abilitys.Add(new Pinocchio_Ability());
+        }
+        Pinocchio_abilityLevel = 1;
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITY_FROM_COUNT,  Pinocchio_AbilityGetAbilityFromCount    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITYS_COUNT,      Pinocchio_AbilityGetAbilitysCount       );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_LEVEL,               Pinocchio_AbilityGetLevel               );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_CHANGE,                  Pinocchio_AbilityChange                 );
+    }
+    
+        #endregion
+
+        #region PINOCCHIO_RELIC
+
+    [SerializeField] List<Pinocchio_Relic>      Pinocchio_relics;
+    [SerializeField] List<Pinocchio_RelicSlot>  Pinocchio_relicSlots;
+
+    ////////// Getter & Setter          //////////
+
     //
     object Pinocchio_RelicVarRelics__Bridge(params object[] _args)
     {
@@ -472,90 +808,9 @@ public class Giggle_Player : IDisposable
         //
         return res;
     }
-
-    #endregion
-
+    
     ////////// Method                   //////////
-
-    object Pinocchio_EquipmentItem(params object[] _args)
-    {
-        string  socketName  = (string)_args[0];
-        int     inventoryId = (int)_args[1];
-
-        //
-        Pinocchio_data.Basic_Equipment(socketName, inventoryId);
-
-        //
-        return true;
-    }
-
-    #region ATTRIBUTE
     
-    // Pinocchio_attributeAttacks
-    object Pinocchio_AttributeAttackLevelUp(params object[] _args)
-    {
-        int id = (int)_args[0];
-
-        //
-        Pinocchio_Skill element = null;
-
-        for(int for0 = 0; for0 < Pinocchio_attributeAttacks.Count; for0++)
-        {
-            if(Pinocchio_attributeAttacks[for0].Basic_VarId.Equals(id))
-            {
-                element = Pinocchio_attributeAttacks[for0];
-                break;
-            }
-        }
-
-        element.Basic_VarLv += 1;
-
-        //
-        return true;
-    }
-    
-    //
-    object Pinocchio_AbilityChange(params object[] _args)
-    {
-        Giggle_Character.Ability_Probability perData
-            = (Giggle_Character.Ability_Probability)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,
-                Pinocchio_abilityLevel);
-        int perValue = UnityEngine.Random.Range(0, 100);
-        int whileCount0 = 0;
-        int whileCount1 = 0;
-        while(whileCount0 < Pinocchio_abilitys.Count)
-        {
-            if(!Pinocchio_abilitys[whileCount0].Basic_VarIsLock)
-            {
-                whileCount1 = 0;
-            
-                while(whileCount1 <= (int)Giggle_Character.Ability_Probability_GRADE.SSS)
-                {
-                    if(perValue < perData.Basic_GetPercentageFromCount(whileCount1))
-                    {
-                        Pinocchio_abilitys[whileCount0].Basic_Change(whileCount1);
-                        break;
-                    }
-                    else
-                    {
-                        perValue -= perData.Basic_GetPercentageFromCount(whileCount1);
-                        whileCount1++;
-                    }
-                }
-            }
-
-            whileCount0++;
-        }
-
-        //
-        return true;
-    }
-
-    #endregion
-
-    #region RELIC
-
     object Pinocchio_RelicSlotChange(params object[] _args)
     {
         int inventory   = (int)_args[0];
@@ -662,37 +917,10 @@ public class Giggle_Player : IDisposable
         Pinocchio_relics.Add(new Pinocchio_Relic(_dataId, inventoryId));
     }
 
-    #endregion
-
     ////////// Constructor & Destroyer  //////////
-    void Pinocchio_Contructor()
+    
+    void PinocchioRelic_Contructor()
     {
-        Pinocchio_data = new Giggle_Character.Save(1111);
-        //
-        Pinocchio_gender = Pinocchio_GENDER.MALE;
-        //
-        if(Pinocchio_jobs == null)  { Pinocchio_jobs = new List<int>(); }
-        //
-        //
-        if(Pinocchio_skills == null)    { Pinocchio_skills = new List<Pinocchio_Skill>();   }
-        //
-        if(Pinocchio_skillSlots == null)    { Pinocchio_skillSlots = new List<Pinocchio_SkillSlots>();  }
-        while(Pinocchio_skillSlots.Count < 3)
-        {
-            Pinocchio_skillSlots.Add(new Pinocchio_SkillSlots());
-        }
-        //
-        //
-        if(Pinocchio_attributeAttacks == null)  { Pinocchio_attributeAttacks = new List<Pinocchio_Skill>(); }
-        //
-        if(Pinocchio_abilitys == null)  { Pinocchio_abilitys = new List<Pinocchio_Ability>();   }
-        while(Pinocchio_abilitys.Count < 6)
-        {
-            Pinocchio_abilitys.Add(new Pinocchio_Ability());
-        }
-        Pinocchio_abilityLevel = 1;
-        //
-        //
         if(Pinocchio_relics == null)
         {
             Pinocchio_relics = new List<Pinocchio_Relic>();
@@ -707,40 +935,26 @@ public class Giggle_Player : IDisposable
             Pinocchio_relicSlots.Add(new Pinocchio_RelicSlot());
         }
 
-        // TODO:테스트용 임시데이터
-        Pinocchio_jobs.Add(1111);
-        Pinocchio_jobs.Add(1112);
-        Pinocchio_jobs.Add(1113);
-
-        Pinocchio_skills.Add(new Pinocchio_Skill(1310011));
-
-        Pinocchio_RelicInsert(1611001);
-        Pinocchio_RelicInsert(1611001);
-        Pinocchio_RelicInsert(1611001);
-        Pinocchio_RelicInsert(1612001);
-        Pinocchio_RelicInsert(1612001);
-        Pinocchio_RelicInsert(1612001);
-
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,                        Pinocchio_VarData                           );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS,                        Pinocchio_VarJobs                           );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS,                      Pinocchio_VarSkills                         );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,               Pinocchio_VarSkillFromId                    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,                 Pinocchio_VarSkillSlots                     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,       Pinocchio_VarSkillSlotFromCount             );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,    Pinocchio_VarAttributeAttackFromId          );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITY_FROM_COUNT,  Pinocchio_AbilityGetAbilityFromCount        );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITYS_COUNT,      Pinocchio_AbilityGetAbilitysCount           );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_LEVEL,               Pinocchio_AbilityGetLevel                   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELICS,                Pinocchio_RelicVarRelics__Bridge            );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOTS,           Pinocchio_RelicVarRelicSlots__Bridge        );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_SLOTS_COLOR_IS_SAME,   Pinocchio_RelicVarSlotsColorIsSame__Bridge  );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,               Pinocchio_EquipmentItem             );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP,   Pinocchio_AttributeAttackLevelUp    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_CHANGE,              Pinocchio_AbilityChange             );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_SLOT_CHANGE,           Pinocchio_RelicSlotChange           );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_SLOT_CHANGE,               Pinocchio_RelicSlotChange                   );
     }
+
+        #endregion
+
+        #region PINOCCHIO_JOBS
+
+    ////////// Getter & Setter          //////////
+    
+    ////////// Method                   //////////
+    
+    ////////// Constructor & Destroyer  //////////
+    
+        #endregion
 
     #endregion
 
@@ -809,6 +1023,36 @@ public class Giggle_Player : IDisposable
         Giggle_Character.Save element = new Giggle_Character.Save(inventoryId, _dataId);
         Marionette_list.Add(element);
     }
+    
+    // Marionette_CardEquip
+    object Marionette_CardEquip__Script(params object[] _args)
+    {
+        int marionetteInventoryId = (int)_args[0];
+        int cardSlot    = (int)_args[1];
+        int cardId      = (int)_args[2];
+
+        //
+        Marionette_CardEquip(
+            marionetteInventoryId,
+            cardSlot, cardId);
+
+        //
+        return true;
+    }
+
+    void Marionette_CardEquip(
+        int _marionetteInventoryId,
+        int _cardSlot, int _cardId)
+    {
+        for(int for0 = 0; for0 < Marionette_list.Count; for0++)
+        {
+            if(Marionette_list[for0].Basic_VarInventoryId.Equals(_marionetteInventoryId))
+            {
+                Marionette_list[for0].Basic_SetCard(_cardSlot, _cardId);
+                break;
+            }
+        }
+    }
 
     ////////// Constructor & Destroyer  //////////
     void Marionette_Contructor()
@@ -823,7 +1067,8 @@ public class Giggle_Player : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList                  );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,    Marionette_Add__Script  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,        Marionette_Add__Script          );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__CARD_EQUIP, Marionette_CardEquip__Script    );
     }
 
     #endregion
@@ -924,6 +1169,7 @@ public class Giggle_Player : IDisposable
     #region ITEM
 
     [SerializeField] List<Giggle_Item.Inventory>    Item_list;
+    [SerializeField] List<Giggle_Item.Inventory>    Item_cardList;
 
     ////////// Getter & Setter          //////////
 
@@ -940,6 +1186,58 @@ public class Giggle_Player : IDisposable
         return res;
     }
 
+    object Item_GetItemFromInventoryId(params object[] _args)
+    {
+        int id = (int)_args[0];
+
+        //
+        Giggle_Item.Inventory res = null;
+
+        for(int for0 = 0; for0 < Item_list.Count; for0++)
+        {
+            if(Item_list[for0].Basic_VarInventoryId.Equals(id))
+            {
+                res = Item_list[for0];
+                break;
+            }
+        }
+
+        return res;
+    }
+
+    // Item_cards
+    object Item_GetCardList(params object[] _args)
+    {
+        List<Giggle_Item.Inventory> res = new List<Giggle_Item.Inventory>();
+
+        for(int for0 = 0; for0 < Item_cardList.Count; for0++)
+        {
+            res.Add(Item_cardList[for0]);
+        }
+
+        return res;
+    }
+
+    object Item_GetCardDataFromDataId(params object[] _args)
+    {
+        int id = (int)_args[0];
+
+        //
+        Giggle_Item.Inventory res = null;
+
+        for(int for0 = 0; for0 < Item_cardList.Count; for0++)
+        {
+            if(Item_cardList[for0].Basic_VarDataId.Equals(id))
+            {
+                res = Item_cardList[for0];
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
     ////////// Method                   //////////
     
     ////////// Constructor & Destroyer  //////////
@@ -949,16 +1247,25 @@ public class Giggle_Player : IDisposable
         {
             Item_list = new List<Giggle_Item.Inventory>();
         }
+        if(Item_cardList == null)
+        {
+            Item_cardList = new List<Giggle_Item.Inventory>();
+        }
+
+        //
         Item_list.Add(new Giggle_Item.Inventory(0, 701101001));
         Item_list.Add(new Giggle_Item.Inventory(1, 72101001 ));
         Item_list.Add(new Giggle_Item.Inventory(2, 74101001 ));
         Item_list.Add(new Giggle_Item.Inventory(3, 76101001));
         Item_list.Add(new Giggle_Item.Inventory(4, 78101001));
         Item_list.Add(new Giggle_Item.Inventory(5, 78101001));
-        //Item_list.Add(new Giggle_Item.Inventory(6, 72101001));
-        //Item_list.Add(new Giggle_Item.Inventory(7, 72101001));
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,    Item_GetItemList    );
+        Item_cardList.Add(new Giggle_Item.Inventory(0, 251001));
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,                Item_GetItemList            );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,   Item_GetItemFromInventoryId );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_CARD_LIST,                Item_GetCardList            );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__CARD__GET_DATA_FROM_DATA_ID,        Item_GetCardDataFromDataId  );
     }
 
     #endregion

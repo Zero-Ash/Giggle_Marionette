@@ -32,7 +32,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     public partial class UI_MainBasicData : UI_BasicData
     {
         [SerializeField] Giggle_MainManager Basic_manager;
-        [SerializeField] Giggle_MainManager_Marionette Basic_marionetteManager;
+        [SerializeField] Giggle_MainManager__Pinocchio  Basic_pinocchioManager;
+        [SerializeField] Giggle_MainManager__Marionette Basic_marionetteManager;
 
         ////////// Getter & Setter          //////////
 
@@ -41,8 +42,52 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init()
         {
-            Pinocchio_data.Basic_Init();
         }
+
+        #region AREA1
+
+        [Header("AREA1 ==================================================")]
+        [SerializeField] Image  Area1_portrait;
+        [SerializeField] TextMeshProUGUI    Area1_level;
+        [SerializeField] Slider             Area1_levelSlider;
+        [SerializeField] TextMeshProUGUI    Area1_name;
+        [SerializeField] TextMeshProUGUI    Area1_power;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
+
+        #region AREA2
+
+        [Header("AREA2 ==================================================")]
+        [SerializeField] TextMeshProUGUI    Area2_gold;
+        [SerializeField] TextMeshProUGUI    Area2_dia;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
+
+        #region AREA3
+
+        [Header("AREA3 ==================================================")]
+        [SerializeField] TextMeshProUGUI    Area3_stage;
+        [SerializeField] Slider             Area3_stageSlider;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
         
         #region AREA4
 
@@ -66,11 +111,37 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         ////////// Constructor & Destroyer  //////////
 
         #endregion
+
+        #region AREA5
+
+        [Header("AREA5 ==================================================")]
+        [SerializeField] TextMeshProUGUI    Area5_questText;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
+
+        #region AREA6
+
+        [Header("AREA6 ==================================================")]
+        [SerializeField] TextMeshProUGUI    Area6_aa;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
         
         #region AREA7
 
         [Header("AREA7 ==================================================")]
-        [SerializeField] GameObject Area7_exMenu;
+        [SerializeField] TextMeshProUGUI    Area7_gachaText;
 
         ////////// Getter & Setter          //////////
 
@@ -93,13 +164,26 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         void Area7_PinocchioOn()
         {
-            Pinocchio_data.Basic_Active();
+            Basic_pinocchioManager.Basic_Active();
         }
 
         void Area7_MarionetteOn()
         {
             Basic_marionetteManager.Basic_Active();
         }
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
+
+        #region AREA8
+
+        [Header("AREA8 ==================================================")]
+        [SerializeField] TextMeshProUGUI    Area8_aa;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
 
@@ -385,7 +469,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             case "AREA4":   { UI_basicData.Area4_BtnClick(names);   }   break;
             case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
             //
-            case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
+            //case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
             //case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;
         }
     }
