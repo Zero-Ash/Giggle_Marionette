@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Pinocchio_male_staff.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: be64ffff8864fffffc61ffffd461ffffac61ffff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: ed82cd782970d46ed8a8d583bc7290d7, type: 2}
+  - {fileID: 11400000, guid: b118ae37f52fa4728a7f69bd0a158449, type: 2}
+  - {fileID: 11400000, guid: 4a923f08636384822912a3d07f410ff4, type: 2}
+  - {fileID: 11400000, guid: 716b0e77773d44008ac2ce7d0603a744, type: 2}
+  - {fileID: 11400000, guid: dfe41ccddb620441a8287ce84ed4986a, type: 2}

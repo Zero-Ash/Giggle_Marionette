@@ -1,0 +1,22 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Pinocchio_male_staff.moc3",
+		"Textures": [
+			"Pinocchio_male_staff.1024/texture_00.png"
+		],
+		"DisplayInfo": "Pinocchio_male_staff.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

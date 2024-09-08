@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: card_soldier_clover4_SD.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 02cafbffccc9fbff10c9fbff98c8fbff48c8fbff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: 33200d5d1100e4ffca183ac377980236, type: 2}
+  - {fileID: 11400000, guid: 2b1fb80d2d6b54bf9805c6556559fe7b, type: 2}
+  - {fileID: 11400000, guid: d99b38f7f08b748f1b4677c616fd1320, type: 2}
+  - {fileID: 11400000, guid: 98f042d49dcc547e1acb8116b6989ec8, type: 2}
+  - {fileID: 11400000, guid: 5e1adbfe1a2614ea68016f1bba90f8e9, type: 2}

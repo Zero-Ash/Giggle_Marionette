@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Pinocchio_female_throwing_stars.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 0c34fbffa02efbff782efbff802bfbff582bfbff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: 66365292fe6a14845a9fe1b17811a7b0, type: 2}
+  - {fileID: 11400000, guid: e4a7a504aeaeb41f1aa889e9ad76ff48, type: 2}
+  - {fileID: 11400000, guid: a34012bbb01654ed1ad177731592df0c, type: 2}
+  - {fileID: 11400000, guid: 781b1c4e04acd49149db3f147bbf006f, type: 2}
+  - {fileID: 11400000, guid: 4012d21622c554bc391c2f6ef35500df, type: 2}

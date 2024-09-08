@@ -1,0 +1,10 @@
+,E 등급 확률(%),D 등급 확률(%),C 등급 확률(%),B 등급 확률(%),A 등급 확률(%),S 등급 확률(%),SS 등급 확률(%),SSS 등급 확률(%)
+int,int,int,int,int,int,int,int,int
+abilityLv,cha_ability_E,cha_ability_D,cha_ability_C,cha_ability_B,cha_ability_A,cha_ability_S,cha_ability_SS,cha_ability_SSS
+15201,50,30,20,0,0,0,0,0
+15202,15,40,30,15,0,0,0,0
+15203,5,30,40,20,5,0,0,0
+15204,0,15,25,44,15,1,0,0
+15205,0,0,10,50,31,8,1,0
+15206,0,0,0,39,42,15,4,0
+15207,0,0,0,0,46,45,8,1

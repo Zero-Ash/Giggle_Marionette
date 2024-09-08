@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Alice_SD_240628.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 1648fbffe047fbffb847fbff9044fbff6844fbff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: 70721c680061649cea81d36c894068bc, type: 2}
+  - {fileID: 11400000, guid: 998e17b0470884fc3b72982b75f83840, type: 2}
+  - {fileID: 11400000, guid: 5e6b6d2c13c2b46518de04a7b776590a, type: 2}
+  - {fileID: 11400000, guid: 20f3eed0768354fa7932d80bb413e6bb, type: 2}
+  - {fileID: 11400000, guid: 5fc8a171cf24a4b119b45ab6903fab9a, type: 2}

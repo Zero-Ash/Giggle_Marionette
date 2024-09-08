@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Pinocchio_male_throwing_stars.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 6069ffff2a69ffff0269ffffda68ffffb268ffff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: bcced713cfa3947f4a920b10fcffc91a, type: 2}
+  - {fileID: 11400000, guid: 3a53bfffb54bd4128b76e7fd4aec61f0, type: 2}
+  - {fileID: 11400000, guid: f156f4f8f7462461fa4d625d27ccca90, type: 2}
+  - {fileID: 11400000, guid: 80c818cc188eb49619713907077e3a2b, type: 2}
+  - {fileID: 11400000, guid: ab9665d9a01cb4d2cb75a1f4cbadc225, type: 2}

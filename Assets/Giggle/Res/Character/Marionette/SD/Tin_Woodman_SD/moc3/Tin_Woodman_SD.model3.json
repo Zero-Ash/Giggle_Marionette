@@ -1,0 +1,22 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Tin_Woodman_SD.moc3",
+		"Textures": [
+			"Tin_Woodman_SD.1024/texture_00.png"
+		],
+		"DisplayInfo": "Tin_Woodman_SD.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

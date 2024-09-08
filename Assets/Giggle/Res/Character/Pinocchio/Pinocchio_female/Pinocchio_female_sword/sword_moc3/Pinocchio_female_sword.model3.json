@@ -1,0 +1,22 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Pinocchio_female_sword.moc3",
+		"Textures": [
+			"Pinocchio_female_sword.1024/texture_00.png"
+		],
+		"DisplayInfo": "Pinocchio_female_sword.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

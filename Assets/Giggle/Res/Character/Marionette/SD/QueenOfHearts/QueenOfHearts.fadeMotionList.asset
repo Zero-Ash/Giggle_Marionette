@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: QueenOfHearts.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 962bf9ff602bf9ff382bf9ff102bf9ff4c28f9ff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: ee1e06bb9d0114b2d8416e2c67bd9ae7, type: 2}
+  - {fileID: 11400000, guid: 9f692410105964e548bc535a751100b8, type: 2}
+  - {fileID: 11400000, guid: d3acebdb8a19e4aab9280109ffe0b2c3, type: 2}
+  - {fileID: 11400000, guid: e6ae3cef8f0724ac6b0d19769a134683, type: 2}
+  - {fileID: 11400000, guid: a95741bc808fd469b81d3d6341fb9164, type: 2}

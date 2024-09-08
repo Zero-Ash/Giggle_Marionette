@@ -1,0 +1,51 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param_leg",
+			"GroupId": "",
+			"Name": "다리 움직임"
+		},
+		{
+			"Id": "Param_arm",
+			"GroupId": "",
+			"Name": "팔 움직임"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "몸 움직임"
+		},
+		{
+			"Id": "Param_all",
+			"GroupId": "",
+			"Name": "전체 꿀렁꿀렁"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "",
+			"Name": "공격"
+		},
+		{
+			"Id": "Param_defeatBody",
+			"GroupId": "",
+			"Name": "쓰러짐-몸"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "",
+			"Name": "눈 감기"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": [
+		{
+			"Id": "Part3",
+			"Name": "엘리스 SD.psd(레이어를 찾을 수 없음)"
+		},
+		{
+			"Id": "Part2",
+			"Name": "엘리스 복사"
+		}
+	]
+}

@@ -1,0 +1,85 @@
+{
+	"Version": 3,
+	"Meta": {
+		"Duration": 1.333,
+		"Fps": 30.0,
+		"Loop": true,
+		"AreBeziersRestricted": true,
+		"CurveCount": 3,
+		"TotalSegmentCount": 7,
+		"TotalPointCount": 22,
+		"UserDataCount": 0,
+		"TotalUserDataSize": 0
+	},
+	"Curves": [
+		{
+			"Target": "Parameter",
+			"Id": "Param",
+			"Segments": [
+				0,
+				0,
+				1,
+				0.256,
+				0,
+				0.511,
+				0,
+				0.767,
+				0,
+				1,
+				0.956,
+				0,
+				1.144,
+				0,
+				1.333,
+				0
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "Param_defeatBody",
+			"Segments": [
+				0,
+				0,
+				1,
+				0.189,
+				0,
+				0.378,
+				0.099,
+				0.567,
+				0.5,
+				1,
+				0.633,
+				0.641,
+				0.7,
+				1,
+				0.767,
+				1,
+				1,
+				0.956,
+				1,
+				1.144,
+				1,
+				1.333,
+				1
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "Param3",
+			"Segments": [
+				0,
+				0,
+				1,
+				0.256,
+				0,
+				0.511,
+				1,
+				0.767,
+				1,
+				0,
+				1.333,
+				1
+			]
+		}
+	]
+}

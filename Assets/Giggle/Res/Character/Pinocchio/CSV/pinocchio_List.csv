@@ -1,0 +1,9 @@
+index,캐릭터이름,성별,기본 공격력,기본 방어력,기본 체력,기본 공격속도,기본 다중타격 확률(%),기본 반격확률(%),기본 스킬치명 확률(%),공격당 마나 회복량,피격시 마나 회복량,최대 마나량
+int,string,int,int,int,int,float,float,int,int,int,int,int
+cha_id,cha_name,cha_gender,cha_basic_attack,cha_basic_defense,cha_basic_hp,cha_basic_attack_speed,cha_basic_double_attack_chance,cha_basic_counter_attack_chance,cha_basic_critical_attack_chance,cha_attack_recovery,cha_hit_recovery,cha_mana
+1111,피노키오(남),1,100,50,10000,2.0,30,30,10,10,5,100
+1121,피노키오(여),2,100,50,10000,2.0,30,30,10,10,5,100
+1112,피노키오(남),1,125,20,7500,3.0,30,30,10,10,5,150
+1122,피노키오(여),2,125,20,7500,3.0,30,30,10,10,5,150
+1113,피노키오(남),1,150,30,7500,1.0,30,30,10,10,5,200
+1123,피노키오(여),2,150,30,7500,1.0,30,30,10,10,5,200

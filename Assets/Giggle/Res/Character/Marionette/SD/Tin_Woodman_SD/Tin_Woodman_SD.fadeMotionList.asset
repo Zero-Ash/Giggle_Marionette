@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: Tin_Woodman_SD.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: ba44f9ff8444f9ff5c44f9ff3444f9ff0c44f9ff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: 082249daf2bac418b9c20cee6dc0e54a, type: 2}
+  - {fileID: 11400000, guid: db65eac806b6f40a0ab7b523087d0956, type: 2}
+  - {fileID: 11400000, guid: d2f58e2ebc5f24bab99abd8e43f81953, type: 2}
+  - {fileID: 11400000, guid: 73a18c67346aa414c8a110b5939b3ded, type: 2}
+  - {fileID: 11400000, guid: 60daa31ebf074420386d1acde015a205, type: 2}

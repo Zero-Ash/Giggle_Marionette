@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
+  m_Name: card_soldier_spade1_SD.fadeMotionList
+  m_EditorClassIdentifier: 
+  MotionInstanceIds: 6ec9fbffe8c8fbffc0c8fbff70c8fbffa8c2fbff
+  CubismFadeMotionObjects:
+  - {fileID: 11400000, guid: 548e92d30ec57424ebee4a001be608e2, type: 2}
+  - {fileID: 11400000, guid: c5a8fd930e8254bbeb82c0124b7f885a, type: 2}
+  - {fileID: 11400000, guid: 17c69aa54e00744dca7cb53274c668d3, type: 2}
+  - {fileID: 11400000, guid: 298de00a6084b4943a34e20f5b2677c1, type: 2}
+  - {fileID: 11400000, guid: 5fd099e17adb840369ab8b831c5d53b8, type: 2}
