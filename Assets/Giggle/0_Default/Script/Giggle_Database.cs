@@ -139,14 +139,47 @@ public class Giggle_Database : IDisposable
 
     #region PINOCCHIO
 
+    [Serializable]
+    public class Pinocchio_Attribute : IDisposable
+    {
+        [SerializeField] List<Giggle_Character.Attribute>   Basic_list;
+
+        ////////// Getter & Setter          //////////
+        
+        // Basic_list
+        public List<Giggle_Character.Attribute> Basic_VarList                       { get { return Basic_list;          }   }
+
+        public int                              Basic_VarListCount                  { get { return Basic_list.Count;    }   }
+
+        public Giggle_Character.Attribute       Basic_GetDataFromCount(int _count)  { return Basic_list[_count];            }
+        
+        ////////// Method                   //////////
+
+        public void Basic_Add(Dictionary<string, string> _data)
+        {
+            Basic_list.Add(new Giggle_Character.Attribute(_data));
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        
+        public Pinocchio_Attribute()
+        {
+            if(Basic_list == null)  { Basic_list = new List<Giggle_Character.Attribute>();  }
+        }
+
+        //
+        public void Dispose()
+        {
+
+        }
+    }
+
     [Header("PINOCCHIO ==========")]
     [SerializeField] Character_Data Pinocchio_data;
 
     [SerializeField] List<Giggle_Character.Skill> Pinocchio_skills;
 
-    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeAttacks;
-    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeDefences;
-    [SerializeField] List<Giggle_Character.Attribute> Pinocchio_attributeSupports;
+    [SerializeField] List<Pinocchio_Attribute>  Pinocchio_attributes;
 
     [SerializeField] List<Giggle_Character.Ability>             Pinocchio_abilitys;
     [SerializeField] List<Giggle_Character.Ability_Probability> Pinocchio_abilityProbabilitys;
@@ -210,24 +243,28 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
-    // Pinocchio_attributeAttacks
-    object Pinocchio_GetAttributeAttack(params object[] _args)
+    // Pinocchio_attributes
+    object Pinocchio_GetAttribute(params object[] _args)
     {
-        return Pinocchio_attributeAttacks;
+        Giggle_Player.ATTRIBUTE_TYPE type0  = (Giggle_Player.ATTRIBUTE_TYPE)_args[0];
+
+        //
+        return Pinocchio_attributes[(int)type0].Basic_VarList;
     }
 
-    object Pinocchio_GetAttributeAttackFromId(params object[] _args)
+    object Pinocchio_GetAttributeFromId(params object[] _args)
     {
         Giggle_Character.Attribute res = null;
 
         //
-        int id = (int)_args[0];
+        Giggle_Player.ATTRIBUTE_TYPE type0  = (Giggle_Player.ATTRIBUTE_TYPE)_args[0];
+        int id = (int)_args[1];
 
-        for(int for0 = 0; for0 < Pinocchio_attributeAttacks.Count; for0++)
+        for(int for0 = 0; for0 < Pinocchio_attributes[(int)type0].Basic_VarListCount; for0++)
         {
-            if(Pinocchio_attributeAttacks[for0].Basic_VarId.Equals(id))
+            if(Pinocchio_attributes[(int)type0].Basic_GetDataFromCount(for0).Basic_VarId.Equals(id))
             {
-                res = Pinocchio_attributeAttacks[for0];
+                res = Pinocchio_attributes[(int)type0].Basic_GetDataFromCount(for0);
                 break;
             }
         }
@@ -235,9 +272,6 @@ public class Giggle_Database : IDisposable
         //
         return res;
     }
-
-    // Pinocchio_attributeDefences
-    // Pinocchio_attributeSupports
 
     // Pinocchio_abilitys
     object Pinocchio_GetAbilitysFromGrade(params object[] _args)
@@ -336,6 +370,7 @@ public class Giggle_Database : IDisposable
             switch(phase)
             {
                 // 캐릭터 데이터
+                #region DATA
                 // 리스트
                 case 0:
                     {
@@ -394,6 +429,7 @@ public class Giggle_Database : IDisposable
                         };
                     }
                     break;
+                #endregion
                 // 스킬
                 #region SKILL
 
@@ -454,19 +490,13 @@ public class Giggle_Database : IDisposable
                     {
                         phase = 301;
                         
-                        if(Pinocchio_attributeAttacks == null)
+                        if(Pinocchio_attributes == null)
                         {
-                            Pinocchio_attributeAttacks = new List<Giggle_Character.Attribute>();
+                            Pinocchio_attributes = new List<Pinocchio_Attribute>();
                         }
-
-                        if(Pinocchio_attributeDefences == null)
+                        for(int for0 = 0; for0 < (int)Giggle_Player.ATTRIBUTE_TYPE.TOTAL; for0++)
                         {
-                            Pinocchio_attributeDefences = new List<Giggle_Character.Attribute>();
-                        }
-
-                        if(Pinocchio_attributeSupports == null)
-                        {
-                            Pinocchio_attributeSupports = new List<Giggle_Character.Attribute>();
+                            Pinocchio_attributes.Add(new Pinocchio_Attribute());
                         }
 
                         Addressables.LoadAssetAsync<TextAsset>("PINOCCHIO/CSV_ATTRIBUTE_LIST").Completed
@@ -480,12 +510,7 @@ public class Giggle_Database : IDisposable
                                 int attributeClass = id / 1000;
                                 attributeClass %= 10;
 
-                                switch(attributeClass)
-                                {
-                                    case 1: { Pinocchio_attributeAttacks.Add(   new Giggle_Character.Attribute(data[for0]));    }   break;
-                                    case 2: { Pinocchio_attributeDefences.Add(  new Giggle_Character.Attribute(data[for0]));    }   break;
-                                    case 3: { Pinocchio_attributeSupports.Add(  new Giggle_Character.Attribute(data[for0]));    }   break;
-                                }
+                                Pinocchio_attributes[attributeClass - 1].Basic_Add(data[for0]);
                             }
 
                             phase = 302;
@@ -508,12 +533,7 @@ public class Giggle_Database : IDisposable
                                 int attributeClass = id / 1000;
                                 attributeClass %= 10;
 
-                                List<Giggle_Character.Attribute> list = Pinocchio_attributeAttacks;
-                                switch(attributeClass)
-                                {
-                                    case 2: { list = Pinocchio_attributeDefences;   }   break;
-                                    case 3: { list = Pinocchio_attributeSupports;   }   break;
-                                }
+                                List<Giggle_Character.Attribute> list = Pinocchio_attributes[attributeClass - 1].Basic_VarList;
 
                                 for(int for1 = 0; for1 < list.Count; for1++)
                                 {
@@ -665,8 +685,8 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,                      Pinocchio_GetDataFromId                     );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,                     Pinocchio_GetSkillFromId                    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK,                  Pinocchio_GetAttributeAttack                );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK_FROM_ID,          Pinocchio_GetAttributeAttackFromId          );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE,                         Pinocchio_GetAttribute                      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_FROM_ID,                 Pinocchio_GetAttributeFromId                );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ABILITYS_FROM_GRADE,               Pinocchio_GetAbilitysFromGrade              );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ABILITY_RANDOM_FROM_GRADE,         Pinocchio_GetAbilityRandomFromGrade         );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_ABILITY_FROM_ELEMENT,      Pinocchio_GetAbilityFromElement             );

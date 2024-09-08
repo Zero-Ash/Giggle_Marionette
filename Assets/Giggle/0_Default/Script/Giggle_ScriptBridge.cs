@@ -81,17 +81,17 @@ public class Giggle_ScriptBridge
         /// </summary>
         DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
         /// <summary>
-        /// 공격 특성 데이터 리스트<br/>
-        /// 매개변수 :<br/>
+        /// 특성 데이터 리스트<br/>
+        /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type<br/>
         /// return type : List(Giggle_Character.Attribute)
         /// </summary>
-        DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK,
+        DATABASE__PINOCCHIO__GET_ATTRIBUTE,
         /// <summary>
-        /// 공격 특성 데이터<br/>
-        /// 매개변수 : int - 스킬id<br/>
+        /// 특성 데이터<br/>
+        /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type, int - 스킬id<br/>
         /// return type : Giggle_Character.Attribute
         /// </summary>
-        DATABASE__PINOCCHIO__GET_ATTRIBUTE_ATTACK_FROM_ID,
+        DATABASE__PINOCCHIO__GET_ATTRIBUTE_FROM_ID,
 
         /// <summary>
         /// 재능 리스트<br/>
@@ -273,18 +273,18 @@ public class Giggle_ScriptBridge
         PLAYER__PINOCCHIO__EUIPMENT_ITEM,
 
         /// <summary>
-        /// 공격 특성 가져오기<br/>
-        /// 매개변수 : <br/>
+        /// 특성 가져오기<br/>
+        /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type<br/>
         /// return type : Giggle_Player.Pinocchio_Skill
         /// </summary>
-        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_ATTACK_FROM_ID,
+        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,
 
         /// <summary>
-        /// 공격 특성 가져오기<br/>
-        /// 매개변수 : int - id<br/>
+        /// 특성 레벨업<br/>
+        /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type, int - id<br/>
         /// return type : 
         /// </summary>
-        PLAYER__PINOCCHIO__ATTRIBUTE_ATTACK_LEVEL_UP,
+        PLAYER__PINOCCHIO__ATTRIBUTE_LEVEL_UP,
 
         /// <summary>
         /// 플레이어 재능 가져오기<br/>
@@ -315,6 +315,34 @@ public class Giggle_ScriptBridge
         PLAYER__PINOCCHIO__ABILITY_CHANGE,
 
         /// <summary>
+        /// 플레이어 재능 잠그기<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_LOCK,
+
+        /// <summary>
+        /// 목공소 데이터 가져오기<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_WOOD_VAR_DATA_FROM_COUNT,
+
+        /// <summary>
+        /// 목공소 작업 시작하기<br/>
+        /// 매개변수 : int - count, int - select<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_WOOD_WORK,
+
+        /// <summary>
+        /// 목공소 마리오네트 배정<br/>
+        /// 매개변수 : int - count, int - id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_WOOD_WORKER,
+
+        /// <summary>
         /// 유물 리스트<br/>
         /// 매개변수 : <br/>
         /// return type : List(Giggle_Player.Pinocchio_Relic)
@@ -334,6 +362,13 @@ public class Giggle_ScriptBridge
         /// return type : 
         /// </summary>
         PLAYER__PINOCCHIO__RELIC_VAR_SLOTS_COLOR_IS_SAME,
+
+        /// <summary>
+        /// 유물 색상 체크<br/>
+        /// 매개변수 : int - <br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOT_BUFF_FROM_COUNT,
 
         /// <summary>
         /// 유물 변경<br/>
