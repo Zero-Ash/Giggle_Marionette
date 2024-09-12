@@ -6,12 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
-using System.Text.RegularExpressions;
 
 public class Giggle_MainManager__Pinocchio : MonoBehaviour
 {
+    [SerializeField] Canvas Basic_canvas;
     [SerializeField] GameObject Basic_back;
     [SerializeField] GameObject Basic_ui;
+    [SerializeField] RectTransform Basic_safeArea;
 
     [SerializeField] Giggle_UI.MenuBar BasicArea1_menuBar;
 
@@ -20,6 +21,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     [SerializeField] int    Basic_coroutinePhase;
 
     ////////// Getter & Setter  //////////
+    
+    // Basic_back
+    public Vector3 Basic_VarBackPosition { get { return Basic_back.transform.position;  }   }
     
     ////////// Method           //////////
             
@@ -120,13 +124,13 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     {
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
-
+        
         BasicArea1_menuBar.Basic_Init();
         for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
         {
             BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/MENU_BAR/" + for0.ToString();
         }
-
+        
         StartCoroutine(Start__Coroutine());
     }
 
@@ -141,6 +145,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
             yield return null;
         }
+
+        Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+        Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
 
         Job_Start();
         Equipment_Start();
@@ -325,14 +332,21 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     public class ScrollView_Job : Giggle_UI.ScrollView
     {
         [SerializeField] Giggle_MainManager__Pinocchio  Basic_parentClass;
+        [SerializeField] Transform                      Basic_rawParent;
 
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
 
+        //
         public void Basic_Init(Giggle_MainManager__Pinocchio _parentClass)
         {
             Basic_parentClass = _parentClass;
+
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Basic_rawParent);
+
+            //
             Basic_Init();
         }
 
@@ -347,6 +361,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             _element.Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/" + Basic_list.Count;
         }
 
+        //
         public override void Basic_ClickBtn(int _count)
         {
             //
@@ -445,6 +460,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
     [Header("JOB ==========")]
     [SerializeField] Transform  JobArea2_objParent;
+    [SerializeField] Transform  JobArea2_rawParent;
 
     [SerializeField] MenuBar_Job    JobArea3_menuBar;
     [SerializeField] ScrollView_Job JobArea3_scrollView;
@@ -463,18 +479,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Job_SelectMenu(int _count)
     {
         JobArea3_menuBar.Basic_SelectMenu(_count);
-    }
-
-    void Job_Active()
-    {
-        //
-        //Equipment_inventoryItems
-        //    = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-        //        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
-
-        //Equipment_characterList
-        //    = (List<Giggle_Character.Save>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-        //        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST);
     }
 
     public void Job_ListSetting(int _selectType)
@@ -512,6 +516,8 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Job_Start()
     {
         // Area2
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, JobArea2_rawParent);
+
         // Area3
         JobArea3_menuBar.Basic_Init(this);
         for(int for0 = 0; for0 < JobArea3_menuBar.Basic_VarListCount; for0++)
@@ -698,7 +704,10 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     }
 
     [Header("EQUIPMENT ==========")]
+    [SerializeField] Transform              EquipmentArea2_objParent;
+    [SerializeField] Transform              EquipmentArea2_rawParent;
     [SerializeField] List<Button>           EquipmentArea2_equipmentBtns;
+
     [SerializeField] MenuBar_Equipment      EquipmentArea3_menuBar;
     [SerializeField] Giggle_UI.ListArray    EquipmentArea3_listArray;
     [SerializeField] ScrollView_Equipment   EquipmentArea3_scrollView;
@@ -739,6 +748,8 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     //
     void Equipment_Active()
     {
+
+        Equipment_Reset();
         //
         EquipmentArea3_listArray.Basic_Reset();
 
@@ -749,6 +760,24 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     //
     void Equipment_EquipItemUI()
     {
+        while(EquipmentArea2_objParent.childCount > 0)
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                //
+                EquipmentArea2_objParent.GetChild(0));
+        }
+
+        Giggle_Character.Save pinocchioData
+            = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
+            //
+            pinocchioData.Basic_VarDataId,
+            EquipmentArea2_objParent, -90.0f, 900.0f);
+
         for(int for0 = 0; for0 < EquipmentArea2_equipmentBtns.Count; for0++)
         {
             int id
@@ -928,6 +957,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Equipment_Start()
     {
         // Area2
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, EquipmentArea2_rawParent);
 
         // Area3
         EquipmentArea3_menuBar.Basic_Init(this);
@@ -939,8 +969,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         EquipmentArea3_listArray.Basic_Init();
 
         EquipmentArea3_scrollView.Basic_Init(this);
-
-        Equipment_Reset();
 
         //
         Equipment_inventoryItems = new List<int>();
@@ -1799,9 +1827,11 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     [SerializeField] GameObject                                 Ability_marionetteList;
     [SerializeField] ScrollerView_MenuBar__AbilityMarionette    Ability_marionetteListMenuBar;
     [SerializeField] ScrollView__AbilityMarionette              Ability_marionetteListScrollView;
+    [SerializeField] Transform                                  Ability_marionetteListScrollViewRawParent;
 
     // Area3
     [SerializeField] List<Transform>    Ability_woodUis;
+    [SerializeField] Transform          Ability_woodRawParent;
 
     // PopUp
     [SerializeField] Transform          Ability_popUpParent;
@@ -1932,6 +1962,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             }
         }
 
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Ability_marionetteListScrollViewRawParent);
         Ability_marionetteList.SetActive(false);
 
         // Area3
@@ -2069,6 +2100,10 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
     void Ability_Start()
     {
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Ability_woodRawParent);
+
+        //
         if(Ability_marionetteListDatas == null)
         {
             Ability_marionetteListDatas = new List<int>();

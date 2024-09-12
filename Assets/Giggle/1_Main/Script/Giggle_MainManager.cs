@@ -35,13 +35,19 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         [SerializeField] Giggle_MainManager__Pinocchio  Basic_pinocchioManager;
         [SerializeField] Giggle_MainManager__Marionette Basic_marionetteManager;
 
+        [SerializeField] RectTransform  Basic_safeArea;  
+
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
-        public void Basic_Init()
+        public override void Basic_Init()
         {
+            base.Basic_Init();
+
+            Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+            Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
         }
 
         #region AREA1

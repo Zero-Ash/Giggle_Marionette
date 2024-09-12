@@ -84,6 +84,7 @@ public class Giggle_Master : MonoBehaviour
 
     [Header("SCENE ==================================================")]
     [SerializeField] GameObject Scene_parent;
+    [SerializeField] Transform  Scene_cameraParent;
 
     ////////// Getter & Setter  //////////
 
@@ -92,7 +93,8 @@ public class Giggle_Master : MonoBehaviour
     ////////// Unity            //////////
     void Scene_Start()
     {
-        //Scene_parent.SetActive(true);
+        float ratio = (float)Screen.height / (float)Screen.width;
+        Scene_cameraParent.localPosition = new Vector3(0, 0, -8.0f * ratio);
     }
 
     #endregion
@@ -144,7 +146,25 @@ public class Giggle_Master : MonoBehaviour
     [Header("UI ==================================================")]
     [SerializeField] CanvasScaler UI_canvasScaler;
 
+    [SerializeField] Vector2 UI_safeAreaSizeDelta;
+    [SerializeField] Vector2 UI_safeAreaPos;
+
+    [SerializeField] Transform UI_rawImages;
+
     ////////// Getter & Setter  //////////
+    
+    // UI_SafeArea
+    object UI_SafeAreaVarSizeDelta(params object[] _args)
+    {
+        //
+        return UI_safeAreaSizeDelta;
+    }
+
+    object UI_SafeAreaVarPosition(params object[] _args)
+    {
+        //
+        return UI_safeAreaPos;
+    }
 
     ////////// Method           //////////
     // UI_PinocchioInstantiate
@@ -207,6 +227,20 @@ public class Giggle_Master : MonoBehaviour
             UI_CharacterInstantiate__ChangeModelLayer(_parent.GetChild(for0));
         }
     }
+
+    // UI_canvasScaler
+    object UI_CanvasScalerSetting(params object[] _args)
+    {
+        //
+        CanvasScaler cs = (CanvasScaler)_args[0];
+
+        //
+        cs.matchWidthOrHeight   = UI_canvasScaler.matchWidthOrHeight;
+        cs.referenceResolution  = UI_canvasScaler.referenceResolution;
+
+        //
+        return true;
+    }
     
     // UI_ValueText
     object UI_ValueText(params object[] _args)
@@ -235,9 +269,33 @@ public class Giggle_Master : MonoBehaviour
         return res;
     }
 
+    // UI_rawImages
+    object UI_RawImage(params object[] _args)
+    {
+        Transform parent = (Transform)_args[0];
+
+        //
+        if(UI_rawImages.childCount <= 1)
+        {
+            while(UI_rawImages.childCount < 10)
+            {
+                Instantiate(UI_rawImages.GetChild(0), UI_rawImages);
+            }
+        }
+
+        Transform element = UI_rawImages.GetChild(0);
+        element.parent = parent;
+        element.localScale = Vector3.one;
+        element.GetComponent<RectTransform>().sizeDelta = new Vector2(3840.0f / 2160.0f * UI_canvasScaler.referenceResolution.y, UI_canvasScaler.referenceResolution.y);
+
+        //
+        return true;
+    }
+
     ////////// Unity            //////////
     void UI_Start()
     {
+        //
         float screenRatio = (float)Screen.width / (float)Screen.height;
         float canvasRatio = UI_canvasScaler.referenceResolution.x / UI_canvasScaler.referenceResolution.y;
 
@@ -260,9 +318,24 @@ public class Giggle_Master : MonoBehaviour
             UI_canvasScaler.referenceResolution = rs;
         }
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,             UI_ValueText            );
+        //
+        float width     = Screen.safeArea.width     / (float)Screen.width;
+        float height    = Screen.safeArea.height    / (float)Screen.height;
+        UI_safeAreaSizeDelta = new Vector2(rs.x * width, rs.y * height);
+        float posX  = Screen.safeArea.position.x - (((float)Screen.width - Screen.safeArea.width) * 0.5f);
+        float posY  = Screen.safeArea.position.y - (((float)Screen.height - Screen.safeArea.height) * 0.5f);
+        float scale = UI_canvasScaler.referenceResolution.x / (float)Screen.width;
+        UI_safeAreaPos = new Vector2(posX * scale, posY * scale);
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,       UI_SafeAreaVarSizeDelta     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION,         UI_SafeAreaVarPosition      );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,          UI_PinocchioInstantiate     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,          UI_CharacterInstantiate     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SCALER_SETTING,          UI_CanvasScalerSetting      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,                     UI_ValueText                );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE,                      UI_RawImage                 );
     }
 
     #endregion

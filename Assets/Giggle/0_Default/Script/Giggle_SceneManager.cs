@@ -3,6 +3,7 @@ using UnityEngine;
 //
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Giggle_SceneManager : MonoBehaviour
 {
@@ -56,6 +57,16 @@ public class Giggle_SceneManager : MonoBehaviour
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
+        public virtual void Basic_Init()
+        {
+            for(int for0 = 0; for0 < Basic_canvases.Count; for0++)
+            {
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SCALER_SETTING,
+                    Basic_canvases[for0].GetComponent<CanvasScaler>());
+            }
+        }
+
         public void Dispose()
         {
 

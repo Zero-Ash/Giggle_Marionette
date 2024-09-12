@@ -1,0 +1,2 @@
+/Users/hwang-yeongjae/Giggle_Marionette/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/CMakeLists.txt
+/Users/hwang-yeongjae/Giggle_Marionette/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/CMakeLists.txt

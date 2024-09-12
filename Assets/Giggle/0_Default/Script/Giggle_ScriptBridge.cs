@@ -31,6 +31,20 @@ public class Giggle_ScriptBridge
         MASTER__GARBAGE__REMOVE,
 
         /// <summary>
+        /// UI 세이프 에리어 크기<br/>
+        /// 매개변수 : <br/>
+        /// return type : Giggle_Unit
+        /// </summary>
+        MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,
+
+        /// <summary>
+        /// UI 세이프 에리어 위치<br/>
+        /// 매개변수 : <br/>
+        /// return type : Giggle_Unit
+        /// </summary>
+        MASTER__UI__SAFE_AREA_VAR_POSITION,
+
+        /// <summary>
         /// UI용 캐릭터 오브젝트 생성<br/>
         /// 매개변수 : int - 캐릭터 데이터 id, Transform - 오브젝트의 부모, float - 각도, float - 크기<br/>
         /// return type : Giggle_Unit
@@ -45,11 +59,25 @@ public class Giggle_ScriptBridge
         MASTER__UI__CHARACTER_INSTANTIATE,
 
         /// <summary>
+        /// CanvasScaler 세팅<br/>
+        /// 매개변수 : CanvasScaler - 대상<br/>
+        /// return type : Giggle_Unit
+        /// </summary>
+        MASTER__UI__CANVAS_SCALER_SETTING,
+
+        /// <summary>
         /// UI용 캐릭터 오브젝트 생성<br/>
         /// 매개변수 : int - 캐릭터 데이터 id, Transform - 오브젝트의 부모, float - 각도, float - 크기<br/>
         /// return type : Giggle_Unit
         /// </summary>
         MASTER__UI__VALUE_TEXT,
+
+        /// <summary>
+        /// UI RawImage<br/>
+        /// 매개변수 : Transform - 부모<br/>
+        /// return type :
+        /// </summary>
+        MASTER__UI__RAW_IMAGE,
 
         /// <summary>
         /// UI용 캐릭터 오브젝트 생성<br/>

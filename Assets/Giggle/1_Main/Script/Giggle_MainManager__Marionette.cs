@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.Rendering.BuiltIn.ShaderGraph;
 
 public class Giggle_MainManager__Marionette : MonoBehaviour
 {
@@ -118,13 +117,13 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     {
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
-
+        
         BasicArea1_menuBar.Basic_Init();
         for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
         {
             BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/MENU_BAR/" + for0.ToString();
         }
-
+        
         Formation_Start();
         Marionette_Start();
         Constellation_Start();
