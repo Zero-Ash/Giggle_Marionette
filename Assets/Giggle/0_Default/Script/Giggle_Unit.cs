@@ -18,11 +18,28 @@ public class Giggle_Unit : MonoBehaviour
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
-    public void Basic_Init(Giggle_Battle _battle, Giggle_Character.Database _database)
+    public void Basic_Init(Giggle_Battle _battle, Giggle_Character.Save _save)
     {
         Basic_Battle = _battle;
 
-        Status_Init(_database);
+        Basic_Save = _save;
+
+        Giggle_Character.Database data = null;
+        if(Basic_Save.Basic_VarSkillLv == -1)
+        {
+            data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+                //
+                Basic_Save.Basic_VarDataId);
+        }
+        else
+        {
+            data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+                //
+                Basic_Save.Basic_VarDataId);
+        }
+        Status_Init(data);
 
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.Euler(Vector3.zero);
@@ -151,6 +168,7 @@ public class Giggle_Unit : MonoBehaviour
     [Header("STATUS ==================================================")]
     // DB에 저장된 능력치
     [SerializeField] Giggle_Character.Database  Status_database;
+
     [Header("RUNNING")]
     // 장비 능력치
     [SerializeField] Giggle_Character.Status            Status_equipStatus;
@@ -166,10 +184,37 @@ public class Giggle_Unit : MonoBehaviour
     public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
 
     ////////// Method           //////////
+    
+    //
+    public void Status_Damage(int _damage)
+    {
+        Status_hp -= _damage;
+
+        if(Status_hp <= 0)
+        {
+            if(Active_phase != Active_PHASE.DEFEAT)
+            {
+                Active_phase = Active_PHASE.DEFEAT;
+                Model_SetMotionTime("defeat");
+                Model_SetMotion();
+
+                Active_timer = 0.0f;
+            }
+        }
+        else
+        {
+            //Active_phase = Active_PHASE.HIT;
+        }
+    }
+
+    //
     void Status_Init(Giggle_Character.Database _database)
     {
         Status_database = _database;
-        Status_totalStatus.Basic_Calculate(Status_database.Basic_GetStatusList(0), Status_equipStatus, Status_bonusStatus);
+        //Status_equipStatus;
+        Status_bonusStatus.Basic_BounsSetting(Status_database.Basic_VarSkillId.Equals(-1));
+
+        Status_totalStatus.Basic_Calculate(Status_database.Basic_GetStatusList(Basic_Save.Basic_VarLevel), Status_equipStatus, Status_bonusStatus);
         Status_hp = Status_totalStatus.Basic_VarHp;
 
         if(Status_coolTimers == null)
@@ -178,7 +223,7 @@ public class Giggle_Unit : MonoBehaviour
         }
 
         Status_coolTimers.Add(new Status_CoolTimer());
-        if(Basic_Save.Basic_VarSkillLv.Equals(-1))
+        if(Status_database.Basic_VarSkillId.Equals(-1))
         {
             while(Status_coolTimers.Count < 6)
             {
@@ -187,7 +232,7 @@ public class Giggle_Unit : MonoBehaviour
 
             List<int> skills
                 = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
             for(int for0 = 0; for0 < skills.Count; for0++)
             {
                 Status_coolTimers[for0].Basic_VarIsOn = !skills[for0].Equals(-1);
@@ -195,6 +240,7 @@ public class Giggle_Unit : MonoBehaviour
         }
     }
 
+    // Status_Coroutine
     void Status_Coroutine(float _deltaTime)
     {
         for(int for0 = 0; for0 < Status_coolTimers.Count; for0++)
@@ -236,6 +282,7 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] float Active_time;
 
     ////////// Getter & Setter  //////////
+    public Active_PHASE Active_VarPhase { get { return Active_phase;    }   }
 
     ////////// Method           //////////
 
@@ -251,9 +298,9 @@ public class Giggle_Unit : MonoBehaviour
             case Active_PHASE.ATTACK:       { Active_Coroutine__ATTACK(_deltaTime);         }   break;
             case Active_PHASE.ATTACK_DOING: { Active_Coroutine__ATTACK_DOING(_deltaTime);   }   break;
             //
-            case Active_PHASE.HIT:  {                                       }   break;
+            case Active_PHASE.HIT:  { Active_Coroutine__HIT(_deltaTime);    }   break;
             //
-            case Active_PHASE.DEFEAT:   {                                       }   break;
+            case Active_PHASE.DEFEAT:   { Active_Coroutine__DEFEAT(_deltaTime); }   break;
         }
     }
 
@@ -287,7 +334,7 @@ public class Giggle_Unit : MonoBehaviour
             Model_SetMotion();
 
             Active_timer = 0.0f;
-            Active_time = 1.0f / Status_database.Basic_GetStatusList(0).Basic_VarAttackSpeed;
+            Active_time = 1.0f / Status_database.Basic_GetStatusList(Basic_Save.Basic_VarLevel).Basic_VarAttackSpeed;
         }
     }
 
@@ -325,8 +372,11 @@ public class Giggle_Unit : MonoBehaviour
             float distance = Vector3.Distance(this.transform.position, _tile.position);
             if((_distance < 0.0f) || (distance < _distance))
             {
-                _unit = _tile.GetChild(0).GetComponent<Giggle_Unit>();
-                _distance = distance;
+                if(!_tile.GetChild(0).GetComponent<Giggle_Unit>().Active_VarPhase.Equals(Active_PHASE.DEFEAT))
+                {
+                    _unit = _tile.GetChild(0).GetComponent<Giggle_Unit>();
+                    _distance = distance;
+                }
             }
         }
     }
@@ -358,7 +408,6 @@ public class Giggle_Unit : MonoBehaviour
                     {
                         if(Active_timer >= Active_time * 0.7f)
                         {
-
                             // Skill
                             int skillCount = -1;
                             for(int for0 = 0; for0 < Status_coolTimers.Count; for0++)
@@ -445,8 +494,29 @@ public class Giggle_Unit : MonoBehaviour
     }
 
     // HIT
+    void Active_Coroutine__HIT(float _deltaTime)
+    {
+
+    }
 
     // DEFEAT
+    void Active_Coroutine__DEFEAT(float _deltaTime)
+    {
+        Active_timer += _deltaTime;
+        if(Active_timer >= Active_time)
+        {
+            Active_timer = Active_time;
+
+            //
+            switch(this.transform.parent.parent.name.Split('/')[1])
+            {
+                case "PLAYER":  { Basic_Battle.Formation_VarAlly.Basic_RemoveUnit(this.transform);  }   break;
+                case "ENEMY":   { Basic_Battle.Formation_VarEnemy.Basic_RemoveUnit(this.transform); }   break;
+            }
+        }
+
+        Model_animator.SetFloat( "MotionTimer", Model_motionTime * Active_timer / Active_time );
+    }
 
     ////////// Unity            //////////
     void Active_Start()

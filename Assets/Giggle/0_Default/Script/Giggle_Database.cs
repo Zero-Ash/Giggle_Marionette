@@ -1094,6 +1094,7 @@ public class Giggle_Database : IDisposable
     #region STAGE
 
     [Header("STAGE ==================================================")]
+    [SerializeField] List<Giggle_Stage.Group> Stage_datas;
     [SerializeField] List<GameObject> Stage_objs;
     [SerializeField] GameObject Stage_empty;
 
@@ -1105,18 +1106,39 @@ public class Giggle_Database : IDisposable
         return Stage_isOpen;
     }
 
+    object Stage_GetStageFromId(params object[] _args)
+    {
+        Giggle_Stage.Stage res = null;
+
+        //
+        int stage = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
+
+        // 찾고자 하는 캐릭터가 존재하는가?
+        for(int for0 = 0; for0 < Stage_datas.Count; for0++)
+        {
+            if(Stage_datas[for0].Basic_VarId.Equals(stage / 100))
+            {
+                res = Stage_datas[for0].Basic_GetStage(stage);
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
     object Stage_GetDataFromSave(params object[] _args)
     {
         GameObject res = Stage_empty;
 
         //
-        int select = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
-        select++;
+        int stage = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
+        stage = (stage / 100) % 100;
 
         // 찾고자 하는 캐릭터가 존재하는가?
         for(int for0 = 0; for0 < Stage_objs.Count; for0++)
         {
-            if(Stage_objs[for0].name.Equals("Stage_" + (select / 10).ToString() + (select % 10).ToString()))
+            if(Stage_objs[for0].name.Equals("Stage_" + (stage / 10).ToString() + (stage % 10).ToString()))
             {
                 res = Stage_objs[for0];
                 break;
@@ -1153,6 +1175,69 @@ public class Giggle_Database : IDisposable
                     {
                         phase = 1;
 
+                        Addressables.LoadAssetAsync<TextAsset>("STAGE/CSV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int groupId = int.Parse(data[for0]["actgroupid"]);
+
+                                // 그룹 찾기
+                                Giggle_Stage.Group group = null;
+                                for(int for1 = 0; for1 < Stage_datas.Count; for1++)
+                                {
+                                    if(Stage_datas[for1].Basic_VarId.Equals(groupId))
+                                    {
+                                        group = Stage_datas[for1];
+                                        break;
+                                    }
+                                }
+                                if(group == null)
+                                {
+                                    group = new Giggle_Stage.Group(groupId);
+                                    Stage_datas.Add(group);
+                                }
+
+                                // 스테이지 추가
+                                group.Basic_AddStage(data[for0]);
+                            }
+
+                            phase = 100;
+                        };
+                    }
+                    break;
+                case 100:
+                    {
+                        phase = 101;
+
+                        Addressables.LoadAssetAsync<TextAsset>("STAGE/CSV_MONSTER").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for(int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                int id = int.Parse(data[for0]["stage_id"]);
+
+                                for(int for1 = 0; for1 < Stage_datas.Count; for1++)
+                                {
+                                    if(Stage_datas[for1].Basic_VarId.Equals(id / 100))
+                                    {
+                                        Stage_datas[for1].Basic_GetStage(id).Basic_SettingFormation(data[for0]);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            phase = 200;
+                        };
+                    }
+                    break;
+                
+                case 200:
+                    {
+                        phase = 201;
+
                         Addressables.LoadAssetAsync<GameObject>("STAGE/MODEL").Completed
                         += handle =>
                         {
@@ -1180,10 +1265,8 @@ public class Giggle_Database : IDisposable
     ////////// Constructor & Destroyer  //////////
     void Stage_Init(GameObject _obj)
     {
-        if(Stage_objs == null)
-        {
-            Stage_objs = new List<GameObject>();
-        }
+        if(Stage_datas == null) { Stage_datas = new List<Giggle_Stage.Group>(); }
+        if(Stage_objs == null)  { Stage_objs = new List<GameObject>();          }
         Stage_empty = _obj;
 
         Stage_isOpen = true;
@@ -1191,6 +1274,7 @@ public class Giggle_Database : IDisposable
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN,   Stage_GetIsOpen );
 
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,     Stage_GetStageFromId    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE,    Stage_GetDataFromSave   );
     }
 

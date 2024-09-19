@@ -199,6 +199,14 @@ public class Giggle_ScriptBridge
         /// return type : bool
         /// </summary>
         DATABASE__STAGE__GET_IS_OPEN,
+
+        /// <summary>
+        /// 스테이지 데이터 불러오기<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : GameObject
+        /// </summary>
+        DATABASE__STAGE__GET_STAGE_FROM_ID,
+
         /// <summary>
         /// 스테이지 데이터 불러오기<br/>
         /// 매개변수<br/>
@@ -263,14 +271,14 @@ public class Giggle_ScriptBridge
         /// 매개변수 : <br/>
         /// return type : List(int)
         /// </summary>
-        PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,
+        PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS,
 
         /// <summary>
         /// 피노키오 스킬 슬롯 데이터<br/>
         /// 매개변수 : int - count, (params)int - id<br/>
         /// return type : int
         /// </summary>
-        PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
+        PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOT_FROM_COUNT,
 
         /// <summary>
         /// 피노키오 장비 id<br/>
@@ -305,7 +313,14 @@ public class Giggle_ScriptBridge
         /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type<br/>
         /// return type : Giggle_Player.Pinocchio_Skill
         /// </summary>
-        PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,
+        PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE,
+
+        /// <summary>
+        /// 특성 가져오기<br/>
+        /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type, int - id<br/>
+        /// return type : Giggle_Player.Pinocchio_Skill
+        /// </summary>
+        PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE_AND_ID,
 
         /// <summary>
         /// 특성 레벨업<br/>
@@ -376,6 +391,13 @@ public class Giggle_ScriptBridge
         /// return type : List(Giggle_Player.Pinocchio_Relic)
         /// </summary>
         PLAYER__PINOCCHIO__RELIC_VAR_RELICS,
+
+        /// <summary>
+        /// 유물 리스트<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Player.Pinocchio_Relic)
+        /// </summary>
+        PLAYER__PINOCCHIO__RELIC_GET_RELIC_FROM_INVENTORY_ID,
 
         /// <summary>
         /// 유물 장착 리스트<br/>

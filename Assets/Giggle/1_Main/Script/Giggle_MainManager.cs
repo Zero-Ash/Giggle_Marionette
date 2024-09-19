@@ -195,6 +195,31 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         #endregion
 
+        #region BATTLE
+
+        //[Header("BATTLE ==================================================")]
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        public void Battle_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "RESET":   { Battle_Reset();   }   break;
+            }
+        }
+
+        void Battle_Reset()
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.RESET);
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        #endregion
+
     }
 
     [Serializable]
@@ -277,10 +302,10 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 Basic_infoType.text      = Basic_character.Basic_VarCategory.ToString();
                 Basic_infoAttribute.text = Basic_character.Basic_VarAttribute.ToString();
 
-                Basic_statusList[0].text = Basic_character.Basic_GetStatusList(0).Basic_VarAttack.ToString();
-                Basic_statusList[1].text = Basic_character.Basic_GetStatusList(0).Basic_VarDefence.ToString();
-                Basic_statusList[2].text = Basic_character.Basic_GetStatusList(0).Basic_VarHp.ToString();
-                Basic_statusList[3].text = Basic_character.Basic_GetStatusList(0).Basic_VarAttackSpeed.ToString();
+                Basic_statusList[0].text = Basic_character.Basic_GetStatusList(1).Basic_VarAttack.ToString();
+                Basic_statusList[1].text = Basic_character.Basic_GetStatusList(1).Basic_VarDefence.ToString();
+                Basic_statusList[2].text = Basic_character.Basic_GetStatusList(1).Basic_VarHp.ToString();
+                Basic_statusList[3].text = Basic_character.Basic_GetStatusList(1).Basic_VarAttackSpeed.ToString();
             }
 
             void Basic_Gacha__ChangeModelLayer(Transform _parent)
@@ -474,6 +499,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             case "AREA4":   { UI_basicData.Area4_BtnClick(names);   }   break;
             case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
+            case "BATTLE":  { UI_basicData.Battle_BtnClick(names);  }   break;
             //
             //case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
             //case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;

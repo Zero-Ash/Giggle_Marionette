@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Giggle_Battle : IDisposable
 {
     #region BASIC
+    
     public enum Basic__COROUTINE_PHASE
     {
         INIT,
@@ -46,8 +47,11 @@ public class Giggle_Battle : IDisposable
         ACTIVE_BATTLE,
         ACTIVE_MOVE_READY,
         ACTIVE_MOVE,
-        ACTIVE_MOVE_END
+        ACTIVE_MOVE_END,
+        ACTIVE_RESULT,
+        ACTIVE_END
     }
+
     [SerializeField] Basic__COROUTINE_PHASE Basic_coroutinePhase;
 
     IEnumerator Basic_coroutine;
@@ -147,6 +151,8 @@ public class Giggle_Battle : IDisposable
     // RESET ==========
     void Basic_Coroutine__RESET()
     {
+        UI_lose.gameObject.SetActive(false);
+        
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START;
     }
 
@@ -309,24 +315,17 @@ public class Giggle_Battle : IDisposable
 
         
         // 캐릭터 생성
+        Giggle_Character.Save save = null;
         Giggle_Character.Database data = null;
         Giggle_Unit unit = null;
 
         // player
+        // 기존 데이터 날리기
+        Formation_Ally.Basic_Reset();
+
         int whileCount = 0;
         while(whileCount < formationList[formationSelect].Basic_VarFormation.Count)
         {
-            // 기존 데이터 날리기
-            while(Formation_Ally.Basic_GetTile(whileCount).childCount > 0)
-            {
-                Formation_Ally.Basic_GetTile(whileCount).GetChild(0).GetComponent<Giggle_Unit>().Basic_Release();
-
-                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                    //
-                    Formation_Ally.Basic_GetTile(whileCount).GetChild(0));
-            }
-
             //
             int formationId = formationList[formationSelect].Basic_VarFormation[whileCount];
             if(!formationId.Equals(-1))
@@ -335,24 +334,26 @@ public class Giggle_Battle : IDisposable
                 {
                     case -2:
                         {
+                            save = pinocchioData;
                             data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                                 Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
                                 //
-                                pinocchioData.Basic_VarDataId);
+                                save.Basic_VarDataId);
                         }
                         break;
                     default:
                         {
+                            save = marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount]];
                             data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                                 Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                                 //
-                                marionetteList[formationList[formationSelect].Basic_VarFormation[whileCount] - 1].Basic_VarDataId);
+                                save.Basic_VarDataId);
                         }
                         break;
                 }
-
+                
                 unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Ally.Basic_GetTile(whileCount));
-                unit.Basic_Init(this, data);
+                unit.Basic_Init(this, save);
             }
 
             whileCount++;
@@ -399,22 +400,22 @@ public class Giggle_Battle : IDisposable
 
         // enemy
         // 기존 데이터 날리기
-        while(Formation_Enemy.Basic_GetTile(0).childCount > 0)
+        Formation_Enemy.Basic_Reset();
+        
+        Giggle_Stage.Stage stage = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID);
+        
+        for(int for0 = 0; for0 < stage.Basic_FormationVarCount; for0++)
         {
-            Formation_Enemy.Basic_GetTile(0).GetChild(0).GetComponent<Giggle_Unit>().Basic_Release();
-            
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                //
-                Formation_Enemy.Basic_GetTile(0).GetChild(0));
+            data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+                stage.Basic_FormationGetData(for0).Basic_VarId);
+
+            Giggle_Character.Save save = new Giggle_Character.Save(-1, 21001);
+            save.Basic_VarLevel = stage.Basic_FormationGetData(for0).Basic_VarLv;
+
+            unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Enemy.Basic_GetTile(stage.Basic_FormationGetData(for0).Basic_VarFormation));
+            unit.Basic_Init(this, save);
         }
-
-        data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
-            21001);
-
-        unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Enemy.Basic_GetTile(0));
-        unit.Basic_Init(this, data);
 
         // 총알 리셋
         Bullet_Reset();
@@ -458,6 +459,21 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__ACTIVE_BATTLE(float _timer)
     {
         Bullet_Coroutine(_timer);
+
+        if(Formation_Enemy.Basic_VarIsUnitEmpty)
+        {
+            Debug.Log("Basic_Coroutine__ACTIVE_BATTLE " + 0);
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT;
+        }
+        else
+        {
+            if(Formation_Ally.Basic_VarIsUnitEmpty)
+            {
+                UI_lose.gameObject.SetActive(true);
+
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT;
+            }
+        }
     }
 
     // ACTIVE_MOVE ==========
@@ -511,7 +527,73 @@ public class Giggle_Battle : IDisposable
         // Basic_tiles
         public Transform    Basic_GetTile(int _count)   { return Basic_tiles[_count];   }
 
+        public bool Basic_VarIsUnitEmpty
+        {
+            get
+            {
+                bool res = true;
+
+                //
+                for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+                {
+                    if(Basic_tiles[for0].childCount > 0)
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+
+                //
+                return res;
+            }
+        }
+
         ////////// Method                   //////////
+        //
+        public void Basic_Reset()
+        {
+            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                while(Basic_tiles[for0].childCount > 0)
+                {
+                    Transform element = Basic_tiles[for0].GetChild(0);
+                    if(element.GetComponent<Giggle_Unit>() != null)
+                    {
+                        element.GetComponent<Giggle_Unit>().Basic_Release();
+                    }
+                        
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                        //
+                        element);
+                }
+            }
+        }
+        
+        //
+        public void Basic_RemoveUnit(Transform _unit)
+        {
+            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                if(Basic_tiles[for0].childCount > 0)
+                {
+                    Transform element = Basic_tiles[for0].GetChild(0);
+                    if(element.Equals(_unit))
+                    {
+                        element.GetComponent<Giggle_Unit>().Basic_Release();
+                        
+                        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                            //
+                            element);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        //
         public void Basic_Init()
         {
             for (int for0 = 0; for0 < Basic_parent.childCount; for0++)
@@ -640,6 +722,7 @@ public class Giggle_Battle : IDisposable
                     // TODO: 투사체들의 공격을 편집할 때는 이곳을 편집하세요.
                     if(Basic_target.gameObject.activeInHierarchy)
                     {
+                        Basic_target.Status_Damage(Basic_damage);
                         //Debug.Log(Basic_owner.transform.parent.parent.name + " 공격 성공 " + Basic_damage);
                     }
 
@@ -792,6 +875,7 @@ public class Giggle_Battle : IDisposable
 
     [Header("UI ==================================================")]
     [SerializeField] Image UI_fade;
+    [SerializeField] Transform UI_lose;
 
     [Header("RUNNING")]
     [SerializeField] float  UI_fadeTime;

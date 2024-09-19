@@ -120,6 +120,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 809e3fb0567044767b64ee4b821b3cb5
+    m_Address: STAGE/CSV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 87e2c679d78b1430aa5bae5bdda2c626
     m_Address: CHARACTER/CONSTELLATION_UI
     m_ReadOnly: 0
@@ -147,6 +152,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c31f98823e6f64687b4c5d6a865967d7
     m_Address: CHARACTER/FIRE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c47917c3125434fe49dd5f742744562e
+    m_Address: STAGE/CSV_MONSTER
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

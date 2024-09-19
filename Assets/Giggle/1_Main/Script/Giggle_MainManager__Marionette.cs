@@ -264,16 +264,11 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
             int whileCount = 0;
             while(whileCount < characterList.Count)
             {
-                Giggle_Character.Save data
-                    = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
-                        characterList[whileCount]);
-                
                 //
                 Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
                 for(int for0 = 0; for0 < formation.Count; for0++)
                 {
-                    if( data.Equals(formation[for0]))
+                    if( characterList[whileCount].Equals(formation[for0]))
                     {
                         Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
                         break;
@@ -327,16 +322,30 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     // Formation_BtnTile
     void Formation_BtnTile(int _count)
     {
-        Formation_selectFormation = _count;
-
-        switch(Formation_selectMarionette)
+        if(_count == -1)
         {
-            case -1:    { Formation_BtnTile__Select(_count);    }   break;
-            default:    { Formation_BtnTile__Change(_count);    }   break;
+            Formation_BtnTile__TileSelect(-1);
+        }
+        else
+        {
+            switch(Formation_selectMarionette)
+            {
+                case -1:    { Formation_BtnTile__Tile(_count);      }   break;
+                default:    { Formation_BtnTile__Change(_count);    }   break;
+            }
         }
     }
 
-    void Formation_BtnTile__Select(int _count)
+    void Formation_BtnTile__Tile(int _count)
+    {
+        switch(Formation_selectFormation)
+        {
+            case -1:    { Formation_BtnTile__TileSelect(_count);    }   break;
+            default:    { Formation_BtnTile__TileChange(_count);    }   break;
+        }
+    }
+
+    void Formation_BtnTile__TileSelect(int _count)
     {
         for (int for0 = 0; for0 < Formation_list.Count; for0++)
         {
@@ -345,24 +354,37 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         //
         Formation_selectFormation = _count;
-        if(!_count.Equals(-1))
-        {
-            //List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
-            Formation_selectMarionette = _count;
-        }
+    }
 
-        // UI갱신
-        //MarionetteFormation_Reset();
+    void Formation_BtnTile__TileChange(int _count)
+    {
+        List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+
+        if(!formation[_count].Equals(-2))
+        {
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                formation[Formation_selectFormation], _count);
+
+            // UI갱신
+            Formation_Reset();
+        }
     }
 
     void Formation_BtnTile__Change(int _count)
     {
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-            Formation_marionetteList[Formation_selectMarionette], _count);
+        List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
 
-        // UI갱신
-        Formation_Reset();
+        if(!formation[_count].Equals(-2))
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                Formation_marionetteList[Formation_selectMarionette], _count);
+
+            // UI갱신
+            Formation_Reset();
+        }
     }
 
     // 
@@ -375,10 +397,36 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Formation_BtnScrollView(int _count)
     {
+        if(_count == -1)
+        {
+            Formation_BtnScrollView__Select(-1);
+        }
+        else
+        {
+            //
+            switch(Formation_selectFormation)
+            {
+                case -1:    { Formation_BtnScrollView__Select(_count);  }   break;
+                default:    { Formation_BtnScrollView__Change(_count);  }   break;
+            }
+        }
+    }
+
+    void Formation_BtnScrollView__Select(int _count)
+    {
         Formation_scrollView.Basic_ClickBtn(_count);
 
-        //
         Formation_selectMarionette = _count;
+    }
+
+    void Formation_BtnScrollView__Change(int _count)
+    {
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+            Formation_marionetteList[_count], Formation_selectFormation);
+
+        // UI갱신
+        Formation_Reset();
     }
 
     //

@@ -1077,7 +1077,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS);
             List<int> skillSlots
                 = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
 
             int whileCount = 0;
             while(whileCount < skillList.Count)
@@ -1154,7 +1154,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     skills[Skill_selectNumber].Basic_VarId);
 
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOT_FROM_COUNT,
                 //
                 _count, skills[Skill_selectNumber].Basic_VarId);
 
@@ -1183,7 +1183,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                 case Skill_SELECT_TYPE.SLOT:
                     {
                         List<int> slots = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
 
                         if(!slots[Skill_selectNumber].Equals(-1))
                         {
@@ -1258,7 +1258,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         List<Giggle_Player.Pinocchio_Skill> list = (List<Giggle_Player.Pinocchio_Skill>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
             Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS);
         List<int> slots = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
 
         int for0Res = -1;
         for(int for0 = 0; for0 < slots.Count; for0++)
@@ -1271,7 +1271,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         }
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOT_FROM_COUNT,
             //
             for0Res, list[Skill_selectNumber].Basic_VarId);
 
@@ -1281,7 +1281,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Skill_InfoBtnUnEquip()
     {
         List<int> slots = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
 
         int for0Res = -1;
         for(int for0 = 0; for0 < slots.Count; for0++)
@@ -1294,7 +1294,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         }
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOT_FROM_COUNT,
             //
             Skill_selectNumber, -1);
 
@@ -1308,7 +1308,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         //
         List<int> slots = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS);
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
             
         for(int for0 = 0; for0 < SkillArea2_slots.Count; for0++)
         {
@@ -1534,7 +1534,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
                 Giggle_Player.Pinocchio_Skill element
                     = (Giggle_Player.Pinocchio_Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE_AND_ID,
                         //
                         Giggle_Player.ATTRIBUTE_TYPE.ATTACK, list[for0].Basic_VarConditionId);
 
@@ -1564,7 +1564,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
             Giggle_Player.Pinocchio_Skill element
                 = (Giggle_Player.Pinocchio_Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE_AND_ID,
                     //
                     Giggle_Player.ATTRIBUTE_TYPE.ATTACK, _id);
 
@@ -1641,7 +1641,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     {
         Giggle_Player.Pinocchio_Skill element
             = (Giggle_Player.Pinocchio_Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE_AND_ID,
                 //
                 Attribute_selectType, Attribute_selectId);
         

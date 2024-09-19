@@ -219,6 +219,8 @@ namespace Giggle_Item
 
         public Relic_COLOR  Basic_VarColor  { get { return Basic_color; }   }
 
+        public RelicLv  Basic_GetLvDataFromLv(int _lv) { return Basic_lvs[_lv - 1]; }
+
         ////////// Method                   //////////
         public void Basic_SetLvList(Dictionary<string, string> _data)
         {
@@ -258,6 +260,12 @@ namespace Giggle_Item
     [Serializable]
     public class RelicLv : IDisposable
     {
+        public enum ABILITY
+        {
+            ATTACK_PER,
+            DEFENCE_PER
+        }
+
         public class Material : IDisposable
         {
             [SerializeField] int    Basic_id;
@@ -286,9 +294,17 @@ namespace Giggle_Item
 
         [SerializeField] List<Material> Basic_materials;
 
+        [SerializeField] ABILITY    Basic_ability;
+        [SerializeField] int        Basic_abilityValue;
+
         ////////// Getter & Setter          //////////
         //
         public int  Basic_VarId { get { return Basic_id;    }   }
+
+        //
+        public ABILITY  Basic_VarAbility        { get { return Basic_ability;       }   }
+
+        public int      Basic_VarAbilityValue   { get { return Basic_abilityValue;  }   }
 
         ////////// Method                   //////////
 
@@ -303,6 +319,9 @@ namespace Giggle_Item
             }
             Basic_materials.Add(new Material(_data, 1));
             Basic_materials.Add(new Material(_data, 2));
+
+            Basic_ability       = (ABILITY)Enum.Parse(typeof(ABILITY), _data["ability"]);
+            Basic_abilityValue  = int.Parse(_data["value_01"]);
         }
         
         public void Dispose()

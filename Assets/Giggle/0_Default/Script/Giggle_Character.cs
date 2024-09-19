@@ -239,6 +239,111 @@ namespace Giggle_Character
             Basic_accuracy  = 0;
         }
 
+        //
+        public void Basic_BounsSetting(bool _isPinocchio)
+        {
+            Basic_Reset();
+
+            if(_isPinocchio)
+            {
+                Basic_BounsSetting__PinocchioAttribute(Giggle_Player.ATTRIBUTE_TYPE.ATTACK);
+            }
+        }
+
+        void Basic_BounsSetting__PinocchioAttribute(Giggle_Player.ATTRIBUTE_TYPE _type)
+        {
+            // attribute
+            Giggle_Player.Attribute_Data attribute
+                = (Giggle_Player.Attribute_Data)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE,
+                    _type);
+            
+            for(int for0 = 0; for0 < attribute.Basic_VarListCount; for0++)
+            {
+                int level = attribute.Basic_GetListFromCount(for0).Basic_VarLv - 1;
+
+                if(level >= 0)
+                {
+                    Giggle_Character.Attribute element0
+                        = (Giggle_Character.Attribute)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_FROM_ID,
+                            _type, attribute.Basic_GetListFromCount(for0).Basic_VarId);
+
+                    Giggle_Character.Attribute_Lv element1 = element0.Basic_VarLvFromCount(level);
+
+                    //
+                    switch(element1.Basic_VarAbility)
+                    {
+                        case Attribute_Lv.ABILITY.ATTACK_PER:   { Basic_attack  += element1.Basic_VarAbilityValue * 100;  }   break;
+                        case Attribute_Lv.ABILITY.DEFENCE_PER:  { Basic_defence += element1.Basic_VarAbilityValue * 100;  }   break;
+                        case Attribute_Lv.ABILITY.HP_PER:       { Basic_hp      += element1.Basic_VarAbilityValue * 100;  }   break;
+                    }
+                }
+            }
+
+            // ability
+            int abilityCount = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITYS_COUNT);
+            for(int for0 = 0; for0 < abilityCount; for0++)
+            {
+                Giggle_Player.Pinocchio_Ability element0
+                    = (Giggle_Player.Pinocchio_Ability)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITY_FROM_COUNT,
+                        for0);
+                
+                if(!element0.Basic_VarId.Equals(-1))
+                {
+                    Giggle_Character.AbilityClass element1
+                        = (Giggle_Character.AbilityClass)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_ABILITY_FROM_ELEMENT,
+                            element0.Basic_VarId, element0.Basic_VarGrade);
+                    
+                    switch(element1.Basic_VarType)
+                    {
+                        case AbilityClass.TYPE.ATTACK_PER:                      { Basic_attack                      += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.DEFENCE_PER:                     { Basic_defence                     += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.HP_PER:                          { Basic_hp                          += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.SKILL_DAMAGE_PER:                { Basic_skillDamageIncrease         += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.MULTI_DAMAGE_PER:                { Basic_multiHitDamage              += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.COUNTER_ATTACK_PER:              { Basic_counterAttackDamage         += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.CRITICAL_DAMAGE_PER:             { Basic_criticalDamage              += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.CRITICAL_DAMAGE_REDUCTION_PER:   { Basic_criticalDamageReduction     += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.BOSS_DAMAGE_PER:                 { Basic_bossDamageIncrease          += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.NORMAL_DAMAGE_PER:               { Basic_normalMonsterDamageIncrease += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.ALL_DAMAGE_PER:                  { Basic_allDamageIncrease           += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                        case AbilityClass.TYPE.LUCKY_DAMAGE_PER:                { Basic_luckyDamage                 += (int)(element0.Basic_VarValue * 100.0f);   }   break;
+                    }
+                }
+            }
+
+            // relic
+            List<Giggle_Player.Pinocchio_RelicSlot> relicSlot = (List<Giggle_Player.Pinocchio_RelicSlot>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOTS);
+            for(int for0 = 0; for0 < relicSlot.Count; for0++)
+            {
+                if(!relicSlot[for0].Basic_VarInventoryId.Equals(-1))
+                {
+                    Giggle_Player.Pinocchio_Relic element0
+                        = (Giggle_Player.Pinocchio_Relic)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_GET_RELIC_FROM_INVENTORY_ID,
+                            relicSlot[for0].Basic_VarInventoryId);
+                    
+                    Giggle_Item.Relic element1
+                        = (Giggle_Item.Relic)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__RELIC_VAR_DATA_FROM_ID,
+                            element0.Basic_VarDataId);
+                    
+                    switch(element1.Basic_GetLvDataFromLv(element0.Basic_VarLevel).Basic_VarAbility)
+                    {
+                        case Giggle_Item.RelicLv.ABILITY.ATTACK_PER:    { Basic_attack  += element1.Basic_GetLvDataFromLv(element0.Basic_VarLevel).Basic_VarAbilityValue;   }   break;
+                        case Giggle_Item.RelicLv.ABILITY.DEFENCE_PER:   { Basic_defence += element1.Basic_GetLvDataFromLv(element0.Basic_VarLevel).Basic_VarAbilityValue;   }   break;
+                    }
+                    
+                    // 배치 버프
+                    Basic_attack    += element0.Basic_GetBuffFromCount((int)Giggle_Item.Relic_COLOR.WHITE) * 100;
+                    Basic_defence   += element0.Basic_GetBuffFromCount((int)Giggle_Item.Relic_COLOR.BLACK) * 100;
+                }
+            }
+        }
+
         #region Basic_Calculate
 
         public void Basic_Calculate(Status _database, Status _equipStatus, Status _bonusStatus)
@@ -536,7 +641,7 @@ namespace Giggle_Character
         int Basic_Calculate_Type0(int _database, int _equip, int _bouns)
         {
             int res = _database + _equip;
-            res = (int)((float)res * (1.0f + ((float)_bouns * 0.01f)));
+            res = (int)((float)res * (1.0f + ((float)_bouns * 0.0001f)));
 
             //
             return res;
@@ -649,7 +754,7 @@ namespace Giggle_Character
         // Basic_statusList
         public Status Basic_GetStatusList(int _level)
         {
-            return Basic_statusList[_level];
+            return Basic_statusList[_level - 1];
         }
 
         public void Basic_SetStatusList(Dictionary<string, string> _data)
@@ -908,8 +1013,8 @@ namespace Giggle_Character
 
         [SerializeField] int    Basic_class;
 
-        [SerializeField] int    Basic_conditionId;
-        [SerializeField] int    Basic_conditionLv;
+        [SerializeField] int    Basic_conditionId;  // 개방을 위한 선행 특성
+        [SerializeField] int    Basic_conditionLv;  // 개방을 위한 선행 특성의 레벨
 
         [SerializeField] List<Attribute_Lv>  Basic_lvList;
 
@@ -930,7 +1035,9 @@ namespace Giggle_Character
         public int  Basic_VarConditionLv    { get { return Basic_conditionLv;   }   }
 
         // Basic_lvList
-        public int  Basic_VarLvListCount    { get { return Basic_lvList.Count;  }   }
+        public Attribute_Lv Basic_VarLvFromCount(int _count)    { return Basic_lvList[_count];          }
+
+        public int          Basic_VarLvListCount                { get { return Basic_lvList.Count;  }   }
 
         ////////// Method                   //////////
         public void Basic_AddLv(Dictionary<string, string> _data)
@@ -973,6 +1080,13 @@ namespace Giggle_Character
     [Serializable]
     public class Attribute_Lv : IDisposable
     {
+        public enum ABILITY
+        {
+            ATTACK_PER,
+            DEFENCE_PER,
+            HP_PER
+        }
+
         public class Mateiral : IDisposable
         {
             [SerializeField] int    Basic_materialId;
@@ -1017,7 +1131,15 @@ namespace Giggle_Character
 
         [SerializeField] List<Mateiral> Basic_mateirals;
 
+        [SerializeField] ABILITY    Basic_ability;
+        [SerializeField] int        Basic_abilityValue;
+
         ////////// Getter & Setter          //////////
+        
+        // ABILITY
+        public ABILITY  Basic_VarAbility        { get { return Basic_ability;       }   }
+
+        public int      Basic_VarAbilityValue   { get { return Basic_abilityValue;  }   }
 
         ////////// Method                   //////////
 
@@ -1034,6 +1156,9 @@ namespace Giggle_Character
                 Basic_mateirals = new List<Mateiral>();
             }
             Basic_mateirals.Add(new Mateiral(_data, 1));
+
+            Basic_ability       = (ABILITY)Enum.Parse(typeof(ABILITY), _data["ability"]);
+            Basic_abilityValue  = int.Parse(_data["value_01"]);
         }
 
         public void Dispose()
@@ -1088,9 +1213,27 @@ namespace Giggle_Character
     [Serializable]
     public class AbilityClass : IDisposable
     {
+        public enum TYPE
+        {
+            ATTACK_PER,
+            DEFENCE_PER,
+            HP_PER,
+            SKILL_DAMAGE_PER,
+            MULTI_DAMAGE_PER,
+            COUNTER_ATTACK_PER,
+            CRITICAL_DAMAGE_PER,
+            CRITICAL_DAMAGE_REDUCTION_PER,
+            BOSS_DAMAGE_PER,
+            NORMAL_DAMAGE_PER,
+            ALL_DAMAGE_PER,
+            LUCKY_DAMAGE_PER
+        }
+
         [SerializeField] int    Basic_id;
 
         [SerializeField] string Basic_name;
+
+        [SerializeField] TYPE   Basic_type;
 
         [SerializeField] float  Basic_minValue;
         [SerializeField] float  Basic_maxValue;
@@ -1099,6 +1242,8 @@ namespace Giggle_Character
         public int  Basic_VarId { get { return Basic_id;    }   }
 
         public string   Basic_VarName   { get { return Basic_name;  }   }
+
+        public TYPE Basic_VarType   { get { return Basic_type;  }   }
 
         public float    Basic_VarMinValue   { get { return Basic_minValue;  }   }
         public float    Basic_VarMaxValue   { get { return Basic_maxValue;  }   }
@@ -1111,6 +1256,8 @@ namespace Giggle_Character
             Basic_id = int.Parse(_data["ability_id"]);
 
             Basic_name = _data["cha_ability_name"];
+
+            Basic_type = (TYPE)Enum.Parse(typeof(TYPE), _data["cha_ability_type"]);
 
             Basic_minValue = int.Parse(_data["cha_ability_increase_min"]);
             Basic_maxValue = int.Parse(_data["cha_ability_increase_max"]);
@@ -1226,6 +1373,8 @@ namespace Giggle_Character
         [SerializeField] int    Basic_inventoryId;
         [SerializeField] int    Basic_dataId;
 
+        [SerializeField] int    Basic_level;
+
         [SerializeField] List<int>  Basic_equipments;
         
         [SerializeField] int    Basic_skillLv;
@@ -1238,6 +1387,9 @@ namespace Giggle_Character
         public int  Basic_VarInventoryId    { get { return Basic_inventoryId;   }   }
 
         public int  Basic_VarDataId { get { return Basic_dataId;    } set { Basic_dataId = value;   }   }
+
+        //
+        public int  Basic_VarLevel  { get { return Basic_level; } set { Basic_level = value;    }   }
 
         //
         public List<int>    Basic_VarEquipments { get { return Basic_equipments;    }   }
@@ -1308,6 +1460,8 @@ namespace Giggle_Character
             Basic_Constructor();
 
             Basic_dataId = _dataId;
+
+            Basic_level = 1;
             
             Basic_skillLv = -1;
         }
@@ -1318,6 +1472,8 @@ namespace Giggle_Character
 
             Basic_inventoryId = _inventoryId;
             Basic_dataId = _dataId;
+
+            Basic_level = 1;
             
             Basic_skillLv = 1;
         }

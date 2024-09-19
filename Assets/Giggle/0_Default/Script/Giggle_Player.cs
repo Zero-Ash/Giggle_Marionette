@@ -53,7 +53,7 @@ public class Giggle_Player : IDisposable
     ////////// Constructor & Destroyer  //////////
     void Stage_Contructor()
     {
-        Stage_max = Stage_select = 0;
+        Stage_max = Stage_select = 610101;
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT,  Stage_VarSelect );
     }
@@ -442,11 +442,11 @@ public class Giggle_Player : IDisposable
         Pinocchio_selectSkillSlot = 0;
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS,                  Pinocchio_VarSkills             );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,           Pinocchio_VarSkillFromId        );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOTS,             Pinocchio_VarSkillSlots         );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_SLOT_FROM_COUNT,   Pinocchio_VarSkillSlotFromCount );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SELECT_SKILL_SLOT, Pinocchio_VarSelectSkillSlot    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILLS,                      Pinocchio_VarSkills             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_SKILL_FROM_ID,               Pinocchio_VarSkillFromId        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS,           Pinocchio_VarSkillSlots         );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOT_FROM_COUNT, Pinocchio_VarSkillSlotFromCount );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SELECT_SKILL_SLOT,     Pinocchio_VarSelectSkillSlot    );
     }
     
         #endregion
@@ -506,6 +506,14 @@ public class Giggle_Player : IDisposable
     ////////// Getter & Setter          //////////
 
     // Pinocchio_attributes
+    object Pinocchio_VarAttributeFromType(params object[] _args)
+    {
+        ATTRIBUTE_TYPE type0 = (ATTRIBUTE_TYPE)_args[0];
+
+        //
+        return Pinocchio_attributes[(int)type0];
+    }
+
     object Pinocchio_VarAttributeFromId(params object[] _args)
     {
         ATTRIBUTE_TYPE type0 = (ATTRIBUTE_TYPE)_args[0];
@@ -514,18 +522,25 @@ public class Giggle_Player : IDisposable
         //
         Pinocchio_Skill res = null;
 
-        for(int for0 = 0; for0 < Pinocchio_attributes[(int)type0].Basic_VarListCount; for0++)
+        if(id != -1)
         {
-            if(Pinocchio_attributes[(int)type0].Basic_GetListFromCount(for0).Basic_VarId.Equals(id))
+            for(int for0 = 0; for0 < Pinocchio_attributes[(int)type0].Basic_VarListCount; for0++)
             {
-                res = Pinocchio_attributes[(int)type0].Basic_GetListFromCount(for0);
-                break;
+                if(Pinocchio_attributes[(int)type0].Basic_GetListFromCount(for0).Basic_VarId.Equals(id))
+                {
+                    res = Pinocchio_attributes[(int)type0].Basic_GetListFromCount(for0);
+                    break;
+                }
+            }
+
+            if(res == null)
+            {
+                res = Pinocchio_attributes[(int)type0].Basic_Add(id);
             }
         }
-
-        if(res == null)
+        else
         {
-            res = Pinocchio_attributes[(int)type0].Basic_Add(id);
+            res = new Pinocchio_Skill(-1);
         }
 
         //
@@ -570,7 +585,8 @@ public class Giggle_Player : IDisposable
         }
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_ATTRIBUTE_FROM_ID,   Pinocchio_VarAttributeFromId    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE,         Pinocchio_VarAttributeFromType  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE_AND_ID,  Pinocchio_VarAttributeFromId    );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_LEVEL_UP,      Pinocchio_AttributeLevelUp      );
     }
@@ -692,6 +708,7 @@ public class Giggle_Player : IDisposable
         }
     }
 
+    [Header("PINOCCHIO_ABILITY ==========")]
     [SerializeField] List<Pinocchio_Ability>    Pinocchio_abilitys;
     [SerializeField] int                        Pinocchio_abilityLevel;
     [SerializeField] int                        Pinocchio_abilityExp;
@@ -979,6 +996,15 @@ public class Giggle_Player : IDisposable
         return res;
     }
 
+    object Pinocchio_GetRelicFromInventoryId__Bridge(params object[] _args)
+    {
+        //
+        int inventoryId = (int)_args[0];
+
+        //
+        return Pinocchio_GetRelicFromInventoryId(inventoryId);        
+    }
+
     //
     object Pinocchio_RelicVarRelicSlots__Bridge(params object[] _args)
     {
@@ -1196,6 +1222,7 @@ public class Giggle_Player : IDisposable
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,                                Pinocchio_VarData                                   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELICS,                        Pinocchio_RelicVarRelics__Bridge                    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_GET_RELIC_FROM_INVENTORY_ID,       Pinocchio_GetRelicFromInventoryId__Bridge           );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOTS,                   Pinocchio_RelicVarRelicSlots__Bridge                );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_SLOTS_COLOR_IS_SAME,           Pinocchio_RelicVarSlotsColorIsSame__Bridge          );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOT_BUFF_FROM_COUNT,    Pinocchio_RelicVarRelicSlotBuffFromCount__Bridge    );
