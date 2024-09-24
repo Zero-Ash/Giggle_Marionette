@@ -955,19 +955,28 @@ namespace Giggle_Character
     {
         [SerializeField] int    Basic_id;
 
+        [SerializeField] Giggle_Battle.Bullet.TYPE Basic_type;
+
         [SerializeField] List<int>  Basic_values;
 
         [SerializeField] float  Basic_coolTime;
 
         ////////// Getter & Setter          //////////
+        public Giggle_Battle.Bullet.TYPE    Basic_VarType   { get { return Basic_type;  }   }
+
+        //
+        public int Basic_GetValueFromCount(int _count)  { return Basic_values[_count];  }
+
+        //
+        public float    Basic_VarCoolTime   { get { return Basic_coolTime;  }   }
 
         ////////// Method                   //////////
-        public float    Basic_VarCoolTime   { get { return Basic_coolTime;  }   }
 
         ////////// Constructor & Destroyer  //////////
         public Skill_Lv(Dictionary<string, string> _data)
         {
             Basic_id = int.Parse(_data["cha_skill_lv_id"]);
+            Basic_type = (Giggle_Battle.Bullet.TYPE)Enum.Parse(typeof(Giggle_Battle.Bullet.TYPE), _data["cha_type"]);
             //
             if(Basic_values == null)
             {

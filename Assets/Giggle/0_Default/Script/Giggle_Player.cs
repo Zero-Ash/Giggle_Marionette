@@ -68,104 +68,6 @@ public class Giggle_Player : IDisposable
         FEMALE
     }
 
-        #region PINOCCHIO_EQUIPMENT
-
-    [Serializable]
-    public class Pinocchio_Equipment : IDisposable
-    {
-        [SerializeField] List<int>  Basic_equips;
-
-        ////////// Getter & Setter          //////////
-
-        // Basic_equips
-        public int  Basic_VarEquipsCount    { get { return Basic_equips.Count;  }   }
-
-        public int  Basic_GetEquipmentId(int _count)                { return Basic_equips[_count];      }
-        public void Basic_SetEquipmentId(int _count, int _value)    { Basic_equips[_count] = _value;    }
-
-        ////////// Method                   //////////
-
-        // Basic_equips
-        public void Basic_EquipmentAdd()    { Basic_equips.Add(-1); }
-
-        ////////// Constructor & Destroyer  //////////
-        public Pinocchio_Equipment()
-        {
-            if(Basic_equips == null)
-            {
-                Basic_equips = new List<int>();
-            }
-        }
-
-        //
-        public void Dispose()
-        {
-
-        }
-    }
-        #endregion
-
-        #region PINOCCHIO_SKILL
-        
-    [Serializable]
-    public class Pinocchio_Skill : IDisposable
-    {
-        [SerializeField] int    Basic_id;   // 스킬의 id
-        [SerializeField] int    Basic_lv;   // 스킬의 레벨
-
-        ////////// Getter & Setter          //////////
-        public int  Basic_VarId { get { return Basic_id;    }   }
-
-        public int  Basic_VarLv { get { return Basic_lv;    } set { Basic_lv = value;   }   }
-
-        ////////// Method                   //////////
-
-        ////////// Constructor & Destroyer  //////////
-        public Pinocchio_Skill(int _id)
-        {
-            Basic_id = _id;
-            Basic_lv = 1;
-        }
-        
-        //
-        public void Dispose()
-        {
-
-        }
-    }
-
-    [Serializable]
-    public class Pinocchio_SkillSlots : IDisposable
-    {
-        [SerializeField] List<int>    Basic_list;
-
-        ////////// Getter & Setter          //////////
-        public List<int>    Basic_VarList   { get { return Basic_list;  }   }
-
-        ////////// Method                   //////////
-
-        ////////// Constructor & Destroyer  //////////
-        public Pinocchio_SkillSlots()
-        {
-            if(Basic_list == null)
-            {
-                Basic_list = new List<int>();
-            }
-            while(Basic_list.Count < 6)
-            {
-                Basic_list.Add(-1);
-            }
-        }
-        
-        //
-        public void Dispose()
-        {
-
-        }
-    }
-
-        #endregion
-
     [Header("PINOCCHIO ==================================================")]
     [SerializeField] Giggle_Character.Save  Pinocchio_data;
 
@@ -242,6 +144,40 @@ public class Giggle_Player : IDisposable
         #endregion
 
         #region PINOCCHIO_EQUIPS
+
+    [Serializable]
+    public class Pinocchio_Equipment : IDisposable
+    {
+        [SerializeField] List<int>  Basic_equips;
+
+        ////////// Getter & Setter          //////////
+
+        // Basic_equips
+        public int  Basic_VarEquipsCount    { get { return Basic_equips.Count;  }   }
+
+        public int  Basic_GetEquipmentId(int _count)                { return Basic_equips[_count];      }
+        public void Basic_SetEquipmentId(int _count, int _value)    { Basic_equips[_count] = _value;    }
+
+        ////////// Method                   //////////
+
+        // Basic_equips
+        public void Basic_EquipmentAdd()    { Basic_equips.Add(-1); }
+
+        ////////// Constructor & Destroyer  //////////
+        public Pinocchio_Equipment()
+        {
+            if(Basic_equips == null)
+            {
+                Basic_equips = new List<int>();
+            }
+        }
+
+        //
+        public void Dispose()
+        {
+
+        }
+    }
 
     [SerializeField] List<Pinocchio_Equipment>  Pinocchio_equips;
     [SerializeField] int                        Pinocchio_equipSelect;
@@ -334,6 +270,63 @@ public class Giggle_Player : IDisposable
         #endregion
 
         #region PINOCCHIO_SKILLS
+        
+    [Serializable]
+    public class Pinocchio_Skill : IDisposable
+    {
+        [SerializeField] int    Basic_id;   // 스킬의 id
+        [SerializeField] int    Basic_lv;   // 스킬의 레벨
+
+        ////////// Getter & Setter          //////////
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        public int  Basic_VarLv { get { return Basic_lv;    } set { Basic_lv = value;   }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Pinocchio_Skill(int _id)
+        {
+            Basic_id = _id;
+            Basic_lv = 1;
+        }
+        
+        //
+        public void Dispose()
+        {
+
+        }
+    }
+
+    [Serializable]
+    public class Pinocchio_SkillSlots : IDisposable
+    {
+        [SerializeField] List<int>    Basic_list;
+
+        ////////// Getter & Setter          //////////
+        public List<int>    Basic_VarList   { get { return Basic_list;  }   }
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Pinocchio_SkillSlots()
+        {
+            if(Basic_list == null)
+            {
+                Basic_list = new List<int>();
+            }
+            while(Basic_list.Count < 6)
+            {
+                Basic_list.Add(-1);
+            }
+        }
+        
+        //
+        public void Dispose()
+        {
+
+        }
+    }
 
     [SerializeField] List<Pinocchio_Skill>      Pinocchio_skills;
     [SerializeField] List<Pinocchio_SkillSlots> Pinocchio_skillSlots;

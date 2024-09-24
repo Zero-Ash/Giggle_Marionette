@@ -422,40 +422,64 @@ public class Giggle_Unit : MonoBehaviour
                                 }
                             }
 
+                            int damage = 0;
+                            Giggle_Battle.Bullet.TYPE skillType = Giggle_Battle.Bullet.TYPE.NORMAL;
                             if(skillCount >= 0)
                             {
+                                Giggle_Character.Skill skill = null;
+
                                 // 피노키오일 때
                                 if(Status_database.Basic_VarSkillId.Equals(-1))
                                 {
-                                    Debug.Log(this.name + "스킬");
-                                    Status_coolTimers[skillCount].Basic_VarTimer += 5.0f;
+                                    List<int> slots
+                                        = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
+                                    Giggle_Player.Pinocchio_Skill playerSkill
+                                        = (Giggle_Player.Pinocchio_Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS,
+                                            slots[skillCount]);
+
+                                    skill
+                                        = (Giggle_Character.Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
+                                            playerSkill.Basic_VarId);
+
+                                    Status_coolTimers[skillCount].Basic_VarTimer += skill.Basic_GetLvFromCount(playerSkill.Basic_VarLv - 1).Basic_VarCoolTime;
                                 }
                                 // 마리오네트일 때
                                 else
                                 {
-                                    Debug.Log(this.name + "스킬 " + Status_database.Basic_VarSkillId);
-                                    Giggle_Character.Skill skill
+                                    skill
                                         = (Giggle_Character.Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                                             Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,
                                             Status_database.Basic_VarSkillId);
+
                                     Status_coolTimers[skillCount].Basic_VarTimer += skill.Basic_GetLvFromCount(0).Basic_VarCoolTime;
+                                }
+
+                                //
+                                skillType = skill.Basic_GetLvFromCount(0).Basic_VarType;
+                                switch(skillType)
+                                {
+                                    case Giggle_Battle.Bullet.TYPE.SPLIT:       { damage = (int)((float)Status_VarTotalStatus.Basic_VarAttack * (float)skill.Basic_GetLvFromCount(0).Basic_GetValueFromCount(0) / 100.0f);  }   break;
+                                    case Giggle_Battle.Bullet.TYPE.FIRE_BALL:   { damage = (int)((float)Status_VarTotalStatus.Basic_VarAttack * (float)skill.Basic_GetLvFromCount(0).Basic_GetValueFromCount(0) / 100.0f);  }   break;
                                 }
                             }
                             else
                             {
                                 // 최종 데미지 연산
-                                int damage = 0;
+                                damage = 0;
                                 if(Status_VarTotalStatus.Basic_VarAttack != 0)
                                 {
                                     damage
                                         = (Status_VarTotalStatus.Basic_VarAttack * Status_VarTotalStatus.Basic_VarAttack)
                                         / (Status_VarTotalStatus.Basic_VarAttack + Active_target.Status_VarTotalStatus.Basic_VarDefence);
                                 }
-
-                                Basic_Battle.Bullet_Launch(
-                                    this, Active_target,
-                                    damage);
                             }
+
+                            Basic_Battle.Bullet_Launch(
+                                this, Active_target,
+                                skillType, damage);
 
                             Model_motionPhase = 1;
                         }

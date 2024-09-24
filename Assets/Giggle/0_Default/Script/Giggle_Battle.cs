@@ -117,6 +117,8 @@ public class Giggle_Battle : IDisposable
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();               }   break;
             }
 
+            Effect_Coroutine();
+
             lastTime = time;
 
             yield return null;
@@ -152,7 +154,7 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__RESET()
     {
         UI_lose.gameObject.SetActive(false);
-        
+
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START;
     }
 
@@ -410,7 +412,7 @@ public class Giggle_Battle : IDisposable
                 Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                 stage.Basic_FormationGetData(for0).Basic_VarId);
 
-            Giggle_Character.Save save = new Giggle_Character.Save(-1, 21001);
+            Giggle_Character.Save save = new Giggle_Character.Save(-1, data.Basic_VarId);
             save.Basic_VarLevel = stage.Basic_FormationGetData(for0).Basic_VarLv;
 
             unit = GameObject.Instantiate(data.Basic_VarUnit, Formation_Enemy.Basic_GetTile(stage.Basic_FormationGetData(for0).Basic_VarFormation));
@@ -673,16 +675,27 @@ public class Giggle_Battle : IDisposable
     [Serializable]
     public class Bullet : IDisposable
     {
+        public enum TYPE
+        {
+            NORMAL,
+            SPLIT,
+            FIRE_BALL
+        }
+
         [SerializeField] GameObject Basic_obj;
 
+        [Header("RUNNING")]
         [SerializeField] Giggle_Unit Basic_owner;
         [SerializeField] Giggle_Unit Basic_target;
-        [SerializeField] int         Basic_damage;
 
-        [SerializeField] Vector3 Basic_startPos;
-        [SerializeField] Vector3 Basic_destinationPos;
-        [SerializeField] float Basic_timer;
-        [SerializeField] float Basic_time;
+        [SerializeField] TYPE   Basic_type;
+        [SerializeField] int    Basic_damage;
+
+        [SerializeField] Vector3    Basic_startPos;
+        [SerializeField] Vector3    Basic_destinationPos;
+
+        [SerializeField] float  Basic_timer;
+        [SerializeField] float  Basic_time;
 
         ////////// Getter & Setter          //////////
         public GameObject Basic_VarObj  { get{ return Basic_obj;    }   }
@@ -692,10 +705,12 @@ public class Giggle_Battle : IDisposable
         ////////// Method                   //////////
         public void Basic_Launch(
             Giggle_Unit _owner, Giggle_Unit _target,
-            int _damage)
+            TYPE _type, int _damage)
         {
             Basic_owner  = _owner;
             Basic_target = _target;
+
+            Basic_type = _type;
             Basic_damage = _damage;
 
             Basic_startPos       = Basic_owner.transform.position;
@@ -705,33 +720,68 @@ public class Giggle_Battle : IDisposable
             float distance = Vector3.Distance(Basic_startPos, Basic_destinationPos);
             Basic_time = distance / 10.0f;
 
+            // Bullet
+            for(int for0 = 0; for0 < Basic_obj.transform.childCount; for0++)
+            {
+                Basic_obj.transform.GetChild(for0).gameObject.SetActive(false);
+            }
+            string bulletName = "";
+            switch(Basic_type)
+            {
+                case TYPE.NORMAL:
+                case TYPE.FIRE_BALL:
+                    { bulletName = "0"; }   break;
+            }
+            Basic_obj.transform.Find(bulletName).gameObject.SetActive(true);
+            //
             Basic_obj.transform.position = Basic_startPos;
             Basic_obj.SetActive(true);
         }
 
-        public void Basic_Coroutine(float _deltaTime)
+        // Basic_Coroutine
+        public void Basic_Coroutine(Giggle_Battle _manager, float _deltaTime)
         {
             if(Basic_obj.activeSelf)
             {
                 // 시간 진행
                 Basic_timer += _deltaTime;
+
                 if(Basic_timer >= Basic_time)
                 {
                     Basic_timer = Basic_time;
                     
-                    // TODO: 투사체들의 공격을 편집할 때는 이곳을 편집하세요.
-                    if(Basic_target.gameObject.activeInHierarchy)
+                    switch(Basic_type)
                     {
-                        Basic_target.Status_Damage(Basic_damage);
-                        //Debug.Log(Basic_owner.transform.parent.parent.name + " 공격 성공 " + Basic_damage);
+                        case TYPE.NORMAL:       { Basic_Coroutine__Arrive_NORMAL();                                             }   break;
+                        case TYPE.FIRE_BALL:    { Basic_Coroutine__Arrive_FIRE_BALL(_manager, Basic_obj.transform.position);    }   break;
                     }
 
                     // 비활성화
                     Basic_obj.SetActive(false);
                 }
+                    
+                switch(Basic_type)
+                {
+                    case TYPE.SPLIT:    {   }   break;
+                }
 
                 Basic_obj.transform.position = Vector3.Lerp(Basic_startPos, Basic_destinationPos, Basic_timer / Basic_time);
             }
+        }
+        
+        void Basic_Coroutine__Arrive_NORMAL()
+        {
+            if(Basic_target.gameObject.activeInHierarchy)
+            {
+                Basic_target.Status_Damage(Basic_damage);
+            }
+        }
+        
+        void Basic_Coroutine__Arrive_FIRE_BALL(Giggle_Battle _manager, Vector3 _pos)
+        {
+            Basic_Coroutine__Arrive_NORMAL();
+            
+            _manager.Effect_Play(Basic_type, _pos);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -764,13 +814,13 @@ public class Giggle_Battle : IDisposable
     {
         for(int for0 = 0; for0 < Bullet_bullets.Count; for0++)
         {
-            Bullet_bullets[for0].Basic_Coroutine(_deltaTime);
+            Bullet_bullets[for0].Basic_Coroutine(this, _deltaTime);
         }
     }
 
     public void Bullet_Launch(
         Giggle_Unit _owner, Giggle_Unit _target,
-        int _damage)
+        Bullet.TYPE _type, int _damage)
     {
         bool isLaunch = false;
 
@@ -781,7 +831,7 @@ public class Giggle_Battle : IDisposable
             {
                 Bullet_bullets[whileCount].Basic_Launch(
                     _owner, _target,
-                    _damage);
+                    _type, _damage);
 
                 isLaunch = true;
                 break;
@@ -802,7 +852,7 @@ public class Giggle_Battle : IDisposable
 
             Bullet_Launch(
                 _owner, _target,
-                _damage);
+                _type, _damage);
         }
     }
 
@@ -814,6 +864,100 @@ public class Giggle_Battle : IDisposable
             Bullet_bullets[whileCount].Basic_VarObj.SetActive(false);
 
             whileCount++;
+        }
+    }
+
+    ////////// Constructor & Destroyer  //////////
+
+    #endregion
+
+    #region EFFECT
+
+    [Header("EFFECT ==================================================")]
+    [SerializeField] Transform  Effect_parent;
+
+    ////////// Getter & Setter          //////////
+
+    ////////// Method                   //////////
+    void Effect_Coroutine()
+    {
+        for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
+        {
+            Transform trans0 = Effect_parent.GetChild(for0);
+            // 이펙트가 활성화되 있다면,
+            // 실행여부를 체크하여, 재생이 끝나면 비활성화 시켜준다.
+            if(trans0.gameObject.activeSelf)
+            {
+                for(int for1 = 0; for1 < trans0.childCount; for1++)
+                {
+                    Transform trans1 = trans0.GetChild(for1);
+                    if(trans1.gameObject.activeSelf)
+                    {
+                        bool isPlay = false;
+
+                        for(int for2 = 0; for2 < trans1.childCount; for2++)
+                        {
+                            if(trans1.GetChild(for2).gameObject.activeSelf)
+                            {
+                                isPlay = true;
+                                break;
+                            }
+                        }
+
+                        if(!isPlay)
+                        {
+                            trans0.gameObject.SetActive(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    public void Effect_Play(Bullet.TYPE _type, Vector3 _pos)
+    {
+        bool isPlay = false;
+
+        for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
+        {
+            Transform trans0 = Effect_parent.GetChild(for0);
+
+            if(!trans0.gameObject.activeSelf)
+            {
+                for(int for1 = 0; for1 < trans0.childCount; for1++)
+                {
+                    trans0.GetChild(for1).gameObject.SetActive(false);
+                }
+                // 이펙트 찾아서 활성화
+                Transform trans1 = trans0.Find(((int)_type).ToString());
+                for(int for1 = 0; for1 < trans1.childCount; for1++)
+                {
+                    trans1.GetChild(for1).GetComponent<ParticleSystem>().Play();
+                    trans1.GetChild(for1).gameObject.SetActive(true);
+                }
+                trans1.gameObject.SetActive(true);
+
+                // 이펙트 활성화
+                trans0.position = _pos;
+                trans0.gameObject.SetActive(true);
+
+                isPlay = true;
+
+                break;
+            }
+        }
+
+        // 대기 중인 이펙트가 없다면 추가로 생성하고 재귀
+        if(!isPlay)
+        {
+            for(int for0 = 0; for0 < 100; for0++)
+            {
+                Transform element = GameObject.Instantiate<Transform>(Effect_parent.GetChild(for0), Effect_parent);
+                element.gameObject.SetActive(false);
+            }
+
+            Effect_Play(_type, _pos);
         }
     }
 
