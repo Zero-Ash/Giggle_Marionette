@@ -207,13 +207,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             switch(_names[2])
             {
-                case "RESET":   { Battle_Reset();   }   break;
+                //case "RESET":   { Battle_Reset();   }   break;
             }
-        }
-
-        void Battle_Reset()
-        {
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.RESET);
         }
 
         ////////// Constructor & Destroyer  //////////

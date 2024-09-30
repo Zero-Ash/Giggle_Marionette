@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 [Serializable]
 public class Giggle_Battle : IDisposable
@@ -48,7 +49,9 @@ public class Giggle_Battle : IDisposable
         ACTIVE_MOVE_READY,
         ACTIVE_MOVE,
         ACTIVE_MOVE_END,
-        ACTIVE_RESULT,
+        ACTIVE_RESULT_WIN,
+        ACTIVE_RESULT_LOSE,
+        ACTIVE_RESULT_LOSE_DOING,
         ACTIVE_END
     }
 
@@ -115,6 +118,9 @@ public class Giggle_Battle : IDisposable
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY:  { Basic_Coroutine__ACTIVE_MOVE_READY();             }   break;
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE:        { Basic_Coroutine__ACTIVE_MOVE(time - lastTime);    }   break;
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();               }   break;
+
+                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE:         { Basic_Coroutine__ACTIVE_RESULT_LOSE();                    }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE_DOING:   { Basic_Coroutine__ACTIVE_RESULT_DOING(time - lastTime);    }   break;
             }
 
             Effect_Coroutine();
@@ -142,9 +148,17 @@ public class Giggle_Battle : IDisposable
                 {
                     if(Formation_CotoutineInit1())
                     {
-                        _phase = 0;
-                        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
+                        _phase = 100;
                     }
+                }
+                break;
+            case 100:
+                {
+                    UI_Init();
+
+                    //
+                    _phase = 0;
+                    Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
                 }
                 break;
         }
@@ -169,7 +183,7 @@ public class Giggle_Battle : IDisposable
     {
         UI_FadeOut(_timer);
 
-        if(UI_fadeTime >= 1.0f)
+        if(UI_timers[0] >= 1.0f)
         {
             Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
         }
@@ -445,7 +459,7 @@ public class Giggle_Battle : IDisposable
     {
         UI_FadeIn(_timer);
 
-        if(UI_fadeTime <= 0.0f)
+        if(UI_timers[0] <= 0.0f)
         {
             Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_END;
         }
@@ -465,15 +479,13 @@ public class Giggle_Battle : IDisposable
         if(Formation_Enemy.Basic_VarIsUnitEmpty)
         {
             Debug.Log("Basic_Coroutine__ACTIVE_BATTLE " + 0);
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT_WIN;
         }
         else
         {
             if(Formation_Ally.Basic_VarIsUnitEmpty)
             {
-                UI_lose.gameObject.SetActive(true);
-
-                Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT;
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE;
             }
         }
     }
@@ -498,6 +510,22 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__ACTIVE_MOVE_END()
     {
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_BATTLE;
+    }
+
+    // ACTIVE_RESULT ==========
+    void Basic_Coroutine__ACTIVE_RESULT_LOSE()
+    {
+        UI_LoseStart();
+
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE_DOING;
+    }
+
+    void Basic_Coroutine__ACTIVE_RESULT_DOING(float _timer)
+    {
+        if(UI_LoseDoing(_timer))
+        {
+            Basic_coroutinePhase = Giggle_Battle.Basic__COROUTINE_PHASE.RESET;
+        }
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -994,7 +1022,7 @@ public class Giggle_Battle : IDisposable
 
     void Map_Coroutine__ACTIVE_MOVE_READY()
     {
-        Map_ground.localPosition = new Vector3(30, 0, 0);
+        Map_ground.localPosition = new Vector3(12, 0, 0);
         Map_speed = Map_ground.localPosition.x / Map_time;
     }
 
@@ -1019,10 +1047,12 @@ public class Giggle_Battle : IDisposable
 
     [Header("UI ==================================================")]
     [SerializeField] Image UI_fade;
-    [SerializeField] Transform UI_lose;
+
+    [SerializeField] Transform          UI_lose;
+    [SerializeField] TextMeshProUGUI    UI_loseTimer;
 
     [Header("RUNNING")]
-    [SerializeField] float  UI_fadeTime;
+    [SerializeField] List<float>    UI_timers;
 
     ////////// Getter & Setter          //////////
 
@@ -1030,7 +1060,7 @@ public class Giggle_Battle : IDisposable
     // UI_FadeOut
     void UI_FadeOutStart()
     {
-        UI_fadeTime = 0.0f;
+        UI_timers[0] = 0.0f;
 
         Color c = UI_fade.color;
         c.a = 0.0f;
@@ -1040,22 +1070,22 @@ public class Giggle_Battle : IDisposable
 
     void UI_FadeOut(float _timer)
     {
-        UI_fadeTime += _timer;
+        UI_timers[0] += _timer;
 
-        if(UI_fadeTime >= 1.0f)
+        if(UI_timers[0] >= 1.0f)
         {
-            UI_fadeTime = 1.0f;
+            UI_timers[0] = 1.0f;
         }
 
         Color c = UI_fade.color;
-        c.a = UI_fadeTime;
+        c.a = UI_timers[0];
         UI_fade.color = c;
     }
 
     // UI_FadeIn
     void UI_FadeInStart()
     {
-        UI_fadeTime = 1.0f;
+        UI_timers[0] = 1.0f;
 
         Color c = UI_fade.color;
         c.a = 1.0f;
@@ -1064,20 +1094,61 @@ public class Giggle_Battle : IDisposable
 
     void UI_FadeIn(float _timer)
     {
-        UI_fadeTime -= _timer;
+        UI_timers[0] -= _timer;
 
-        if(UI_fadeTime <= 0.0f)
+        if(UI_timers[0] <= 0.0f)
         {
-            UI_fadeTime = 0.0f;
+            UI_timers[0] = 0.0f;
             UI_fade.gameObject.SetActive(false);
         }
 
         Color c = UI_fade.color;
-        c.a = UI_fadeTime;
+        c.a = UI_timers[0];
         UI_fade.color = c;
     }
 
+    // UI_Lose
+    void UI_LoseStart()
+    {
+        UI_lose.gameObject.SetActive(true);
+
+        UI_timers[0] = 2.0f;
+        UI_loseTimer.text = (1 + (int)UI_timers[0]).ToString();
+    }
+
+    bool UI_LoseDoing(float _timer)
+    {
+        bool res = false;
+
+        //
+        UI_timers[0] -= _timer;
+        if(UI_timers[0] <= 0.0f)
+        {
+            UI_timers[0] = 0.0f;
+            res = true;
+        }
+
+        UI_loseTimer.text = (1 + (int)UI_timers[0]).ToString();
+
+        //
+        return res;
+    }
+
     ////////// Constructor & Destroyer  //////////
+
+    //
+    void UI_Init()
+    {
+        if(UI_timers == null)
+        {
+            UI_timers = new List<float>();
+        }
+
+        while(UI_timers.Count < 1)
+        {
+            UI_timers.Add(0.0f);
+        }
+    }
 
     #endregion
 }

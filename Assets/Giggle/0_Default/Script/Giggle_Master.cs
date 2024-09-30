@@ -94,7 +94,11 @@ public class Giggle_Master : MonoBehaviour
     void Scene_Start()
     {
         float ratio = (float)Screen.height / (float)Screen.width;
-        Scene_cameraParent.localPosition = new Vector3(0, 0, -8.0f * ratio);
+        for(int for0 = 0; for0 < Scene_cameraParent.childCount; for0++)
+        {
+            Scene_cameraParent.GetChild(for0).GetComponent<Camera>().orthographicSize = ratio * 6.0f;
+        }
+        //Scene_cameraParent.localPosition = new Vector3(0, 0, -8.0f * ratio);
     }
 
     #endregion
