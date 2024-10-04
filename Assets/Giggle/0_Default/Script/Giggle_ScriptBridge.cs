@@ -203,7 +203,7 @@ public class Giggle_ScriptBridge
         /// <summary>
         /// 스테이지 데이터 불러오기<br/>
         /// 매개변수 : int - id<br/>
-        /// return type : GameObject
+        /// return type : Giggle_Stage.Stage
         /// </summary>
         DATABASE__STAGE__GET_STAGE_FROM_ID,
 
@@ -212,7 +212,7 @@ public class Giggle_ScriptBridge
         /// 매개변수<br/>
         /// return type : GameObject
         /// </summary>
-        DATABASE__STAGE__GET_DATA_FROM_SAVE,
+        DATABASE__STAGE__GET_OBJ_FROM_SAVE,
 
         /// <summary>
         /// 아이템 데이터의 개방 여부<br/>
@@ -237,6 +237,20 @@ public class Giggle_ScriptBridge
         /// return type : int
         /// </summary>
         PLAYER__STAGE__VAR_SELECT,
+
+        /// <summary>
+        /// 다음 스테이지 갱신 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__STAGE__VAR_IS_NEXT,
+
+        /// <summary>
+        /// 다음 스테이지로<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__STAGE__NEXT,
 
         /// <summary>
         /// 피노키오 데이터<br/>

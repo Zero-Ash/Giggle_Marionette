@@ -119,6 +119,8 @@ public class Giggle_Battle : IDisposable
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE:        { Basic_Coroutine__ACTIVE_MOVE(time - lastTime);    }   break;
                 case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();               }   break;
 
+                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_WIN:  { Basic_Coroutine__ACTIVE_RESULT_WIN(); }   break;
+
                 case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE:         { Basic_Coroutine__ACTIVE_RESULT_LOSE();                    }   break;
                 case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE_DOING:   { Basic_Coroutine__ACTIVE_RESULT_DOING(time - lastTime);    }   break;
             }
@@ -199,7 +201,7 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__SETTING_STAGE_DATA_CHECK()
     {
         GameObject obj = (GameObject)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE);
+            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_SAVE);
         
         object isOnObj
             = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN);
@@ -217,7 +219,7 @@ public class Giggle_Battle : IDisposable
     void Basic_Coroutine__SETTING_STAGE()
     {
         GameObject obj = (GameObject)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE);
+            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_SAVE);
 
         Map_Load(obj);
 
@@ -417,8 +419,13 @@ public class Giggle_Battle : IDisposable
         // enemy
         // 기존 데이터 날리기
         Formation_Enemy.Basic_Reset();
+
+        int stageId = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
         
-        Giggle_Stage.Stage stage = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID);
+        Giggle_Stage.Stage stage
+            = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,
+                stageId);
         
         for(int for0 = 0; for0 < stage.Basic_FormationVarCount; for0++)
         {
@@ -478,7 +485,6 @@ public class Giggle_Battle : IDisposable
 
         if(Formation_Enemy.Basic_VarIsUnitEmpty)
         {
-            Debug.Log("Basic_Coroutine__ACTIVE_BATTLE " + 0);
             Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_RESULT_WIN;
         }
         else
@@ -513,6 +519,43 @@ public class Giggle_Battle : IDisposable
     }
 
     // ACTIVE_RESULT ==========
+
+    //
+    void Basic_Coroutine__ACTIVE_RESULT_WIN()
+    {
+        bool isNext = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_IS_NEXT);
+        
+        if(isNext)
+        {
+            int stageId = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
+
+            Giggle_Stage.Stage stage = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,
+                stageId);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__NEXT);
+
+            if(stage.Basic_VarIsBoss)
+            {
+                Basic_coroutinePhase = Giggle_Battle.Basic__COROUTINE_PHASE.RESET;
+            }
+            else
+            {
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
+            }
+        }
+        else
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
+        }
+    }
+
+    void Basic_Coroutine__ACTIVE_RESULT_WIN_DOING(float _timer)
+    {
+
+    }
+
+    //
     void Basic_Coroutine__ACTIVE_RESULT_LOSE()
     {
         UI_LoseStart();
@@ -780,8 +823,8 @@ public class Giggle_Battle : IDisposable
                     
                     switch(Basic_type)
                     {
-                        case TYPE.NORMAL:       { Basic_Coroutine__Arrive_NORMAL();                                             }   break;
-                        case TYPE.FIRE_BALL:    { Basic_Coroutine__Arrive_FIRE_BALL(_manager, Basic_obj.transform.position);    }   break;
+                        case TYPE.NORMAL:       { Basic_Coroutine__Arrive_NORMAL();                                     }   break;
+                        case TYPE.FIRE_BALL:    { Basic_Coroutine__Arrive_FIRE_BALL(_manager, Basic_destinationPos);    }   break;
                     }
 
                     // 비활성화
@@ -1017,12 +1060,12 @@ public class Giggle_Battle : IDisposable
 
         //
         GameObject obj = GameObject.Instantiate(_obj, Map_parent);
-        Map_ground = obj.transform.Find("Ground");
+        Map_ground = obj.transform.Find("Ground").GetChild(0);
     }
 
     void Map_Coroutine__ACTIVE_MOVE_READY()
     {
-        Map_ground.localPosition = new Vector3(12, 0, 0);
+        Map_ground.localPosition = new Vector3(2, 0, 0);
         Map_speed = Map_ground.localPosition.x / Map_time;
     }
 

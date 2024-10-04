@@ -136,6 +136,9 @@ namespace Giggle_Stage
 
         public int      Basic_FormationVarCount             { get { return Basic_formation.Count;   }   }
 
+        // Basic_isBoss
+        public bool Basic_VarIsBoss { get { return Basic_isBoss;    }   }
+
         ////////// Method                   //////////
         public void Basic_SettingFormation(Dictionary<string, string> _data)
         {

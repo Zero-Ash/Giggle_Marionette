@@ -1108,12 +1108,12 @@ public class Giggle_Database : IDisposable
 
     object Stage_GetStageFromId(params object[] _args)
     {
-        Giggle_Stage.Stage res = null;
+        int stage = (int)_args[0];
 
         //
-        int stage = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
+        Giggle_Stage.Stage res = null;
 
-        // 찾고자 하는 캐릭터가 존재하는가?
+        // 찾고자 하는 스테이지가 존재하는가?
         for(int for0 = 0; for0 < Stage_datas.Count; for0++)
         {
             if(Stage_datas[for0].Basic_VarId.Equals(stage / 100))
@@ -1127,7 +1127,7 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
-    object Stage_GetDataFromSave(params object[] _args)
+    object Stage_GetObjFromSave(params object[] _args)
     {
         GameObject res = Stage_empty;
 
@@ -1135,7 +1135,7 @@ public class Giggle_Database : IDisposable
         int stage = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
         stage = (stage / 100) % 100;
 
-        // 찾고자 하는 캐릭터가 존재하는가?
+        // 찾고자 하는 모델링이 존재하는가?
         for(int for0 = 0; for0 < Stage_objs.Count; for0++)
         {
             if(Stage_objs[for0].name.Equals("Stage_" + (stage / 10).ToString() + (stage % 10).ToString()))
@@ -1274,8 +1274,8 @@ public class Giggle_Database : IDisposable
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN,   Stage_GetIsOpen );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,     Stage_GetStageFromId    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_DATA_FROM_SAVE,    Stage_GetDataFromSave   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID, Stage_GetStageFromId    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_SAVE, Stage_GetObjFromSave    );
     }
 
     #endregion

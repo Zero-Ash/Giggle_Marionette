@@ -41,6 +41,8 @@ public class Giggle_Player : IDisposable
     [SerializeField] int    Stage_max;
     [SerializeField] int    Stage_select;
 
+    [SerializeField] bool   Stage_isNext;
+
     ////////// Getter & Setter          //////////
     // Stage_select
     object Stage_VarSelect(params object[] _args)
@@ -48,14 +50,57 @@ public class Giggle_Player : IDisposable
         return Stage_select;
     }
 
+    // Stage_isNext
+    object Stage_VarIsNext(params object[] _args)
+    {
+        return Stage_isNext;
+    }
+
     ////////// Method                   //////////
+    // Stage_select
+    object Stage_Next(params object[] _args)
+    {
+        int stage0 = Stage_select / 100;
+        int stage1 = Stage_select % 100;
+
+        // 보스 스테이지 여부에 따라 다음 스테이지 id 갱신
+        Giggle_Stage.Stage stage = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,
+            Stage_select);
+
+        if(stage.Basic_VarIsBoss)
+        {
+            stage0 += 1;
+            stage1 = 1;
+        }
+        else
+        {
+            stage1 += 1;
+        }
+
+        // 스테이지id 업데이트
+        Stage_select = (stage0 * 100) + stage1;
+
+        if(Stage_select > Stage_max)
+        {
+            Stage_max = Stage_select;
+        }
+
+        return true;
+    }
     
     ////////// Constructor & Destroyer  //////////
     void Stage_Contructor()
     {
         Stage_max = Stage_select = 610101;
 
+        Stage_isNext = true;
+
+        //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT,  Stage_VarSelect );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_IS_NEXT, Stage_VarIsNext );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__NEXT,    Stage_Next  );
     }
     
     #endregion
