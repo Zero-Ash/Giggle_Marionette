@@ -91,29 +91,40 @@ public class Giggle_ScriptBridge
         #region Giggle_Database
 
         /// <summary>
+        /// 캐릭터 스킬 배경<br/>
+        /// 매개변수 : int - rank<br/>
+        /// return type : Sprite
+        /// </summary>
+        DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+
+        /// <summary>
         /// 피노키오 데이터의 개방 여부<br/>
         /// 매개변수<br/>
         /// return type : bool
         /// </summary>
         DATABASE__PINOCCHIO__GET_IS_OPEN,
+
         /// <summary>
         /// 피노키오 데이터<br/>
         /// 매개변수 : int - 캐릭터id<br/>
         /// return type : Giggle_Character.Database
         /// </summary>
         DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
+
         /// <summary>
         /// 피노키오 데이터<br/>
         /// 매개변수 : int - 스킬id<br/>
         /// return type : Giggle_Character.Skill
         /// </summary>
         DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
+
         /// <summary>
         /// 특성 데이터 리스트<br/>
         /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type<br/>
         /// return type : List(Giggle_Character.Attribute)
         /// </summary>
         DATABASE__PINOCCHIO__GET_ATTRIBUTE,
+
         /// <summary>
         /// 특성 데이터<br/>
         /// 매개변수 : Giggle_Player.ATTRIBUTE_TYPE - type, int - 스킬id<br/>
@@ -220,12 +231,20 @@ public class Giggle_ScriptBridge
         /// return type : bool
         /// </summary>
         DATABASE__ITEM__GET_IS_OPEN,
+
         /// <summary>
         /// 아이템 데이터<br/>
         /// 매개변수 : int - 캐릭터id<br/>
         /// return type : Giggle_Item.List
         /// </summary>
         DATABASE__ITEM__GET_DATA_FROM_ID,
+
+        /// <summary>
+        /// 아이템 스프라이트 가져오기<br/>
+        /// 매개변수 : Giggle_Item.TYPE - itemt type, int - item class<br/>
+        /// return type : Giggle_Item.List
+        /// </summary>
+        DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
 
         #endregion
 

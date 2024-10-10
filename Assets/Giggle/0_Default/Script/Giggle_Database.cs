@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
 [Serializable]
 public class Giggle_Database : IDisposable
@@ -119,9 +120,19 @@ public class Giggle_Database : IDisposable
     }
 
     [Header("CHARACTER ==================================================")]
-    [SerializeField] Giggle_Character.Database Character_empty;
+    [SerializeField] Giggle_Character.Database  Character_empty;
+
+    [SerializeField] List<Sprite>   Character_skillBacks;
 
     ////////// Getter & Setter          //////////
+    object Character_GetSkillBackFromRank(params object[] _args)
+    {
+        //
+        int rank = (int)_args[0];
+
+        //
+        return Character_skillBacks[rank - 1];
+    }
     
     ////////// Method                   //////////
 
@@ -132,9 +143,35 @@ public class Giggle_Database : IDisposable
         {
             Character_empty = new Giggle_Character.Database();
         }
+        
+        if(Character_skillBacks == null)
+        {
+            Character_skillBacks = new List<Sprite>();
+        }
 
+        Addressables.LoadAssetAsync<GameObject>("CHARACTER/SKILL_BACKGROUND").Completed
+        += handle =>
+        {
+            Transform trans = handle.Result.transform;
+            for(int for0 = 0; for0 < trans.childCount; for0++)
+            {
+                Sprite sprite = trans.GetChild(for0).GetComponent<Image>().sprite;
+                int num = int.Parse(sprite.name.Split('_')[0]);
+
+                while(Character_skillBacks.Count < num)
+                {
+                    Character_skillBacks.Add(null);
+                }
+
+                Character_skillBacks[num - 1] = sprite;
+            }
+        };
+        
         Pinocchio_Init();
         Marionette_Init();
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,  Character_GetSkillBackFromRank  );
     }
 
     #region PINOCCHIO
@@ -1336,6 +1373,7 @@ public class Giggle_Database : IDisposable
 
     [Header("ITEM ==================================================")]
     [SerializeField] List<Item_Data>    Item_datas;
+    [SerializeField] List<Sprite>       Item_sprites;
     [SerializeField] bool   Item_isOpen;
     [SerializeField] Giggle_Item.List   Item_empty;
 
@@ -1383,6 +1421,39 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
+    //
+    object Item_GetSpriteFromValue(params object[] _args)
+    {
+        Sprite res = null;
+
+        //
+        Giggle_Item.TYPE type = (Giggle_Item.TYPE)_args[0];
+        int classValue = -1;
+        if(_args.Length >= 2)
+        {
+            classValue = (int)_args[1];
+        }
+
+        //
+        string str = type.ToString();
+        if(classValue != -1)
+        {
+            str += "_" + classValue;
+        }
+
+        for(int for0 = 0; for0 < Item_sprites.Count; for0++)
+        {
+            if(Item_sprites[for0].name.Equals(str))
+            {
+                res = Item_sprites[for0];
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
     ////////// Method                   //////////
 
     IEnumerator Item_LoadData__Coroutine(int _itemType)
@@ -1417,9 +1488,38 @@ public class Giggle_Database : IDisposable
                                 Item_datas[_itemType].Basic_SetData(data[for0]);
                             }
 
-                            phase = -1;
-                            Item_isOpen = true;
+                            phase = 100;
                         };
+                    }
+                    break;
+                case 100:
+                    {
+                        phase = 101;
+
+                        if(Item_sprites == null)
+                        {
+                            Item_sprites = new List<Sprite>();
+                        }
+
+                        if(Item_sprites.Count == 0)
+                        {
+                            Addressables.LoadAssetAsync<GameObject>("ITEM/ICON_LIST").Completed
+                            += handle =>
+                            {
+                                Transform trans = handle.Result.transform;
+                                for(int for0 = 0; for0 < trans.childCount; for0++)
+                                {
+                                    Item_sprites.Add(trans.GetChild(for0).GetComponent<Image>().sprite);
+                                }
+
+                                phase = -1;
+                                Item_isOpen = true;
+                            };
+                        }
+                        else
+                        {
+                            Item_isOpen = true;
+                        }
                     }
                     break;
             }
@@ -1443,7 +1543,8 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN,    Item_GetIsOpen  );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,   Item_GetDataFromId  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,       Item_GetDataFromId      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,  Item_GetSpriteFromValue );
     }
 
     #endregion

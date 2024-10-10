@@ -116,7 +116,7 @@ namespace Giggle_Item
                 //Basic_attribute     = (Giggle_Master.ATTRIBUTE)Enum.Parse(typeof(Giggle_Master.ATTRIBUTE), _data["attribute"]);
             }
 
-            Basic_class = 0;
+            Basic_class = -1;
             if(_data.ContainsKey("class"))
             {
                 Basic_class = int.Parse(    _data["class"]  );

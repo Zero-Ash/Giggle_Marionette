@@ -615,7 +615,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     Basic_list[whileCount].Find("Portrait").GetComponent<Image>().sprite = null;
                     Basic_list[whileCount].Find("Name").GetComponent<TextMeshProUGUI>().text = "";
 
-                    //TODO:아이템 포트레이트가 아직 안나왔어요!
+                    //
                     Giggle_Item.Inventory item = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                         Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID, Basic_parentClass.Equipment_VarInventoryItems[whileCount]);
 
@@ -624,6 +624,31 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         //
                         item.Basic_VarDataId);
                         
+                    Sprite sprite = null;
+                    switch(database.Basic_VarType)
+                    {
+                        case Giggle_Item.TYPE.ACCESSORY:
+                            {
+                                sprite
+                                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
+                                        //
+                                        database.Basic_VarType, database.Basic_VarClass
+                                    );
+                            }
+                            break;
+                        default:
+                            {
+                                sprite
+                                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
+                                        //
+                                        database.Basic_VarType
+                                    );
+                            }
+                            break;
+                    }
+                    Basic_list[whileCount].transform.Find("Portrait").GetComponent<Image>().sprite = sprite;
                     Basic_list[whileCount].Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
 
                     //
@@ -799,10 +824,36 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         inventoryData.Basic_VarDataId);
 
                 //
+                Sprite sprite = null;
+                switch(database.Basic_VarType)
+                {
+                    case Giggle_Item.TYPE.ACCESSORY:
+                        {
+                            sprite
+                                = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                    Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
+                                    //
+                                    database.Basic_VarType, database.Basic_VarClass
+                                );
+                        }
+                        break;
+                    default:
+                        {
+                            sprite
+                                = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                    Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
+                                    //
+                                    database.Basic_VarType
+                                );
+                        }
+                        break;
+                }
+                EquipmentArea2_equipmentBtns[for0].transform.Find("Portrait").GetComponent<Image>().sprite = sprite;
                 EquipmentArea2_equipmentBtns[for0].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
             }
             else
             {
+                EquipmentArea2_equipmentBtns[for0].transform.Find("Portrait").GetComponent<Image>().sprite = null;
                 EquipmentArea2_equipmentBtns[for0].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = "00";
             }
         }
@@ -1037,6 +1088,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     Basic_list[whileCount].gameObject.SetActive(true);
 
                     // 기존 데이터 날리기
+                    Basic_list[whileCount].GetChild(1).GetComponent<Image>().sprite = null;
                     Basic_list[whileCount].GetChild(1).Find("Portrait").GetComponent<Image>().sprite = null;
                     Basic_list[whileCount].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = "";
 
@@ -1045,6 +1097,11 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
                         //
                         list[whileCount].Basic_VarId);
+                    Basic_list[whileCount].GetChild(1).GetComponent<Image>().sprite
+                        = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+                            //
+                            database.Basic_VarRank);
                     Basic_list[whileCount].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
 
                     //
@@ -1314,6 +1371,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         {
             if(slots[for0].Equals(-1))
             {
+                SkillArea2_slots[for0].GetChild(1).GetComponent<Image>().sprite = null;
                 SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = "00";
             }
             else
@@ -1329,6 +1387,11 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     //
                     skill.Basic_VarId);
 
+                SkillArea2_slots[for0].GetChild(1).GetComponent<Image>().sprite
+                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+                        //
+                        data.Basic_VarRank);
                 SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = data.Basic_VarName;
             }
         }
