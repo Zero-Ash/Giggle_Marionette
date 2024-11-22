@@ -142,17 +142,12 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_uiData.Formation_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_uiData.Formation_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -600,17 +595,12 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_uiData.Marionette_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_uiData.Formation_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -762,6 +752,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     [SerializeField] Transform  Mationette_infoBasic;
     [SerializeField] Transform  Mationette_infoSkill;
 
+    [SerializeField] Transform  Mationette_infoStatusNow;
+    [SerializeField] Transform  Mationette_infoStatusNext;
+
     [Header("RUNNING")]
     [SerializeField] List<int>  Marionette_marionetteList;   // inventoryId
     [SerializeField] int        Marionette_selectMarionette;
@@ -796,6 +789,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                     Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
                     data.Basic_VarDataId);
             
+            // Info Area2
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                 //
@@ -803,11 +797,66 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                 Mationette_infoBasic.Find("Portrait"), -90.0f, 300.0f);
             Mationette_infoBasic.Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
             //Mationette_infoBasic.Find("Type").GetComponent<TextMeshProUGUI>().text = database.ba;
-            //Mationette_infoBasic.Find("Attribute").GetComponent<TextMeshProUGUI>().text = database.ba;
+            Mationette_infoBasic.Find("Attribute").GetComponent<TextMeshProUGUI>().text = database.Basic_VarAttribute.ToString();
 
+            // Info Area3
+            Marionette_BtnScrollView__Status(Mationette_infoStatusNow, database.Basic_GetStatusList(data.Basic_VarLevel));
+            Marionette_BtnScrollView__Status(Mationette_infoStatusNext, database.Basic_GetStatusList(data.Basic_VarLevel + 1));
+
+            //
             Marionette_scrollView.Basic_VarContent.gameObject.SetActive(false);
             Marionette_infoParent.SetActive(true);
         }
+    }
+
+    void Marionette_BtnScrollView__Status(Transform _trans, Giggle_Character.Status _status)
+    {
+        _trans.localPosition = Vector3.zero;
+
+        _trans.Find("Attack"                        ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarAttack.ToString();
+        _trans.Find("Defence"                       ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarDefence.ToString();
+        _trans.Find("Hp"                            ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarHp.ToString();
+        _trans.Find("AttackSpeed"                   ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarAttackSpeed.ToString();
+
+        _trans.Find("CriticalChance"                ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCriticalChance.ToString();
+        _trans.Find("CriticalDamage"                ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCriticalDamage.ToString();
+        _trans.Find("CriticalDamageReduction"       ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCriticalDamageReduction.ToString();
+
+        _trans.Find("LuckyChance"                   ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarLuckyChance.ToString();
+        _trans.Find("LuckyDamage"                   ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarLuckyDamage.ToString();
+        _trans.Find("DamageTakenReduction"          ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarDamageTakenReduction.ToString();
+
+        _trans.Find("HpRegenPerSecond"              ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarHpRegenPerSecond.ToString();
+        _trans.Find("HpRegenAmount"                 ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarHpRegenAmount.ToString();
+        _trans.Find("LifeSteal"                     ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarHpLifeSteal.ToString();
+
+        _trans.Find("GoldGainIncrease"              ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarGoldGainIncrease.ToString();
+
+        _trans.Find("DamageIncrease"                ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarDamageIncrease.ToString();
+        _trans.Find("AllDamageIncrease"             ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarAllDamageIncrease.ToString();
+        _trans.Find("NormalMonsterDamageIncrease"   ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarNormalMonsterDamageIncrease.ToString();
+        _trans.Find("BossDamageIncrease"            ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarBossDamageIncrease.ToString();
+
+        _trans.Find("CooldownReduction"             ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarSkillCooldownReduction.ToString();
+        _trans.Find("SkillDamageIncrease"           ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarSkillDamageIncrease.ToString();
+        _trans.Find("SkillDamageReduction"          ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarSkillDamageReduction.ToString();
+
+        _trans.Find("Stun"                          ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarStun.ToString();
+        _trans.Find("StunResistance"                ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarStunResistance.ToString();
+
+        _trans.Find("MultiHit"                      ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarMultiHit.ToString();
+        _trans.Find("MultiHitDamage"                ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarMultiHitDamage.ToString();
+        _trans.Find("MultiHitDamageReduction"       ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarMultiHitDamageReduction.ToString();
+
+        _trans.Find("CounterAttack"                 ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCounterAttack.ToString();
+        _trans.Find("CounterAttackDamage"           ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCounterAttackDamage.ToString();
+        _trans.Find("CounterAttackDamageReduction"  ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarCounterAttackDamageReduction.ToString();
+
+        _trans.Find("SkillCritical"                 ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarSkillCritical.ToString();
+        _trans.Find("SkillCriticalDamage"           ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarSkillCriticalDamage.ToString();
+
+        _trans.Find("Evasion"                       ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarEvasion.ToString();
+        _trans.Find("Accuracy"                      ).Find("Value").GetComponent<TextMeshProUGUI>().text = _status.Basic_VarAccuracy.ToString();
     }
 
     //
@@ -822,7 +871,16 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Marionette_BtnInfoLevelUp()
     {
-
+        // TODO: 재화는 나중에 지불하기로
+        Giggle_Character.Save data
+            = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
+                Marionette_marionetteList[Marionette_selectMarionette]);
+        
+        data.Basic_VarLevel += 1;
+        
+        // UI 갱신
+        Marionette_BtnScrollView(Marionette_selectMarionette);
     }
 
     //
@@ -901,17 +959,12 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_uiData.Constellation_PopUpList_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_uiData.Constellation_PopUpList_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1060,6 +1113,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     // marionette
     [SerializeField] TextMeshProUGUI    Constellation_marionetteName;
 
+    // constellation
+    [SerializeField] Transform  Constellation_constellationBackParent;
+    [SerializeField] List<Transform>  Constellation_constellationStars;
+
     // popUp
     [SerializeField] GameObject Contellation_popUp;
 
@@ -1133,13 +1190,30 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         //
         Contellation_selectMarionette = _count;
 
+        // 초기화 ==========
+        // 별자리 배경
+        while(Constellation_constellationBackParent.childCount > 0)
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                Constellation_constellationBackParent.GetChild(0));
+        }
+
         //
+        for(int for0 = 0; for0 < Constellation_constellationStars.Count; for0++)
+        {
+            Constellation_constellationStars[for0].gameObject.SetActive(false);
+        }
+
+        // 셋팅 시작 ==========
         if(!Contellation_selectMarionette.Equals(-1))
         {
             Giggle_Character.Save data
                 = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
                     Contellation_marionetteList[Contellation_selectMarionette]);
+
+            //
             Giggle_Character.Database database
                 = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                     Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
@@ -1147,6 +1221,31 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
             Constellation_marionetteName.text = database.Basic_VarName;
 
+            // 별자리 셋팅 ========== ==========
+            Giggle_Item.Constellation constellationData
+                = (Giggle_Item.Constellation)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,
+                    database.Basic_VarConstellation);
+            
+            // 별자리 배경 불러오기
+            Transform background = Instantiate(constellationData.Basic_VarBackground, Constellation_constellationBackParent);
+            background.localPosition = Vector3.zero;
+            background.localScale = Vector3.one;
+            background.localRotation = Quaternion.Euler(Vector3.zero);
+
+            for(int for0 = 0; for0 < constellationData.Basic_VarValueCount; for0++)
+            {
+                // TODO:차후에 별크기는 수정해주세요.
+                Constellation_constellationStars[for0].GetComponent<Image>().sprite
+                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_STAR_FROM_TYPE,
+                        Giggle_Database.Marionette_Constellation_STARS.SMALL);
+                Constellation_constellationStars[for0].Find("Name").GetComponent<TextMeshProUGUI>().text = constellationData.Basic_GetValueData(for0).Basic_VarName;
+                Constellation_constellationStars[for0].position = background.GetChild(for0).position;
+                Constellation_constellationStars[for0].gameObject.SetActive(true);
+            }
+
+            //
             Contellation_popUp.SetActive(false);
         }
     }
@@ -1193,6 +1292,14 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Constellation_Start()
     {
+        // constellation
+        Transform startsParent = Constellation_constellationStars[0].parent;
+        for(int for0 = 1; for0 < startsParent.childCount; for0++)
+        {
+            Constellation_constellationStars.Add(startsParent.GetChild(for0));
+        }
+
+        // popUp
         Contellation__popUpList_scrollViewMenuBar.Basic_Init(this);
         for(int for0 = 0; for0 < Contellation__popUpList_scrollViewMenuBar.Basic_VarListCount; for0++)
         {
@@ -1475,17 +1582,12 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_uiData.Card_PopUpMarionetteList_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_uiData.Card_PopUpMarionetteList_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1819,17 +1921,12 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_uiData.Item_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_uiData.Item_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////

@@ -1,0 +1,17 @@
+,퀘스트 구분,퀘스트 타입,퀘스트 오픈 조건,퀘스트 오픈 조건 값,퀘스트 달성 조건,퀘스트 달성 조건 값1,퀘스트 달성 조건2,퀘스트 달성 조건 값3,보상 종류1,보상 ID1,보상 값1,보상 종류2,보상 ID2,보상 값2
+int,int,int,string,int,string,int,int,int,string,string,int,int,string,int
+quest_id,questCategory,questType,questOpenCondition,questOpenConditionValue,questCompletionCondition,questCompletionConditionValue1,questCompletionConditionValue2,questCompletionConditionValue3,rewardType1,rewardId1,rewardValue1,rewardType2,rewardId2,rewardValue2
+510001,1,1,NONE,0,EPISODE_ALL_CLEAR,1,10,0,DIA,-,5,DIA,-,5
+510002,1,1,PRE_QUEST,510001,EPISODE_ALL_CLEAR,2,10,0,DIA,-,10,DIA,-,10
+510003,1,1,NONE,0,EPISODE_ALL_3_STAR,1,30,0,DIA,-,10,DIA,-,10
+510004,1,1,PRE_QUEST,510003,EPISODE_ALL_3_STAR,2,30,0,FRIENDSHIP,-,50,FRIENDSHIP,-,50
+510005,1,1,NONE,0,STAGE_CLEAR_COUNT,30,0,0,ITEM,2~4 무기 뽑기권,2,ITEM,2~4 무기 뽑기권,2
+510006,1,1,PRE_QUEST,510005,STAGE_CLEAR_COUNT,50,0,0,ITEM,2~4 방어구 뽑기권,2,ITEM,2~4 방어구 뽑기권,2
+510007,1,1,PRE_QUEST,510006,STAGE_CLEAR_COUNT,100,0,0,ITEM,2~4 캐릭터 뽑기권,2,ITEM,2~4 캐릭터 뽑기권,2
+510008,1,1,NONE,0,MONSTER_SLAIN,1000,0,0,DIA,-,3,DIA,-,3
+510009,1,1,PRE_QUEST,510008,MONSTER_SLAIN,5000,0,0,DIA,-,6,DIA,-,6
+510010,1,1,NONE,0,BOSS_SLAIN,25,0,0,DIA,-,4,DIA,-,4
+510011,1,1,PRE_QUEST,510010,BOSS_SLAIN,125,0,0,DIA,-,4,DIA,-,4
+520001,2,1,NONE,0,WEEKLY_BOSS_SLAIN,1,0,0,DIA,-,4,DIA,-,4
+520002,2,3,NONE,0,GUILD_CHECK,3,0,0,DIA,-,4,DIA,-,4
+530001,3,1,NONE,0,FORMATION_SETTING,21001,21003,3,DIA,-,4,DIA,-,4

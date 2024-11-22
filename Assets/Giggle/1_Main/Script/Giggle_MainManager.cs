@@ -35,7 +35,9 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         [SerializeField] Giggle_MainManager__Pinocchio  Basic_pinocchioManager;
         [SerializeField] Giggle_MainManager__Marionette Basic_marionetteManager;
 
-        [SerializeField] RectTransform  Basic_safeArea;  
+        [SerializeField] RectTransform  Basic_safeArea;
+
+        IEnumerator Basic_coroutine;
 
         ////////// Getter & Setter          //////////
 
@@ -48,6 +50,27 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
             Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
             Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
+
+            Area3_Init();
+            Area4_Init();
+            Area5_Init();
+            PowerSaving_Init();
+
+            //
+            Basic_coroutine = Basic_Coroutine();
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_coroutine);
+        }
+
+        IEnumerator Basic_Coroutine()
+        {
+            int phase = 0;
+
+            while(phase != -1)
+            {
+                Area3_Coroutine();
+
+                yield return null;
+            }
         }
 
         #region AREA1
@@ -87,34 +110,310 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         [SerializeField] TextMeshProUGUI    Area3_stage;
         [SerializeField] Slider             Area3_stageSlider;
 
+        [SerializeField] List<Transform>    Area3_accelUis;
+        [SerializeField] TextMeshProUGUI    Area3_accelText;
+
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
 
+        public void Area3_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "ACCEL":   { Area3_Accel();    }   break;
+            }
+        }
+
+        void Area3_Accel()
+        {
+            Basic_manager.UI_PopUpActive("ACCEL");
+        }
+
+        // Area3_AccelDoing
+        public void Area3_AccelDoing(bool _isActive)
+        {
+            Area3_accelUis[0].gameObject.SetActive(!_isActive);
+            Area3_accelUis[1].gameObject.SetActive(_isActive);
+
+            if(_isActive)
+            {
+                Area3_Coroutine();
+            }
+        }
+
         ////////// Constructor & Destroyer  //////////
+
+        void Area3_Init()
+        {
+            //
+            Transform parent = Area3_accelUis[0];
+
+            while(Area3_accelUis.Count < parent.childCount)
+            {
+                Area3_accelUis.Add(null);
+            }
+
+            for(int for0 = 0; for0 < parent.childCount; for0++)
+            {
+                Area3_accelUis[for0] = parent.GetChild(for0);
+            }
+        }
+
+        //
+        void Area3_Coroutine()
+        {
+            if(Area3_accelUis[1].gameObject.activeSelf)
+            {
+                int timer = (int)((float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED_TIMER));
+
+                if(timer <= 0)
+                {
+                    Area3_AccelDoing(false);
+                }
+                else
+                {
+                    int timer0 = timer / 60;
+                    Debug.Log(timer0);
+                    int timer1 = timer % 60;
+                    Area3_accelText.text = (timer0 / 10).ToString() + (timer0 % 10).ToString() + " : " + (timer1 / 10).ToString() + (timer1 % 10).ToString();
+                }
+            }
+        }
 
         #endregion
         
         #region AREA4
 
+        [Serializable]
+        public class Area4_Inventory__ScrollView : Giggle_UI.ScrollView
+        {
+            [SerializeField] UI_MainBasicData   Basic_parentClass;
+            [SerializeField] Transform          Basic_rawParent;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            //
+            public void Basic_Init(UI_MainBasicData _parentClass)
+            {
+                Basic_parentClass = _parentClass;
+
+                //
+                Basic_Init();
+            }
+
+            protected override void Basic_Init__SetName()
+            {
+                Basic_list[0].Find("Button").name = "Button/AREA4/SCROLL_VIEW/0";
+                Basic_list[1].Find("Button").name = "Button/AREA4/SCROLL_VIEW/1";
+            }
+
+            protected override void Basic_AddList__SetName(Transform _element)
+            {
+                _element.Find("Button").name = "Button/AREA4/SCROLL_VIEW/" + Basic_list.Count;
+            }
+
+            //
+            public override void Basic_ClickBtn(int _count)
+            {
+                //
+                if(!_count.Equals(-1))
+                {
+                    Giggle_Character.Save pinocchioData
+                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                    //
+                    //pinocchioData.Basic_VarDataId = Basic_parentClass.Job_VarJobList[_count];
+                    //Basic_parentClass.Job_InfoSetting();
+                    Basic_CheckCover();
+                }
+            }
+
+            // Basic_SelectMenuBar
+            public void Basic_SelectMenuBar(int _count)
+            {
+                //Basic_parentClass.Job_ListSetting(_count);
+                Basic_SelectMenuBar__Check();
+
+                Basic_ClickBtn(-1);
+            }
+
+            void Basic_SelectMenuBar__Check()
+            {
+                int finalCount = 0;
+                int whileCount = 0;
+                while(whileCount < Basic_list.Count)
+                {
+                    if(whileCount < Basic_parentClass.Area4_VarInventoryDatas.Count)
+                    {
+                        Basic_list[whileCount].gameObject.SetActive(true);
+                        
+                        //
+                        Giggle_Item.Inventory item
+                            = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,
+                                //
+                                Basic_parentClass.Area4_VarInventoryDatas[whileCount]);
+
+                        Giggle_Item.List data
+                            = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                                //
+                                item.Basic_VarDataId);
+                        
+                        //Basic_list[whileCount].Find("Portrait").GetComponent<Image>().sprite = data.
+                        Basic_list[whileCount].Find("Name").GetComponent<TextMeshProUGUI>().text = data.Basic_VarName;
+                        Basic_list[whileCount].Find("Value").GetComponent<TextMeshProUGUI>().text = item.Basic_VarCount + " / ";
+                        
+                        //
+                        finalCount = whileCount;
+                    }
+                    else
+                    {
+                        Basic_list[whileCount].gameObject.SetActive(false);
+                    }
+
+                    
+                    whileCount++;
+                }
+
+                Basic_content.sizeDelta
+                    = new Vector2(
+                        0,
+                        (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) - Basic_list[finalCount].localPosition.y);
+
+                Basic_CheckCover();
+            }
+
+            //
+            void Basic_CheckCover()
+            {
+                //Giggle_Character.Save pinocchioData
+                //    = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                //        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+                //
+                //List<int> jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);
+                //
+                //int whileCount = 0;
+                //while(whileCount < jobList.Count)
+                //{
+                //    Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
+                //    if(jobList[whileCount].Equals(pinocchioData.Basic_VarDataId))
+                //    {
+                //        Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
+                //    }
+                //
+                //    //
+                //    whileCount++;
+                //}
+            }
+
+            ////////// Constructor & Destroyer  //////////
+        }
+
         [Header("AREA4 ==================================================")]
         [SerializeField] GameObject Area4_exMenu;
 
+        [SerializeField] GameObject                     Area4_inventory;
+        [SerializeField] Area4_Inventory__ScrollView    Area4_inventory__scrollView;
+        [SerializeField] List<int>                      Area4_inventoryDatas;
+        IEnumerator Area4_inventoryCoroutine;
+
         ////////// Getter & Setter          //////////
-        //bool Area4_VarExMenuActive   { set { Area4_exMenu.SetActive(value);  }   }
+        List<int> Area4_VarInventoryDatas   { get { return Area4_inventoryDatas;    }   }
 
         ////////// Method                   //////////
 
+        // Area4_BtnClick
         public void Area4_BtnClick(string[] _names)
         {
             switch(_names[2])
             {
-                case "EXMENU_OPEN":     { Area4_exMenu.SetActive(true);     }   break;
-                case "EXMENU_CLOSE":    { Area4_exMenu.SetActive(false);    }   break;
+                case "EXMENU__OPEN":            { Area4_exMenu.SetActive(true);     }   break;
+                case "EXMENU__CLOSE":           { Area4_exMenu.SetActive(false);    }   break;
+                case "EXMENU__POWER_SAVING":    { Area4_BtnClick__PowerSaving();    }   break;
+                
+                case "INVENTORY_OPEN":  { Area4_BtnClick__InventoryOpen();  }   break;
+                case "INVENTORY_CLOSE": { Area4_inventory.SetActive(false); }   break;
             }
         }
 
+        // Area4_BtnClick__PowerSaving
+        void Area4_BtnClick__PowerSaving()
+        {
+            PowerSaving_On();
+
+            Area4_exMenu.SetActive(false);
+        }
+
+        // Area4_BtnClick__InventoryOpen
+        void Area4_BtnClick__InventoryOpen()
+        {
+            if(Area4_inventoryCoroutine == null)
+            {
+                Area4_inventoryCoroutine = Area4_BtnClick__InventoryOpen__Coroutine();
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Area4_inventoryCoroutine    );
+            }
+        }
+
+        IEnumerator Area4_BtnClick__InventoryOpen__Coroutine()
+        {
+            List<Giggle_Item.Inventory> inventory
+                = (List<Giggle_Item.Inventory>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST);
+            
+            //
+            int inventoryCount = 0;
+
+            while(inventoryCount < inventory.Count)
+            {
+                if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN))
+                {
+                    Giggle_Item.List data
+                        = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                            //
+                            inventory[inventoryCount].Basic_VarDataId);
+
+                    if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN))
+                    {
+                        inventoryCount++;
+                    }
+                }
+                
+                yield return null;
+            }
+
+            Area4_inventoryDatas.Clear();
+            for(int for0 = 0; for0 < inventory.Count; for0++)
+            {
+                Area4_inventoryDatas.Add(inventory[for0].Basic_VarInventoryId);
+            }
+
+            Area4_inventory__scrollView.Basic_SelectMenuBar(0);
+
+            Area4_inventory.SetActive(true);
+
+            //
+            IEnumerator inventoryCoroutine = Area4_inventoryCoroutine;
+            Area4_inventoryCoroutine = null;
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,  inventoryCoroutine  );
+        }
+
         ////////// Constructor & Destroyer  //////////
+
+        void Area4_Init()
+        {
+            Area4_inventory__scrollView.Basic_Init(this);
+            if(Area4_inventoryDatas == null)
+            {
+                Area4_inventoryDatas = new List<int>();
+            }
+
+            Area4_inventoryCoroutine = null;
+        }
 
         #endregion
 
@@ -123,11 +422,63 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         [Header("AREA5 ==================================================")]
         [SerializeField] TextMeshProUGUI    Area5_questText;
 
+        IEnumerator Area5_coroutine;
+
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
 
+        public void Area5_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "POP_UP":       { Area5_Quest();        }   break;
+            }
+        }
+
+        // Area5_Quest
+        void Area5_Quest()
+        {
+            if(Area5_coroutine == null)
+            {
+                Area5_coroutine = Area5_Quest__Coroutine();
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Area5_coroutine );
+            }
+        }
+
+        IEnumerator Area5_Quest__Coroutine()
+        {
+            bool isWhile = true;
+            while(isWhile)
+            {
+                if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__QUEST__GET_IS_OPEN))
+                {
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__QUEST__GET_DATA_FROM_ID,  510001 );
+
+                    if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__QUEST__GET_IS_OPEN))
+                    {
+                        isWhile = false;
+                    }
+                }
+
+                yield return null;
+            }
+
+            //
+            Basic_manager.UI_PopUpActive("QUEST");
+
+            IEnumerator element = Area5_coroutine;
+            Area5_coroutine = null;
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,  element );
+        }
+
         ////////// Constructor & Destroyer  //////////
+
+        void Area5_Init()
+        {
+            Area5_coroutine = null;
+        }
 
         #endregion
 
@@ -215,6 +566,47 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         #endregion
 
+        #region POWER_SAVING
+
+        [Header("POWER_SAVING ==================================================")]
+        [SerializeField] GameObject PowerSaving_parent;
+
+        ////////// Getter & Setter          //////////
+        object PowerSaving_GetIsOn(params object[] _args)   { return PowerSaving_parent.activeSelf;   }
+
+        ////////// Method                   //////////
+
+        public void PowerSaving_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "OFF":   { PowerSaving_Off();  }   break;
+            }
+        }
+
+        void PowerSaving_On()
+        {
+            PowerSaving_parent.SetActive(true);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON);
+        }
+
+        void PowerSaving_Off()
+        {
+            PowerSaving_parent.SetActive(false);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF);
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        void PowerSaving_Init()
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON, PowerSaving_GetIsOn  );
+        }
+
+        #endregion
+
     }
 
     [Serializable]
@@ -225,6 +617,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             GACHA
         }
 
+        [SerializeField] Giggle_MainManager Basic_manager;
+
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
@@ -233,19 +627,58 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             base.Basic_Active(_name);
 
+            // 팝업 열기 외에 기능이 필요한 경우
             switch(_name)
             {
+                case "ACCEL":   {                   }   break;
                 case "GACHA":   { Gacha_Reset();    }   break;
+                case "QUEST":   { Quest_Reset();    }   break;
             }
         }
 
         ////////// Constructor & Destroyer  //////////
-        public override void Basic_Init()
+
+        public void Basic_Init(Giggle_MainManager _manager)
         {
             base.Basic_Init();
 
+            Basic_manager = _manager;
             Gacha_Init();
+            Quest_Init();
         }
+
+        #region ACCEL
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+        public void Accel_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "AD":      { Accel_BtnClick__AD();     }   break;
+                case "CANCEL":  { Accel_BtnClick__CANCEL(); }   break;
+            }
+        }
+
+        void Accel_BtnClick__AD()
+        {
+            // TODO: 차후 편집해주세요.
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL);
+            Basic_manager.UI_VarBasicData.Area3_AccelDoing(true);
+            
+            Basic_parent.gameObject.SetActive(false);
+        }
+
+        void Accel_BtnClick__CANCEL()
+        {
+            Basic_parent.gameObject.SetActive(false);
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        
+        
+        #endregion
 
         #region GACHA
 
@@ -476,6 +909,210 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         }
 
         #endregion
+
+        #region QUEST
+
+        [Serializable]
+        public class Quest_MenuBar : Giggle_UI.MenuBar
+        {
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            protected override void Basic_SelectMenu__Setting(int _for0, int _count)
+            {
+            }
+
+            ////////// Constructor & Destroyer  //////////
+        }
+
+        [Serializable]
+        public class Quest_ScrollView : Giggle_UI.ScrollView
+        {
+            [SerializeField] UI_MainPopUpData   Basic_parentClass;
+            [SerializeField] Transform          Basic_rawParent;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            //
+            public void Basic_Init(UI_MainPopUpData _parentClass)
+            {
+                Basic_parentClass = _parentClass;
+
+                //
+                Basic_Init();
+            }
+
+            protected override void Basic_Init__SetName()
+            {
+                Basic_list[0].Find("Button").name = "Button/QUEST/SCROLL_VIEW/0";
+                Basic_list[1].Find("Button").name = "Button/QUEST/SCROLL_VIEW/1";
+            }
+
+            protected override void Basic_AddList__SetName(Transform _element)
+            {
+                _element.Find("Button").name = "Button/QUEST/SCROLL_VIEW/" + Basic_list.Count;
+            }
+
+            //
+            public override void Basic_ClickBtn(int _count)
+            {
+                //
+                if(!_count.Equals(-1))
+                {
+                    Giggle_Character.Save pinocchioData
+                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                    //
+                    //pinocchioData.Basic_VarDataId = Basic_parentClass.Job_VarJobList[_count];
+                    //Basic_parentClass.Job_InfoSetting();
+                    Basic_CheckCover();
+                }
+            }
+
+            // Basic_SelectMenuBar
+            public void Basic_SelectMenuBar(int _count)
+            {
+                //Basic_parentClass.Job_ListSetting(_count);
+                Basic_SelectMenuBar__Check();
+
+                Basic_ClickBtn(-1);
+            }
+
+            void Basic_SelectMenuBar__Check()
+            {
+                List<Giggle_Quest.Database> datas
+                    = (List<Giggle_Quest.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__QUEST__GET_DATAS_FROM_TYPE,
+                        //
+                        Basic_parentClass.Quest_VarSelect);
+                
+                int finalCount = 0;
+                int whileCount = 0;
+                while(whileCount < Basic_list.Count)
+                {
+                    if(whileCount < datas.Count)
+                    {
+                        Basic_list[whileCount].gameObject.SetActive(true);
+                    
+                        //
+                        Giggle_Quest.Text text
+                            = (Giggle_Quest.Text)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__QUEST__GET_TEXT,
+                                //
+                                datas[whileCount].Basic_VarCompleteConditionType);
+
+                        Basic_list[whileCount].Find("Title"         ).GetComponent<TextMeshProUGUI>().text = text.Basic_PrintTitle(datas[whileCount]);
+                        Basic_list[whileCount].Find("Description"   ).GetComponent<TextMeshProUGUI>().text = text.Basic_PrintDescription(datas[whileCount]);
+                        
+                        finalCount = whileCount;
+                    }
+                    else
+                    {
+                        Basic_list[whileCount].gameObject.SetActive(false);
+                    }
+
+                    //
+                    whileCount++;
+                }
+
+                Basic_content.sizeDelta
+                    = new Vector2(
+                        0,
+                        (Basic_list[finalCount].GetComponent<RectTransform>().sizeDelta.y * 0.5f) + 10.0f - Basic_list[finalCount].localPosition.y);
+
+                Basic_CheckCover();
+            }
+
+            //
+            void Basic_CheckCover()
+            {
+                Giggle_Character.Save pinocchioData
+                    = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+
+                List<int> jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);
+
+                int whileCount = 0;
+                while(whileCount < jobList.Count)
+                {
+                    Basic_list[whileCount].Find("Cover").gameObject.SetActive(false);
+                    if(jobList[whileCount].Equals(pinocchioData.Basic_VarDataId))
+                    {
+                        Basic_list[whileCount].Find("Cover").gameObject.SetActive(true);
+                    }
+
+                    //
+                    whileCount++;
+                }
+            }
+
+            ////////// Constructor & Destroyer  //////////
+        }
+
+        [Header("QUEST ==================================================")]
+        [SerializeField] Quest_MenuBar      Quest_menuBar;
+        [SerializeField] Quest_ScrollView   Quest_scrollView;
+
+        [Header("RUNNING")]
+        [SerializeField] Giggle_Quest.TYPE  Quest_select;
+
+        ////////// Getter & Setter          //////////
+        public Giggle_Quest.TYPE    Quest_VarSelect { get { return Quest_select;    }   }
+
+        ////////// Method                   //////////
+        public void Quest_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                case "MENU_BAR":    { Quest_BtnClick__MENU_BAR(_names);     }   break;
+                case "SCROLL_VIEW": { Quest_BtnClick__SCROLL_VIEW(_names);  }   break;
+                case "CANCEL":      { Quest_BtnClick__CANCEL();             }   break;
+            }
+        }
+
+        void Quest_BtnClick__MENU_BAR(string[] _names)
+        {
+            int select = int.Parse(_names[3]);
+            Quest_menuBar.Basic_SelectMenu(select);
+        }
+
+        void Quest_BtnClick__SCROLL_VIEW(string[] _names)
+        {
+            int select = int.Parse(_names[3]);
+            Debug.Log("Quest_BtnClick__SCROLL_VIEW " + select);
+        }
+
+        void Quest_BtnClick__CANCEL()
+        {
+            Basic_parent.gameObject.SetActive(false);
+        }
+
+        //
+        void Quest_Reset()
+        {
+            Quest_select = (Giggle_Quest.TYPE)1;
+            Quest_menuBar.Basic_SelectMenu(0);
+            Quest_scrollView.Basic_SelectMenuBar(0);
+        }
+
+        ////////// Constructor & Destroyer  //////////
+        void Quest_Init()
+        {
+            Quest_menuBar.Basic_Init();
+            for(int for0 = 0; for0 < Quest_menuBar.Basic_VarListCount; for0++)
+            {
+                Quest_menuBar.Basic_GetListBtn(for0).name = "Button/QUEST/MENU_BAR/" + for0.ToString();
+            }
+
+            Quest_scrollView.Basic_Init(this);
+        }
+
+        #endregion
     }
 
     [Header("UI ==================================================")]
@@ -492,9 +1129,12 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         string[] names = _btn.name.Split('/');
         switch(names[1])
         {
-            case "AREA4":   { UI_basicData.Area4_BtnClick(names);   }   break;
-            case "AREA7":   { UI_basicData.Area7_BtnClick(names);   }   break;
-            case "BATTLE":  { UI_basicData.Battle_BtnClick(names);  }   break;
+            case "AREA3":           { UI_basicData.Area3_BtnClick(names);       }   break;
+            case "AREA4":           { UI_basicData.Area4_BtnClick(names);       }   break;
+            case "AREA5":           { UI_basicData.Area5_BtnClick(names);       }   break;
+            case "AREA7":           { UI_basicData.Area7_BtnClick(names);       }   break;
+            case "BATTLE":          { UI_basicData.Battle_BtnClick(names);      }   break;
+            case "POWER_SAVING":    { UI_basicData.PowerSaving_BtnClick(names); }   break;
             //
             //case "PINOCCHIO":   { UI_basicData.Pinocchio_VarData.Basic_BtnClick(names);     }   break;
             //case "MARIONETTE":  { UI_basicData.Marionette_VarData.Basic_BtnClick(names);    }   break;
@@ -507,7 +1147,9 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         string[] names = _btn.name.Split('/');
         switch(names[1])
         {
+            case "ACCEL":   { UI_popUpData.Accel_BtnClick(names);   }   break;
             case "GACHA":   { UI_popUpData.Gacha_BtnClick(names);   }   break;
+            case "QUEST":   { UI_popUpData.Quest_BtnClick(names);   }   break;
         }
     }
 
@@ -520,7 +1162,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     protected override void UI_Start()
     {
         UI_basicData.Basic_Init();
-        UI_popUpData.Basic_Init();
+        UI_popUpData.Basic_Init(this);
     }
 
     #endregion

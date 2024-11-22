@@ -311,17 +311,12 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_Init();
         }
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_parentClass.Job_VarScrollView.Basic_SelectMenuBar(_count);
             }
-
-            //
-            Basic_parentClass.Job_VarScrollView.Basic_SelectMenuBar(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -546,17 +541,12 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_Init();
         }
 
-        public override void Basic_SelectMenu(int _count)
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            if(_for0.Equals(_count))
             {
-                bool isClick = for0.Equals(_count);
-
-                Basic_list[for0].gameObject.SetActive(!isClick);
+                Basic_parentClass.Equipment_SelectMenu(_count);
             }
-
-            //
-            Basic_parentClass.Equipment_SelectMenu(_count);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1737,16 +1727,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
-        
-        //
-        public override void Basic_SelectMenu(int _count)
-        {
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
-            {
-                bool isClick = for0.Equals(_count);
 
-                Basic_list[for0].gameObject.SetActive(!isClick);
-            }
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
+        {
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1980,11 +1963,31 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     //
     void Ability_BtnWoodWork(int _count)
     {
-        Ability_select = _count;
-        Ability_PopUpSelectWoodBtnSelect(-1);
-        
-        Ability_marionetteList.SetActive(false);
-        Ability_PopUpActive("SELECT_WOOD");
+        Giggle_Player.Pinocchio_AbilityWood data
+            = (Giggle_Player.Pinocchio_AbilityWood)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_VAR_DATA_FROM_COUNT,
+                //
+                _count);
+
+        switch(data.Basic_VarSelect)
+        {
+            case -1:
+                {
+                    Ability_select = _count;
+                    Ability_PopUpSelectWoodBtnSelect(-1);
+                    
+                    Ability_marionetteList.SetActive(false);
+                    Ability_PopUpActive("SELECT_WOOD");
+                }
+                break;
+            default:
+                {
+                    data.Basic_WorkEnd();
+
+                    Ability_UISetting();
+                }
+                break;
+        }
     }
 
     void Ability_BtnWoodWorker(int _count)
@@ -2038,35 +2041,44 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                     for0);
 
             //
-            if(data.Basic_VarValue == 0)
+            if(data.Basic_VarSelect == -1)
             {
-                Ability_woodUis[for0].GetChild(0).gameObject.SetActive(false);
+                Ability_woodUis[for0].GetChild(1).GetChild(0).gameObject.SetActive(true);
                 Ability_woodUis[for0].GetChild(1).gameObject.SetActive(true);
 
-                Ability_woodUis[for0].GetChild(2).gameObject.SetActive(false);
+                Ability_woodUis[for0].Find("Timer").GetChild(0).GetComponent<TextMeshProUGUI>().text = "대기중";
+
+                Ability_woodUis[for0].Find("Worker").gameObject.SetActive(false);
             }
             else
             {
-                Ability_woodUis[for0].GetChild(0).gameObject.SetActive(true);
                 Ability_woodUis[for0].GetChild(1).gameObject.SetActive(false);
+                
+                // 나무 스프라이트 교채
+                Ability_woodUis[for0].Find("Wood").GetComponent<Image>().sprite
+                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__ABILITY_GET_WOOD_ICON_FROM_SELECT,
+                            data.Basic_VarSelect);
+                Ability_woodUis[for0].Find("Wood").gameObject.SetActive(true);
 
+                // 작업자 배정
                 if(data.Basic_VarMarionette == -1)
                 {
-                    Ability_woodUis[for0].GetChild(2).GetChild(0).gameObject.SetActive(false);
-                    Ability_woodUis[for0].GetChild(2).GetChild(1).gameObject.SetActive(true);
+                    Ability_woodUis[for0].Find("Worker").GetChild(0).gameObject.SetActive(false);
+                    Ability_woodUis[for0].Find("Worker").GetChild(1).gameObject.SetActive(true);
                 }
                 else
                 {
-                    Ability_woodUis[for0].GetChild(2).GetChild(0).gameObject.SetActive(true);
-                    Ability_woodUis[for0].GetChild(2).GetChild(1).gameObject.SetActive(false);
+                    Ability_woodUis[for0].Find("Worker").GetChild(0).gameObject.SetActive(true);
+                    Ability_woodUis[for0].Find("Worker").GetChild(1).gameObject.SetActive(false);
 
                     // 기존 데이터 날리기
-                    while(Ability_woodUis[for0].GetChild(2).Find("Obj").childCount > 0)
+                    while(Ability_woodUis[for0].Find("Worker").Find("Obj").childCount > 0)
                     {
                         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                             Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
                             //
-                            Ability_woodUis[for0].GetChild(2).Find("Obj").GetChild(0));
+                            Ability_woodUis[for0].Find("Worker").Find("Obj").GetChild(0));
                     }
 
                     //
@@ -2079,10 +2091,11 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         marionette.Basic_VarDataId,
-                        Ability_woodUis[for0].GetChild(2).Find("Obj"), -90.0f, 200.0f);
+                        Ability_woodUis[for0].Find("Worker").Find("Obj"), -90.0f, 200.0f);
                 }
 
-                Ability_woodUis[for0].GetChild(2).gameObject.SetActive(true);
+                // 활성화
+                Ability_woodUis[for0].Find("Worker").gameObject.SetActive(true);
             }
         }
 
@@ -2181,6 +2194,12 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         }
 
         Ability_marionetteListScrollView.Basic_Init(this);
+
+        //
+        for(int for0 = 0; for0 < Ability_woodUis.Count; for0++)
+        {
+            Ability_woodUis[for0].Find("Timer").GetChild(0).GetComponent<TextMeshProUGUI>().text = "대기중";
+        }
     }
 
     void Ability_Coroutine()
@@ -2188,21 +2207,35 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         //
         for(int for0 = 0; for0 < Ability_woodUis.Count; for0++)
         {
-            Giggle_Player.Pinocchio_AbilityWood data
-                = (Giggle_Player.Pinocchio_AbilityWood)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_VAR_DATA_FROM_COUNT,
-                    //
-                    for0);
-            
-            //
-            if(data.Basic_VarValue == 0)
+            if(!Ability_woodUis[for0].GetChild(1).gameObject.activeSelf)
             {
-                Ability_woodUis[for0].GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = "대기중";
-            }
-            else
-            {
-                TimeSpan ts = data.Basic_VarEndTime - DateTime.Now;
-                Ability_woodUis[for0].GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = ts.Hours + ":" + ts.Minutes + ":" + ts.Seconds;
+                Giggle_Player.Pinocchio_AbilityWood data
+                    = (Giggle_Player.Pinocchio_AbilityWood)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_VAR_DATA_FROM_COUNT,
+                        //
+                        for0);
+
+                //
+                if(data.Basic_VarSelect == -1)
+                {
+                    Ability_woodUis[for0].Find("Timer").GetChild(0).GetComponent<TextMeshProUGUI>().text = "대기중";
+                }
+                else
+                {
+                    TimeSpan ts = data.Basic_VarEndTime - DateTime.Now;
+
+                    if(ts.TotalSeconds > 0)
+                    {
+                        Ability_woodUis[for0].Find("Timer").GetChild(0).GetComponent<TextMeshProUGUI>().text = ts.Hours + ":" + ts.Minutes + ":" + ts.Seconds;
+                    }
+                    else
+                    {
+                        Ability_woodUis[for0].Find("Timer").GetChild(0).GetComponent<TextMeshProUGUI>().text = "작업완료";
+
+                        Ability_woodUis[for0].GetChild(1).GetChild(0).gameObject.SetActive(false);
+                        Ability_woodUis[for0].GetChild(1).gameObject.SetActive(true);
+                    }
+                }
             }
         }
     }

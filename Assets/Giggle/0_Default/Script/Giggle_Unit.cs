@@ -45,6 +45,9 @@ public class Giggle_Unit : MonoBehaviour
         this.transform.localRotation = Quaternion.Euler(Vector3.zero);
         this.transform.localScale    = Vector3.one;
 
+        Model_AnimatorVarSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
+        Model_View();
+
         Basic_coroutine = Basic_Coroutine();
         StartCoroutine(Basic_coroutine);
     }
@@ -67,9 +70,9 @@ public class Giggle_Unit : MonoBehaviour
 
             switch(Basic_Battle.Basic_VarCoroutinePhase)
             {
-                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_BATTLE:    { Basic_Coroutine__ACTIVE_BATTLE(time - lastTime);  }   break;
-                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_MOVE:      { Basic_Coroutine__ACTIVE_MOVE();                   }   break;
-                default:                                                    { Basic_Coroutine__default();                       }   break;
+                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_BATTLE:    { Basic_Coroutine__ACTIVE_BATTLE((time - lastTime) * Model_animator.speed); }   break;
+                case Giggle_Battle.Basic__COROUTINE_PHASE.ACTIVE_MOVE:      { Basic_Coroutine__ACTIVE_MOVE();                                           }   break;
+                default:                                                    { Basic_Coroutine__default();                                               }   break;
             }
 
             lastTime = time;
@@ -181,6 +184,10 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] List<Status_CoolTimer> Status_coolTimers;
 
     ////////// Getter & Setter  //////////
+    //
+    public Giggle_Character.Database    Status_VarDatabase  { get { return Status_database; }   }
+
+    //
     public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
 
     ////////// Method           //////////
@@ -595,7 +602,24 @@ public class Giggle_Unit : MonoBehaviour
         }
     }
 
+    public float    Model_AnimatorVarSpeed  { set { Model_animator.speed = value;   }   }
+
     ////////// Method           //////////
+
+    //
+    public void Model_View()
+    {
+        bool isSleep = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON);
+
+        for(int for0 = 0; for0 < this.transform.childCount; for0++)
+        {
+            Transform for0Trans = this.transform.GetChild(for0);
+            for(int for1 = 0; for1 < for0Trans.childCount; for1++)
+            {
+                for0Trans.GetChild(for1).gameObject.SetActive(!isSleep);
+            }
+        }
+    }
 
     ////////// Unity            //////////
 
