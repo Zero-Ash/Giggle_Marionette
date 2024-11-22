@@ -80,11 +80,32 @@ public class Giggle_ScriptBridge
         MASTER__UI__RAW_IMAGE,
 
         /// <summary>
-        /// UI용 캐릭터 오브젝트 생성<br/>
+        /// 전투 진행 변경<br/>
         /// 매개변수 : Giggle_Battle.Basic__COROUTINE_PHASE - 진행시키고자 하는 단계<br/>
         /// return type : Giggle_Battle.Basic__COROUTINE_PHASE
         /// </summary>
         MASTER__BATTLE__VAR_COROUTINE_PHASE,
+
+        /// <summary>
+        /// 진행 속도 가속<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__BATTLE__ACCEL,
+
+        /// <summary>
+        /// 절전 모드 실행<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__BATTLE__SLEEP_ON,
+
+        /// <summary>
+        /// 절전 모드 종료<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__BATTLE__SLEEP_OFF,
 
         #endregion
 
@@ -161,6 +182,13 @@ public class Giggle_ScriptBridge
         DATABASE__PINOCCHIO__ABILITY_GET_PROBABILITY_FROM_LEVEL,
 
         /// <summary>
+        /// 재능 나무 아이콘<br/>
+        /// 매개변수 : int - select<br/>
+        /// return type : Sprite
+        /// </summary>
+        DATABASE__PINOCCHIO__ABILITY_GET_WOOD_ICON_FROM_SELECT,
+
+        /// <summary>
         /// 유물 데이터<br/>
         /// 매개변수 : int - id<br/>
         /// return type : 
@@ -197,6 +225,12 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Item.Constellation
         /// </summary>
         DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,
+        /// <summary>
+        /// 마리오네트 별자리 별이미지<br/>
+        /// 매개변수 : Giggle_Database.Marionette_Constellation_STARS - type<br/>
+        /// return type : Sprite
+        /// </summary>
+        DATABASE__MARIONETTE__GET_CONSTELLATION_STAR_FROM_TYPE,
         /// <summary>
         /// 마리오네트 카드 데이터<br/>
         /// 매개변수 : int - id<br/>
@@ -246,6 +280,34 @@ public class Giggle_ScriptBridge
         /// </summary>
         DATABASE__ITEM__GET_SPRITE_FROM_VALUE,
 
+        /// <summary>
+        /// 퀘스트 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Quest.Database
+        /// </summary>
+        DATABASE__QUEST__GET_DATAS_FROM_TYPE,
+
+        /// <summary>
+        /// 퀘스트 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Quest.Database
+        /// </summary>
+        DATABASE__QUEST__GET_DATA_FROM_ID,
+
+        /// <summary>
+        /// 퀘스트 데이터의 개방 여부<br/>
+        /// 매개변수<br/>
+        /// return type : bool
+        /// </summary>
+        DATABASE__QUEST__GET_IS_OPEN,
+
+        /// <summary>
+        /// 퀘스트 설명<br/>
+        /// 매개변수 : Giggle_Quest.completeCondition_TYPE - type<br/>
+        /// return type : Giggle_Quest.Text
+        /// </summary>
+        DATABASE__QUEST__GET_TEXT,
+
         #endregion
 
         #region Giggle_Player
@@ -265,11 +327,32 @@ public class Giggle_ScriptBridge
         PLAYER__STAGE__VAR_IS_NEXT,
 
         /// <summary>
+        /// 스테이지 속도 업 남은 시간<br/>
+        /// 매개변수 : <br/>
+        /// return type : float
+        /// </summary>
+        PLAYER__STAGE__VAR_SPEED_TIMER,
+
+        /// <summary>
+        /// 스테이지 속도<br/>
+        /// 매개변수 : <br/>
+        /// return type : float
+        /// </summary>
+        PLAYER__STAGE__VAR_SPEED,
+
+        /// <summary>
         /// 다음 스테이지로<br/>
         /// 매개변수 : <br/>
         /// return type : 
         /// </summary>
         PLAYER__STAGE__NEXT,
+
+        /// <summary>
+        /// 속도업 개시<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__STAGE__ACCEL,
 
         /// <summary>
         /// 피노키오 데이터<br/>
@@ -419,6 +502,13 @@ public class Giggle_ScriptBridge
         PLAYER__PINOCCHIO__ABILITY_WOOD_WORKER,
 
         /// <summary>
+        /// 목공소 작업 종료<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__PINOCCHIO__ABILITY_WOOD_WORKER_END,
+
+        /// <summary>
         /// 유물 리스트<br/>
         /// 매개변수 : <br/>
         /// return type : List(Giggle_Player.Pinocchio_Relic)
@@ -543,6 +633,18 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Item.Inventory
         /// </summary>
         PLAYER__CARD__GET_DATA_FROM_DATA_ID,
+
+        #endregion
+
+        #region MAIN
+
+        /// <summary>
+        /// 절전 모드 가동 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : bool
+        /// </summary>
+        MAIN__POWER_SAVING__GET_IS_ON
+
 
         #endregion
     }

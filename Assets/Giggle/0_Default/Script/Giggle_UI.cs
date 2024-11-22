@@ -14,6 +14,7 @@ namespace Giggle_UI
         [SerializeField] protected RectTransform    Basic_parent;
         [SerializeField] protected List<Button>     Basic_list;
         [SerializeField] protected Transform        Basic_menuParent;
+        [SerializeField] protected bool             Basic_isMenuVertical;
 
         ////////// Getter & Setter          //////////
         // Basic_list
@@ -29,27 +30,44 @@ namespace Giggle_UI
                 Basic_list = new List<Button>();
             }
 
-            float width = Basic_parent.sizeDelta.x / Basic_parent.childCount;
+            float length = 0;
+            if(Basic_isMenuVertical)    { length = Basic_parent.sizeDelta.y / Basic_parent.childCount;  }
+            else                        { length = Basic_parent.sizeDelta.x / Basic_parent.childCount;  }
+
             for(int for0 = 0; for0 < Basic_parent.childCount; for0++)
             {
                 RectTransform element = Basic_parent.Find(for0.ToString()).GetComponent<RectTransform>();
-                element.anchoredPosition = new Vector2(width * (for0 + 0.5f), 0);
-                element.sizeDelta = new Vector2(width, element.sizeDelta.y);
+                if(Basic_isMenuVertical)
+                {
+                    element.anchoredPosition = new Vector2(0, -length * (for0 + 0.5f));
+                    element.sizeDelta = new Vector2(element.sizeDelta.x, length);
+                }
+                else
+                {
+                    element.anchoredPosition = new Vector2(length * (for0 + 0.5f), 0);
+                    element.sizeDelta = new Vector2(length, element.sizeDelta.y);
+                }
 
                 element = element.transform.Find("Button").GetComponent<RectTransform>();
                 Basic_list.Add(element.GetComponent<Button>());
             }
         }
 
-        public virtual void Basic_SelectMenu(int _count)
+        // Basic_SelectMenu
+        public void Basic_SelectMenu(int _count)
         {
             for(int for0 = 0; for0 < Basic_list.Count; for0++)
             {
                 bool isClick = for0.Equals(_count);
 
                 Basic_list[for0].gameObject.SetActive(!isClick);
-                Basic_menuParent.Find(for0.ToString()).gameObject.SetActive(for0.Equals(_count));
+                Basic_SelectMenu__Setting(for0, _count);
             }
+        }
+
+        protected virtual void Basic_SelectMenu__Setting(int _for0, int _count)
+        {
+            Basic_menuParent.Find(_for0.ToString()).gameObject.SetActive(_for0.Equals(_count));
         }
 
         ////////// Constructor & Destroyer  //////////

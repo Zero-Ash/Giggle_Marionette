@@ -340,17 +340,28 @@ namespace Giggle_Item
     {
         [SerializeField] int    Basic_id;
 
+        [SerializeField] Transform  Basic_background;
+
         [SerializeField] string                     Basic_name;
         [SerializeField] List<Constellation_Value>  Basic_values;
 
         ////////// Getter & Setter          //////////
         public int  Basic_VarId { get { return Basic_id;    }   }
 
+        public Transform    Basic_VarBackground { get { return Basic_background;    }   }
+
         public string   Basic_VarName   { get { return Basic_name;  }   }
 
-        public Constellation_Value   Basic_GetValueData(int _count) { return Basic_values[_count];  }
+        public Constellation_Value  Basic_GetValueData(int _count)  { return Basic_values[_count];  }
+        public int                  Basic_VarValueCount             { get { return Basic_values.Count;  }   }
 
         ////////// Method                   //////////
+        
+        // Basic_background
+        public void Basic_SettingBackground(Transform  _background)
+        {
+            Basic_background = _background;
+        }
 
         // Constellation_Value
         public bool Basic_SettingValue(Dictionary<string, string> _data)

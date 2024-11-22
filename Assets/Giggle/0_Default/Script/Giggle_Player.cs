@@ -2,8 +2,10 @@ using UnityEngine;
 
 //
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 public class Giggle_Player : IDisposable
@@ -43,6 +45,11 @@ public class Giggle_Player : IDisposable
 
     [SerializeField] bool   Stage_isNext;
 
+    [SerializeField] float  Stage_speedTimer;
+    [SerializeField] float  Stage_speed;
+
+    IEnumerator Stage_coroutine;
+
     ////////// Getter & Setter          //////////
     // Stage_select
     object Stage_VarSelect(params object[] _args)
@@ -54,6 +61,18 @@ public class Giggle_Player : IDisposable
     object Stage_VarIsNext(params object[] _args)
     {
         return Stage_isNext;
+    }
+
+    // Stage_isNext
+    object Stage_VarSpeedTimer(params object[] _args)
+    {
+        return Stage_speedTimer;
+    }
+
+    // Stage_isNext
+    object Stage_VarSpeed(params object[] _args)
+    {
+        return Stage_speed;
     }
 
     ////////// Method                   //////////
@@ -88,6 +107,20 @@ public class Giggle_Player : IDisposable
 
         return true;
     }
+
+    //
+    object Stage_Accel(params object[] _args)
+    {
+        Stage_speedTimer = 60.0f * 30.0f;
+
+        Stage_speed = 2.0f;
+
+        //
+        Stage_coroutine = Stage_Coroutine();
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Stage_coroutine);
+
+        return true;
+    }
     
     ////////// Constructor & Destroyer  //////////
     void Stage_Contructor()
@@ -96,11 +129,43 @@ public class Giggle_Player : IDisposable
 
         Stage_isNext = true;
 
+        Stage_speedTimer    = 0.0f;
+        Stage_speed         = 1.0f;
+
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT,  Stage_VarSelect );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_IS_NEXT, Stage_VarIsNext );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT,      Stage_VarSelect     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_IS_NEXT,     Stage_VarIsNext     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED_TIMER, Stage_VarSpeedTimer );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED,       Stage_VarSpeed      );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__NEXT,    Stage_Next  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__ACCEL,   Stage_Accel );
+    }
+
+    IEnumerator Stage_Coroutine()
+    {
+        float time = Time.time;
+        float lastTime = Time.time;
+
+        while(Stage_speedTimer >= 0.0f)
+        {
+            time = Time.time;
+
+            //
+            Stage_speedTimer -= time - lastTime;
+
+            if(Stage_speedTimer <= 0.0f)
+            {
+                Stage_speedTimer = 0.0f;
+                Stage_speed = 1.0f;
+
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE, Stage_coroutine);
+            }
+
+            lastTime = time;
+
+            yield return null;
+        }
     }
     
     #endregion
@@ -120,10 +185,13 @@ public class Giggle_Player : IDisposable
 
     ////////// Getter & Setter          //////////
     // Pinocchio_data
-    object Pinocchio_VarData(params object[] _args)
+    object Pinocchio_VarData__Script(params object[] _args)
     {
-        return Pinocchio_data;
+        return Pinocchio_VarData;
     }
+
+    public Giggle_Character.Save    Pinocchio_VarData   { get { return Pinocchio_data;  }   }
+
     ////////// Method                   //////////
 
     ////////// Constructor & Destroyer  //////////
@@ -154,6 +222,9 @@ public class Giggle_Player : IDisposable
         Pinocchio_RelicInsert(1612001);
         Pinocchio_RelicInsert(1612001);
         Pinocchio_RelicInsert(1612001);
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,    Pinocchio_VarData__Script   );
     }
 
         #region PINOCCHIO_JOBS
@@ -692,65 +763,11 @@ public class Giggle_Player : IDisposable
         }
     }
 
-    [Serializable]
-    public class Pinocchio_AbilityWood : IDisposable
-    {
-        [SerializeField] DateTime   Basic_endTime;
-        [SerializeField] int        Basic_marionette;   // 투입된 마리오네트의 inventoryId
-        [SerializeField] int        Basic_Value;        // 획득하게 될 재화(0이면 작업 대기상태)
-
-        ////////// Getter & Setter          //////////
-
-        public DateTime Basic_VarEndTime    { get { return Basic_endTime;  }   }
-
-        public int Basic_VarMarionette  { get { return Basic_marionette;    }   }
-
-        public int Basic_VarValue   { get { return Basic_Value;    }   }
-
-        ////////// Method                   //////////
-
-        public void Basic_Work(int _select)
-        {
-            switch(_select)
-            {
-                case 0: { Basic_endTime = DateTime.Now.AddHours(2);     Basic_Value = 100;  }   break;
-                case 1: { Basic_endTime = DateTime.Now.AddHours(6);     Basic_Value = 500;  }   break;
-                case 2: { Basic_endTime = DateTime.Now.AddHours(12);    Basic_Value = 1500; }   break;
-            }
-        }
-
-        public void Basic_MarionetteJoin(int _id)
-        {
-            Basic_marionette = _id;
-
-            // 시간 재설정
-            DateTime nowTime = DateTime.Now;
-            TimeSpan ts = Basic_endTime - nowTime;
-            ts = ts.Multiply(0.9);
-            Debug.Log(ts.Hours + " " + ts.Minutes + " " + ts.Seconds);
-            Basic_endTime = nowTime.Add(ts);
-        }
-
-        ////////// Constructor & Destroyer  //////////
-
-        public Pinocchio_AbilityWood()
-        {
-            Basic_marionette = -1;
-            Basic_Value = 0;
-        }
-
-        //
-        public void Dispose()
-        {
-
-        }
-    }
-
     [Header("PINOCCHIO_ABILITY ==========")]
     [SerializeField] List<Pinocchio_Ability>    Pinocchio_abilitys;
     [SerializeField] int                        Pinocchio_abilityLevel;
     [SerializeField] int                        Pinocchio_abilityExp;
-    [SerializeField] int                        Pinocchio_abilityPoint;
+    [SerializeField] int                        Pinocchio_abilityPoint; // 목공소 재화
 
     ////////// Getter & Setter          //////////
 
@@ -765,11 +782,15 @@ public class Giggle_Player : IDisposable
         return Pinocchio_abilitys.Count;
     }
 
-    // 
+    // Pinocchio_abilityLevel
     object Pinocchio_AbilityGetLevel(params object[] _args)
     {
         return Pinocchio_abilityLevel;
     }
+
+    // Pinocchio_abilityExp
+
+    // Pinocchio_abilityPoint
     
     ////////// Method                   //////////
     
@@ -823,6 +844,12 @@ public class Giggle_Player : IDisposable
         return true;
     }
 
+    //
+    public void  Pinocchio_AbilityAddPoint(int _point)
+    {
+        Pinocchio_abilityPoint += _point;
+    }
+
     // PopUp ==========
     // Wood
     
@@ -850,6 +877,84 @@ public class Giggle_Player : IDisposable
     }
 
             #region PINOCCHIO_ABILITY__WOOD
+
+    [Serializable]
+    public class Pinocchio_AbilityWood : IDisposable
+    {
+        [SerializeField] Giggle_Player  Basic_Player;
+
+        [SerializeField] DateTime   Basic_endTime;
+        [SerializeField] int        Basic_marionette;   // 투입된 마리오네트의 inventoryId
+        [SerializeField] int        Basic_select;        // 획득하게 될 재화(0이면 작업 대기상태)
+
+        ////////// Getter & Setter          //////////
+
+        public DateTime Basic_VarEndTime    { get { return Basic_endTime;  }   }
+
+        public int Basic_VarMarionette  { get { return Basic_marionette;    }   }
+
+        public int Basic_VarSelect  { get { return Basic_select;    }   }
+
+        ////////// Method                   //////////
+
+        public void Basic_Work(int _select)
+        {
+            Basic_select = _select;
+            
+            switch(_select)
+            {
+                case 0: { Basic_endTime = DateTime.Now.AddHours(2);     }   break;
+                case 1: { Basic_endTime = DateTime.Now.AddHours(6);     }   break;
+                case 2: { Basic_endTime = DateTime.Now.AddHours(12);    }   break;
+            }
+        }
+
+        public void Basic_MarionetteJoin(int _id)
+        {
+            Basic_marionette = _id;
+
+            // 시간 재설정
+            DateTime nowTime = DateTime.Now;
+            TimeSpan ts = Basic_endTime - nowTime;
+            ts = ts.Multiply(0.9);
+            Debug.Log(ts.Hours + " " + ts.Minutes + " " + ts.Seconds);
+            Basic_endTime = nowTime.Add(ts);
+        }
+
+        public void Basic_WorkEnd()
+        {
+            // 재화 지급
+            int value = 0;
+
+            switch(Basic_select)
+            {
+                case 0: { value = 100;  }   break;
+                case 1: { value = 500;  }   break;
+                case 2: { value = 1500; }   break;
+            }
+
+            Basic_Player.Pinocchio_AbilityAddPoint(value);
+
+            // 초기화
+            Basic_select = -1;
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        public Pinocchio_AbilityWood(Giggle_Player _Player)
+        {
+            Basic_Player = _Player;
+
+            Basic_marionette = -1;
+            Basic_select = -1;
+        }
+
+        //
+        public void Dispose()
+        {
+
+        }
+    }
     
     [SerializeField] List<Pinocchio_AbilityWood>    Pinocchio_abilityWoodDatas;
 
@@ -892,6 +997,18 @@ public class Giggle_Player : IDisposable
         return true;
     }
     
+    //
+    object Pinocchio_AbilityWoodWorkEnd(params object[] _args)
+    {
+        int count   = (int)_args[0];
+
+        //
+        Pinocchio_abilityWoodDatas[count].Basic_WorkEnd();
+
+        //
+        return true;
+    }
+    
     ////////// Constructor & Destroyer  //////////
 
     void PinocchioAbility_Contructor__Wood()
@@ -902,7 +1019,7 @@ public class Giggle_Player : IDisposable
         }
         while(Pinocchio_abilityWoodDatas.Count < 6)
         {
-            Pinocchio_abilityWoodDatas.Add(new Pinocchio_AbilityWood());
+            Pinocchio_abilityWoodDatas.Add(new Pinocchio_AbilityWood(this));
         }
 
         //
@@ -910,6 +1027,7 @@ public class Giggle_Player : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_WORK,                   Pinocchio_AbilityWoodWork               );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_WORKER,                 Pinocchio_AbilityWoodWorker             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_WOOD_WORKER_END,             Pinocchio_AbilityWoodWorkEnd            );
     }
             #endregion
     
@@ -1258,7 +1376,6 @@ public class Giggle_Player : IDisposable
         }
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA,                                Pinocchio_VarData                                   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELICS,                        Pinocchio_RelicVarRelics__Bridge                    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_GET_RELIC_FROM_INVENTORY_ID,       Pinocchio_GetRelicFromInventoryId__Bridge           );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__RELIC_VAR_RELIC_SLOTS,                   Pinocchio_RelicVarRelicSlots__Bridge                );
@@ -1288,9 +1405,12 @@ public class Giggle_Player : IDisposable
     [SerializeField] List<Giggle_Character.Save> Marionette_list;
 
     ////////// Getter & Setter          //////////
-    object Marionette_GetList(params object[] _args)
+    // Marionette_list
+    public List<Giggle_Character.Save>  Marionette_VarList  { get { return Marionette_list; }   }
+
+    object Marionette_GetList__Bridge(params object[] _args)
     {
-        return Marionette_list;
+        return Marionette_VarList;
     }
 
     object Marionette_GetDataFromInventoryId(params object[] _args)
@@ -1388,7 +1508,7 @@ public class Giggle_Player : IDisposable
 
         Marionette_Add(21001);
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList                  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList__Bridge          );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,        Marionette_Add__Script          );
@@ -1400,7 +1520,7 @@ public class Giggle_Player : IDisposable
     #region FORMATION
 
     [Serializable]
-    public class Formation
+    public class Formation : IDisposable
     {
         // 인벤토리 id
         [SerializeField] List<int> Basic_formation;
@@ -1409,10 +1529,27 @@ public class Giggle_Player : IDisposable
         public List<int>    Basic_VarFormation  { get{ return Basic_formation;  }   }
 
         ////////// Method                   //////////
+        public void Basic_Setting(int _id, int _formation)
+        {
+            // 배치되어 있다면 교체
+            for (int for0 = 0; for0 < Basic_formation.Count; for0++)
+            {
+                if(Basic_formation[for0].Equals(_id))
+                {
+                    Basic_formation[for0] = Basic_formation[_formation];
+                    
+                    break;
+                }
+            }
+
+            // 자리 갱신
+            Basic_formation[_formation] = _id;
+        }
 
         ////////// Constructor & Destroyer  //////////
         public Formation()
         {
+            //
             if(Basic_formation == null)
             {
                 Basic_formation = new List<int>();
@@ -1422,7 +1559,12 @@ public class Giggle_Player : IDisposable
             {
                 Basic_formation.Add(-1);
             }
-            Basic_formation[4] = -2;
+            Basic_formation[4] = -2;    // -2는 피노키오
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
     
@@ -1451,18 +1593,7 @@ public class Giggle_Player : IDisposable
         int formation   = (int)_args[1];
 
         //
-        // 배치되어 있다면 교체
-        for (int for0 = 0; for0 < Formation_list[Formation_select].Basic_VarFormation.Count; for0++)
-        {
-            if(Formation_list[Formation_select].Basic_VarFormation[for0].Equals(id))
-            {
-                Formation_list[Formation_select].Basic_VarFormation[for0] = Formation_list[Formation_select].Basic_VarFormation[formation];
-                break;
-            }
-        }
-
-        // 자리 갱신
-        Formation_list[Formation_select].Basic_VarFormation[formation] = id;
+        Formation_list[Formation_select].Basic_Setting(id, formation);
 
         //
         return true;
@@ -1480,6 +1611,9 @@ public class Giggle_Player : IDisposable
         {
             Formation_list.Add(new Formation());
         }
+
+        //
+
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT,              Formation_GetSelect             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST,      Formation_GetFormationList      );

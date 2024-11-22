@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -55,8 +56,11 @@ public class Giggle_Master : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_StartCoroutine);
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,  Basic_StopCoroutine );
+
+        Application.targetFrameRate = 120;
 
         Basic_Database = new Giggle_Database(this.gameObject);
         
@@ -276,7 +280,7 @@ public class Giggle_Master : MonoBehaviour
     // UI_rawImages
     object UI_RawImage(params object[] _args)
     {
-        Transform parent = (Transform)_args[0];
+        Transform parentTrans = (Transform)_args[0];
 
         //
         if(UI_rawImages.childCount <= 1)
@@ -288,7 +292,7 @@ public class Giggle_Master : MonoBehaviour
         }
 
         Transform element = UI_rawImages.GetChild(0);
-        element.parent = parent;
+        element.parent = parentTrans;
         element.localScale = Vector3.one;
         element.GetComponent<RectTransform>().sizeDelta = new Vector2(3840.0f / 2160.0f * UI_canvasScaler.referenceResolution.y, UI_canvasScaler.referenceResolution.y);
 
@@ -363,6 +367,31 @@ public class Giggle_Master : MonoBehaviour
     }
 
     ////////// Method           //////////
+    ///
+    object Battle_Accel(params object[] _args)
+    {
+        Battle_data.Basic_Accel();
+
+        //
+        return true;
+    }
+
+    //
+    object Battle_SleepOn(params object[] _args)
+    {
+        Battle_data.Basic_PowerSaving();
+
+        //
+        return true;
+    }
+
+    object Battle_SleepOff(params object[] _args)
+    {
+        Battle_data.Basic_PowerSaving();
+
+        //
+        return true;
+    }
 
     ////////// Unity            //////////
     void Battle_Start()
@@ -370,6 +399,10 @@ public class Giggle_Master : MonoBehaviour
         Battle_data.Basic_Init();
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE,    Battle_VarCoroutinePhase    );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL,      Battle_Accel    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON,   Battle_SleepOn  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF,  Battle_SleepOff );
     }
 
     // Update
