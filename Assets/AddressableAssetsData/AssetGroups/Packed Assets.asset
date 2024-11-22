@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Packed Assets
+  m_EditorClassIdentifier: 
+  m_GroupName: Packed Assets
+  m_GUID: f62125bbb87564a098d25dce96af7f17
+  m_SerializeEntries:
+  - m_GUID: 019f25fe566c64ba88a1a5e2ca7b201e
+    m_Address: MARIONETTE/CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02c3ee5ad57c54904aae1630a0c0bdff
+    m_Address: PINOCCHIO/CSV_RELIC_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07eb4410ff9c947b98bc3925f837ba00
+    m_Address: PINOCCHIO/CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e5c37dc3f67f40f28d21aa3701daa93
+    m_Address: MARIONETTE/CARD__CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f18b403110e3470e845ad4e21684080
+    m_Address: ITEM/ICON_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14881186133394e05ba26daa5f425739
+    m_Address: PINOCCHIO/CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 165183e984c5c497397ee82017a6ec08
+    m_Address: ITEM/BRACE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24a2c5072330943a0bf2d8ede010cd22
+    m_Address: PINOCCHIO/CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33a1413e5b89743969999ec6f9a8338a
+    m_Address: ITEM/WEAPON_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3460c7b43383744968d556de0491c7d4
+    m_Address: MARIONETTE/CARD__CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35084f9806f1545dcae16ccffe0b1c48
+    m_Address: PINOCCHIO/ABILITY_WOOD_ICON
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3adeb85777574405498c6f40e7b1906e
+    m_Address: MARIONETTE/CSV_SKILL_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b3019f1db9ed4c4c9d5540ebcb9a8b9
+    m_Address: ITEM/ACCESSORY_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40162dcc5b0954bc3806bbec2d9b45f3
+    m_Address: PINOCCHIO/CSV_RELIC_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 503e3d7dde071402ea81b182b5ff66b3
+    m_Address: CHARACTER/FIRE_CSV_SKILL_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57419d3f807e14b489d5d9f94d03afe5
+    m_Address: PINOCCHIO/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d387675310f74708a0ee5e7364bad73
+    m_Address: MARIONETTE/CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e418c25b3239425c8f42116b649e63b
+    m_Address: ITEM/HELMET_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70b54fbb9f5ff4ad3b939478cd400798
+    m_Address: CHARACTER/FIRE_CSV_SKILL_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7570e1fcfd1b94554b0c9e7810c2fcc5
+    m_Address: MARIONETTE/CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78f5aea19abf945feb3c4af35647505c
+    m_Address: MARIONETTE/CONSTELLATION__CSV_VALUE
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ad88b9d28db94b49b6a4afddb604ec3
+    m_Address: PINOCCHIO/CSV_SKILL_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b72d9b1d9db14d64a85ba97ee5a732b
+    m_Address: MARIONETTE/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 809e3fb0567044767b64ee4b821b3cb5
+    m_Address: STAGE/CSV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90a19f553d6974950a8816975816bcbd
+    m_Address: PINOCCHIO/CSV_ABILITY_PROBABILITY
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a01b4b8383221490990dd1d5061632d2
+    m_Address: ITEM/ARMOR_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a85dd4dafb3654f0a8ae8a0029cba3d7
+    m_Address: MARIONETTE/CONSTELLATION__CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b646d934c31684120bfb14a1eb2ac860
+    m_Address: CHARACTER/SKILL_BACKGROUND
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdeea94c4e5874a3d833d3b888f0e7e6
+    m_Address: PINOCCHIO/CSV_ATTRIBUTE_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c31f98823e6f64687b4c5d6a865967d7
+    m_Address: CHARACTER/FIRE_CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c47917c3125434fe49dd5f742744562e
+    m_Address: STAGE/CSV_MONSTER
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cde0d8a1834a6492792a25835c05ceaf
+    m_Address: MARIONETTE/CONSTELLATION__CSV_VALUE_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0a3ad97e6773458caa812c116b7c235
+    m_Address: QUEST/CSV_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4f51e9d416bf40a792224d1df830e36
+    m_Address: PINOCCHIO/CSV_ABILITY_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de5106c5098864547bfb515b5af25316
+    m_Address: PINOCCHIO/CSV_ATTRIBUTE_LIST
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dff0b958dee2247258cdd67008604897
+    m_Address: CHARACTER/FIRE_CSV_LV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e455225e3dc4547368220e18f35ce266
+    m_Address: MARIONETTE/CONSTELLATION__BACKGROUND
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eca09ef40c5554ac09e6e20b961f901a
+    m_Address: STAGE/MODEL
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f25537aac19554f3e94d5e2381aef674
+    m_Address: MARIONETTE/CARD__CSV_SET
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2c6e8ca184da4fd2b5864ffe2e47a7d
+    m_Address: QUEST/CSV_TEXT
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 54e0bb940779949ef9fb63c9833874b3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1d73a44d639c04644a540e05437611ae, type: 2}
+    - {fileID: 11400000, guid: 37c6d0ea76715491ea29d293c5928e20, type: 2}

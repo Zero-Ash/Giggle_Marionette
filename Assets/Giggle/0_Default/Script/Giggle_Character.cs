@@ -23,7 +23,9 @@ namespace Giggle_Character
         WIND,
         EARTH,
         DARK,
-        LIGHT
+        LIGHT,
+
+        TOTAL
     }
     
     public enum CATEGORY
@@ -341,6 +343,28 @@ namespace Giggle_Character
                     Basic_attack    += element0.Basic_GetBuffFromCount((int)Giggle_Item.Relic_COLOR.WHITE) * 100;
                     Basic_defence   += element0.Basic_GetBuffFromCount((int)Giggle_Item.Relic_COLOR.BLACK) * 100;
                 }
+            }
+        }
+
+        public void Basic_FormationBounsSetting(int _case, int _darkCount)
+        {
+            switch(_case)
+            {
+                case 1: { Basic_attack = 10 * 100;  Basic_hp = 10 * 100;    }   break;  // i.   동일 속성 4명.                  / 공격 + 10%, HP + 10%
+                case 2: { Basic_attack = 15 * 100;  Basic_hp = 15 * 100;    }   break;  // ii.  동일 속성 4명, 다른 동일 속성 2명.  / 공격 + 15%, HP + 15%
+                case 3: { Basic_attack = 15 * 100;  Basic_hp = 20 * 100;    }   break;  // iii. 동일 속성 5명.                  / 공격 + 15%, HP + 20%
+                case 4: { Basic_attack = 25 * 100;  Basic_hp = 25 * 100;    }   break;  // iv.  동일 속성 6명.                  / 공격 + 25%, HP + 25%
+            }
+
+            //
+            switch(_darkCount)
+            {
+                case 1: { Basic_defence                 += 30 * 100;                                }   break;
+                case 2: { Basic_attack                  += 10 * 100;    Basic_hp    += 10 * 100;    }   break;
+                case 3: { Basic_criticalChance          += 15 * 100;                                }   break;
+                case 4: { Basic_criticalDamage          += 30 * 100;                                }   break;
+                case 5: { Basic_skillCooldownReduction  += 15 % 100;                                }   break;
+                case 6: { Basic_luckyChance             += 10 * 100;                                }   break;
             }
         }
 

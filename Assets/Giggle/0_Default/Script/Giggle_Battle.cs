@@ -28,6 +28,9 @@ public class Giggle_Battle : IDisposable
         SETTING_STAGE,
 
         //
+        SETTING_OBJECT,
+
+        //
         SETTING_PLAYER_START,
         SETTING_PLAYER_DATA_CHECK,
         SETTING_PLAYER,
@@ -57,16 +60,35 @@ public class Giggle_Battle : IDisposable
 
     [SerializeField] Basic__COROUTINE_PHASE Basic_coroutinePhase;
 
+    //
     IEnumerator Basic_coroutine;
 
     ////////// Getter & Setter          //////////
     public Basic__COROUTINE_PHASE   Basic_VarCoroutinePhase { get { return Basic_coroutinePhase;    } set{ Basic_coroutinePhase = value;    }   }
 
     ////////// Method                   //////////
+    
+    public void Basic_Accel()
+    {
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__ACCEL);
+
+        Formation_AcimatorSpeed();
+    }
+
+    public void Basic_PowerSaving()
+    {
+        Formation_PowerSaving();
+        Bullet_PowerSaving();
+        Effect_PowerSaving();
+        Map_PowerSaving();
+    }
+
+    //
     public void Basic_Init()
     {
         //
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.INIT;
+
         Basic_coroutine = Basic_Coroutine();
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
@@ -81,9 +103,13 @@ public class Giggle_Battle : IDisposable
         float time = Time.time;
         float lastTime = Time.time;
 
+        float stageSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
+
         while(phase != -1)
         {
             time = Time.time;
+
+            stageSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
 
             switch(Basic_coroutinePhase)
             {
@@ -92,12 +118,14 @@ public class Giggle_Battle : IDisposable
                 // SETTING
                 case Basic__COROUTINE_PHASE.RESET:  { Basic_Coroutine__RESET(); }   break;
 
-                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START: { Basic_Coroutine__SETTING_FADE_OUT_START();            }   break;
-                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT:       { Basic_Coroutine__SETTING_FADE_OUT(time - lastTime);   }   break;
+                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT_START: { Basic_Coroutine__SETTING_FADE_OUT_START();                            }   break;
+                case Basic__COROUTINE_PHASE.SETTING_FADE_OUT:       { Basic_Coroutine__SETTING_FADE_OUT((time - lastTime) * stageSpeed);    }   break;
 
                 case Basic__COROUTINE_PHASE.SETTING_STAGE_START:        { Basic_Coroutine__SETTING_STAGE_START();       }   break;
                 case Basic__COROUTINE_PHASE.SETTING_STAGE_DATA_CHECK:   { Basic_Coroutine__SETTING_STAGE_DATA_CHECK();  }   break;
                 case Basic__COROUTINE_PHASE.SETTING_STAGE:              { Basic_Coroutine__SETTING_STAGE();             }   break;
+
+                case Basic__COROUTINE_PHASE.SETTING_OBJECT: { Basic_Coroutine__SETTING_OBJECT();    }   break;
 
                 case Basic__COROUTINE_PHASE.SETTING_PLAYER_START:       { Basic_Coroutine__SETTING_PLAYER_START();      }   break;
                 case Basic__COROUTINE_PHASE.SETTING_PLAYER_DATA_CHECK:  { Basic_Coroutine__SETTING_PLAYER_DATA_CHECK(); }   break;
@@ -107,22 +135,22 @@ public class Giggle_Battle : IDisposable
                 case Basic__COROUTINE_PHASE.SETTING_ENEMY_DATA_CHECK:   { Basic_Coroutine__SETTING_ENEMY_DATA_CHECK();  }   break;
                 case Basic__COROUTINE_PHASE.SETTING_ENEMY:              { Basic_Coroutine__SETTING_ENEMY();             }   break;
 
-                case Basic__COROUTINE_PHASE.FADE_IN_START:  { Basic_Coroutine__FADE_IN_START();             }   break;
-                case Basic__COROUTINE_PHASE.FADE_IN:        { Basic_Coroutine__FADE_IN(time - lastTime);    }   break;
+                case Basic__COROUTINE_PHASE.FADE_IN_START:  { Basic_Coroutine__FADE_IN_START();                         }   break;
+                case Basic__COROUTINE_PHASE.FADE_IN:        { Basic_Coroutine__FADE_IN((time - lastTime) * stageSpeed); }   break;
 
                 case Basic__COROUTINE_PHASE.SETTING_END:    { Basic_Coroutine__SETTING_END();   }   break;
 
                 // ACTIVE
-                case Basic__COROUTINE_PHASE.ACTIVE_BATTLE:  { Basic_Coroutine__ACTIVE_BATTLE(time - lastTime);  }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_BATTLE:  { Basic_Coroutine__ACTIVE_BATTLE((time - lastTime) * stageSpeed);  }   break;
 
-                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY:  { Basic_Coroutine__ACTIVE_MOVE_READY();             }   break;
-                case Basic__COROUTINE_PHASE.ACTIVE_MOVE:        { Basic_Coroutine__ACTIVE_MOVE(time - lastTime);    }   break;
-                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();               }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY:  { Basic_Coroutine__ACTIVE_MOVE_READY();                         }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE:        { Basic_Coroutine__ACTIVE_MOVE((time - lastTime) * stageSpeed); }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_MOVE_END:    { Basic_Coroutine__ACTIVE_MOVE_END();                           }   break;
 
                 case Basic__COROUTINE_PHASE.ACTIVE_RESULT_WIN:  { Basic_Coroutine__ACTIVE_RESULT_WIN(); }   break;
 
-                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE:         { Basic_Coroutine__ACTIVE_RESULT_LOSE();                    }   break;
-                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE_DOING:   { Basic_Coroutine__ACTIVE_RESULT_DOING(time - lastTime);    }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE:         { Basic_Coroutine__ACTIVE_RESULT_LOSE();                                }   break;
+                case Basic__COROUTINE_PHASE.ACTIVE_RESULT_LOSE_DOING:   { Basic_Coroutine__ACTIVE_RESULT_DOING((time - lastTime) * stageSpeed); }   break;
             }
 
             Effect_Coroutine();
@@ -222,6 +250,16 @@ public class Giggle_Battle : IDisposable
             Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_SAVE);
 
         Map_Load(obj);
+
+        //
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_OBJECT;
+    }
+
+    // SETTING_OBJECT ==========
+    void Basic_Coroutine__SETTING_OBJECT()
+    {
+        // 총알 리셋
+        Bullet_Reset();
 
         //
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
@@ -377,6 +415,8 @@ public class Giggle_Battle : IDisposable
             whileCount++;
         }
 
+        Formation_Ally.Basic_BuffSetting();
+
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_ENEMY_START;
     }
 
@@ -440,26 +480,27 @@ public class Giggle_Battle : IDisposable
             unit.Basic_Init(this, save);
         }
 
-        // 총알 리셋
-        Bullet_Reset();
+        Formation_Enemy.Basic_BuffSetting();
 
         //
-        if(UI_fade.gameObject.activeSelf)
-        {
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN_START;
-        }
-        else
-        {
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_END;
-        }
+        Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN_START;
     }
 
     //
     void Basic_Coroutine__FADE_IN_START()
     {
-        UI_FadeInStart();
+        // 페이드가 진행되었을 때
+        if(UI_fade.gameObject.activeSelf)
+        {
+            UI_FadeInStart();
 
-        Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.FADE_IN;
+        }
+        // 페이드가 진행되지 않았을 때
+        else
+        {
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_END;
+        }
     }
 
     void Basic_Coroutine__FADE_IN(float _timer)
@@ -475,6 +516,10 @@ public class Giggle_Battle : IDisposable
     //
     void Basic_Coroutine__SETTING_END()
     {
+        //
+        UI_win.gameObject.SetActive(false);
+
+        //
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_MOVE_READY;
     }
 
@@ -523,30 +568,37 @@ public class Giggle_Battle : IDisposable
     //
     void Basic_Coroutine__ACTIVE_RESULT_WIN()
     {
+        UI_win.gameObject.SetActive(true);
+
+        //
         bool isNext = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_IS_NEXT);
         
         if(isNext)
         {
+            // 클리어한 스테이지의 정보 가져오기
             int stageId = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SELECT);
 
             Giggle_Stage.Stage stage = (Giggle_Stage.Stage)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID,
                 stageId);
 
+            // 다음 스테이지로 넘기기
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__NEXT);
 
+            // 스테이지가 보스라면 배경까지 셋팅한다.
             if(stage.Basic_VarIsBoss)
             {
                 Basic_coroutinePhase = Giggle_Battle.Basic__COROUTINE_PHASE.RESET;
             }
+            // 유닛만 셋팅한다.
             else
             {
-                Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
+                Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_OBJECT;
             }
         }
         else
         {
-            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_PLAYER_START;
+            Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_OBJECT;
         }
     }
 
@@ -588,11 +640,15 @@ public class Giggle_Battle : IDisposable
     [Serializable]
     public class Formation : IDisposable
     {
+        [SerializeField] Giggle_Battle  Basic_manager;
+
         [SerializeField] Transform          Basic_parent;
         [SerializeField] List<Transform>    Basic_tiles;
 
         [Header("RUNNING")]
         [SerializeField] List<Giggle_Unit> Basic_units;
+        
+        [SerializeField] Giggle_Character.Status    Basic_buff;
 
         ////////// Getter & Setter          //////////
         // Basic_parent
@@ -667,12 +723,129 @@ public class Giggle_Battle : IDisposable
         }
 
         //
-        public void Basic_Init()
+        public void Basic_UnitAnimatorSpeed()
         {
+            float speed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
+            
+            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                if(Basic_tiles[for0].childCount > 0)
+                {
+                    Basic_tiles[for0].GetChild(0).GetComponent<Giggle_Unit>().Model_AnimatorVarSpeed = speed;
+                }
+            }
+        }
+
+        // 버프 계산
+        public void Basic_BuffSetting()
+        {
+            // 1. 초기화
+            Basic_buff.Basic_Reset();
+
+            List<int> attributeCount = new List<int>();
+            attributeCount.Clear();
+            while(attributeCount.Count < (int)Giggle_Character.ATTRIBUTE.TOTAL)
+            {
+                attributeCount.Add(0);
+            }
+
+            // 2. 속성 모으기
+            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                if(Basic_tiles[for0].childCount > 0)
+                {
+                    Transform element = Basic_tiles[for0].GetChild(0);
+                    attributeCount[(int)element.GetComponent<Giggle_Unit>().Status_VarDatabase.Basic_VarAttribute]++;
+                }
+            }
+
+            // 3. 계산 시작
+            int max = 0;
+            int count = 0;
+
+            for (int for0 = 0; for0 <= (int)Giggle_Character.ATTRIBUTE.EARTH; for0++)
+            {
+                if(attributeCount[for0] > max)
+                {
+                    max = attributeCount[for0];
+                    count = for0;
+                }
+            }
+
+            attributeCount[count] = 0;
+            // 빛 속성 가중치
+            max += (int)Giggle_Character.ATTRIBUTE.LIGHT;
+
+            switch(max)
+            {
+                case 4:
+                    {
+                        max = 0;
+                        count = 0;
+
+                        for (int for0 = 0; for0 <= (int)Giggle_Character.ATTRIBUTE.EARTH; for0++)
+                        {
+                            if(attributeCount[for0] > max)
+                            {
+                                max = attributeCount[for0];
+                                count = for0;
+                            }
+                        }
+                        
+                        // i. 동일 속성 4명
+                        if(max < 2)
+                        {
+                            Basic_buff.Basic_FormationBounsSetting(1, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                        }
+                        // ii. 동일 속성 4명, 다른 속성 2명
+                        else
+                        {
+                            Basic_buff.Basic_FormationBounsSetting(2, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                        }
+                    }
+                    break;
+                case 5:
+                    {
+                        Basic_buff.Basic_FormationBounsSetting(3, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                    }
+                    break;
+                case 6:
+                    {
+                        Basic_buff.Basic_FormationBounsSetting(4, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                    }
+                    break;
+            }
+        }
+
+        //
+        public void Basic_PowerSaving()
+        {
+
+            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                for(int for1 = 0; for1 < Basic_tiles[for0].childCount; for1++)
+                {
+                    Giggle_Unit element = Basic_tiles[for0].GetChild(for1).GetComponent<Giggle_Unit>();
+                    if(element != null)
+                    {
+                        element.Model_View();
+                    }
+                }
+            }
+        }
+
+        //
+        public void Basic_Init(Giggle_Battle _manager)
+        {
+            Basic_manager = _manager;
+
             for (int for0 = 0; for0 < Basic_parent.childCount; for0++)
             {
                 Basic_tiles.Add(Basic_parent.Find(for0.ToString()));
             }
+
+            Basic_buff = new Giggle_Character.Status();
+            Basic_buff.Basic_Reset();
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -692,13 +865,29 @@ public class Giggle_Battle : IDisposable
     public Formation Formation_VarEnemy { get{ return Formation_Enemy;  }   }
 
     ////////// Method                   //////////
+
+    //
+    void Formation_AcimatorSpeed()
+    {
+        Formation_Ally.Basic_UnitAnimatorSpeed();
+        Formation_Enemy.Basic_UnitAnimatorSpeed();
+    }
+
+    // SLEEP
+    void Formation_PowerSaving()
+    {
+        Formation_Ally.Basic_PowerSaving();
+        Formation_Enemy.Basic_PowerSaving();
+    }
+
+    //
     bool Formation_CotoutineInit0()
     {
         bool res = false;
 
         if(Formation_Ally != null)
         {
-            Formation_Ally.Basic_Init();
+            Formation_Ally.Basic_Init(this);
 
             res = true;
         }
@@ -712,7 +901,7 @@ public class Giggle_Battle : IDisposable
 
         if(Formation_Enemy != null)
         {
-            Formation_Enemy.Basic_Init();
+            Formation_Enemy.Basic_Init(this);
 
             res = true;
         }
@@ -881,6 +1070,15 @@ public class Giggle_Battle : IDisposable
     ////////// Getter & Setter          //////////
 
     ////////// Method                   //////////
+
+    void Bullet_PowerSaving()
+    {
+        bool isSleep = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON);
+        
+        Bullet_parent.gameObject.SetActive(!isSleep);
+    }
+
+    //
     void Bullet_Coroutine(float _deltaTime)
     {
         for(int for0 = 0; for0 < Bullet_bullets.Count; for0++)
@@ -950,85 +1148,111 @@ public class Giggle_Battle : IDisposable
     ////////// Getter & Setter          //////////
 
     ////////// Method                   //////////
-    void Effect_Coroutine()
+
+    //
+    public void Effect_Play(Bullet.TYPE _type, Vector3 _pos)
     {
-        for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
+        if(Effect_parent.gameObject.activeSelf)
         {
-            Transform trans0 = Effect_parent.GetChild(for0);
-            // 이펙트가 활성화되 있다면,
-            // 실행여부를 체크하여, 재생이 끝나면 비활성화 시켜준다.
-            if(trans0.gameObject.activeSelf)
+            bool isPlay = false;
+
+            for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
             {
-                for(int for1 = 0; for1 < trans0.childCount; for1++)
+                Transform trans0 = Effect_parent.GetChild(for0);
+
+                if(!trans0.gameObject.activeSelf)
                 {
-                    Transform trans1 = trans0.GetChild(for1);
-                    if(trans1.gameObject.activeSelf)
+                    for(int for1 = 0; for1 < trans0.childCount; for1++)
                     {
-                        bool isPlay = false;
-
-                        for(int for2 = 0; for2 < trans1.childCount; for2++)
-                        {
-                            if(trans1.GetChild(for2).gameObject.activeSelf)
-                            {
-                                isPlay = true;
-                                break;
-                            }
-                        }
-
-                        if(!isPlay)
-                        {
-                            trans0.gameObject.SetActive(false);
-                        }
+                        trans0.GetChild(for1).gameObject.SetActive(false);
                     }
+                    // 이펙트 찾아서 활성화
+                    Transform trans1 = trans0.Find(((int)_type).ToString());
+                    for(int for1 = 0; for1 < trans1.childCount; for1++)
+                    {
+                        trans1.GetChild(for1).GetComponent<ParticleSystem>().Play();
+                        trans1.GetChild(for1).gameObject.SetActive(true);
+                    }
+                    trans1.gameObject.SetActive(true);
+
+                    // 이펙트 활성화
+                    trans0.position = _pos;
+                    trans0.gameObject.SetActive(true);
+
+                    isPlay = true;
+
+                    break;
                 }
+            }
+
+            // 대기 중인 이펙트가 없다면 추가로 생성하고 재귀
+            if(!isPlay)
+            {
+                for(int for0 = 0; for0 < 100; for0++)
+                {
+                    Transform element = GameObject.Instantiate<Transform>(Effect_parent.GetChild(for0), Effect_parent);
+                    element.gameObject.SetActive(false);
+                }
+
+                Effect_Play(_type, _pos);
             }
         }
     }
 
     //
-    public void Effect_Play(Bullet.TYPE _type, Vector3 _pos)
+    void Effect_PowerSaving()
     {
-        bool isPlay = false;
+        bool isSleep = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON);
 
-        for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
+        Effect_parent.gameObject.SetActive(!isSleep);
+
+        if(!isSleep)
         {
-            Transform trans0 = Effect_parent.GetChild(for0);
-
-            if(!trans0.gameObject.activeSelf)
+            for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
             {
-                for(int for1 = 0; for1 < trans0.childCount; for1++)
-                {
-                    trans0.GetChild(for1).gameObject.SetActive(false);
-                }
-                // 이펙트 찾아서 활성화
-                Transform trans1 = trans0.Find(((int)_type).ToString());
-                for(int for1 = 0; for1 < trans1.childCount; for1++)
-                {
-                    trans1.GetChild(for1).GetComponent<ParticleSystem>().Play();
-                    trans1.GetChild(for1).gameObject.SetActive(true);
-                }
-                trans1.gameObject.SetActive(true);
+                Transform trans0 = Effect_parent.GetChild(for0);
 
-                // 이펙트 활성화
-                trans0.position = _pos;
-                trans0.gameObject.SetActive(true);
-
-                isPlay = true;
-
-                break;
+                trans0.gameObject.SetActive(false);
             }
         }
+    }
 
-        // 대기 중인 이펙트가 없다면 추가로 생성하고 재귀
-        if(!isPlay)
+    //
+    void Effect_Coroutine()
+    {
+        if(Effect_parent.gameObject.activeSelf)
         {
-            for(int for0 = 0; for0 < 100; for0++)
+            for(int for0 = 0; for0 < Effect_parent.childCount; for0++)
             {
-                Transform element = GameObject.Instantiate<Transform>(Effect_parent.GetChild(for0), Effect_parent);
-                element.gameObject.SetActive(false);
-            }
+                Transform trans0 = Effect_parent.GetChild(for0);
+                // 이펙트가 활성화되 있다면,
+                // 실행여부를 체크하여, 재생이 끝나면 비활성화 시켜준다.
+                if(trans0.gameObject.activeSelf)
+                {
+                    for(int for1 = 0; for1 < trans0.childCount; for1++)
+                    {
+                        Transform trans1 = trans0.GetChild(for1);
+                        if(trans1.gameObject.activeSelf)
+                        {
+                            bool isPlay = false;
 
-            Effect_Play(_type, _pos);
+                            for(int for2 = 0; for2 < trans1.childCount; for2++)
+                            {
+                                if(trans1.GetChild(for2).gameObject.activeSelf)
+                                {
+                                    isPlay = true;
+                                    break;
+                                }
+                            }
+
+                            if(!isPlay)
+                            {
+                                trans0.gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1061,8 +1285,19 @@ public class Giggle_Battle : IDisposable
         //
         GameObject obj = GameObject.Instantiate(_obj, Map_parent);
         Map_ground = obj.transform.Find("Ground").GetChild(0);
+
+        Map_PowerSaving();
     }
 
+    // Map_PowerSaving
+    void Map_PowerSaving()
+    {
+        bool isSleep = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON);
+
+        Map_parent.gameObject.SetActive(!isSleep);
+    }
+
+    // Map_Coroutine
     void Map_Coroutine__ACTIVE_MOVE_READY()
     {
         Map_ground.localPosition = new Vector3(2, 0, 0);
@@ -1090,6 +1325,8 @@ public class Giggle_Battle : IDisposable
 
     [Header("UI ==================================================")]
     [SerializeField] Image UI_fade;
+
+    [SerializeField] Transform  UI_win;
 
     [SerializeField] Transform          UI_lose;
     [SerializeField] TextMeshProUGUI    UI_loseTimer;
