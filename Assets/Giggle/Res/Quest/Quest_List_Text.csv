@@ -1,0 +1,11 @@
+,퀘스트 달성 조건,제목 텍스트,퀘스트 내용
+int,string,string,string
+quest_id,questCompletionCondition,questTitle,questDescription
+510001,EPISODE_ALL_CLEAR,{0} 에피소드 모든 스테이지 클리어,{0} 에피소드를 모든 스테이지를 클리어하세요!
+510002,EPISODE_ALL_3_STAR,{0} 에피소드 모든 스테이지 3등급 으로 클리어,{0} 에피소드의 모든 스테이지를 3성으로 클리어하세요!
+510003,STAGE_CLEAR_COUNT,일반 스테이지 {0}회 클리어,일반 스테이지를 {0}회 클리어 하세요!
+510004,MONSTER_SLAIN,몬스터 {0}마리 처치,몬스터를 {0}마리 처치 하세요!
+510005,BOSS_SLAIN,보스 {0}마리 처치,보스를 {0}마리 처치 하세요!
+510006,WEEKLY_BOSS_SLAIN,주간 보스 {0}회 처치,주간 보스를 {0}회 처치 하세요!
+510007,GUILD_CHECK,길드 출석 {0}회,길드에 {0}회 출석하세요!
+510008,FORMATION_SETTING,"{0}, {1} 동시 출전 {2}회",{0}과 {1}를 동시에 사용해 {2}회 클리어하세요!
