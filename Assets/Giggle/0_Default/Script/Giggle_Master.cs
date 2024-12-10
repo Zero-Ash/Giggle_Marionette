@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using BackEnd;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -70,6 +70,7 @@ public class Giggle_Master : MonoBehaviour
         }
         Basic_player.Basic_Init();
 
+        Network_Start();
         Scene_Start();
         Garbage_Start();
         UI_Start();
@@ -80,6 +81,29 @@ public class Giggle_Master : MonoBehaviour
     void Update()
     {
         
+    }
+
+    #endregion
+
+    #region NETWORK
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+
+    ////////// Unity            //////////
+    void Network_Start()
+    {
+        BackendReturnObject res = Backend.Initialize();
+
+        if(res.IsSuccess())
+        {
+            Debug.Log("backend success");
+        }
+        else
+        {
+            Debug.Log("backend fail");
+        }
     }
 
     #endregion
@@ -393,16 +417,25 @@ public class Giggle_Master : MonoBehaviour
         return true;
     }
 
-    ////////// Unity            //////////
-    void Battle_Start()
+    //
+
+    object Battle_Init__Bridge(params object[] _args)
     {
         Battle_data.Basic_Init();
 
+        //
+        return true;
+    }
+
+    ////////// Unity            //////////
+    void Battle_Start()
+    {
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE,    Battle_VarCoroutinePhase    );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL,      Battle_Accel    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON,   Battle_SleepOn  );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF,  Battle_SleepOff );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL,      Battle_Accel        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON,   Battle_SleepOn      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF,  Battle_SleepOff     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__INIT,       Battle_Init__Bridge );
     }
 
     // Update

@@ -1497,6 +1497,18 @@ public class Giggle_Database : IDisposable
         return Item_isOpen;
     }
 
+    object Item_GetDatasFromType(params object[] _args)
+    {
+        Item_Data res = null;
+
+        //
+        int itemType = (int)_args[0];
+        res = Item_datas[itemType];
+
+        //
+        return res;
+    }
+
     object Item_GetDataFromId(params object[] _args)
     {
         Giggle_Item.List res = Item_empty;
@@ -1657,6 +1669,7 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_IS_OPEN,    Item_GetIsOpen  );
 
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATAS_FROM_TYPE,    Item_GetDatasFromType   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,       Item_GetDataFromId      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_SPRITE_FROM_VALUE,  Item_GetSpriteFromValue );
     }

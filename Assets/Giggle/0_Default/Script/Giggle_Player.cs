@@ -1697,7 +1697,169 @@ public class Giggle_Player : IDisposable
     }
 
     ////////// Method                   //////////
-    
+
+    //
+    object Item_Crafting(params object[] _args)
+    {
+        int id = (int)_args[0];
+        int count = (int)_args[1];
+
+        //
+        Giggle_Item.List data
+            = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                id);
+        
+        Item_Looting(id, count);
+        for(int for0 = 0; for0 < data.Basic_VarMattersCount; for0++)
+        {
+            Giggle_Item.List.Matter for0Element = data.Basic_GetMatterFromCount(for0);
+            Item_DisCount(for0Element.Basic_VarId, for0Element.Basic_VarCount * count);
+        }
+
+        //
+        return true;
+    }
+
+    //
+    object Item_Looting__Bridge(params object[] _args)
+    {
+        int id = (int)_args[0];
+        int count = (int)_args[1];
+
+        //
+        Giggle_Item.Inventory res = Item_Looting(id, count);
+
+        //
+        return res != null;
+    }
+
+    Giggle_Item.Inventory Item_Looting(int _id, int _count)
+    {
+        Giggle_Item.Inventory res = null;
+
+        //
+        Giggle_Item.List data
+            = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                _id);
+        
+        // 장비일 때
+        if(data.Basic_VarIsEquipment)
+        {
+            int inventoryId = 0;
+            for(int for0 = 0; for0 < Item_list.Count; for0++)
+            {
+                if(inventoryId <= Item_list[for0].Basic_VarInventoryId)
+                {
+                    inventoryId = Item_list[for0].Basic_VarInventoryId + 1;
+                }
+            }
+
+            for(int for0 = 0; for0 < _count; for0++)
+            {
+                res = new Giggle_Item.Inventory(inventoryId + for0, _id);
+            }
+        }
+        // 기타
+        else
+        {
+            for(int for0 = 0; for0 < Item_cardList.Count; for0++)
+            {
+                if(Item_cardList[for0].Basic_VarDataId.Equals(_id))
+                {
+                    res = Item_list[for0];
+                    break;
+                }
+            }
+
+            if(res != null)
+            {
+                res.Basic_AddCount(_count);
+                if(res.Basic_VarCount <= 0)
+                {
+                    Item_list.Remove(res);
+                }
+            }
+            else
+            {
+                int inventoryId = 0;
+                for(int for0 = 0; for0 < Item_list.Count; for0++)
+                {
+                    if(inventoryId <= Item_list[for0].Basic_VarInventoryId)
+                    {
+                        inventoryId = Item_list[for0].Basic_VarInventoryId + 1;
+                    }
+                }
+
+                res = new Giggle_Item.Inventory(inventoryId, _id);
+                res.Basic_AddCount(_count);
+            }
+        }
+
+        //
+        return res;
+    }
+
+    //
+    object Item_DisCount__Bridge(params object[] _args)
+    {
+        int id = (int)_args[0];
+        int count = (int)_args[1];
+
+        //
+        Giggle_Item.Inventory element = null;
+
+        for(int for0 = 0; for0 < Item_list.Count; for0++)
+        {
+            if(Item_list[for0].Basic_VarDataId.Equals(id))
+            {
+                element = Item_list[for0];
+                break;
+            }
+        }
+
+        if(element != null)
+        {
+            element.Basic_DisCount(count);
+            if(element.Basic_VarCount <= 0)
+            {
+                Item_list.Remove(element);
+            }
+        }
+
+        //
+        return element != null;
+    }
+
+    Giggle_Item.Inventory Item_DisCount(int _id, int _count)
+    {
+        Giggle_Item.Inventory res = null;
+
+        //
+
+        for(int for0 = 0; for0 < Item_list.Count; for0++)
+        {
+            if(Item_list[for0].Basic_VarDataId.Equals(_id))
+            {
+                res = Item_list[for0];
+                break;
+            }
+        }
+
+        if(res != null)
+        {
+            res.Basic_DisCount(_count);
+            if(res.Basic_VarCount <= 0)
+            {
+                Item_list.Remove(res);
+            }
+        }
+
+        //
+        return res;
+    }
+
     ////////// Constructor & Destroyer  //////////
     void Item_Contructor()
     {
@@ -1724,6 +1886,10 @@ public class Giggle_Player : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,   Item_GetItemFromInventoryId );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_CARD_LIST,                Item_GetCardList            );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__CARD__GET_DATA_FROM_DATA_ID,        Item_GetCardDataFromDataId  );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__CRAFTING,     Item_Crafting           );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__LOOTING,      Item_Looting__Bridge    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__DIS_COUNT,    Item_DisCount__Bridge   );
     }
 
     #endregion

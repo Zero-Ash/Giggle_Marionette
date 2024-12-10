@@ -107,6 +107,13 @@ public class Giggle_ScriptBridge
         /// </summary>
         MASTER__BATTLE__SLEEP_OFF,
 
+        /// <summary>
+        /// 초기화<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__BATTLE__INIT,
+
         #endregion
 
         #region Giggle_Database
@@ -265,6 +272,13 @@ public class Giggle_ScriptBridge
         /// return type : bool
         /// </summary>
         DATABASE__ITEM__GET_IS_OPEN,
+
+        /// <summary>
+        /// 아이템 데이터<br/>
+        /// 매개변수 : int - 캐릭터id<br/>
+        /// return type : Giggle_Database.Item_Data
+        /// </summary>
+        DATABASE__ITEM__GET_DATAS_FROM_TYPE,
 
         /// <summary>
         /// 아이템 데이터<br/>
@@ -633,6 +647,27 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Item.Inventory
         /// </summary>
         PLAYER__CARD__GET_DATA_FROM_DATA_ID,
+
+        /// <summary>
+        /// 아이템 제작.<br/>
+        /// 매개변수 : int - 데이터 id, int - 획득 량<br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__ITEM__CRAFTING,
+
+        /// <summary>
+        /// 아이템 획득.<br/>
+        /// 매개변수 : int - 데이터 id, int - 획득 량<br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__ITEM__LOOTING,
+
+        /// <summary>
+        /// 아이템 갯수 줄이기. 0이면 리스트에서 삭제<br/>
+        /// 매개변수 : int - 데이터 id, int - 줄어들 갯수<br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__ITEM__DIS_COUNT,
 
         #endregion
 

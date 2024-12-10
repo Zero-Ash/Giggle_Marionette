@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace Giggle_Item
 {
-
     #region EQUIPMENT
 
     public enum TYPE
@@ -29,7 +28,10 @@ namespace Giggle_Item
             [SerializeField] int    Basic_count;
 
             ////////// Getter & Setter          //////////
-            
+            public int  Basic_VarId     { get { return Basic_id;    }   }
+
+            public int  Basic_VarCount  { get { return Basic_count; }   }
+
             ////////// Method                   //////////
 
             ////////// Constructor & Destroyer  //////////
@@ -64,6 +66,7 @@ namespace Giggle_Item
 
         public bool Basic_GetIdIsSame(int _id)  { return Basic_id.Equals(_id);  }
 
+        // Type
         public TYPE Basic_VarType
         {
             get
@@ -81,6 +84,26 @@ namespace Giggle_Item
             }
         }
 
+        public bool Basic_VarIsEquipment
+        {
+            get
+            {
+                bool res = false;
+
+                switch(Basic_VarType)
+                {
+                    case TYPE.ACCESSORY:
+                    case TYPE.ARMOR:
+                    case TYPE.BRACE:
+                    case TYPE.HELMET:
+                    case TYPE.WEAPON:
+                        { res = true;   }   break;
+                }
+
+                return res;
+            }
+        }
+
         //
         public string   Basic_VarName   { get { return Basic_name;  }   }
 
@@ -94,6 +117,8 @@ namespace Giggle_Item
         //
         public int  Basic_VarRecipe { get { return Basic_recipe;    }   }
         //
+        public int      Basic_VarMattersCount                   { get { return Basic_matters.Count; }   }
+        public Matter   Basic_GetMatterFromCount(int _count)    { return Basic_matters[_count];         }
         
         ////////// Method                   //////////
 
@@ -164,14 +189,32 @@ namespace Giggle_Item
             Basic_count += _count;
         }
 
+        public void Basic_DisCount(int _count)
+        {
+            Basic_count -= _count;
+        }
+
         ////////// Constructor & Destroyer  //////////
         public Inventory(int _inventoryId, int _dataId)
+        {
+            Inventory_Basic(_inventoryId, _dataId);
+
+            Basic_count = -1;
+        }
+
+        public Inventory(int _inventoryId, int _dataId, int _count)
+        {
+            Inventory_Basic(_inventoryId, _dataId);
+
+            Basic_count = _count;
+        }
+
+        void Inventory_Basic(int _inventoryId, int _dataId)
         {
             Basic_inventoryId   = _inventoryId;
             Basic_dataId        = _dataId;
 
             Basic_level = 1;
-            Basic_count = 0;
         }
 
         public void Dispose()
