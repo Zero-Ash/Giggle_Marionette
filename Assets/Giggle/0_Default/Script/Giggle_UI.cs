@@ -51,6 +51,11 @@ namespace Giggle_UI
                 element = element.transform.Find("Button").GetComponent<RectTransform>();
                 Basic_list.Add(element.GetComponent<Button>());
             }
+
+            for(int for0 = 0; for0 < Basic_VarListCount; for0++)
+            {
+                Basic_GetListBtn(for0).name = "Button/BALCK_SMITH/MENU_BAR/" + for0.ToString();
+            }
         }
 
         // Basic_SelectMenu
@@ -251,8 +256,10 @@ namespace Giggle_UI
         [SerializeField] protected List<Transform>  Basic_list;
         [SerializeField] protected int              Basic_x;
 
-        [SerializeField] protected Vector2          Basic_startPos;
-        [SerializeField] protected Vector2          Basic_varPos;
+        [SerializeField] protected Vector2  Basic_startPos;
+        [SerializeField] protected Vector2  Basic_varPos;
+
+        [SerializeField] protected RawImage Basic_rawImage;
 
         ////////// Getter & Setter          //////////
         //
@@ -380,6 +387,322 @@ namespace Giggle_UI
         {
             
         }
+    }
+
+    #endregion
+
+    #region FORMATION
+
+    [Serializable]
+    public class Formation : IDisposable
+    {
+        #region BASIC
+
+        public enum Basic__PLAY_TYPE
+        {
+            PVP,
+            PVE
+        }
+
+        [Serializable]
+        public class Basic_Data : IDisposable
+        {
+            [SerializeField] int Basic_id;
+            [SerializeField] int Basic_lv;
+
+            ////////// Getter & Setter          //////////
+
+            public int  Basic_VarId { get { return Basic_id;    } set { Basic_id = value;   }   }
+
+            public int  Basic_VarLv { get { return Basic_lv;    } set { Basic_lv = value;   }   }
+
+            ////////// Method                   //////////
+
+            public void Basic_Reset()
+            {
+                Basic_id = -1;
+                Basic_lv = -1;
+            }
+
+            ////////// Constructor & Destroyer  //////////
+
+            //
+            public Basic_Data()
+            {
+                Basic_Reset();
+            }
+
+            //
+            public void Dispose()
+            {
+            }
+        }
+
+        [Header("BASIC ==================================================")]
+        [SerializeField]            Basic__PLAY_TYPE    Basic_playType;
+        [SerializeField] protected  List<Basic_Data>    Basic_datas;
+
+        ////////// Getter & Setter          //////////
+        public Basic__PLAY_TYPE Basic_VarPlayerType { get { return Basic_playType;  } set { Basic_playType = value; }   }
+
+        ////////// Method                   //////////
+        
+        // Basic_Reset
+        public void Basic_Reset()
+        {
+            for(int for0 = 0; for0 < Basic_datas.Count; for0++)
+            {
+                Basic_datas[for0].Basic_Reset();
+            }
+
+            switch(Basic_playType)
+            {
+                case Basic__PLAY_TYPE.PVE:  { Basic_Reset__PVE();   }   break;
+            }
+
+            UI_Reset();
+        }
+
+        protected virtual void Basic_Reset__PVE()
+        {
+            List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+            for(int for0 = 0; for0 < formation.Count; for0++)
+            {
+                Basic_datas[for0].Basic_VarId = formation[for0];
+            }
+        }
+
+        //
+        public void Basic_Init()
+        {
+            Basic_playType = Basic__PLAY_TYPE.PVE;
+
+            if(Basic_datas == null)
+            {
+                Basic_datas = new List<Basic_Data>();
+            }
+            while(Basic_datas.Count < 9)
+            {
+                Basic_datas.Add(new Basic_Data());
+            }
+
+            //
+            UI_Init();
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        //
+        public void Dispose()
+        {
+            
+        }
+
+        #endregion
+
+        #region UI
+
+        [Header("UI ==================================================")]
+        [SerializeField] Transform          UI_parent;
+        [SerializeField] List<Transform>    UI_list;
+
+        [SerializeField] protected RawImage UI_rawImage;
+
+        [SerializeField] protected int      UI_selectFormation;
+
+        ////////// Getter & Setter          //////////
+
+        public int  UI_VarSelectFormation   { get { return UI_selectFormation;  }   }
+
+        ////////// Method                   //////////
+        
+        //////////
+        // UI_BtnClick__Tile
+        public void UI_BtnClick__Tile(int _count, int _selectMarionette)
+        {
+            if(_count == -1)
+            {
+                UI_BtnClick__Tile__Tile__Select(-1);
+            }
+            else
+            {
+                switch(_selectMarionette)
+                {
+                    case -1:    { UI_BtnClick__Tile__Tile(_count);                      }   break;
+                    default:    { UI_BtnClick__Tile__Change(_count, _selectMarionette); }   break;
+                }
+            }
+        }
+
+        // UI_BtnClick__Tile__Tile
+        void UI_BtnClick__Tile__Tile(int _count)
+        {
+            switch(UI_selectFormation)
+            {
+                case -1:    { UI_BtnClick__Tile__Tile__Select(_count);  }   break;
+                default:    { UI_BtnClick__Tile__Tile__Change(_count);  }   break;
+            }
+        }
+
+        void UI_BtnClick__Tile__Tile__Select(int _count)
+        {
+            for (int for0 = 0; for0 < UI_list.Count; for0++)
+            {
+                UI_list[for0].Find("Select").gameObject.SetActive(for0.Equals(_count));
+            }
+
+            //
+            UI_selectFormation = _count;
+        }
+
+        protected virtual void UI_BtnClick__Tile__Tile__Change(int _count)
+        {
+            List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+
+            if(!formation[_count].Equals(-2))
+            {
+                //
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                    formation[UI_selectFormation], _count);
+
+                // UI갱신
+                Basic_Reset();
+            }
+        }
+
+        // UI_BtnClick__Tile__Change
+        protected virtual void UI_BtnClick__Tile__Change(int _count, int _selectMarionette)
+        {
+            List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+
+            if(!formation[_count].Equals(-2))
+            {
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                    _selectMarionette, _count);
+
+                // UI갱신
+                Basic_Reset();
+            }
+        }
+        
+        //
+        void UI_Reset()
+        {
+            UI_BtnClick__Tile__Tile__Select(-1);
+
+            // 타일 처리
+            for(int for0 = 0; for0 < UI_list.Count; for0++)
+            {
+                // 기존 마리오네트 모델링 날리기
+                while(UI_list[for0].Find("Obj").childCount > 0)
+                {
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
+                        UI_list[for0].Find("Obj").GetChild(0));
+                }
+
+                // 배치된 모델링이 있다면 모델링 배치
+                switch(Basic_playType)
+                {
+                    case Basic__PLAY_TYPE.PVE:  { UI_Reset__PVE(for0);  }   break;
+                    case Basic__PLAY_TYPE.PVP:  { UI_Reset__PVP(for0);  }   break;
+                }
+            }
+        }
+
+        void UI_Reset__PVE(int _for0)
+        {
+            int tileId = Basic_datas[_for0].Basic_VarId;
+            if(!tileId.Equals(-1))
+            {
+                // 주인공
+                if(tileId.Equals(-2))
+                {
+                    Giggle_Character.Save pinocchioData
+                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
+                        //
+                        pinocchioData.Basic_VarDataId,
+                        UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+                }
+                else
+                {
+                    Giggle_Character.Save data
+                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
+                            tileId);
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
+                        //
+                        data.Basic_VarDataId,
+                        UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+                }
+            }
+        }
+
+        void UI_Reset__PVP(int _for0)
+        {
+            Giggle_Unit unit = (Giggle_Unit)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
+                //
+                Basic_datas[_for0].Basic_VarId,
+                UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+
+                //unit
+        }
+
+        //
+        void UI_Init()
+        {
+            if(UI_list == null)
+            {
+                UI_list = new List<Transform>();
+            }
+
+            int whileCount = 0;
+            while(whileCount < UI_parent.childCount)
+            {
+                Transform for0Child = UI_parent.GetChild(whileCount);
+                for(int for0 = 0; for0 < for0Child.childCount; for0++)
+                {
+                    UI_list.Add(for0Child.GetChild(for0));
+                }
+
+                whileCount++;
+            }
+
+            whileCount = 0;
+            while(whileCount < UI_list.Count)
+            {
+                for(int for0 = whileCount; for0 < UI_list.Count; for0++)
+                {
+                    Transform element = UI_list[for0];
+                    if(element.name.Equals(whileCount.ToString()))
+                    {
+                        UI_Init__Btn(element, whileCount);
+                        //element.Find("Button").name = "Button/MARIONETTE/FORMATION__TILE/" + whileCount;
+                        UI_list.RemoveAt(for0);
+                        UI_list.Insert(whileCount, element);
+                    }
+                }
+
+                whileCount++;
+            }
+        }
+
+        protected virtual void UI_Init__Btn(Transform _element, int _count)
+        {
+            _element.Find("Button").name = "Button/MARIONETTE/FORMATION__TILE/" + _count;
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+
+        #endregion
     }
 
     #endregion

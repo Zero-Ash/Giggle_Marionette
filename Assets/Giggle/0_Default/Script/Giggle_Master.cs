@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BackEnd;
+using UnityEngine.AddressableAssets;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -87,36 +88,101 @@ public class Giggle_Master : MonoBehaviour
 
     #region NETWORK
 
+    [Header("NETWORK ==================================================")]
+    [SerializeField] int   Network_initState;
+
     ////////// Getter & Setter  //////////
+    object Network_VarInitState(params object[] _args)
+    {
+        //
+        return Network_initState;
+    }
 
     ////////// Method           //////////
 
     ////////// Unity            //////////
     void Network_Start()
     {
-        BackendReturnObject res = Backend.Initialize();
+        Network_initState = -1;
 
-        if(res.IsSuccess())
-        {
-            Debug.Log("backend success");
-        }
-        else
-        {
-            Debug.Log("backend fail");
-        }
+        //
+        Backend.InitializeAsync(
+            callback =>
+            {
+                if(callback.IsSuccess())
+                {
+                    Network_initState = 1;
+                }
+                else
+                {
+                    Network_initState = 0;
+                }
+            });
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE,    Network_VarInitState    );
     }
 
     #endregion
 
     #region SCENE
 
+    public enum Scene_TYPE
+    {
+        TITLE   = 0,
+        MAIN,
+        DUNGEON
+    }
+
     [Header("SCENE ==================================================")]
-    [SerializeField] GameObject Scene_parent;
+    [SerializeField] GameObject         Scene_parent;
+
+    [SerializeField] List<GameObject>   Scene_scenes;
+
+    [SerializeField] GameObject Scene_loading;
+
     [SerializeField] Transform  Scene_cameraParent;
 
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
+    object Scene_LoadScene__Script(params object[] _args)
+    {
+        Scene_TYPE sceneType = (Scene_TYPE)_args[0];
+
+        // 전체 비활성화
+        Scene_loading.SetActive(true);
+        for(int for0 = 0; for0 < Scene_scenes.Count; for0++)
+        {
+            Scene_scenes[for0].GetComponent<Giggle_SceneManager>().Basic_Active(false);
+        }
+
+        // 초기화
+        while(Scene_scenes.Count <= (int)sceneType)
+        {
+            Scene_scenes.Add(null);
+        }
+
+        if(Scene_scenes[(int)sceneType] == null)
+        {
+            Addressables.LoadAssetAsync<GameObject>("SCENE/" + sceneType.ToString()).Completed
+            += handle =>
+            {
+                Scene_scenes[(int)sceneType] = Instantiate(handle.Result, Scene_parent.transform);
+                Scene_scenes[(int)sceneType].GetComponent<Giggle_SceneManager>().Basic_Active(true);
+
+                Scene_loading.SetActive(false);
+            };
+        }
+        else
+        {
+            Scene_scenes[(int)sceneType].GetComponent<Giggle_SceneManager>().Basic_Active(true);
+            Scene_loading.SetActive(false);
+        }
+
+        //
+        return true;
+    }
 
     ////////// Unity            //////////
     void Scene_Start()
@@ -127,6 +193,9 @@ public class Giggle_Master : MonoBehaviour
             Scene_cameraParent.GetChild(for0).GetComponent<Camera>().orthographicSize = ratio * 4.7f;
         }
         //Scene_cameraParent.localPosition = new Vector3(0, 0, -8.0f * ratio);
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Scene_LoadScene__Script );
     }
 
     #endregion
@@ -176,10 +245,11 @@ public class Giggle_Master : MonoBehaviour
     #region UI
 
     [Header("UI ==================================================")]
-    [SerializeField] CanvasScaler UI_canvasScaler;
+    [SerializeField] CanvasScaler   UI_canvasScaler;
+    [SerializeField] Camera         UI_camera;
 
-    [SerializeField] Vector2 UI_safeAreaSizeDelta;
-    [SerializeField] Vector2 UI_safeAreaPos;
+    [SerializeField] Vector2    UI_safeAreaSizeDelta;
+    [SerializeField] Vector2    UI_safeAreaPos;
 
     [SerializeField] Transform UI_rawImages;
 
@@ -260,13 +330,16 @@ public class Giggle_Master : MonoBehaviour
         }
     }
 
-    // UI_canvasScaler
-    object UI_CanvasScalerSetting(params object[] _args)
+    // UI_canvas
+    object UI_CanvasSetting(params object[] _args)
     {
         //
-        CanvasScaler cs = (CanvasScaler)_args[0];
+        Canvas canvas = (Canvas)_args[0];
 
         //
+        canvas.worldCamera = UI_camera;
+        canvas.planeDistance = 2;
+        CanvasScaler cs = canvas.GetComponent<CanvasScaler>();
         cs.matchWidthOrHeight   = UI_canvasScaler.matchWidthOrHeight;
         cs.referenceResolution  = UI_canvasScaler.referenceResolution;
 
@@ -360,14 +433,14 @@ public class Giggle_Master : MonoBehaviour
         UI_safeAreaPos = new Vector2(posX * scale, posY * scale);
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,       UI_SafeAreaVarSizeDelta     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION,         UI_SafeAreaVarPosition      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,   UI_SafeAreaVarSizeDelta );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION,     UI_SafeAreaVarPosition  );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,          UI_PinocchioInstantiate     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,          UI_CharacterInstantiate     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SCALER_SETTING,          UI_CanvasScalerSetting      );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,                     UI_ValueText                );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE,                      UI_RawImage                 );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING,         UI_CanvasSetting        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,             UI_ValueText            );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE,              UI_RawImage             );
     }
 
     #endregion

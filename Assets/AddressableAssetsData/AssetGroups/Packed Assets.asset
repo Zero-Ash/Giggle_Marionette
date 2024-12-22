@@ -95,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d042f783b41c4788b11a7f04c3674b8
+    m_Address: SCENE/DUNGEON
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d387675310f74708a0ee5e7364bad73
     m_Address: MARIONETTE/CSV_SKILL_LIST
     m_ReadOnly: 0
@@ -167,6 +172,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c47917c3125434fe49dd5f742744562e
     m_Address: STAGE/CSV_MONSTER
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7170c1d87de540268b67dd7d098c399
+    m_Address: SCENE/MAIN
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

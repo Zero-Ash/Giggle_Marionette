@@ -46,10 +46,6 @@ public class Giggle_Unit : MonoBehaviour
         this.transform.localScale    = Vector3.one;
 
         Model_AnimatorVarSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
-        Model_View();
-
-        Basic_coroutine = Basic_Coroutine();
-        StartCoroutine(Basic_coroutine);
     }
 
     public void Basic_Release()
@@ -125,6 +121,9 @@ public class Giggle_Unit : MonoBehaviour
     void Start()
     {
         Active_Start();
+
+        Basic_coroutine = Basic_Coroutine();
+        StartCoroutine(Basic_coroutine);
     }
 
     // Update is called once per frame

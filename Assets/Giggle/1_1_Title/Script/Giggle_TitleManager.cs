@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
+using BackEnd;
 
 public class Giggle_TitleManager : Giggle_SceneManager
 {
@@ -33,7 +34,7 @@ public class Giggle_TitleManager : Giggle_SceneManager
 
         [SerializeField] Giggle_TitleManager Basic_manager;
 
-        [SerializeField] RectTransform  Basic_safeArea;
+        [SerializeField] List<RectTransform>    Basic_safeAreas;
 
         IEnumerator Basic_coroutine;
 
@@ -46,6 +47,7 @@ public class Giggle_TitleManager : Giggle_SceneManager
         public override void Basic_Init()
         {
             base.Basic_Init();
+
             //
             LogIn_Init();
 
@@ -54,24 +56,38 @@ public class Giggle_TitleManager : Giggle_SceneManager
             Basic_manager.StartCoroutine(Basic_coroutine);
         }
 
-        IEnumerator Basic_Coroutine()
+        // Basic_Coroutine
+        protected override IEnumerator Basic_Coroutine()
         {
             int phase = 0;
 
             while(phase != -1)
             {
-                if(
-                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(
-                        Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA))
+                switch(phase)
                 {
-                    Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
-                    Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
-
                     //
-                    phase = -1;
+                    case 0: { if(Basic_Coroutine__Canvas()) { phase = 1;    }   }   break;
+                    case 1: { Basic_Coroutine__UI(  ref phase   );              }   break;
                 }
 
                 yield return null;
+            }
+        }
+
+        void Basic_Coroutine__UI(ref int _phase)
+        {
+            if(
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA))
+            {
+                for(int for0 = 0; for0 < Basic_safeAreas.Count; for0++)
+                {
+                    Basic_safeAreas[for0].sizeDelta     = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+                    Basic_safeAreas[for0].localPosition = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
+                }
+                
+                //
+                _phase = 100;
             }
         }
 
@@ -93,7 +109,10 @@ public class Giggle_TitleManager : Giggle_SceneManager
 
         void Title_BtnClick__LOG_IN()
         {
-            LogIn_Active();
+            if((int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE ) == 1)
+            {
+                LogIn_Active();
+            }
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -115,13 +134,31 @@ public class Giggle_TitleManager : Giggle_SceneManager
             switch(_names[2])
             {
                 //case "OK":      { Title_BtnClick__LOG_IN(); }   break;
-                case "CANCEL":  { LogIn_BtnClick__CANCEL(); }   break;
+                case "CANCEL":  { LogIn_BtnClick__CANCEL();     }   break;
+                //
+                case "SIGN_IN": { LogIn_BtnClick__SIGN_IN();    }   break;
             }
         }
 
         void LogIn_BtnClick__CANCEL()
         {
             LogIn_parent.SetActive(false);
+        }
+
+        void LogIn_BtnClick__SIGN_IN()
+        {
+            Backend.BMember.GuestLogin(
+                callback =>
+                {
+                    if(callback.IsSuccess())
+                    {
+                        Debug.Log("LogIn_BtnClick__SIGN_IN : " + callback.StatusCode);
+
+                        LogIn_parent.SetActive(false);
+                        
+                        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.MAIN   );
+                    }
+                });
         }
 
         //
@@ -141,6 +178,9 @@ public class Giggle_TitleManager : Giggle_SceneManager
 
         #region SIGN_IN
 
+        [Header("SIGN_IN ==================================================")]
+        [SerializeField] GameObject SignIn_parent;
+
 
         ////////// Getter & Setter          //////////
 
@@ -150,7 +190,19 @@ public class Giggle_TitleManager : Giggle_SceneManager
             switch(_names[2])
             {
                 //case "LOG_IN":  { Title_BtnClick__LOG_IN(); }   break;
+                case "CANCEL":  { SignIn_BtnClick__CANCEL();    }   break;
             }
+        }
+
+        void SignIn_BtnClick__CANCEL()
+        {
+            SignIn_parent.SetActive(false);
+        }
+
+        //
+        void SignIn_Active()
+        {
+            SignIn_parent.SetActive(true);
         }
 
         ////////// Constructor & Destroyer  //////////

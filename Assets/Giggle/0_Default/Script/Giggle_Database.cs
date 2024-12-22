@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 [Serializable]
 public class Giggle_Database : IDisposable
@@ -1278,6 +1277,36 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
+    object Stage_GetObjFromId(params object[] _args)
+    {
+        GameObject res = Stage_empty;
+
+        //
+        int stage = (int)_args[0];
+
+        // 찾고자 하는 모델링이 존재하는가?
+        for(int for0 = 0; for0 < Stage_objs.Count; for0++)
+        {
+            if(Stage_objs[for0].name.Equals("Stage_" + (stage / 10).ToString() + (stage % 10).ToString()))
+            {
+                res = Stage_objs[for0];
+                break;
+            }
+        }
+
+        if(res.Equals(Stage_empty))
+        {
+            if(Stage_isOpen)
+            {
+                IEnumerator coroutine = Stage_LoadData__Coroutine();
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, coroutine);
+            }
+        }
+
+        //
+        return res;
+    }
+
     object Stage_GetObjFromSave(params object[] _args)
     {
         GameObject res = Stage_empty;
@@ -1426,6 +1455,7 @@ public class Giggle_Database : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_IS_OPEN,   Stage_GetIsOpen );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_STAGE_FROM_ID, Stage_GetStageFromId    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_ID,   Stage_GetObjFromId      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__STAGE__GET_OBJ_FROM_SAVE, Stage_GetObjFromSave    );
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Giggle_SceneManager : MonoBehaviour
 {
@@ -31,6 +32,10 @@ public class Giggle_SceneManager : MonoBehaviour
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
+    public virtual void Basic_Active(bool _isActive)
+    {
+        this.gameObject.SetActive(_isActive);
+    }
 
     ////////// Unity            //////////
 
@@ -53,18 +58,37 @@ public class Giggle_SceneManager : MonoBehaviour
         [SerializeField] List<Canvas> Basic_canvases;
 
         ////////// Getter & Setter          //////////
+        public Canvas   Basic_GetCanvas(int _count) { return Basic_canvases[_count];    }
 
         ////////// Method                   //////////
+
+        protected virtual IEnumerator Basic_Coroutine()
+        {
+            yield return null;
+        }
+
+        protected bool Basic_Coroutine__Canvas()
+        {
+            bool res = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING);
+
+            //
+            if(res)
+            {
+                for(int for0 = 0; for0 < Basic_canvases.Count; for0++)
+                {
+                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING,
+                        Basic_canvases[for0]);
+                }
+            }
+
+            //
+            return res;
+        }
 
         ////////// Constructor & Destroyer  //////////
         public virtual void Basic_Init()
         {
-            for(int for0 = 0; for0 < Basic_canvases.Count; for0++)
-            {
-                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SCALER_SETTING,
-                    Basic_canvases[for0].GetComponent<CanvasScaler>());
-            }
         }
 
         public void Dispose()

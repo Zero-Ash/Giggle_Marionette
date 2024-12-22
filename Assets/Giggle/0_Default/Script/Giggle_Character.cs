@@ -1428,7 +1428,7 @@ namespace Giggle_Character
         public List<int>    Basic_VarEquipments { get { return Basic_equipments;    }   }
 
         //
-        public int  Basic_VarSkillLv    { get { return Basic_skillLv;   }   }
+        public int  Basic_VarSkillLv    { get { return Basic_skillLv;   } set { Basic_skillLv = value;  }   }
 
         //
         public int  Basic_GetConstellationLv(int _count)

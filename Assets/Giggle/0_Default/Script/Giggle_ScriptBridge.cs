@@ -24,6 +24,20 @@ public class Giggle_ScriptBridge
         MASTER__BASIC__STOP_COROUTINE,
 
         /// <summary>
+        /// 네트워크 초기화 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : int - 네트워크 초기화 여부(-1 : 진행중, 0 : 실패, 1: 성공)
+        /// </summary>
+        MASTER__NETWORK__VAR_INIT_STATE,
+
+        /// <summary>
+        /// 씬 전환<br/>
+        /// 매개변수 : Giggle_Master.Scene_TYPE - 씬 변수<br/>
+        /// return type : 
+        /// </summary>
+        SCENE__LOAD_SCENE,
+
+        /// <summary>
         /// 코루틴 시작<br/>
         /// 매개변수 : Transform - 버리고자 하는 오브젝트<br/>
         /// return type : 
@@ -59,11 +73,11 @@ public class Giggle_ScriptBridge
         MASTER__UI__CHARACTER_INSTANTIATE,
 
         /// <summary>
-        /// CanvasScaler 세팅<br/>
-        /// 매개변수 : CanvasScaler - 대상<br/>
-        /// return type : Giggle_Unit
+        /// Canvas 세팅<br/>
+        /// 매개변수 : Canvas - 대상<br/>
+        /// return type :
         /// </summary>
-        MASTER__UI__CANVAS_SCALER_SETTING,
+        MASTER__UI__CANVAS_SETTING,
 
         /// <summary>
         /// UI용 캐릭터 오브젝트 생성<br/>
@@ -258,6 +272,13 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Stage.Stage
         /// </summary>
         DATABASE__STAGE__GET_STAGE_FROM_ID,
+
+        /// <summary>
+        /// 스테이지 데이터 불러오기<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : GameObject
+        /// </summary>
+        DATABASE__STAGE__GET_OBJ_FROM_ID,
 
         /// <summary>
         /// 스테이지 데이터 불러오기<br/>
@@ -669,16 +690,86 @@ public class Giggle_ScriptBridge
         /// </summary>
         PLAYER__ITEM__DIS_COUNT,
 
+        /// <summary>
+        /// 선택한 진영 가져오기<br/>
+        /// 매개변수 :<br/>
+        /// return type : List(int)
+        /// </summary>
+        PLAYER__DUNGEON__GET_FORMATION,
+
+        /// <summary>
+        /// 진영 위치 변경<br/>
+        /// 매개변수 : int - 마리오네트 인벤토르 id, int - 배치할 자리<br/>
+        /// return type :
+        /// </summary>
+        PLAYER__DUNGEON__FORMATION_SETTING,
+
         #endregion
 
         #region MAIN
+
+        /// <summary>
+        /// UI 페이즈<br/>
+        /// 매개변수 : <br/>
+        /// return type : int
+        /// </summary>
+        MAIN__UI__VAR_COROUTINE_PHASE,
 
         /// <summary>
         /// 절전 모드 가동 여부<br/>
         /// 매개변수 : <br/>
         /// return type : bool
         /// </summary>
-        MAIN__POWER_SAVING__GET_IS_ON
+        MAIN__POWER_SAVING__GET_IS_ON,
+
+        /// <summary>
+        /// 절전 모드 가동<br/>
+        /// 매개변수 : bool<br/>
+        /// return type : 
+        /// </summary>
+        MAIN__POWER_SAVING__ON_OFF,
+
+        /// <summary>
+        /// 페이브 오브젝트<br/>
+        /// 매개변수 : <br/>
+        /// return type : Image
+        /// </summary>
+        MAIN__BATTLE__VAR_FADE,
+
+        /// <summary>
+        /// 승리UI 출력<br/>
+        /// 매개변수 : bool<br/>
+        /// return type : bool
+        /// </summary>
+        MAIN__BATTLE__VAR_WIN_ACTIVE,
+
+        /// <summary>
+        /// 패배UI 출력<br/>
+        /// 매개변수 : bool<br/>
+        /// return type : bool
+        /// </summary>
+        MAIN__BATTLE__VAR_LOSE_ACTIVE,
+
+        /// <summary>
+        /// 절전 모드 가동 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MAIN__BATTLE__FADE_OUT,
+
+        /// <summary>
+        /// 절전 모드 가동 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MAIN__BATTLE__FADE_IN,
+
+        /// <summary>
+        /// 절전 모드 가동 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MAIN__BATTLE__LOSE
 
 
         #endregion

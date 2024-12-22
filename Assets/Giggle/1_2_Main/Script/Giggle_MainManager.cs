@@ -16,6 +16,14 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
+    public override void Basic_Active(bool _isActive)
+    {
+        base.Basic_Active(_isActive);
+        
+        //
+        UI_basicData.PowerSaving_OnOff(!_isActive);
+    }
+
 
     ////////// Unity            //////////
 
@@ -34,6 +42,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     [Serializable]
     public partial class UI_MainBasicData : UI_BasicData
     {
+        [Header("BASIC ==================================================")]
         [SerializeField] Giggle_MainManager Basic_manager;
         [SerializeField] Giggle_MainManager__Pinocchio  Basic_pinocchioManager;
         [SerializeField] Giggle_MainManager__Marionette Basic_marionetteManager;
@@ -41,9 +50,17 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         [SerializeField] RectTransform  Basic_safeArea;
 
-        IEnumerator Basic_coroutine;
+        [Header("RUNNING")]
+        IEnumerator             Basic_coroutine;
+        [SerializeField] int    Basic_coroutinePhase;
 
         ////////// Getter & Setter          //////////
+
+        object Basic_VarCoroutinePhase(params object[] _args)
+        {
+            //
+            return Basic_coroutinePhase;
+        }
 
         ////////// Method                   //////////
 
@@ -59,24 +76,50 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             Area4_Init();
             Area5_Init();
             PowerSaving_Init();
+            Battle_Init();
 
             //
             Basic_coroutine = Basic_Coroutine();
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_coroutine);
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_coroutine );
+
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__UI__VAR_COROUTINE_PHASE,  Basic_VarCoroutinePhase );
         }
 
-        IEnumerator Basic_Coroutine()
+        // Basic_Coroutine
+        protected override IEnumerator Basic_Coroutine()
         {
-            int phase = 0;
+            Basic_coroutinePhase = 0;
 
-            while(phase != -1)
+            float time = Time.time;
+            float lastTime = Time.time;
+
+            float stageSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
+
+            while(Basic_coroutinePhase != -1)
             {
-                Area3_Coroutine();
+                time = Time.time;
 
-                //
-                phase = -1;
+                stageSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
+
+                switch(Basic_coroutinePhase / 10000)
+                {
+                    case 0: { Basic_Coroutine__Basic();                         }   break;
+                    case 1: { Battle_Coroutine((time - lastTime) * stageSpeed); }   break;
+                }
+
+                lastTime = time;
 
                 yield return null;
+            }
+        }
+
+        void Basic_Coroutine__Basic()
+        {
+            if(Basic_Coroutine__Canvas())
+            {
+                Area3_Coroutine();
+                Basic_coroutinePhase = 1;
             }
         }
 
@@ -342,6 +385,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 case "EXMENU__OPEN":            { Area4_exMenu.SetActive(true);     }   break;
                 case "EXMENU__CLOSE":           { Area4_exMenu.SetActive(false);    }   break;
                 case "EXMENU__BLACK_SMITH":     { Area4_BtnClick__BlackSmith();     }   break;
+                case "EXMENU__DUNGEON":         { Area4_BtnClick__Dungeon();        }   break;
                 case "EXMENU__POWER_SAVING":    { Area4_BtnClick__PowerSaving();    }   break;
                 
                 case "INVENTORY_OPEN":  { Area4_BtnClick__InventoryOpen();  }   break;
@@ -357,10 +401,18 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             Area4_exMenu.SetActive(false);
         }
 
+        // Area4_BtnClick__Dungeon
+        void Area4_BtnClick__Dungeon()
+        {
+            Area4_exMenu.SetActive(false);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.DUNGEON    );
+        }
+
         // Area4_BtnClick__PowerSaving
         void Area4_BtnClick__PowerSaving()
         {
-            PowerSaving_On();
+            PowerSaving_OnOff(true);
 
             Area4_exMenu.SetActive(false);
         }
@@ -596,29 +648,235 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             switch(_names[2])
             {
-                case "OFF":   { PowerSaving_Off();  }   break;
+                case "OFF":   { PowerSaving_OnOff(false);   }   break;
             }
         }
 
-        void PowerSaving_On()
+        //
+        public void PowerSaving_OnOff(bool _isActive)
         {
-            PowerSaving_parent.SetActive(true);
+            PowerSaving_parent.SetActive(_isActive);
 
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON);
         }
 
-        void PowerSaving_Off()
+        object PowerSaving_OnOff__Bridge(params object[] _args)
         {
-            PowerSaving_parent.SetActive(false);
+            bool isActive = (bool)_args[0];
+            PowerSaving_OnOff(isActive);
 
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF);
+            return true;
         }
 
         ////////// Constructor & Destroyer  //////////
 
         void PowerSaving_Init()
         {
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON, PowerSaving_GetIsOn  );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON,  PowerSaving_GetIsOn         );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__ON_OFF,     PowerSaving_OnOff__Bridge   );
+        }
+
+        #endregion
+
+        #region BATTLE
+
+        [Header("BATTLE ==================================================")]
+        [SerializeField] Image Battle_fade;
+
+        [SerializeField] Transform  Battle_win;
+
+        [SerializeField] Transform          Battle_lose;
+        [SerializeField] TextMeshProUGUI    Battle_loseTimer;
+
+        [Header("RUNNING")]
+        [SerializeField] List<float>    Battle_timers;
+
+        ////////// Getter & Setter          //////////
+        object Battle_VarFade(params object[] _args)
+        {
+            //
+            return Battle_fade;
+        }
+
+        // Battle_win
+        object Battle_VarWinActive(params object[] _args)
+        {
+            bool isActive = (bool)_args[0];
+
+            //
+            Battle_win.gameObject.SetActive(isActive);
+
+            //
+            return Battle_win.gameObject.activeSelf;
+        }
+
+        // Battle_win
+        object Battle_VarLoseActive(params object[] _args)
+        {
+            bool isActive = (bool)_args[0];
+
+            //
+            Battle_lose.gameObject.SetActive(isActive);
+
+            //
+            return Battle_lose.gameObject.activeSelf;
+        }
+
+        ////////// Method                   //////////
+        
+        object Battle_FadeOut(params object[] _args)
+        {
+            Basic_coroutinePhase = 10000;
+
+            //
+            return true;
+        }
+
+        object Battle_FadeIn(params object[] _args)
+        {
+            Basic_coroutinePhase = 10100;
+
+            //
+            return true;
+        }
+
+        object Battle_GetLose(params object[] _args)
+        {
+            Basic_coroutinePhase = 10200;
+
+            //
+            return true;
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        void Battle_Init()
+        {
+            if(Battle_timers == null)
+            {
+                Battle_timers = new List<float>();
+            }
+
+            while(Battle_timers.Count < 1)
+            {
+                Battle_timers.Add(0.0f);
+            }
+
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__VAR_FADE,         Battle_VarFade          );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__VAR_WIN_ACTIVE,   Battle_VarWinActive     );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__VAR_LOSE_ACTIVE,  Battle_VarLoseActive    );
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__FADE_OUT, Battle_FadeOut  );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__FADE_IN,  Battle_FadeIn   );
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MAIN__BATTLE__LOSE,     Battle_GetLose  );
+        }
+
+        // Battle_Coroutine //////////
+        void Battle_Coroutine(float _timer)
+        {
+            switch(Basic_coroutinePhase)
+            {
+                // FadeOut
+                case 10000: { Battle_Coroutine__FadeOutStart();     }   break;
+                case 10001: { Battle_Coroutine__FadeOut(_timer  );  }   break;
+                case 10002: {                                       }   break;
+                // FadeIn
+                case 10100: { Battle_Coroutine__FadeInStart();      }   break;
+                case 10101: { Battle_Coroutine__FadeIn(_timer   );  }   break;
+                case 10102: {                                       }   break;
+                // Lose
+                case 10200: { Battle_Coroutine__LoseStart();            }   break;
+                case 10201: { Battle_Coroutine__LoseDoing(_timer  );    }   break;
+                case 10202: {                                           }   break;
+            }
+        }
+
+        // Battle_Coroutine__FadeOut
+        void Battle_Coroutine__FadeOutStart()
+        {
+            Battle_timers[0] = 0.0f;
+
+            Color c = Battle_fade.color;
+            c.a = 0.0f;
+            Battle_fade.color = c;
+            Battle_fade.gameObject.SetActive(true);
+
+            //
+            Basic_coroutinePhase = 10001;
+        }
+
+        void Battle_Coroutine__FadeOut(float _timer)
+        {
+            Battle_timers[0] += _timer;
+
+            if(Battle_timers[0] >= 1.0f)
+            {
+                Battle_timers[0] = 1.0f;
+
+                //
+                Basic_coroutinePhase = 10002;
+            }
+
+            Color c = Battle_fade.color;
+            c.a = Battle_timers[0];
+            Battle_fade.color = c;
+        }
+
+        // Battle_Coroutine__FadeIn
+        void Battle_Coroutine__FadeInStart()
+        {
+            Battle_timers[0] = 1.0f;
+
+            Color c = Battle_fade.color;
+            c.a = 1.0f;
+            Battle_fade.color = c;
+
+            //
+            Basic_coroutinePhase = 10101;
+        }
+
+        void Battle_Coroutine__FadeIn(float _timer)
+        {
+            Battle_timers[0] -= _timer;
+
+            if(Battle_timers[0] <= 0.0f)
+            {
+                Battle_timers[0] = 0.0f;
+                Battle_fade.gameObject.SetActive(false);
+
+                //
+                Basic_coroutinePhase = 10102;
+            }
+
+            Color c = Battle_fade.color;
+            c.a = Battle_timers[0];
+            Battle_fade.color = c;
+        }
+
+        // Battle_Coroutine__Lose
+        void Battle_Coroutine__LoseStart()
+        {
+            Battle_lose.gameObject.SetActive(true);
+
+            Battle_timers[0] = 2.0f;
+            Battle_loseTimer.text = (1 + (int)Battle_timers[0]).ToString();
+
+            Basic_coroutinePhase = 10201;
+        }
+
+        void Battle_Coroutine__LoseDoing(float _timer)
+        {
+            //
+            Battle_timers[0] -= _timer;
+            if(Battle_timers[0] <= 0.0f)
+            {
+                Battle_timers[0] = 0.0f;
+
+                Basic_coroutinePhase = 10202;
+            }
+
+            Battle_loseTimer.text = (1 + (int)Battle_timers[0]).ToString();
         }
 
         #endregion

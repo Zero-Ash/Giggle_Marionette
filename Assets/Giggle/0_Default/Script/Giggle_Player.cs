@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.TextCore.Text;
+using Unity.VisualScripting;
 
 [Serializable]
 public class Giggle_Player : IDisposable
@@ -23,6 +24,7 @@ public class Giggle_Player : IDisposable
         Formation_Contructor();
         Item_Contructor();
         Power_Contructor();
+        Dungeon_Contructor();
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -1602,6 +1604,7 @@ public class Giggle_Player : IDisposable
     ////////// Constructor & Destroyer  //////////
     void Formation_Contructor()
     {
+        // Formation_list
         if(Formation_list == null)
         {
             Formation_list = new List<Formation>();
@@ -1613,8 +1616,7 @@ public class Giggle_Player : IDisposable
         }
 
         //
-
-
+        //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT,              Formation_GetSelect             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_FORMATION_LIST,      Formation_GetFormationList      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION,    Formation_GetSelectFormation    );
@@ -1933,6 +1935,48 @@ public class Giggle_Player : IDisposable
         {
             Power_values.Add(0);
         }
+    }
+
+    #endregion
+
+    #region DUNGEON
+
+    [Header("DUNGEON ==================================================")]
+    [SerializeField] Formation  Dungeon_formation;
+
+    ////////// Getter & Setter          //////////
+
+    object Dungeon_GetSelectFormation(params object[] _args)
+    {
+        //
+        return Dungeon_formation.Basic_VarFormation;
+    }
+
+    ////////// Method                   //////////
+    
+    object Dungeon_FormationSetting(params object[] _args)
+    {
+        int id          = (int)_args[0];
+        int formation   = (int)_args[1];
+
+        //
+        Dungeon_formation.Basic_Setting(id, formation);
+
+        //
+        return true;
+    }
+
+    ////////// Constructor & Destroyer  //////////
+    void Dungeon_Contructor()
+    {
+        // Dungeon_formation
+        Dungeon_formation = new Formation();
+
+        //
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__DUNGEON__GET_FORMATION,     Dungeon_GetSelectFormation  );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__DUNGEON__FORMATION_SETTING, Dungeon_FormationSetting    );
     }
 
     #endregion

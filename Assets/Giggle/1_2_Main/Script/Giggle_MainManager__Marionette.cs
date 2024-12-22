@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class Giggle_MainManager__Marionette : MonoBehaviour
 {
+    #region BASIC
+
     [SerializeField] GameObject Basic_back;
     [SerializeField] GameObject Basic_ui;
     [SerializeField] RectTransform  Basic_safeArea;
@@ -24,37 +26,11 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public void Basic_BtnClick(GameObject _obj)
     {
         string[] names = _obj.name.Split('/');
-        switch(names[2])
+        switch(names[2].Split('_')[0])
         {
             case "CLOSE":       { Basic_BtnClose();                                 }   break;
             case "MENU_BAR":    { BasicArea1_BtnSelectMenu(int.Parse(names[3]));    }   break;
-            //
-            case "FORMATION__PRESET":       { Formation_BtnPreset(      int.Parse(names[3]));   }   break;
-            case "FORMATION__TILE":         { Formation_BtnTile(        int.Parse(names[3]));   }   break;
-            case "FORMATION__MENU_BAR":     { Formation_BtnMenuBar(     int.Parse(names[3]));   }   break;
-            case "FORMATION__SCROLL_VIEW":  { Formation_BtnScrollView(  int.Parse(names[3]));   }   break;
-            //
-            case "MARIONETTE__MENU_BAR":        { Marionette_BtnMenuBar(int.Parse(names[3]));       }   break;
-            case "MARIONETTE__SCROLL_VIEW":     { Marionette_BtnScrollView(int.Parse(names[3]));    }   break;
-            case "MARIONETTE__INFO_BACK":       { Marionette_BtnInfoBack();                         }   break;
-            case "MARIONETTE__INFO_LEVEL_UP":   { Marionette_BtnInfoLevelUp();                      }   break;
-            //
-            case "CONSTELLATION__LIST":                     { Constellation_PopUpOn(names[2]);                              }   break;
-            case "CONSTELLATION__STAR":                     { Constellation_BtnStar(int.Parse(names[3]));                   }   break;
-            case "CONSTELLATION__POP_UP_LIST__MENU_BAR":    { Constellation_PopUpList_BtnMenuBar(int.Parse(names[3]));      }   break;
-            case "CONSTELLATION__POP_UP_LIST__SCROLL_VIEW": { Constellation_PopUpList_BtnScrollView(int.Parse(names[3]));   }   break;
-            case "CONSTELLATION__POP_UP_STAR__CLOSE":       { Constellation_PopUp_BtnClose();                               }   break;
-            //
-            case "CARD__MARIONETTE_LIST":                       { Card_PopUpOn(names[2]);                                       }   break;
-            case "CARD__CARD_LIST":                             { Card_PopUpOnCardList(int.Parse(names[3]));                    }   break;
-            case "CARD__POP_UP_CARD_LIST__SCROLL_VIEW":         { Card_PopUpCardList_BtnScrollView(int.Parse(names[3]));        }   break;
-            case "CARD__POP_UP_MARIONETTE_LIST__MENU_BAR":      { Card_PopUpMarionetteList_BtnMenuBar(int.Parse(names[3]));     }   break;
-            case "CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW":   { Card_PopUpMarionetteList_BtnScrollView(int.Parse(names[3]));  }   break;
-            //
-            case "ITEM__MENU_BAR":      { Item_BtnMenuBar(int.Parse(names[3]));     }   break;
-            case "ITEM__SCROLL_VIEW":   { Item_BtnScrollView(int.Parse(names[3]));  }   break;
-            case "ITEM__INFO_BACK":     { Item_BtnInfoBack();                       }   break;
-            //case "ITEM__INFO_LEVEL_UP": { Marionette_BtnInfoLevelUp();              }   break;
+            default:            { Basic_BtnClick__Default(names);                   }   break;
         }
     }
 
@@ -70,6 +46,18 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void BasicArea1_BtnSelectMenu(int _count)
     {
         BasicArea1_menuBar.Basic_SelectMenu(_count);
+    }
+
+    void Basic_BtnClick__Default(string[] _names)
+    {
+        switch(_names[2].Split('_')[0])
+        {
+            case "FORMATION":       { Formation_BtnClick(_names);       }   break;
+            case "MARIONETTE":      { Marionette_BtnClick(_names);      }   break;
+            case "CONSTELLATION":   { Constellation_BtnClick(_names);   }   break;
+            case "CARD":            { Card_BtnClick(_names);            }   break;
+            case "ITEM":            { Item_BtnClick(_names);            }   break;
+        }
     }
 
     // Basic_Active
@@ -123,10 +111,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
         
         BasicArea1_menuBar.Basic_Init();
-        for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
-        {
-            BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/BALCK_SMITH/MENU_BAR/" + for0.ToString();
-        }
         
         Formation_Start();
         Marionette_Start();
@@ -134,6 +118,8 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Card_Start();
         Item_Start();
     }
+
+    #endregion
 
     #region FORMATION
 
@@ -159,6 +145,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         {
             Basic_uiData = _uiData;
             Basic_Init();
+            for(int for0 = 0; for0 < Basic_list.Count; for0++)
+            {
+                Basic_GetListBtn(for0).name = "Button/MARIONETTE/FORMATION__MENU_BAR/" + for0.ToString();
+            }
         }
     }
 
@@ -290,10 +280,32 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
     }
 
+    [Serializable]
+    public class Formation_Formation : Giggle_UI.Formation
+    {
+        [Header("==================================================")]
+        [Header("BASIC ==================================================")]
+        [SerializeField] Giggle_MainManager__Marionette Basic_manager;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        protected override void Basic_Reset__PVE()
+        {
+            base.Basic_Reset__PVE();
+            Basic_manager.Formation_Reset();
+        }
+
+
+        ////////// Constructor & Destroyer  //////////
+        
+
+    }
+
     [Header("FORMATION ==========")]
     // Area2
-    [SerializeField] Transform       Formation_parent;
-    [SerializeField] List<Transform> Formation_list;
+    [SerializeField] Formation_Formation    Formation_formation;
     
     // Area3
     [SerializeField] ScrollerView_MenuBar__Formation    Formation_scrollViewMenuBar;
@@ -311,113 +323,65 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public ScrollView_Formation Formation_VarScrollView { get { return Formation_scrollView;    }   }
 
     ////////// Method                   //////////
-    void Formation_BtnPreset(int _count)
+    void Formation_BtnClick(string[] _names)
+    {
+        switch(_names[2])
+        {
+            case "FORMATION__PRESET":       { Formation_BtnClick__Preset(       int.Parse(_names[3]));  }   break;
+            case "FORMATION__TILE":         { Formation_BtnClick__Tile(         int.Parse(_names[3]));  }   break;
+            case "FORMATION__MENU_BAR":     { Formation_BtnClick__MenuBar(      int.Parse(_names[3]));  }   break;
+            case "FORMATION__SCROLL_VIEW":  { Formation_BtnClick__ScrollView(   int.Parse(_names[3]));  }   break;
+        }
+    }
+
+    void Formation_BtnClick__Preset(int _count)
     {
         //Marionette_formationSelect = _count;
 
         Formation_Reset();
     }
 
-    // Formation_BtnTile
-    void Formation_BtnTile(int _count)
+    // Formation_BtnClick__Tile
+    void Formation_BtnClick__Tile(int _count)
     {
-        if(_count == -1)
-        {
-            Formation_BtnTile__TileSelect(-1);
-        }
-        else
-        {
-            switch(Formation_selectMarionette)
-            {
-                case -1:    { Formation_BtnTile__Tile(_count);      }   break;
-                default:    { Formation_BtnTile__Change(_count);    }   break;
-            }
-        }
-    }
+        int selectMarionette = -1;
+        if(Formation_selectMarionette != -1)    { selectMarionette = Formation_marionetteList[Formation_selectMarionette];  }
 
-    void Formation_BtnTile__Tile(int _count)
-    {
-        switch(Formation_selectFormation)
-        {
-            case -1:    { Formation_BtnTile__TileSelect(_count);    }   break;
-            default:    { Formation_BtnTile__TileChange(_count);    }   break;
-        }
-    }
-
-    void Formation_BtnTile__TileSelect(int _count)
-    {
-        for (int for0 = 0; for0 < Formation_list.Count; for0++)
-        {
-            Formation_list[for0].Find("Select").gameObject.SetActive(for0.Equals(_count));
-        }
-
-        //
-        Formation_selectFormation = _count;
-    }
-
-    void Formation_BtnTile__TileChange(int _count)
-    {
-        List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
-
-        if(!formation[_count].Equals(-2))
-        {
-            //
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-                formation[Formation_selectFormation], _count);
-
-            // UI갱신
-            Formation_Reset();
-        }
-    }
-
-    void Formation_BtnTile__Change(int _count)
-    {
-        List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
-
-        if(!formation[_count].Equals(-2))
-        {
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-                Formation_marionetteList[Formation_selectMarionette], _count);
-
-            // UI갱신
-            Formation_Reset();
-        }
+        Formation_formation.UI_BtnClick__Tile(_count, selectMarionette);
     }
 
     // 
-    void Formation_BtnMenuBar(int _count)
+    void Formation_BtnClick__MenuBar(int _count)
     {
         Formation_scrollViewMenuBar.Basic_SelectMenu(_count);
     }
 
-    //
-    void Formation_BtnScrollView(int _count)
+    // Formation_BtnClick__ScrollView
+    void Formation_BtnClick__ScrollView(int _count)
     {
         if(_count == -1)
         {
-            Formation_BtnScrollView__Select(-1);
+            Formation_BtnClick__ScrollView__Select(-1);
         }
         else
         {
             //
-            switch(Formation_selectFormation)
+            switch(Formation_formation.UI_VarSelectFormation)
             {
-                case -1:    { Formation_BtnScrollView__Select(_count);  }   break;
-                default:    { Formation_BtnScrollView__Change(_count);  }   break;
+                case -1:    { Formation_BtnClick__ScrollView__Select(_count);   }   break;
+                default:    { Formation_BtnClick__ScrollView__Change(_count);   }   break;
             }
         }
     }
 
-    void Formation_BtnScrollView__Select(int _count)
+    void Formation_BtnClick__ScrollView__Select(int _count)
     {
         Formation_scrollView.Basic_ClickBtn(_count);
 
         Formation_selectMarionette = _count;
     }
 
-    void Formation_BtnScrollView__Change(int _count)
+    void Formation_BtnClick__ScrollView__Change(int _count)
     {
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
             Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
@@ -463,12 +427,13 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     {
         //
         Formation_Reset();
+        Formation_formation.Basic_Reset();
 
-        Formation_BtnMenuBar(0);
+        Formation_BtnClick__MenuBar(0);
     }
 
     //
-    void Formation_Reset()
+    public void Formation_Reset()
     {
         Formation_marionetteList.Clear();
 
@@ -482,52 +447,11 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         }
 
         //
-        Formation_BtnScrollView(-1);
+        Formation_BtnClick__ScrollView(-1);
         Formation_scrollView.Basic_CheckCover();
-        Formation_BtnTile(-1);
+        //Formation_BtnClick__Tile(-1);
 
-        List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
-        // 타일 처리
-        for(int for0 = 0; for0 < Formation_list.Count; for0++)
-        {
-            // 기존 마리오네트 모델링 날리기
-            while(Formation_list[for0].Find("Obj").childCount > 0)
-            {
-                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.MASTER__GARBAGE__REMOVE,
-                    Formation_list[for0].Find("Obj").GetChild(0));
-            }
-
-            // 배치된 모델링이 있다면 모델링 배치
-            int tileId = formation[for0];
-            if(!tileId.Equals(-1))
-            {
-                // 주인공
-                if(tileId.Equals(-2))
-                {
-                    Giggle_Character.Save pinocchioData
-                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_DATA);
-                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
-                        //
-                        pinocchioData.Basic_VarDataId,
-                        Formation_list[for0].Find("Obj"), -90.0f, 300.0f);
-                }
-                else
-                {
-                    Giggle_Character.Save data
-                        = (Giggle_Character.Save)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                            Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
-                            tileId);
-                    Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
-                        //
-                        data.Basic_VarDataId,
-                        Formation_list[for0].Find("Obj"), -90.0f, 300.0f);
-                }
-            }
-        }
+        //Formation_formation.Basic_Reset();
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -535,46 +459,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void Formation_Start()
     {
         // Area2
-        if(Formation_list == null)
-        {
-            Formation_list = new List<Transform>();
-        }
-
-        int whileCount = 0;
-        while(whileCount < Formation_parent.childCount)
-        {
-            Transform for0Child = Formation_parent.GetChild(whileCount);
-            for(int for0 = 0; for0 < for0Child.childCount; for0++)
-            {
-                Formation_list.Add(for0Child.GetChild(for0));
-            }
-
-            whileCount++;
-        }
-
-        whileCount = 0;
-        while(whileCount < Formation_list.Count)
-        {
-            for(int for0 = whileCount; for0 < Formation_list.Count; for0++)
-            {
-                Transform element = Formation_list[for0];
-                if(element.name.Equals(whileCount.ToString()))
-                {
-                    element.Find("Button").name = "Button/MARIONETTE/FORMATION__TILE/" + whileCount;
-                    Formation_list.RemoveAt(for0);
-                    Formation_list.Insert(whileCount, element);
-                }
-            }
-
-            whileCount++;
-        }
+        Formation_formation.Basic_Init();
 
         // Area3
         Formation_scrollViewMenuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < Formation_scrollViewMenuBar.Basic_VarListCount; for0++)
-        {
-            Formation_scrollViewMenuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/FORMATION__MENU_BAR/" + for0.ToString();
-        }
 
         Formation_scrollView.Basic_Init(this);
 
@@ -766,14 +654,25 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public ScrollView_Marionette    Marionette_VarScrollView    { get { return Marionette_scrollView;   }   }
 
     ////////// Method                   //////////
+    void Marionette_BtnClick(string[] _names)
+    {
+        switch(_names[2])
+        {
+            case "MARIONETTE__MENU_BAR":        { Marionette_BtnClick__MenuBar(int.Parse(_names[3]));       }   break;
+            case "MARIONETTE__SCROLL_VIEW":     { Marionette_BtnClick__ScrollView(int.Parse(_names[3]));    }   break;
+            case "MARIONETTE__INFO_BACK":       { Marionette_BtnClick__InfoBack();                          }   break;
+            case "MARIONETTE__INFO_LEVEL_UP":   { Marionette_BtnClick__InfoLevelUp();                       }   break;
+        }
+    }
+
     //
-    void Marionette_BtnMenuBar(int _count)
+    void Marionette_BtnClick__MenuBar(int _count)
     {
         Marionette_scrollViewMenuBar.Basic_SelectMenu(_count);
     }
 
     //
-    void Marionette_BtnScrollView(int _count)
+    void Marionette_BtnClick__ScrollView(int _count)
     {
         Marionette_scrollView.Basic_ClickBtn(_count);
 
@@ -803,8 +702,8 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
             Mationette_infoBasic.Find("Attribute").GetComponent<TextMeshProUGUI>().text = database.Basic_VarAttribute.ToString();
 
             // Info Area3
-            Marionette_BtnScrollView__Status(Mationette_infoStatusNow, database.Basic_GetStatusList(data.Basic_VarLevel));
-            Marionette_BtnScrollView__Status(Mationette_infoStatusNext, database.Basic_GetStatusList(data.Basic_VarLevel + 1));
+            Marionette_BtnClick__ScrollView__Status(Mationette_infoStatusNow, database.Basic_GetStatusList(data.Basic_VarLevel));
+            Marionette_BtnClick__ScrollView__Status(Mationette_infoStatusNext, database.Basic_GetStatusList(data.Basic_VarLevel + 1));
 
             //
             Marionette_scrollView.Basic_VarContent.gameObject.SetActive(false);
@@ -812,7 +711,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         }
     }
 
-    void Marionette_BtnScrollView__Status(Transform _trans, Giggle_Character.Status _status)
+    void Marionette_BtnClick__ScrollView__Status(Transform _trans, Giggle_Character.Status _status)
     {
         _trans.localPosition = Vector3.zero;
 
@@ -863,16 +762,16 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     }
 
     //
-    void Marionette_BtnInfoBack()
+    void Marionette_BtnClick__InfoBack()
     {
-        Marionette_BtnScrollView(-1);
+        Marionette_BtnClick__ScrollView(-1);
 
         Marionette_scrollView.Basic_VarContent.gameObject.SetActive(true);
         Marionette_infoParent.SetActive(false);
     }
 
     //
-    void Marionette_BtnInfoLevelUp()
+    void Marionette_BtnClick__InfoLevelUp()
     {
         // TODO: 재화는 나중에 지불하기로
         Giggle_Character.Save data
@@ -883,7 +782,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         data.Basic_VarLevel += 1;
         
         // UI 갱신
-        Marionette_BtnScrollView(Marionette_selectMarionette);
+        Marionette_BtnClick__ScrollView(Marionette_selectMarionette);
     }
 
     //
@@ -892,7 +791,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         //
         //Formation_Reset();
 
-        Marionette_BtnMenuBar(0);
+        Marionette_BtnClick__MenuBar(0);
     }
 
     //
@@ -1139,7 +1038,20 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public ScrollView_Constellation Constellation_PopUpList_VarScrollView   { get { return Contellation__popUpList_scrollView;  }   }
     
     ////////// Method                   //////////
-    void Constellation_BtnStar(int _count)
+    void Constellation_BtnClick(string[] _names)
+    {
+        switch(_names[2])
+        {
+            case "CONSTELLATION__LIST":                     { Constellation_BtnClick__PopUpOn(_names[2]);                           }   break;
+            case "CONSTELLATION__STAR":                     { Constellation_BtnClick__Star(int.Parse(_names[3]));                   }   break;
+            case "CONSTELLATION__POP_UP_LIST__MENU_BAR":    { Constellation_BtnClick__PopUpList_MenuBar(int.Parse(_names[3]));      }   break;
+            case "CONSTELLATION__POP_UP_LIST__SCROLL_VIEW": { Constellation_BtnClick__PopUpList_ScrollView(int.Parse(_names[3]));   }   break;
+            case "CONSTELLATION__POP_UP_STAR__CLOSE":       { Constellation_BtnClick__PopUp_Close();                                }   break;
+        }
+    }
+
+    //
+    void Constellation_BtnClick__Star(int _count)
     {
         Contellation_selectStar = _count;
 
@@ -1159,11 +1071,11 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Contellation__popUpStar_infoName.text = constellationData.Basic_GetValueData(Contellation_selectStar).Basic_VarName;
         Contellation__popUpStar_infoLevel.text = "Lv. " + data.Basic_GetConstellationLv(Contellation_selectStar);
 
-        Constellation_PopUpOn("CONSTELLATION__STAR");
+        Constellation_BtnClick__PopUpOn("CONSTELLATION__STAR");
     }
 
     //
-    void Constellation_PopUpOn(string _name)
+    void Constellation_BtnClick__PopUpOn(string _name)
     {
         Contellation_popUp.SetActive(true);
         //
@@ -1174,21 +1086,15 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Contellation_popUp.transform.Find(_name).gameObject.SetActive(true);
     }
 
-    //
-    void Constellation_PopUp_BtnClose()
-    {
-        Contellation_popUp.SetActive(false);
-    }
-
-    //
-    void Constellation_PopUpList_BtnMenuBar(int _count)
+    // Constellation_BtnClick__PopUpList
+    void Constellation_BtnClick__PopUpList_MenuBar(int _count)
     {
         Contellation__popUpList_scrollViewMenuBar.Basic_SelectMenu(_count);
         Constellation_SelectTypeFormList(0);
     }
 
     //
-    void Constellation_PopUpList_BtnScrollView(int _count)
+    void Constellation_BtnClick__PopUpList_ScrollView(int _count)
     {
         //
         Contellation_selectMarionette = _count;
@@ -1254,9 +1160,15 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     }
 
     //
+    void Constellation_BtnClick__PopUp_Close()
+    {
+        Contellation_popUp.SetActive(false);
+    }
+
+    //
     void Constellation_Active()
     {
-        Constellation_PopUpList_BtnMenuBar(0);
+        Constellation_BtnClick__PopUpList_MenuBar(0);
     }
 
     //
@@ -1763,9 +1675,20 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public List<int>    Card_VarCardList    { get { return Card_cardList;   }   }
 
     ////////// Method                   //////////
+    void Card_BtnClick(string[] _names)
+    {
+        switch(_names[2])
+        {
+            case "CARD__MARIONETTE_LIST":                       { Card_BtnClick__PopUpOn(_names[2]);                                    }   break;
+            case "CARD__CARD_LIST":                             { Card_BtnClick__PopUpOnCardList(int.Parse(_names[3]));                 }   break;
+            case "CARD__POP_UP_CARD_LIST__SCROLL_VIEW":         { Card_BtnClick__PopUpCardList_ScrollView(int.Parse(_names[3]));        }   break;
+            case "CARD__POP_UP_MARIONETTE_LIST__MENU_BAR":      { Card_BtnClick__PopUpMarionetteList_MenuBar(int.Parse(_names[3]));     }   break;
+            case "CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW":   { Card_BtnClick__PopUpMarionetteList_ScrollView(int.Parse(_names[3]));  }   break;
+        }
+    }
 
     //
-    void Card_PopUpOn(string _name)
+    void Card_BtnClick__PopUpOn(string _name)
     {
         Card_popUp.SetActive(true);
         //
@@ -1776,16 +1699,16 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Card_popUp.transform.Find(_name).gameObject.SetActive(true);
     }
 
-    void Card_PopUpOnCardList(int _slot)
+    void Card_BtnClick__PopUpOnCardList(int _slot)
     {
         Card_selectCardSlot = _slot;
 
         Card__popUpCardList_scrollView.Basic_SelectMenuBar(0);
-        Card_PopUpOn("CARD__CARD_LIST");
+        Card_BtnClick__PopUpOn("CARD__CARD_LIST");
     }
 
     //
-    void Card_PopUpCardList_BtnScrollView(int _count)
+    void Card_BtnClick__PopUpCardList_ScrollView(int _count)
     {
         Giggle_Item.Inventory data
             = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
@@ -1806,14 +1729,14 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     }
 
     //
-    void Card_PopUpMarionetteList_BtnMenuBar(int _count)
+    void Card_BtnClick__PopUpMarionetteList_MenuBar(int _count)
     {
         Card__popUpMarionetteList_scrollViewMenuBar.Basic_SelectMenu(_count);
         Card_SelectTypeFormList(0);
     }
 
     //
-    void Card_PopUpMarionetteList_BtnScrollView(int _count)
+    void Card_BtnClick__PopUpMarionetteList_ScrollView(int _count)
     {
         //
         Card_selectMarionette = _count;
@@ -1839,7 +1762,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Card_Active()
     {
-        Card_PopUpMarionetteList_BtnMenuBar(0);
+        Card_BtnClick__PopUpMarionetteList_MenuBar(0);
     }
 
     //
@@ -2093,6 +2016,16 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     public ScrollView_Item  Item_VarScrollView  { get { return Item_scrollView; }   }
 
     ////////// Method                   //////////
+    void Item_BtnClick(string[] _names)
+    {
+        switch(_names[2])
+        {
+            case "ITEM__MENU_BAR":      { Item_BtnMenuBar(int.Parse(_names[3]));    }   break;
+            case "ITEM__SCROLL_VIEW":   { Item_BtnScrollView(int.Parse(_names[3])); }   break;
+            case "ITEM__INFO_BACK":     { Item_BtnInfoBack();                       }   break;
+            //case "ITEM__INFO_LEVEL_UP": { Marionette_BtnInfoLevelUp();              }   break;
+        }
+    }
     //
     void Item_BtnMenuBar(int _count)
     {
