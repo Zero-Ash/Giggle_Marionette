@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Spine.Unity;
 
 public class Giggle_Unit : MonoBehaviour
 {
@@ -394,8 +395,14 @@ public class Giggle_Unit : MonoBehaviour
     {
         Active_timer += _deltaTime;
 
+        // 모션 타임 세팅
         Model_SetMotionTime("attack");
+        if(Model_motionTime == 0.0f)
+        {
+            Model_SetMotionTime("Attack");
+        }
         
+        // 모션 타임 설정되면 다음으로 넘기기
         if(Model_motionTime > 0.0f)
         {
             Active_phase = Active_PHASE.ATTACK_DOING;
@@ -406,7 +413,7 @@ public class Giggle_Unit : MonoBehaviour
     {
         Active_timer += _deltaTime;
 
-        if(Model_VarMotionName.Equals("attack"))
+        if(Model_VarMotionName.Equals("attack") || Model_VarMotionName.Equals("Attack"))
         {
             switch(Model_motionPhase)
             {
@@ -506,6 +513,10 @@ public class Giggle_Unit : MonoBehaviour
         }
 
         Model_animator.SetFloat( "MotionTimer", Model_motionTime * Active_timer / Active_time );
+        if(Model_animator.GetComponent<SkeletonMecanim>() != null)
+        {
+            Model_animator.Play("ATTACK", 0, Active_timer / Active_time);
+        }
 
         #region 1안
         //Active_timer += _deltaTime;
@@ -561,6 +572,7 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] Animator   Model_animator;
     [SerializeField] float  Model_motionTime;
     [SerializeField] int    Model_motionPhase;
+    [SerializeField] bool   Model_isSpine;
 
     ////////// Getter & Setter  //////////
     string Model_VarMotionName
@@ -574,8 +586,15 @@ public class Giggle_Unit : MonoBehaviour
             {
                 if(clipInfo.Length > 0)
                 {
-                    string[] names = clipInfo[0].clip.name.Split('_');
-                    res = names[names.Length - 1];
+                    if(Model_isSpine)
+                    {
+                        res = clipInfo[0].clip.name;
+                    }
+                    else
+                    {
+                        string[] names = clipInfo[0].clip.name.Split('_');
+                        res = names[names.Length - 1];
+                    }
                 }
             }
 
@@ -593,11 +612,11 @@ public class Giggle_Unit : MonoBehaviour
 
     void Model_SetMotionTime(string _motionName)
     {
-        Model_motionTime = 1.0f;
+        Model_motionTime = 0.0f;
 
         if(Model_VarMotionName.Equals(_motionName))
         {
-            //Model_motionTime = Model_animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+            Model_motionTime = Model_animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
         }
     }
 

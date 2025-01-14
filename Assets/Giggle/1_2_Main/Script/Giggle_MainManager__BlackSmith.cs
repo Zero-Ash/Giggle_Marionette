@@ -192,7 +192,7 @@ public class Giggle_MainManager__BlackSmith : MonoBehaviour
         BasicArea1_menuBar.Basic_Init();
         for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
         {
-            BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/MENU_BAR/" + for0.ToString();
+            BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/BLACK_SMITH/MENU_BAR/" + for0.ToString();
         }
 
         Weapon_Start();

@@ -386,6 +386,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 case "EXMENU__CLOSE":           { Area4_exMenu.SetActive(false);    }   break;
                 case "EXMENU__BLACK_SMITH":     { Area4_BtnClick__BlackSmith();     }   break;
                 case "EXMENU__DUNGEON":         { Area4_BtnClick__Dungeon();        }   break;
+                case "EXMENU__DOCUMENT":        { Area4_BtnClick__Document();       }   break;
                 case "EXMENU__POWER_SAVING":    { Area4_BtnClick__PowerSaving();    }   break;
                 
                 case "INVENTORY_OPEN":  { Area4_BtnClick__InventoryOpen();  }   break;
@@ -407,6 +408,14 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             Area4_exMenu.SetActive(false);
 
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.DUNGEON    );
+        }
+
+        // Area4_BtnClick__BlackSmith
+        void Area4_BtnClick__Document()
+        {
+            Area4_exMenu.SetActive(false);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.DOCUMENT   );
         }
 
         // Area4_BtnClick__PowerSaving
@@ -983,6 +992,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             {
                 Basic_background.SetActive(false);
 
+                Debug.Log(_list.Count);
                 // TODO:나중에 가챠 조건이 생기면 여기에 기입합시다.
                 Basic_character = _list[UnityEngine.Random.Range(0, _list.Count)];
 
@@ -1088,7 +1098,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         void Gacha_BtnClick__CHARACTER(string _num)
         {
             Gacha_select = int.Parse(_num);
-            Gacha_selectBtn.SetActive(true);
+            Gacha_selectBtn.SetActive(!Gacha_select.Equals(-1));
 
             //
             for(int for0 = 0; for0 < Gacha_list.Count; for0++)
@@ -1126,9 +1136,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         void Gacha_Gacha()
         {
-            Gacha_select = -1;
-            Gacha_selectBtn.SetActive(false);
-
+            Gacha_BtnClick__CHARACTER("-1");
+            
             // 가챠 리스트 불러오기
             List<Giggle_Character.Database> list
                 = (List<Giggle_Character.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(

@@ -136,7 +136,7 @@ public class Giggle_DungeonManager : Giggle_SceneManager
             Formation_Init();
 
             //
-            _phase = 100;
+            _phase = -1;
         }
 
         #endregion

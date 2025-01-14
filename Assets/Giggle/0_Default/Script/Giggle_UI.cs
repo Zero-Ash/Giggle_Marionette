@@ -54,7 +54,7 @@ namespace Giggle_UI
 
             for(int for0 = 0; for0 < Basic_VarListCount; for0++)
             {
-                Basic_GetListBtn(for0).name = "Button/BALCK_SMITH/MENU_BAR/" + for0.ToString();
+                Basic_GetListBtn(for0).name = "Button/BASIC/MENU_BAR/" + for0.ToString();
             }
         }
 

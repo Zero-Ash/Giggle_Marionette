@@ -85,7 +85,6 @@ public class Giggle_Battle : IDisposable
     {
         if(Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON))
         {
-            Debug.Log((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__POWER_SAVING__GET_IS_ON));
             Formation_PowerSaving();
             Bullet_PowerSaving();
             Effect_PowerSaving();
@@ -783,7 +782,7 @@ public class Giggle_Battle : IDisposable
 
             List<int> attributeCount = new List<int>();
             attributeCount.Clear();
-            while(attributeCount.Count < (int)Giggle_Character.ATTRIBUTE.TOTAL)
+            while(attributeCount.Count < (int)Giggle_Master.ATTRIBUTE.TOTAL)
             {
                 attributeCount.Add(0);
             }
@@ -802,7 +801,7 @@ public class Giggle_Battle : IDisposable
             int max = 0;
             int count = 0;
 
-            for (int for0 = 0; for0 <= (int)Giggle_Character.ATTRIBUTE.EARTH; for0++)
+            for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
             {
                 if(attributeCount[for0] > max)
                 {
@@ -813,7 +812,7 @@ public class Giggle_Battle : IDisposable
 
             attributeCount[count] = 0;
             // 빛 속성 가중치
-            max += (int)Giggle_Character.ATTRIBUTE.LIGHT;
+            max += (int)Giggle_Master.ATTRIBUTE.LIGHT;
 
             switch(max)
             {
@@ -822,7 +821,7 @@ public class Giggle_Battle : IDisposable
                         max = 0;
                         count = 0;
 
-                        for (int for0 = 0; for0 <= (int)Giggle_Character.ATTRIBUTE.EARTH; for0++)
+                        for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
                         {
                             if(attributeCount[for0] > max)
                             {
@@ -834,23 +833,23 @@ public class Giggle_Battle : IDisposable
                         // i. 동일 속성 4명
                         if(max < 2)
                         {
-                            Basic_buff.Basic_FormationBounsSetting(1, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                            Basic_buff.Basic_FormationBounsSetting(1, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                         }
                         // ii. 동일 속성 4명, 다른 속성 2명
                         else
                         {
-                            Basic_buff.Basic_FormationBounsSetting(2, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                            Basic_buff.Basic_FormationBounsSetting(2, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                         }
                     }
                     break;
                 case 5:
                     {
-                        Basic_buff.Basic_FormationBounsSetting(3, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                        Basic_buff.Basic_FormationBounsSetting(3, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                     }
                     break;
                 case 6:
                     {
-                        Basic_buff.Basic_FormationBounsSetting(4, attributeCount[(int)Giggle_Character.ATTRIBUTE.DARK]);
+                        Basic_buff.Basic_FormationBounsSetting(4, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                     }
                     break;
             }

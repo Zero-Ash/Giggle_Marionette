@@ -12,21 +12,6 @@ namespace Giggle_Character
         THROWING_STAR,
         STAFF
     }
-
-    public enum ATTRIBUTE
-    {
-        NONE = 0,
-
-        //
-        FIRE = 1,
-        WATER,
-        WIND,
-        EARTH,
-        DARK,
-        LIGHT,
-
-        TOTAL
-    }
     
     public enum CATEGORY
     {
@@ -755,13 +740,16 @@ namespace Giggle_Character
         [SerializeField] Giggle_Unit    Basic_unit;
         [SerializeField] List<Status>   Basic_statusList;
 
-        [SerializeField] protected ATTRIBUTE    Basic_attribute;
-        [SerializeField] protected TYPE         Basic_type;
-        [SerializeField] protected CATEGORY     Basic_category;
+        [SerializeField] protected Giggle_Master.ATTRIBUTE  Basic_attribute;
+        [SerializeField] protected TYPE                     Basic_type;
+        [SerializeField] protected CATEGORY                 Basic_category;
 
         [SerializeField] int    Basic_mana;
         [SerializeField] int    Basic_manaAttackRecovery;
         [SerializeField] int    Basic_manaHitRecovery;
+
+        [SerializeField] Transform  Basic_ld;
+        [SerializeField] Transform  Basic_sd;
 
         ////////// Getter & Setter          //////////
         // Basic_id
@@ -799,7 +787,10 @@ namespace Giggle_Character
         }
 
         //
-        public ATTRIBUTE    Basic_VarAttribute  { get { return Basic_attribute; }   }
+        public Giggle_Master.ATTRIBUTE  Basic_VarAttribute  { get { return Basic_attribute; }   }
+
+        //
+        public TYPE Basic_VarType   { get { return Basic_type;  }   }
 
         //
         public CATEGORY     Basic_VarCategory   { get { return Basic_category;  }   }
@@ -808,6 +799,10 @@ namespace Giggle_Character
 
         public virtual int  Basic_VarConstellation  { get { return -1;  }   }
 
+        //
+        public Transform    Basic_VarLd { get { return Basic_ld;    } set { Basic_ld = value;   }   }
+
+        public Transform    Basic_VarSd { get { return Basic_sd;    } set { Basic_sd = value;   }   }
 
         ////////// Method                   //////////
 
@@ -826,7 +821,14 @@ namespace Giggle_Character
 
             Basic_Constructor();
             
-            Basic_attribute = ATTRIBUTE.NONE;
+            if(_data.ContainsKey("cha_attribute"))
+            {
+                Basic_attribute = (Giggle_Master.ATTRIBUTE)Enum.Parse(typeof(Giggle_Master.ATTRIBUTE), _data["cha_attribute"]);
+            }
+            else
+            {
+                Basic_attribute = Giggle_Master.ATTRIBUTE.NONE;
+            }
             Basic_type      = TYPE.SWORD;
             Basic_category  = CATEGORY.ATTACK;
 
@@ -863,7 +865,7 @@ namespace Giggle_Character
         ////////// Constructor & Destroyer  //////////
         public Database_Marionette(Dictionary<string, string> _data) : base(_data)
         {
-            Basic_attribute = (ATTRIBUTE)int.Parse(_data["cha_attribute"]);
+            Basic_attribute = (Giggle_Master.ATTRIBUTE)int.Parse(_data["cha_attribute"]);
             Basic_type      = (TYPE)int.Parse(_data["cha_type"]);
             Basic_category  = (CATEGORY)int.Parse(_data["cha_category"]);
 

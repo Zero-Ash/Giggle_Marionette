@@ -65,6 +65,8 @@ public class Giggle_Database : IDisposable
         [SerializeField] List<Giggle_Character.Database> Basic_characters;
 
         ////////// Getter & Setter          //////////
+        public List<Giggle_Character.Database>  Basic_VarDatas  { get{ return Basic_characters; }   }
+
         public Giggle_Character.Database Basic_GetDataFromId(int _id)
         {
             Giggle_Character.Database res = null;
@@ -804,6 +806,56 @@ public class Giggle_Database : IDisposable
         return Marionette_isOpen;
     }
 
+    // Marionette_data
+
+    object Marionette_GetDatas(params object[] _args)   { return Marionette_data.Basic_VarDatas;    }
+
+    object Marionette_GetDatasFromAttribute(params object[] _args)
+    {
+        List<Giggle_Character.Database> res = new List<Giggle_Character.Database>();
+
+        //
+        string[] attributes = ((string)_args[0]).Split('|');
+        for(int for0 = 0; for0 < attributes.Length; for0++)
+        {
+            Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)Enum.Parse(typeof(Giggle_Master.ATTRIBUTE), attributes[for0]);
+            for(int for1 = 0; for1 < Marionette_data.Basic_VarCount; for1++)
+            {
+                Giggle_Character.Database data = Marionette_data.Basic_GetDataFromCount(for1);
+                if(data.Basic_VarAttribute.Equals(attribute))
+                {
+                    res.Add(data);
+                }
+            }
+        }
+
+        //
+        return res;
+    }
+
+    object Marionette_GetDatasFromType(params object[] _args)
+    {
+        List<Giggle_Character.Database> res = new List<Giggle_Character.Database>();
+
+        //
+        string[] types = ((string)_args[0]).Split('|');
+        for(int for0 = 0; for0 < types.Length; for0++)
+        {
+            Giggle_Character.TYPE weaponType = (Giggle_Character.TYPE)Enum.Parse(typeof(Giggle_Character.TYPE), types[for0]);
+            for(int for1 = 0; for1 < Marionette_data.Basic_VarCount; for1++)
+            {
+                Giggle_Character.Database data = Marionette_data.Basic_GetDataFromCount(for1);
+                if(data.Basic_VarType.Equals(weaponType))
+                {
+                    res.Add(data);
+                }
+            }
+        }
+
+        //
+        return res;
+    }
+
     object Marionette_GetDataFromId(params object[] _args)
     {
         Giggle_Character.Database res = Character_empty;
@@ -831,29 +883,7 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
-    object Marionette_GetDatasFromAttribute(params object[] _args)
-    {
-        List<Giggle_Character.Database> res = new List<Giggle_Character.Database>();
-
-        //
-        string[] attributes = ((string)_args[0]).Split('|');
-        for(int for0 = 0; for0 < attributes.Length; for0++)
-        {
-            Giggle_Master.ATTRIBUTE attribute = (Giggle_Master.ATTRIBUTE)Enum.Parse(typeof(Giggle_Master.ATTRIBUTE), attributes[for0]);
-            for(int for1 = 0; for1 < Marionette_data.Basic_VarCount; for1++)
-            {
-                Giggle_Character.Database data = Marionette_data.Basic_GetDataFromCount(for1);
-                if(data.Basic_VarAttribute.Equals(attribute))
-                {
-                    res.Add(data);
-                }
-            }
-        }
-
-        //
-        return res;
-    }
-
+    // Marionette_skills
     object Marionette_GetSkillFromId(params object[] _args)
     {
         Giggle_Character.Skill res = null;
@@ -991,7 +1021,9 @@ public class Giggle_Database : IDisposable
                                 if(child.gameObject.activeSelf)
                                 {
                                     int id = int.Parse(child.name);
-                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit   = child.Find("UNIT").GetComponent<Giggle_Unit>();
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarLd     = child.Find("LD");
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarSd     = child.Find("SD");
                                 }
                             }
 
@@ -1229,8 +1261,10 @@ public class Giggle_Database : IDisposable
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN,  Marionette_GetIsOpen );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,                 Marionette_GetDataFromId                );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS,                        Marionette_GetDatas                     );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,         Marionette_GetDatasFromAttribute        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_TYPE,              Marionette_GetDatasFromType             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,                 Marionette_GetDataFromId                );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,                Marionette_GetSkillFromId               );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,        Marionette_GetConstellationFromId       );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_STAR_FROM_TYPE, Marionette_GetConstellationStarFromType );

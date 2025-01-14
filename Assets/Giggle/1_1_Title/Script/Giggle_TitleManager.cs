@@ -136,7 +136,8 @@ public class Giggle_TitleManager : Giggle_SceneManager
                 //case "OK":      { Title_BtnClick__LOG_IN(); }   break;
                 case "CANCEL":  { LogIn_BtnClick__CANCEL();     }   break;
                 //
-                case "SIGN_IN": { LogIn_BtnClick__SIGN_IN();    }   break;
+                case "SIGN_IN":     { LogIn_BtnClick__SIGN_IN();    }   break;
+                case "SIGN_OUT":    { LogIn_BtnClick__SIGN_OUT();   }   break;
             }
         }
 
@@ -159,6 +160,11 @@ public class Giggle_TitleManager : Giggle_SceneManager
                         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.MAIN   );
                     }
                 });
+        }
+
+        void LogIn_BtnClick__SIGN_OUT()
+        {
+            Backend.BMember.DeleteGuestInfo();
         }
 
         //

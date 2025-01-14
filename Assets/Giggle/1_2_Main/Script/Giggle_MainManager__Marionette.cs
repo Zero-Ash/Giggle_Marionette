@@ -28,9 +28,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         string[] names = _obj.name.Split('/');
         switch(names[2].Split('_')[0])
         {
-            case "CLOSE":       { Basic_BtnClose();                                 }   break;
-            case "MENU_BAR":    { BasicArea1_BtnSelectMenu(int.Parse(names[3]));    }   break;
-            default:            { Basic_BtnClick__Default(names);                   }   break;
+            case "CLOSE":   { Basic_BtnClose();                                 }   break;
+            case "MENU":    { BasicArea1_BtnSelectMenu(int.Parse(names[3]));    }   break;
+            default:        { Basic_BtnClick__Default(names);                   }   break;
         }
     }
 
@@ -132,14 +132,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
-        {
-            if(_for0.Equals(_count))
-            {
-                Basic_uiData.Formation_VarScrollView.Basic_SelectMenuBar(_count);
-            }
-        }
-
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
@@ -184,8 +176,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         // Basic_SelectMenuBar
         public void Basic_SelectMenuBar(int _count)
         {
-            Basic_uiData.Formation_SelectTypeFormList(_count);
-
             Basic_SelectMenuBar__Check();
 
             Basic_ClickBtn(-1);
@@ -353,7 +343,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     // 
     void Formation_BtnClick__MenuBar(int _count)
     {
+        Formation_SelectTypeFormList(_count);
+
         Formation_scrollViewMenuBar.Basic_SelectMenu(_count);
+        Formation_scrollView.Basic_SelectMenuBar(_count);
     }
 
     // Formation_BtnClick__ScrollView
@@ -486,14 +479,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
-        {
-            if(_for0.Equals(_count))
-            {
-                Basic_uiData.Marionette_VarScrollView.Basic_SelectMenuBar(_count);
-            }
-        }
-
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
@@ -534,8 +519,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         // Basic_SelectMenuBar
         public void Basic_SelectMenuBar(int _count)
         {
-            Basic_uiData.Marionette_SelectTypeFormList(_count);
-
             Basic_SelectMenuBar__Check();
 
             Basic_ClickBtn(-1);
@@ -668,7 +651,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Marionette_BtnClick__MenuBar(int _count)
     {
+        Marionette_SelectTypeFormList(_count);
+        
         Marionette_scrollViewMenuBar.Basic_SelectMenu(_count);
+        Marionette_VarScrollView.Basic_SelectMenuBar(_count);
     }
 
     //

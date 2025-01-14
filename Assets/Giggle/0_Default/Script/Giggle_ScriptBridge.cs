@@ -223,17 +223,29 @@ public class Giggle_ScriptBridge
         /// </summary>
         DATABASE__MARIONETTE__GET_IS_OPEN,
         /// <summary>
-        /// 마리오네트 데이터<br/>
-        /// 매개변수 : int - 캐릭터id<br/>
-        /// return type : Giggle_Character.Database
+        /// 마리오네트 데이터 리스트<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(Giggle_Character.Database)
         /// </summary>
-        DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+        DATABASE__MARIONETTE__GET_DATAS,
         /// <summary>
         /// 마리오네트 데이터 리스트<br/>
         /// 매개변수 : Giggle_Character.ATTRIBUTE - 캐릭터 속성(복수 기입 가능)<br/>
         /// return type : List(Giggle_Character.Database)
         /// </summary>
         DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
+        /// <summary>
+        /// 마리오네트 데이터 리스트<br/>
+        /// 매개변수 : Giggle_Character.TYPE - 캐릭터 무기(복수 기입 가능)<br/>
+        /// return type : List(Giggle_Character.Database)
+        /// </summary>
+        DATABASE__MARIONETTE__GET_DATAS_FROM_TYPE,
+        /// <summary>
+        /// 마리오네트 데이터<br/>
+        /// 매개변수 : int - 캐릭터id<br/>
+        /// return type : Giggle_Character.Database
+        /// </summary>
+        DATABASE__MARIONETTE__GET_DATA_FROM_ID,
         /// <summary>
         /// 마리오네트 스킬 데이터<br/>
         /// 매개변수<br/>
@@ -598,6 +610,13 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Character.Save
         /// </summary>
         PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,
+
+        /// <summary>
+        /// 마리오네트 도감 가져오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : List(int)
+        /// </summary>
+        PLAYER__MARIONETTE__GET_DOCUMENT,
 
         /// <summary>
         /// 마리오네트 추가<br/>

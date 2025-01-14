@@ -36,8 +36,8 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             case "MENU_BAR":    { BasicArea1_SelectMenu(int.Parse(names[3]));   }   break;
 
             // JOB
-            case "JOB__MENU_BAR":       { JobArea3_menuBar.Basic_SelectMenu(int.Parse(names[3]));   }   break;
-            case "JOB__SCROLL_VIEW":    { JobArea3_scrollView.Basic_ClickBtn(int.Parse(names[3]));  }   break;
+            case "JOB__MENU_BAR":       { Job_BtnSelectMenu(int.Parse(names[3]));   }   break;
+            case "JOB__SCROLL_VIEW":    { Job_BtnSscrollView(int.Parse(names[3]));  }   break;
 
             // EQUIPMENT
             case "EQUIPMENT__EQUIPMENT":    { Equipment_SelectEquipItem(names[3]);              }   break;
@@ -277,7 +277,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         Relic_Active();
 
         BasicArea1_SelectMenu(0);
-        Job_SelectMenu(0);
+        Job_BtnSelectMenu(0);
         Job_InfoSetting();
 
         Basic_ui.SetActive(true);
@@ -376,7 +376,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         // Basic_SelectMenuBar
         public void Basic_SelectMenuBar(int _count)
         {
-            Basic_parentClass.Job_ListSetting(_count);
             Basic_SelectMenuBar__Check();
 
             Basic_ClickBtn(-1);
@@ -471,11 +470,19 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     public List<int>    Job_VarJobList  { get { return Job_jobList; }   }
     
     ////////// Method           //////////
-    void Job_SelectMenu(int _count)
+    void Job_BtnSelectMenu(int _count)
     {
+        Job_ListSetting(_count);
         JobArea3_menuBar.Basic_SelectMenu(_count);
     }
 
+    //
+    void Job_BtnSscrollView(int _count)
+    {
+        JobArea3_scrollView.Basic_ClickBtn(_count);
+    }
+
+    //
     public void Job_ListSetting(int _selectType)
     {
         Job_jobList = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS);

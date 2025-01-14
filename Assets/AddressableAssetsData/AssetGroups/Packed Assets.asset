@@ -90,6 +90,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53fbc53c068124ec581639a69ad1ac59
+    m_Address: SCENE/DOCUMENT
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 57419d3f807e14b489d5d9f94d03afe5
     m_Address: PINOCCHIO/MODEL
     m_ReadOnly: 0
@@ -165,11 +170,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c31f98823e6f64687b4c5d6a865967d7
-    m_Address: CHARACTER/FIRE_CSV_LIST
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c47917c3125434fe49dd5f742744562e
     m_Address: STAGE/CSV_MONSTER
     m_ReadOnly: 0
@@ -197,11 +197,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: de5106c5098864547bfb515b5af25316
     m_Address: PINOCCHIO/CSV_ATTRIBUTE_LIST
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dff0b958dee2247258cdd67008604897
-    m_Address: CHARACTER/FIRE_CSV_LV
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

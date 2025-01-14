@@ -21,7 +21,9 @@ public class Giggle_Master : MonoBehaviour
         EARTH,
 
         DARK,
-        LIGHT
+        LIGHT,
+
+        TOTAL
     }
 
     #region BASIC
@@ -131,7 +133,8 @@ public class Giggle_Master : MonoBehaviour
     {
         TITLE   = 0,
         MAIN,
-        DUNGEON
+        DUNGEON,
+        DOCUMENT
     }
 
     [Header("SCENE ==================================================")]
@@ -154,7 +157,10 @@ public class Giggle_Master : MonoBehaviour
         Scene_loading.SetActive(true);
         for(int for0 = 0; for0 < Scene_scenes.Count; for0++)
         {
-            Scene_scenes[for0].GetComponent<Giggle_SceneManager>().Basic_Active(false);
+            if(Scene_scenes[for0] != null)
+            {
+                Scene_scenes[for0].GetComponent<Giggle_SceneManager>().Basic_Active(false);
+            }
         }
 
         // 초기화
@@ -226,7 +232,7 @@ public class Giggle_Master : MonoBehaviour
 
         if(Garbage_parent.childCount > 100)
         {
-            Destroy(Garbage_parent);
+            Destroy(Garbage_parent.gameObject);
             Garbage_parent = null;
         }
 

@@ -1404,16 +1404,14 @@ public class Giggle_Player : IDisposable
     #region MARIONETTE
     
     [Header("MARIONETTE ==================================================")]
-    [SerializeField] List<Giggle_Character.Save> Marionette_list;
+    [SerializeField] List<Giggle_Character.Save>    Marionette_list;
+    [SerializeField] List<int>                      Marionette_document;    // 획득했던 마리오네트 데이터 아이디
 
     ////////// Getter & Setter          //////////
     // Marionette_list
-    public List<Giggle_Character.Save>  Marionette_VarList  { get { return Marionette_list; }   }
+    public List<Giggle_Character.Save>  Marionette_VarList      { get { return Marionette_list; }   }
 
-    object Marionette_GetList__Bridge(params object[] _args)
-    {
-        return Marionette_VarList;
-    }
+    object Marionette_GetList__Bridge(params object[] _args)    { return Marionette_VarList;        }
 
     object Marionette_GetDataFromInventoryId(params object[] _args)
     {
@@ -1439,6 +1437,9 @@ public class Giggle_Player : IDisposable
         //
         return res;
     }
+
+    // Marionette_document
+    object Marionette_GetDocument(params object[] _args)    { return Marionette_document;   }
 
     ////////// Method                   //////////
     
@@ -1468,6 +1469,32 @@ public class Giggle_Player : IDisposable
         }
         Giggle_Character.Save element = new Giggle_Character.Save(inventoryId, _dataId);
         Marionette_list.Add(element);
+
+        // 도감에 갱신
+        bool isNew = true;
+        for(int for0 = 0; for0 < Marionette_document.Count; for0++)
+        {
+            if(Marionette_document[for0].Equals(_dataId))
+            {
+                isNew = false;
+                break;
+            }
+        }
+
+        if(isNew)
+        {
+            int whileNum = 0;
+            while(whileNum < Marionette_document.Count)
+            {
+                if(_dataId < Marionette_document[whileNum])
+                {
+                    break;
+                }
+                whileNum++;
+            }
+
+            Marionette_document.Insert(whileNum, _dataId);
+        }
     }
     
     // Marionette_CardEquip
@@ -1507,11 +1534,16 @@ public class Giggle_Player : IDisposable
         {
             Marionette_list = new List<Giggle_Character.Save>();
         }
+        if(Marionette_document == null)
+        {
+            Marionette_document = new List<int>();
+        }
 
         Marionette_Add(21001);
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList__Bridge          );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DOCUMENT,               Marionette_GetDocument              );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,        Marionette_Add__Script          );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__CARD_EQUIP, Marionette_CardEquip__Script    );
