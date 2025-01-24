@@ -132,6 +132,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
+        {
+        }
+
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
@@ -478,6 +482,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
+
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
+        {
+        }
 
         ////////// Constructor & Destroyer  //////////
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
