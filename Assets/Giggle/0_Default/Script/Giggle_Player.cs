@@ -349,7 +349,16 @@ public class Giggle_Player : IDisposable
         int count = (int)itemType;
         if(itemType.Equals(Giggle_Item.TYPE.ACCESSORY))
         {
-            count += int.Parse(socketNames[1]);
+            if(socketNames.Length > 2)
+            {
+                count += int.Parse(socketNames[1]);
+            }
+            else
+            {
+                // TODO:장신구 자동장착에 대해 추가 필요
+                //Giggle_Item.Inventory data = Item_GetItemFromInventoryId(inventoryId);
+                //data.
+            }
         }
 
         // Basic_equipments
@@ -1666,6 +1675,7 @@ public class Giggle_Player : IDisposable
     ////////// Getter & Setter          //////////
 
     // Item_list
+    //
     object Item_GetItemList(params object[] _args)
     {
         List<Giggle_Item.Inventory> res = new List<Giggle_Item.Inventory>();
@@ -1678,16 +1688,14 @@ public class Giggle_Player : IDisposable
         return res;
     }
 
-    object Item_GetItemFromInventoryId(params object[] _args)
+    //
+    Giggle_Item.Inventory Item_GetItemFromInventoryId(int _id)
     {
-        int id = (int)_args[0];
-
-        //
         Giggle_Item.Inventory res = null;
 
         for(int for0 = 0; for0 < Item_list.Count; for0++)
         {
-            if(Item_list[for0].Basic_VarInventoryId.Equals(id))
+            if(Item_list[for0].Basic_VarInventoryId.Equals(_id))
             {
                 res = Item_list[for0];
                 break;
@@ -1697,7 +1705,16 @@ public class Giggle_Player : IDisposable
         return res;
     }
 
+    object Item_GetItemFromInventoryId__ScriptBridge(params object[] _args)
+    {
+        int id = (int)_args[0];
+        
+        //
+        return Item_GetItemFromInventoryId(id);
+    }
+
     // Item_cards
+    //
     object Item_GetCardList(params object[] _args)
     {
         List<Giggle_Item.Inventory> res = new List<Giggle_Item.Inventory>();
@@ -1917,7 +1934,7 @@ public class Giggle_Player : IDisposable
         Item_cardList.Add(new Giggle_Item.Inventory(0, 251001));
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_LIST,                Item_GetItemList            );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,   Item_GetItemFromInventoryId );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID,   Item_GetItemFromInventoryId__ScriptBridge   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_CARD_LIST,                Item_GetCardList            );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__CARD__GET_DATA_FROM_DATA_ID,        Item_GetCardDataFromDataId  );
 

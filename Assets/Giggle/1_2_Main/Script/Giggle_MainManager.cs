@@ -24,6 +24,25 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         UI_basicData.PowerSaving_OnOff(!_isActive);
     }
 
+    //
+    public void Basic_Reset()
+    {
+        StartCoroutine(Basic_Reset__Coroutine());
+    }
+
+    IEnumerator Basic_Reset__Coroutine()
+    {
+        int phase = 0;
+        while(phase != -1)
+        {
+            switch(phase)
+            {
+                case 0: { if( UI_Reset()    ) { phase = -1; }   }   break;
+            }
+
+            yield return null;
+        }
+    }
 
     ////////// Unity            //////////
 
@@ -33,6 +52,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         //
         UI_Start();
+
+        Basic_Reset();
     }
 
     #endregion
@@ -62,6 +83,13 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             return Basic_coroutinePhase;
         }
 
+        public bool Basic_Reset()
+        {
+            bool res = Area8_Reset();
+
+            return res;
+        }
+
         ////////// Method                   //////////
 
         ////////// Constructor & Destroyer  //////////
@@ -75,6 +103,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             Area3_Init();
             Area4_Init();
             Area5_Init();
+            Area8_Init();
             PowerSaving_Init();
             Battle_Init();
 
@@ -613,13 +642,108 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         #region AREA8
 
         [Header("AREA8 ==================================================")]
-        [SerializeField] TextMeshProUGUI    Area8_aa;
+        [SerializeField] Transform          Area8_parent;
+        [SerializeField] List<Transform>    Area8_Btns;
 
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
 
+        public void Area8_BtnClick(string[] _names)
+        {
+            switch(_names[2])
+            {
+                default:    { Area8_BtnClick__Skill(int.Parse(_names[2]));  }   break;
+            }
+        }
+
+        void Area8_BtnClick__Skill(int _num)
+        {
+            Debug.Log("Area8_BtnClick__Skill " + _num);
+        }
+
+        //
+        bool Area8_Reset()
+        {
+            bool res = Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK);
+
+            if(res)
+            {
+                List<int> slots
+                    = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__SKILL_VAR_SKILL_SLOTS);
+                
+                for(int for0 = 0; for0 < Area8_Btns.Count; for0++)
+                {
+                    switch(slots[for0])
+                    {
+                        case -1:
+                            {
+                                Area8_Btns[for0].GetChild(0).GetComponent<Image>().sprite
+                                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        //
+                                        Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+                                        //
+                                        1);
+
+                                Area8_Btns[for0].GetChild(0).GetChild(0).gameObject.SetActive(false);
+
+                                //
+                                Area8_Btns[for0].GetChild(1).gameObject.SetActive(true);
+                            }
+                            break;
+                        default:
+                            {
+                                Giggle_Character.Skill data
+                                    = (Giggle_Character.Skill)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,
+                                        slots[for0]);
+
+                                Area8_Btns[for0].GetChild(0).GetComponent<Image>().sprite
+                                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                        //
+                                        Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+                                        //
+                                        data.Basic_VarRank);
+
+                                Area8_Btns[for0].GetChild(0).GetChild(0).gameObject.SetActive(true);
+                                //Area8_Btns[for0].GetChild(0).GetChild(0)
+
+                                //
+                                Area8_Btns[for0].GetChild(1).gameObject.SetActive(false);
+                            }
+                            break;
+                    }
+
+                    //
+                    Area8_Btns[for0].GetChild(2).gameObject.SetActive(false);
+                }
+            }
+
+            return res;
+        }
+
         ////////// Constructor & Destroyer  //////////
+
+        void Area8_Init()
+        {
+            //
+            if(Area8_Btns == null)
+            {
+                Area8_Btns = new List<Transform>();
+            }
+
+            Transform element0 = Area8_parent.Find("Skills");
+            for(int for0 = 0; for0 < element0.childCount; for0++)
+            {
+                Transform element1 = element0.GetChild(for0);
+                for(int for1 = 0; for1 < element1.childCount; for1++)
+                {
+                    Area8_Btns.Add(element1.GetChild(for1));
+                }
+            }
+            
+        }
 
         #endregion
 
@@ -868,7 +992,8 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             Battle_lose.gameObject.SetActive(true);
 
-            Battle_timers[0] = 2.0f;
+            //
+            Battle_timers[0] = 0.0f;
             Battle_loseTimer.text = (1 + (int)Battle_timers[0]).ToString();
 
             Basic_coroutinePhase = 10201;
@@ -1416,6 +1541,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             case "AREA4":           { UI_basicData.Area4_BtnClick(names);       }   break;
             case "AREA5":           { UI_basicData.Area5_BtnClick(names);       }   break;
             case "AREA7":           { UI_basicData.Area7_BtnClick(names);       }   break;
+            case "AREA8":           { UI_basicData.Area8_BtnClick(names);       }   break;
             case "BATTLE":          { UI_basicData.Battle_BtnClick(names);      }   break;
             case "POWER_SAVING":    { UI_basicData.PowerSaving_BtnClick(names); }   break;
             //
@@ -1439,6 +1565,12 @@ public partial class Giggle_MainManager : Giggle_SceneManager
     public void UI_PopUpActive(string _name)
     {
         UI_popUpData.Basic_Active(_name);
+    }
+
+    //
+    bool UI_Reset()
+    {
+        return UI_basicData.Basic_Reset();
     }
 
     ////////// Unity            //////////

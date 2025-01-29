@@ -98,6 +98,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.RESET);
+        this.GetComponent<Giggle_MainManager>().Basic_Reset();
     }
 
     void BasicArea1_SelectMenu(int _count)
@@ -900,8 +901,19 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     {
         if(Equipment_selectItem.Equals(-1))
         {
-            Equipment_selectEquipment = _itemType;
-            EquipmentArea3_scrollView.Basic_CheckCover();
+            if(Equipment_selectEquipment.Equals(_itemType))
+            {
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,
+                    _itemType, -1);
+
+                Equipment_Reset();
+            }
+            else
+            {
+                Equipment_selectEquipment = _itemType;
+                EquipmentArea3_scrollView.Basic_CheckCover();
+            }
         }
         else
         {
@@ -930,16 +942,23 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         {
             if(Equipment_selectEquipment.Equals("NONE"))
             {
-                Equipment_selectItem = _itemId;
+                if(Equipment_selectItem == _itemId)
+                {
+                    Equipment_SelectInventoryItem__DoubleClick();
+                }
+                else
+                {
+                    Equipment_selectItem = _itemId;
 
-                Giggle_Item.Inventory item = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID, Equipment_inventoryItems[Equipment_selectItem]);
+                    Giggle_Item.Inventory item = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID, Equipment_inventoryItems[Equipment_selectItem]);
 
-                Giggle_Item.List data = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
-                    item.Basic_VarDataId);
+                    Giggle_Item.List data = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+                        item.Basic_VarDataId);
 
-                Equipment_EquipItemCover(data);
+                    Equipment_EquipItemCover(data);
+                }
             }
             else
             {
@@ -951,6 +970,22 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             }
         }
     }
+
+    void Equipment_SelectInventoryItem__DoubleClick()
+    {
+        Giggle_Item.Inventory item = (Giggle_Item.Inventory)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.PLAYER__ITEM__GET_ITEM_FROM_INVENTORY_ID, Equipment_inventoryItems[Equipment_selectItem]);
+
+        Giggle_Item.List data = (Giggle_Item.List)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.DATABASE__ITEM__GET_DATA_FROM_ID,
+            item.Basic_VarDataId);
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__EUIPMENT_ITEM,
+            data.Basic_VarType.ToString(), Equipment_inventoryItems[Equipment_selectItem]);
+
+        Equipment_Reset();
+}
 
     //
     void Equipment_SelectMenu(int _count)
@@ -995,6 +1030,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         // list
         Equipment_selectEquipment = "NONE";
+        Equipment_selectItem = -1;
         EquipmentArea3_scrollView.Basic_ClickBtn(-1);
 
         EquipmentArea3_scrollView.Basic_CheckCover();
@@ -1159,6 +1195,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
     [Header("SKILL ==========")]
     [SerializeField] List<Transform>    SkillArea2_slots;
+    [SerializeField] Sprite             SkillArea2_slotDefaultPortrait;
 
     [SerializeField] GameObject             SkillArea2_info;
     [SerializeField] Image                  SkillArea2_infoInfoPortrait;
@@ -1368,8 +1405,13 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         {
             if(slots[for0].Equals(-1))
             {
-                SkillArea2_slots[for0].GetChild(1).GetComponent<Image>().sprite = null;
-                SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = "00";
+                SkillArea2_slots[for0].GetChild(1).GetComponent<Image>().sprite
+                    = (Sprite)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
+                        //
+                        1);
+                SkillArea2_slots[for0].GetChild(1).Find("Portrait").GetComponent<Image>().sprite        = SkillArea2_slotDefaultPortrait;
+                SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text    = "00";
             }
             else
             {
@@ -1389,7 +1431,8 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,
                         //
                         data.Basic_VarRank);
-                SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text = data.Basic_VarName;
+                SkillArea2_slots[for0].GetChild(1).Find("Portrait").GetComponent<Image>().sprite        = null;
+                SkillArea2_slots[for0].GetChild(1).Find("Name").GetComponent<TextMeshProUGUI>().text    = data.Basic_VarName;
             }
         }
         SkillArea2_info.SetActive(false);

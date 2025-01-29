@@ -128,7 +128,7 @@ public class Giggle_Database : IDisposable
     [SerializeField] List<Sprite>   Character_skillBacks;
 
     ////////// Getter & Setter          //////////
-    object Character_GetSkillBackFromRank(params object[] _args)
+    object  Character_GetSkillBackFromRank(params object[] _args)
     {
         //
         int rank = (int)_args[0];
@@ -168,13 +168,14 @@ public class Giggle_Database : IDisposable
 
                 Character_skillBacks[num - 1] = sprite;
             }
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,  Character_GetSkillBackFromRank  );
         };
         
         Pinocchio_Init();
         Marionette_Init();
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__CHARACTER__GET_SKILL_BACK_FROM_RANK,  Character_GetSkillBackFromRank  );
     }
 
     #region PINOCCHIO
