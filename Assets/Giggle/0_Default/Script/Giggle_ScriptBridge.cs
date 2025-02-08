@@ -360,6 +360,21 @@ public class Giggle_ScriptBridge
         #region Giggle_Player
 
         /// <summary>
+        /// 네트워크 데이터 불러오기 실행중 여부<br/>
+        /// 매개변수 : <br/>
+        /// return type : bool
+        /// </summary>
+        PLAYER__BASIC__IS_NETWORK_DATA_LOAD_DOING,
+
+        /// <summary>
+        /// 네트워크 데이터 불러오기<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__BASIC__NETWORK_DATA_LOAD,
+
+
+        /// <summary>
         /// 선택된 스테이지 번호<br/>
         /// 매개변수 : <br/>
         /// return type : int

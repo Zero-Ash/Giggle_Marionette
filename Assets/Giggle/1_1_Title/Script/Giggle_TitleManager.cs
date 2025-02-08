@@ -124,6 +124,10 @@ public class Giggle_TitleManager : Giggle_SceneManager
         [Header("LOG_IN ==================================================")]
         [SerializeField] GameObject LogIn_parent;
 
+        [Header("RUNNING")]
+        [SerializeField] IEnumerator    LogIn_SignInCoroutine;
+        [SerializeField] int            LogIn_SignInCoroutinePhase;
+
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
@@ -136,8 +140,8 @@ public class Giggle_TitleManager : Giggle_SceneManager
                 //case "OK":      { Title_BtnClick__LOG_IN(); }   break;
                 case "CANCEL":  { LogIn_BtnClick__CANCEL();     }   break;
                 //
-                case "SIGN_IN":     { LogIn_BtnClick__SIGN_IN();    }   break;
-                case "SIGN_OUT":    { LogIn_BtnClick__SIGN_OUT();   }   break;
+                case "GUEST_SIGN_IN":   { LogIn_BtnClick__GUEST_SIGN_IN();  }   break;
+                case "GUEST_SIGN_OUT":  { LogIn_BtnClick__GUEST_SIGN_OUT(); }   break;
                 //
                 case "TEMP":    { LogIn_BtnClick__TEMP();   }   break;
             }
@@ -148,23 +152,101 @@ public class Giggle_TitleManager : Giggle_SceneManager
             LogIn_parent.SetActive(false);
         }
 
-        void LogIn_BtnClick__SIGN_IN()
+        ////////// LogIn_BtnClick__GUEST_SIGN_IN
+        //
+        void LogIn_BtnClick__GUEST_SIGN_IN()
         {
+            if(LogIn_SignInCoroutine == null)
+            {
+                LogIn_SignInCoroutine = LogIn_BtnClick__GUEST_SIGN_IN__Coroutine();
+                Basic_manager.StartCoroutine(LogIn_SignInCoroutine);
+            }
+        }
+
+        IEnumerator LogIn_BtnClick__GUEST_SIGN_IN__Coroutine()
+        {
+            // 코루틴 초기화
+            LogIn_SignInCoroutinePhase = 0;
+
+            // 코루틴 실행
+            while(LogIn_SignInCoroutinePhase != -1)
+            {
+                switch(LogIn_SignInCoroutinePhase)
+                {
+                    case 0:     { LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0();      }   break;
+                    // 최초 접속
+                    case 10:    { LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10();     }   break;
+                    // 코루틴 종료
+                    case 100:   { LogIn_BtnClick__GUEST_SIGN_IN__Coroutine100();    }   break;
+                }
+                yield return null;
+            }
+
+            // 코루틴 종료
+            Basic_manager.StopCoroutine(LogIn_SignInCoroutine);
+            LogIn_SignInCoroutine = null;
+        }
+
+        void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0()
+        {
+            LogIn_SignInCoroutinePhase = 1;
+            
+            //
             Backend.BMember.GuestLogin(
                 callback =>
                 {
                     if(callback.IsSuccess())
                     {
-                        Debug.Log("LogIn_BtnClick__SIGN_IN : " + callback.StatusCode);
-
-                        LogIn_parent.SetActive(false);
-                        
-                        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.MAIN   );
+                        switch(callback.StatusCode)
+                        {
+                            // 최초 접속
+                            case 201:   { LogIn_SignInCoroutinePhase = 10;  }   break;
+                            // 로그인
+                            default:    { LogIn_SignInCoroutinePhase = 100; }   break;
+                        }
                     }
                 });
         }
 
-        void LogIn_BtnClick__SIGN_OUT()
+        // 최초 접속
+        void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10()
+        {
+            LogIn_SignInCoroutinePhase = 11;
+
+            //
+            Backend.Chart.GetChartContents("161891", (callback) =>
+            {
+                LitJson.JsonData datas = callback.FlattenRows();
+                Param param = new Param();
+                param.Add("GOLD",       int.Parse(datas[0]["GOLD"].ToString())  );
+                param.Add("GACHA",      int.Parse(datas[0]["GACHA"].ToString()) );
+                Backend.GameData.Insert("PLAYER", param);
+                
+                param.Clear();
+                param.Add("DATA_ID",        int.Parse(datas[0]["MARIONETTE"].ToString())    );
+                param.Add("INVENTORY_ID",   Backend.UserInDate + "|" + 0);
+                Backend.GameData.Insert("MARIONETTE", param);
+
+                //
+                LogIn_SignInCoroutinePhase = 100;
+            });
+        }
+
+        void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine100()
+        {
+            LogIn_SignInCoroutinePhase = -1;
+            
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__BASIC__NETWORK_DATA_LOAD    );
+
+            //
+            LogIn_parent.SetActive(false);
+            
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.MAIN   );
+        }
+
+        // LogIn_BtnClick__GUEST_SIGN_OUT
+        void LogIn_BtnClick__GUEST_SIGN_OUT()
         {
             Backend.BMember.DeleteGuestInfo();
         }
@@ -187,6 +269,7 @@ public class Giggle_TitleManager : Giggle_SceneManager
         void LogIn_Init()
         {
             LogIn_parent.SetActive(false);
+            LogIn_SignInCoroutine = null;
         }
 
         #endregion

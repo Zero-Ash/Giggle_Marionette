@@ -7,20 +7,77 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.TextCore.Text;
 using Unity.VisualScripting;
+using BackEnd;
 
 [Serializable]
 public class Giggle_Player : IDisposable
 {
     #region BASIC
+    public enum Basic__DATA_COROUTINE_PHASE
+    {
+        STAGE       = 0,
+        PINOCCHIO   = 10,
+        MARIONETTE  = 20,
+        FORMATION   = 30,
+        ITEM        = 40,
+        DUNGEON     = 50,
+
+        END         = 10000
+    }
+
+    [SerializeField] IEnumerator                    Basic_dataCoroutine;
+    [SerializeField] Basic__DATA_COROUTINE_PHASE    Basic_dataCoroutinePhase;
 
     ////////// Getter & Setter          //////////
+    object  Basic_IsNetworkDataLoadDoing__Bridge(params object[] _args) { return Basic_dataCoroutine != null;   }
 
     ////////// Method                   //////////
+    object  Basic_NetworkDataLoad__Bridge(params object[] _args)
+    {
+        Basic_dataCoroutine = Basic_NetworkDataLoad__Coroutine();
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE,
+            //
+            Basic_dataCoroutine);
+
+        //
+        return true;
+    }
+
+    IEnumerator Basic_NetworkDataLoad__Coroutine()
+    {
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.STAGE;
+
+        while(Basic_dataCoroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
+        {
+            switch(Basic_dataCoroutinePhase)
+            {
+                case Basic__DATA_COROUTINE_PHASE.STAGE:         { Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;    }   break;
+                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO:     {                                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:    { Marionette_NetworkDataLoad();     }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION:     { Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.END;   }   break;
+                case Basic__DATA_COROUTINE_PHASE.ITEM:          {                                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.DUNGEON:       {                                   }   break;
+            }
+
+            //
+            yield return null;
+        }
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,
+            //
+            Basic_dataCoroutine);
+        Basic_dataCoroutine = null;
+    }
+
+    //
     public void Basic_Init()
     {
         Stage_Contructor();
         Pinocchio_Contructor();
-        Marionette_Contructor();
+        //Marionette_Contructor();
         Formation_Contructor();
         Item_Contructor();
         Power_Contructor();
@@ -30,6 +87,20 @@ public class Giggle_Player : IDisposable
     ////////// Constructor & Destroyer  //////////
     public Giggle_Player()
     {
+        Basic_dataCoroutine = null;
+
+        //Stage_Contructor();
+        //Pinocchio_Contructor();
+        Marionette_Contructor();
+        //Formation_Contructor();
+        //Item_Contructor();
+        //Power_Contructor();
+        //Dungeon_Contructor();
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(  Giggle_ScriptBridge.EVENT.PLAYER__BASIC__IS_NETWORK_DATA_LOAD_DOING,    Basic_IsNetworkDataLoadDoing__Bridge    );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(  Giggle_ScriptBridge.EVENT.PLAYER__BASIC__NETWORK_DATA_LOAD,             Basic_NetworkDataLoad__Bridge           );
     }
 
     public void Dispose()
@@ -199,10 +270,10 @@ public class Giggle_Player : IDisposable
     ////////// Constructor & Destroyer  //////////
     void Pinocchio_Contructor()
     {
-        Pinocchio_data = new Giggle_Character.Save(1111);
+        Pinocchio_data = new Giggle_Character.Save(1121);
 
         //
-        Pinocchio_gender = Pinocchio_GENDER.MALE;
+        Pinocchio_gender = Pinocchio_GENDER.FEMALE;
 
         PinocchioJobs_Contructor();
         PinocchioEquips_Contructor();
@@ -212,7 +283,7 @@ public class Giggle_Player : IDisposable
         PinocchioRelic_Contructor();
 
         // TODO:테스트용 임시데이터
-        Pinocchio_jobs.Add(1111);
+        Pinocchio_jobs.Add(1121);
         Pinocchio_jobs.Add(1112);
         Pinocchio_jobs.Add(1113);
 
@@ -1452,6 +1523,34 @@ public class Giggle_Player : IDisposable
 
     ////////// Method                   //////////
     
+    void Marionette_NetworkDataLoad()
+    {
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE + 1;
+
+        //
+        Marionette_list.Clear();
+
+        Backend.GameData.GetMyData(
+            "MARIONETTE", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                //
+                LitJson.JsonData datas = callback.FlattenRows();
+                for(int for0 = 0; for0 < datas.Count; for0++)
+                {
+                    Debug.Log(datas[for0]["INVENTORY_ID"].ToString() + " " + datas[for0]["DATA_ID"].ToString());
+                    Giggle_Character.Save element = new Giggle_Character.Save(int.Parse(datas[for0]["INVENTORY_ID"].ToString().Split('|')[1]), int.Parse(datas[for0]["DATA_ID"].ToString()));
+                }
+
+                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.FORMATION;
+            });
+    }
+
     // Marionette_Add
     object Marionette_Add__Script(params object[] _args)
     {
@@ -1548,8 +1647,7 @@ public class Giggle_Player : IDisposable
             Marionette_document = new List<int>();
         }
 
-        Marionette_Add(21001);
-
+        //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_LIST,                   Marionette_GetList__Bridge          );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DOCUMENT,               Marionette_GetDocument              );

@@ -399,7 +399,7 @@ public class Giggle_Unit : MonoBehaviour
         Model_SetMotionTime("attack");
         if(Model_motionTime == 0.0f)
         {
-            Model_SetMotionTime("Attack");
+            Model_SetMotionTime("Attack_1");
         }
         
         // 모션 타임 설정되면 다음으로 넘기기
@@ -413,7 +413,7 @@ public class Giggle_Unit : MonoBehaviour
     {
         Active_timer += _deltaTime;
 
-        if(Model_VarMotionName.Equals("attack") || Model_VarMotionName.Equals("Attack"))
+        if(Model_VarMotionName.Equals("attack") || Model_VarMotionName.Equals("Attack_1"))
         {
             switch(Model_motionPhase)
             {
@@ -510,6 +510,10 @@ public class Giggle_Unit : MonoBehaviour
                     }
                     break;
             }
+        }
+        else
+        {
+            Debug.Log(Model_VarMotionName);
         }
 
         Model_animator.SetFloat( "MotionTimer", Model_motionTime * Active_timer / Active_time );

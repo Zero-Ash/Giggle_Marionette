@@ -182,13 +182,25 @@ public class Giggle_Battle : IDisposable
         {
             case 0:
                 {
-                    if(Formation_CotoutineInit0())
+                    bool isDoing
+                        = (bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                            Giggle_ScriptBridge.EVENT.PLAYER__BASIC__IS_NETWORK_DATA_LOAD_DOING);
+                            
+                    if(!isDoing)
                     {
-                        _phase = 1;
+                        _phase = 10;
                     }
                 }
                 break;
-            case 1:
+            case 10:
+                {
+                    if(Formation_CotoutineInit0())
+                    {
+                        _phase = 20;
+                    }
+                }
+                break;
+            case 20:
                 {
                     if(Formation_CotoutineInit1())
                     {
