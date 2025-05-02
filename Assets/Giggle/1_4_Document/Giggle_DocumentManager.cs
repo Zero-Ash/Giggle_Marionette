@@ -186,11 +186,7 @@ public class Giggle_DocumentManager : Giggle_SceneManager
             public void Basic_Init(UI_MainBasicData _uiData)
             {
                 Basic_uiData = _uiData;
-                Basic_Init();
-                for(int for0 = 0; for0 < Basic_VarListCount; for0++)
-                {
-                    Basic_GetListBtn(for0).name = "Button/FORMATION/MENU_BAR/" + for0.ToString();
-                }
+                Basic_Init("FORMATION", "MENU_BAR");
             }
         }
 
@@ -202,16 +198,9 @@ public class Giggle_DocumentManager : Giggle_SceneManager
             ////////// Getter & Setter          //////////
 
             ////////// Method                   //////////
-
-            protected override void Basic_Init__SetName()
+            protected override void Basic_AddList__SetName(Transform _element, int _num)
             {
-                Basic_list[0].Find("Button").name = "Button/LIST/SCROLL_VIEW/0";
-                Basic_list[1].Find("Button").name = "Button/LIST/SCROLL_VIEW/1";
-            }
-
-            protected override void Basic_AddList__SetName(Transform _element)
-            {
-                _element.Find("Button").name = "Button/LIST/SCROLL_VIEW/" + Basic_list.Count;
+                _element.Find("Button").name = "Button/LIST/SCROLL_VIEW/" + _num;
             }
 
             public override void Basic_ClickBtn(int _count)
