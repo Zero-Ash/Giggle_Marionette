@@ -283,15 +283,9 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 Basic_Init();
             }
 
-            protected override void Basic_Init__SetName()
+            protected override void Basic_AddList__SetName(Transform _element, int _num)
             {
-                Basic_list[0].Find("Button").name = "Button/AREA4/SCROLL_VIEW/0";
-                Basic_list[1].Find("Button").name = "Button/AREA4/SCROLL_VIEW/1";
-            }
-
-            protected override void Basic_AddList__SetName(Transform _element)
-            {
-                _element.Find("Button").name = "Button/AREA4/SCROLL_VIEW/" + Basic_list.Count;
+                _element.Find("Button").name = "Button/AREA4/SCROLL_VIEW/" + _num;
             }
 
             //
@@ -417,6 +411,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 case "EXMENU__DUNGEON":         { Area4_BtnClick__Dungeon();        }   break;
                 case "EXMENU__DOCUMENT":        { Area4_BtnClick__Document();       }   break;
                 case "EXMENU__POWER_SAVING":    { Area4_BtnClick__PowerSaving();    }   break;
+                case "EXMENU__GUILD":           { Area4_BtnClick__Guild();          }   break;
                 
                 case "INVENTORY_OPEN":  { Area4_BtnClick__InventoryOpen();  }   break;
                 case "INVENTORY_CLOSE": { Area4_inventory.SetActive(false); }   break;
@@ -453,6 +448,14 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             PowerSaving_OnOff(true);
 
             Area4_exMenu.SetActive(false);
+        }
+
+        // Area4_BtnClick__Guild
+        void Area4_BtnClick__Guild()
+        {
+            Area4_exMenu.SetActive(false);
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Giggle_Master.Scene_TYPE.GUILD  );
         }
 
         // Area4_BtnClick__InventoryOpen
@@ -1354,15 +1357,9 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                 Basic_Init();
             }
 
-            protected override void Basic_Init__SetName()
+            protected override void Basic_AddList__SetName(Transform _element, int _num)
             {
-                Basic_list[0].Find("Button").name = "Button/QUEST/SCROLL_VIEW/0";
-                Basic_list[1].Find("Button").name = "Button/QUEST/SCROLL_VIEW/1";
-            }
-
-            protected override void Basic_AddList__SetName(Transform _element)
-            {
-                _element.Find("Button").name = "Button/QUEST/SCROLL_VIEW/" + Basic_list.Count;
+                _element.Find("Button").name = "Button/QUEST/SCROLL_VIEW/" + _num;
             }
 
             //
@@ -1511,11 +1508,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         ////////// Constructor & Destroyer  //////////
         void Quest_Init()
         {
-            Quest_menuBar.Basic_Init();
-            for(int for0 = 0; for0 < Quest_menuBar.Basic_VarListCount; for0++)
-            {
-                Quest_menuBar.Basic_GetListBtn(for0).name = "Button/QUEST/MENU_BAR/" + for0.ToString();
-            }
+            Quest_menuBar.Basic_Init("QUEST", "MENU_BAR");
 
             Quest_scrollView.Basic_Init(this);
         }

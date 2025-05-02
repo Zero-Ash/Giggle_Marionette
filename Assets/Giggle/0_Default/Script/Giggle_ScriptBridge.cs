@@ -31,6 +31,41 @@ public class Giggle_ScriptBridge
         MASTER__NETWORK__VAR_INIT_STATE,
 
         /// <summary>
+        /// 네트워크 구글 해시<br/>
+        /// 매개변수 : <br/>
+        /// return type : string - 해시값
+        /// </summary>
+        MASTER__NETWORK__VAR_GOOGLE_HASH,
+
+        /// <summary>
+        /// 게스트 로그인<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GUEST_LOG_IN,
+
+        /// <summary>
+        /// 게스트 기록 삭제<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GUEST_DELETE,
+
+        /// <summary>
+        /// 유저 가입<br/>
+        /// 매개변수 : LitJson.JsonData - 차트 데이터<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__USER_SIGN_UP,
+
+        /// <summary>
+        /// 길드 창설<br/>
+        /// 매개변수 : <br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GUILD_CREATE,
+
+        /// <summary>
         /// 씬 전환<br/>
         /// 매개변수 : Giggle_Master.Scene_TYPE - 씬 변수<br/>
         /// return type : 
@@ -154,7 +189,14 @@ public class Giggle_ScriptBridge
         DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
 
         /// <summary>
-        /// 피노키오 데이터<br/>
+        /// 피노키오 스킬 데이터 리스트<br/>
+        /// 매개변수 : int - 스킬id<br/>
+        /// return type : List(Giggle_Character.Skill)
+        /// </summary>
+        DATABASE__PINOCCHIO__GET_SKILLS,
+
+        /// <summary>
+        /// 피노키오 스킬 데이터<br/>
         /// 매개변수 : int - 스킬id<br/>
         /// return type : Giggle_Character.Skill
         /// </summary>
@@ -373,6 +415,12 @@ public class Giggle_ScriptBridge
         /// </summary>
         PLAYER__BASIC__NETWORK_DATA_LOAD,
 
+        /// <summary>
+        /// 선택된 스테이지 번호<br/>
+        /// 매개변수 : <br/>
+        /// return type : int
+        /// </summary>
+        PLAYER__RESOURCE__VAR_SELECT,
 
         /// <summary>
         /// 선택된 스테이지 번호<br/>

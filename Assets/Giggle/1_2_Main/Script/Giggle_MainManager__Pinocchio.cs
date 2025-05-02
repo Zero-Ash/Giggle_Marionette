@@ -126,11 +126,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
         
-        BasicArea1_menuBar.Basic_Init();
-        for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
-        {
-            BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/MENU_BAR/" + for0.ToString();
-        }
+        BasicArea1_menuBar.Basic_Init("PINOCCHIO", "MENU_BAR");
         
         StartCoroutine(Start__Coroutine());
     }
@@ -147,8 +143,8 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             yield return null;
         }
 
-        Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
-        Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
+        //Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+        //Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
 
         Job_Start();
         Equipment_Start();
@@ -309,7 +305,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Pinocchio _parentClass)
         {
             Basic_parentClass = _parentClass;
-            Basic_Init();
+            Basic_Init("PINOCCHIO", "JOB__MENU_BAR");
         }
 
         protected override void Basic_SelectMenu__Setting(int _for0, int _count)
@@ -346,15 +342,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_Init();
         }
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/PINOCCHIO/JOB__SCROLL_VIEW/" + _num;
         }
 
         //
@@ -523,10 +513,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         // Area3
         JobArea3_menuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < JobArea3_menuBar.Basic_VarListCount; for0++)
-        {
-            JobArea3_menuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/JOB__MENU_BAR/" + for0.ToString();
-        }
         JobArea3_scrollView.Basic_Init(this);
     }
 
@@ -546,7 +532,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Pinocchio _parentClass)
         {
             Basic_parentClass = _parentClass;
-            Basic_Init();
+            Basic_Init("BASIC", "MENU_BAR");
         }
 
         protected override void Basic_SelectMenu__Setting(int _for0, int _count)
@@ -575,15 +561,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_Init();
         }
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/PINOCCHIO/EQUIPMENT__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1083,15 +1063,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_Init();
         }
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/PINOCCHIO/SKILL__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/PINOCCHIO/SKILL__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/PINOCCHIO/SKILL__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/PINOCCHIO/SKILL__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1794,15 +1768,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/PINOCCHIO/ABILITY__MARIONETTE_LIST_SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/PINOCCHIO/ABILITY__MARIONETTE_LIST_SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/PINOCCHIO/ABILITY__MARIONETTE_LIST_SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/PINOCCHIO/ABILITY__MARIONETTE_LIST_SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -2237,7 +2205,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
         Ability_marionetteList.SetActive(false);
 
-        Ability_marionetteListMenuBar.Basic_Init();
+        Ability_marionetteListMenuBar.Basic_Init("PINOCCHIO", "ABILITY__MARIONETTE_LIST_MENU_BAR");
         for(int for0 = 0; for0 < Ability_marionetteListMenuBar.Basic_VarListCount; for0++)
         {
             Ability_marionetteListMenuBar.Basic_GetListBtn(for0).name = "Button/PINOCCHIO/ABILITY__MARIONETTE_LIST_MENU_BAR/" + for0.ToString();
@@ -2308,15 +2276,9 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
         //    Basic_Init();
         //}
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/PINOCCHIO/RELIC__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/PINOCCHIO/RELIC__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/PINOCCHIO/RELIC__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/PINOCCHIO/RELIC__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)

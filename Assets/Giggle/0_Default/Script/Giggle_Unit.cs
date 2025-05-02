@@ -202,7 +202,7 @@ public class Giggle_Unit : MonoBehaviour
             if(Active_phase != Active_PHASE.DEFEAT)
             {
                 Active_phase = Active_PHASE.DEFEAT;
-                Model_SetMotionTime("defeat");
+                Model_SetMotionTime("Defeat");
                 Model_SetMotion();
 
                 Active_timer = 0.0f;
@@ -576,7 +576,6 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] Animator   Model_animator;
     [SerializeField] float  Model_motionTime;
     [SerializeField] int    Model_motionPhase;
-    [SerializeField] bool   Model_isSpine;
 
     ////////// Getter & Setter  //////////
     string Model_VarMotionName
@@ -590,15 +589,7 @@ public class Giggle_Unit : MonoBehaviour
             {
                 if(clipInfo.Length > 0)
                 {
-                    if(Model_isSpine)
-                    {
-                        res = clipInfo[0].clip.name;
-                    }
-                    else
-                    {
-                        string[] names = clipInfo[0].clip.name.Split('_');
-                        res = names[names.Length - 1];
-                    }
+                    res = clipInfo[0].clip.name;
                 }
             }
 

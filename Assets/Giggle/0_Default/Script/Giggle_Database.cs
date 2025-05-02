@@ -265,6 +265,11 @@ public class Giggle_Database : IDisposable
     }
 
     // Pinocchio_skills
+    object Pinocchio_GetSkills(params object[] _args)
+    {
+        return Pinocchio_skills;
+    }
+
     object Pinocchio_GetSkillFromId(params object[] _args)
     {
         Giggle_Character.Skill res = null;
@@ -473,7 +478,9 @@ public class Giggle_Database : IDisposable
                                 if(child.gameObject.activeSelf)
                                 {
                                     int id = int.Parse(child.name);
-                                    Pinocchio_data.Basic_GetDataFromId(id).Basic_VarUnit = child.GetComponent<Giggle_Unit>();
+                                    Pinocchio_data.Basic_GetDataFromId(id).Basic_VarUnit    = child.Find("UNIT").GetComponent<Giggle_Unit>();
+                                    Pinocchio_data.Basic_GetDataFromId(id).Basic_VarLd      = child.Find("LD");
+                                    Pinocchio_data.Basic_GetDataFromId(id).Basic_VarSd      = child.Find("SD");
                                 }
                             }
 
@@ -764,6 +771,7 @@ public class Giggle_Database : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_IS_OPEN,   Pinocchio_GetIsOpen );
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,                      Pinocchio_GetDataFromId                     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILLS,                            Pinocchio_GetSkills                         );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILL_FROM_ID,                     Pinocchio_GetSkillFromId                    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE,                         Pinocchio_GetAttribute                      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_FROM_ID,                 Pinocchio_GetAttributeFromId                );
@@ -1022,6 +1030,7 @@ public class Giggle_Database : IDisposable
                                 if(child.gameObject.activeSelf)
                                 {
                                     int id = int.Parse(child.name);
+                                    
                                     Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit   = child.Find("UNIT").GetComponent<Giggle_Unit>();
                                     Marionette_data.Basic_GetDataFromId(id).Basic_VarLd     = child.Find("LD");
                                     Marionette_data.Basic_GetDataFromId(id).Basic_VarSd     = child.Find("SD");

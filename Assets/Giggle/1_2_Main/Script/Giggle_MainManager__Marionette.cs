@@ -107,10 +107,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
 
-        Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
-        Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
+        //Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+        //Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
         
-        BasicArea1_menuBar.Basic_Init();
+        BasicArea1_menuBar.Basic_Init("BASIC","MENU");
         
         Formation_Start();
         Marionette_Start();
@@ -140,11 +140,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
             Basic_uiData = _uiData;
-            Basic_Init();
-            for(int for0 = 0; for0 < Basic_list.Count; for0++)
-            {
-                Basic_GetListBtn(for0).name = "Button/MARIONETTE/FORMATION__MENU_BAR/" + for0.ToString();
-            }
+            Basic_Init("MARIONETTE", "FORMATION__MENU_BAR");
         }
     }
 
@@ -157,15 +153,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/FORMATION__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -491,7 +481,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
             Basic_uiData = _uiData;
-            Basic_Init();
+            Basic_Init("MARIONETTE", "MARIONETTE__MENU_BAR");
         }
     }
 
@@ -504,15 +494,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/MARIONETTE__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/MARIONETTE__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/MARIONETTE__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/MARIONETTE__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -823,10 +807,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void Marionette_Start()
     {
         Marionette_scrollViewMenuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < Marionette_scrollViewMenuBar.Basic_VarListCount; for0++)
-        {
-            Marionette_scrollViewMenuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/MARIONETTE__MENU_BAR/" + for0.ToString();
-        }
 
         Marionette_scrollView.Basic_Init(this);
         Marionette_scrollView.Basic_VarContent.gameObject.SetActive(true);
@@ -867,7 +847,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
             Basic_uiData = _uiData;
-            Basic_Init();
+            Basic_Init("MARIONETTE", "CONSTELLATION__POP_UP_LIST__MENU_BAR");
         }
     }
 
@@ -879,16 +859,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
-
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/CONSTELLATION__POP_UP_LIST__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/CONSTELLATION__POP_UP_LIST__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/CONSTELLATION__POP_UP_LIST__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/CONSTELLATION__POP_UP_LIST__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1210,10 +1183,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         // popUp
         Contellation__popUpList_scrollViewMenuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < Contellation__popUpList_scrollViewMenuBar.Basic_VarListCount; for0++)
-        {
-            Contellation__popUpList_scrollViewMenuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/CONSTELLATION__POP_UP_LIST__MENU_BAR/" + for0.ToString();
-        }
 
         Contellation__popUpList_scrollView.Basic_Init(this);
         Contellation__popUpList_scrollView.Basic_VarContent.gameObject.SetActive(true);
@@ -1234,15 +1203,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_CARD_LIST__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_CARD_LIST__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_CARD_LIST__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_CARD_LIST__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1358,15 +1321,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/CARD__CARD_LIST__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/CARD__CARD_LIST__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/CARD__CARD_LIST__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/CARD__CARD_LIST__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1503,7 +1460,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
             Basic_uiData = _uiData;
-            Basic_Init();
+            Basic_Init("MARIONETTE", "CARD__POP_UP_MARIONETTE_LIST__MENU_BAR");
         }
     }
 
@@ -1516,15 +1473,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/CARD__POP_UP_MARIONETTE_LIST__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -1811,10 +1762,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void Card_Start()
     {
         Card__popUpMarionetteList_scrollViewMenuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < Card__popUpMarionetteList_scrollViewMenuBar.Basic_VarListCount; for0++)
-        {
-            Card__popUpMarionetteList_scrollViewMenuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/CARD__POP_UP_MARIONETTE_LIST__MENU_BAR/" + for0.ToString();
-        }
 
         Card__popUpMarionetteList_scrollView.Basic_Init(this);
         Card__popUpMarionetteList_scrollView.Basic_VarContent.gameObject.SetActive(true);
@@ -1853,7 +1800,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         public void Basic_Init(Giggle_MainManager__Marionette _uiData)
         {
             Basic_uiData = _uiData;
-            Basic_Init();
+            Basic_Init("MARIONETTE", "ITEM__MENU_BAR");
         }
     }
 
@@ -1866,15 +1813,9 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/MARIONETTE/ITEM__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/MARIONETTE/ITEM__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/MARIONETTE/ITEM__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/MARIONETTE/ITEM__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)
@@ -2104,10 +2045,6 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void Item_Start()
     {
         Item_scrollViewMenuBar.Basic_Init(this);
-        for(int for0 = 0; for0 < Item_scrollViewMenuBar.Basic_VarListCount; for0++)
-        {
-            Item_scrollViewMenuBar.Basic_GetListBtn(for0).name = "Button/MARIONETTE/ITEM__MENU_BAR/" + for0.ToString();
-        }
 
         Item_scrollView.Basic_Init(this);
         Item_scrollView.Basic_VarContent.gameObject.SetActive(true);

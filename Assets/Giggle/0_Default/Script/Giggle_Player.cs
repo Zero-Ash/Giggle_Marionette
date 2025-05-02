@@ -15,18 +15,21 @@ public class Giggle_Player : IDisposable
     #region BASIC
     public enum Basic__DATA_COROUTINE_PHASE
     {
-        STAGE       = 0,
-        PINOCCHIO   = 10,
-        MARIONETTE  = 20,
-        FORMATION   = 30,
-        ITEM        = 40,
-        DUNGEON     = 50,
+        LOAD        = 0,
+        RESOURCE    = 10,
+        STAGE       = 20,
+        PINOCCHIO   = 30,
+        MARIONETTE  = 40,
+        FORMATION   = 50,
+        ITEM        = 60,
+        DUNGEON     = 70,
 
         END         = 10000
     }
 
-    [SerializeField] IEnumerator                    Basic_dataCoroutine;
-    [SerializeField] Basic__DATA_COROUTINE_PHASE    Basic_dataCoroutinePhase;
+    [SerializeField]    IEnumerator                 Basic_dataCoroutine;
+    [SerializeField]    Basic__DATA_COROUTINE_PHASE Basic_dataCoroutinePhase;
+                        LitJson.JsonData            Basic_dataCoroutineDatas;
 
     ////////// Getter & Setter          //////////
     object  Basic_IsNetworkDataLoadDoing__Bridge(params object[] _args) { return Basic_dataCoroutine != null;   }
@@ -46,15 +49,17 @@ public class Giggle_Player : IDisposable
 
     IEnumerator Basic_NetworkDataLoad__Coroutine()
     {
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.STAGE;
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD;
 
         while(Basic_dataCoroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
         {
             switch(Basic_dataCoroutinePhase)
             {
-                case Basic__DATA_COROUTINE_PHASE.STAGE:         { Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;    }   break;
-                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO:     {                                   }   break;
-                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:    { Marionette_NetworkDataLoad();     }   break;
+                case Basic__DATA_COROUTINE_PHASE.LOAD:          { Basic_NetworkDataLoad();      }   break;
+                case Basic__DATA_COROUTINE_PHASE.RESOURCE:      { Resource_NetworkDataLoad();   }   break;
+                case Basic__DATA_COROUTINE_PHASE.STAGE:         { Stage_NetworkDataLoad();      }   break;
+                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO:     { Pinocchio_NetworkDataLoad();  }   break;
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:    { Marionette_NetworkDataLoad(); }   break;
                 case Basic__DATA_COROUTINE_PHASE.FORMATION:     { Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.END;   }   break;
                 case Basic__DATA_COROUTINE_PHASE.ITEM:          {                                   }   break;
                 case Basic__DATA_COROUTINE_PHASE.DUNGEON:       {                                   }   break;
@@ -70,6 +75,28 @@ public class Giggle_Player : IDisposable
             //
             Basic_dataCoroutine);
         Basic_dataCoroutine = null;
+    }
+    
+    //
+    void Basic_NetworkDataLoad()
+    {
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD + 1;
+
+        //
+        Backend.GameData.GetMyData(
+            "PLAYER", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                //
+                Basic_dataCoroutineDatas = callback.FlattenRows();
+
+                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.RESOURCE;
+            });
     }
 
     //
@@ -108,6 +135,34 @@ public class Giggle_Player : IDisposable
 
     }
 
+    #endregion
+
+    #region RESOURCE
+
+    [Header("RESOURCE ==================================================")]
+    [SerializeField] int    Resource_gold;
+    [SerializeField] int    Resource_gacha;
+
+    ////////// Getter & Setter          //////////
+    
+
+    ////////// Method                   //////////
+    
+    //
+    void Resource_NetworkDataLoad()
+    {
+        //
+        Resource_gold   = int.Parse(Basic_dataCoroutineDatas[0]["RESOURCE_GOLD" ].ToString());
+        Resource_gacha  = int.Parse(Basic_dataCoroutineDatas[0]["RESOURCE_GACHA"].ToString());
+
+        //
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.STAGE;
+    }
+
+    
+    ////////// Constructor & Destroyer  //////////
+
+    
     #endregion
 
     #region STAGE
@@ -195,6 +250,17 @@ public class Giggle_Player : IDisposable
         return true;
     }
     
+    //
+    void Stage_NetworkDataLoad()
+    {
+        //
+        Stage_max       = int.Parse(Basic_dataCoroutineDatas[0]["STAGE_MAX"     ].ToString());
+        Stage_select    = int.Parse(Basic_dataCoroutineDatas[0]["STAGE_SELECT"  ].ToString());
+
+        //
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO;
+    }
+    
     ////////// Constructor & Destroyer  //////////
     void Stage_Contructor()
     {
@@ -266,6 +332,38 @@ public class Giggle_Player : IDisposable
     public Giggle_Character.Save    Pinocchio_VarData   { get { return Pinocchio_data;  }   }
 
     ////////// Method                   //////////
+    
+    //
+    void Pinocchio_NetworkDataLoad()
+    {
+        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO + 1;
+
+        //
+        Marionette_list.Clear();
+
+        Backend.GameData.GetMyData(
+            "PINOCCHIO", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                //
+                LitJson.JsonData datas = callback.FlattenRows();
+                if(datas.Count > 0)
+                {
+                    PinocchioEquips_NetworkDataLoad(datas);
+                    PinocchioSkills_NetworkDataLoad(datas);
+                    PinocchioAttribute_NetworkDataLoad(datas);
+                    PinocchioAbility_NetworkDataLoad(datas);
+                    PinocchioRelic_NetworkDataLoad(datas);
+                }
+
+                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;
+            });
+    }
 
     ////////// Constructor & Destroyer  //////////
     void Pinocchio_Contructor()
@@ -281,13 +379,6 @@ public class Giggle_Player : IDisposable
         PinocchioAttributes_Contructor();
         PinocchioAbility_Contructor();
         PinocchioRelic_Contructor();
-
-        // TODO:테스트용 임시데이터
-        Pinocchio_jobs.Add(1121);
-        Pinocchio_jobs.Add(1112);
-        Pinocchio_jobs.Add(1113);
-
-        Pinocchio_skills.Add(new Pinocchio_Skill(1310011));
 
         Pinocchio_RelicInsert(1611001);
         Pinocchio_RelicInsert(1611001);
@@ -325,6 +416,11 @@ public class Giggle_Player : IDisposable
     void PinocchioJobs_Contructor()
     {
         if(Pinocchio_jobs == null)  { Pinocchio_jobs = new List<int>(); }
+
+        // TODO:테스트용 임시데이터
+        Pinocchio_jobs.Add(1121);
+        Pinocchio_jobs.Add(1112);
+        Pinocchio_jobs.Add(1113);
 
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__VAR_JOBS,    Pinocchio_VarJobs   );
@@ -446,6 +542,38 @@ public class Giggle_Player : IDisposable
         //
         return true;
     }
+
+    void PinocchioEquips_NetworkDataLoad(LitJson.JsonData _datas)
+    {
+        // Pinocchio_equips
+        int whileCount = 0;
+        while(true)
+        {
+            if(!_datas[0].ContainsKey("EQUIPS_" + whileCount))
+            {
+                break;
+            }
+
+            //
+            string[] equips0 = _datas[0]["EQUIPS_" + whileCount].ToString().Split('/');
+
+            while(Pinocchio_equips[whileCount].Basic_VarEquipsCount <= equips0.Length)
+            {
+                Pinocchio_equips[whileCount].Basic_EquipmentAdd();
+            }
+
+            for(int for0 = 0; for0 < equips0.Length; for0++)
+            {
+                Pinocchio_equips[whileCount].Basic_SetEquipmentId(for0, int.Parse(equips0[for0]));
+            }
+
+            //
+            whileCount++;
+        }
+        
+        // Pinocchio_equipSelect
+        Pinocchio_equipSelect   = int.Parse(_datas[0]["EQUIP_SELECT"].ToString());
+    }
     
     ////////// Constructor & Destroyer  //////////
     void PinocchioEquips_Contructor()
@@ -488,6 +616,12 @@ public class Giggle_Player : IDisposable
             Basic_id = _id;
             Basic_lv = 1;
         }
+
+        public Pinocchio_Skill(int _id, int _lv)
+        {
+            Basic_id = _id;
+            Basic_lv = _lv;
+        }
         
         //
         public void Dispose()
@@ -505,6 +639,14 @@ public class Giggle_Player : IDisposable
         public List<int>    Basic_VarList   { get { return Basic_list;  }   }
 
         ////////// Method                   //////////
+        public void Basic_DataLoad(string _data)
+        {
+            string[] datas = _data.Split('/');
+            for(int for0 = 0; for0 < datas.Length; for0++)
+            {
+                Basic_list[for0] = int.Parse(datas[for0]);
+            }
+        }
 
         ////////// Constructor & Destroyer  //////////
         public Pinocchio_SkillSlots()
@@ -616,6 +758,31 @@ public class Giggle_Player : IDisposable
     }
     
     ////////// Method                   //////////
+
+    void PinocchioSkills_NetworkDataLoad(LitJson.JsonData _datas)
+    {
+        //
+        List<Giggle_Character.Skill> skillDatas
+            = (List<Giggle_Character.Skill>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_SKILLS);
+        
+        for(int for0 = 0; for0 < skillDatas.Count; for0++)
+        {
+            if(_datas[0].ContainsKey("SKILL__" + skillDatas[for0].Basic_VarId))
+            {
+                Pinocchio_skills.Add(new Pinocchio_Skill(skillDatas[for0].Basic_VarId, int.Parse(_datas[0]["SKILL_" + skillDatas[for0].Basic_VarId].ToString())));
+            }
+        }
+
+        //
+        for(int for0 = 0; for0 < Pinocchio_skillSlots.Count; for0++)
+        {
+            Pinocchio_skillSlots[for0].Basic_DataLoad(_datas[0]["SKILL__SLOT" + for0].ToString());
+        }
+
+        //
+        Pinocchio_selectSkillSlot = int.Parse(_datas[0]["SKILL__SLOT_SELECT"].ToString());
+    }
     
     ////////// Constructor & Destroyer  //////////
 
@@ -675,6 +842,14 @@ public class Giggle_Player : IDisposable
             Basic_list.Add(res);
 
             return res;
+        }
+
+        //
+        public void Basic_Load(int _id, int _lv)
+        {
+            Pinocchio_Skill res = new Pinocchio_Skill(_id);
+            res.Basic_VarLv = _lv;
+            Basic_list.Add(res);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -763,6 +938,32 @@ public class Giggle_Player : IDisposable
         //
         return true;
     }
+
+    // PinocchioAttribute_NetworkDataLoad
+    void PinocchioAttribute_NetworkDataLoad(LitJson.JsonData _datas)
+    {
+        PinocchioAttribute_NetworkDataLoad__0(_datas, Giggle_Player.ATTRIBUTE_TYPE.ATTACK);
+        PinocchioAttribute_NetworkDataLoad__0(_datas, Giggle_Player.ATTRIBUTE_TYPE.DEFENCE);
+        PinocchioAttribute_NetworkDataLoad__0(_datas, Giggle_Player.ATTRIBUTE_TYPE.SUPPORT);
+    }
+
+    void PinocchioAttribute_NetworkDataLoad__0(LitJson.JsonData _datas, Giggle_Player.ATTRIBUTE_TYPE _type)
+    {
+        List<Giggle_Character.Attribute> list
+            = (List<Giggle_Character.Attribute>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE,
+                _type);
+        for(int for0 = 0; for0 < list.Count; for0++)
+        {
+            string dataKey = "ATTRIBUTE__" + _type.ToString() + "_" + list[for0].Basic_VarId;
+            if(!_datas[0].ContainsKey(dataKey))
+            {
+                continue;
+            }
+
+            Pinocchio_attributes[(int)_type].Basic_Load(list[for0].Basic_VarId, int.Parse(_datas[0]["ATTRIBUTE__" + _type.ToString() + "_" + list[for0].Basic_VarId].ToString()));
+        }
+    }
     
     ////////// Constructor & Destroyer  //////////
 
@@ -828,6 +1029,16 @@ public class Giggle_Player : IDisposable
         public void Basic_Lock()
         {
             Basic_isLock = !Basic_isLock;
+        }
+
+        public void Basic_DataLoad(string _data)
+        {
+            string[] datas = _data.Split('/');
+
+            Basic_id        = int.Parse(datas[0]);
+            Basic_grade     = int.Parse(datas[1]);
+            Basic_value     = float.Parse(datas[2]);
+            Basic_isLock    = bool.Parse(datas[3]);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -930,6 +1141,21 @@ public class Giggle_Player : IDisposable
     public void  Pinocchio_AbilityAddPoint(int _point)
     {
         Pinocchio_abilityPoint += _point;
+    }
+
+    void PinocchioAbility_NetworkDataLoad(LitJson.JsonData _datas)
+    {
+        string[] strs = _datas[0]["ABILITYS"].ToString().Split('|');
+        for(int for0 = 0; for0 < strs.Length; for0++)
+        {
+            Pinocchio_abilitys[for0].Basic_DataLoad(strs[for0]);
+        }
+
+        Pinocchio_abilityLevel  = int.Parse(_datas[0]["ABILITY_LEVEL"].ToString()   );
+
+        Pinocchio_abilityExp    = int.Parse(_datas[0]["ABILITY_EXP"].ToString()     );
+
+        Pinocchio_abilityPoint  = int.Parse(_datas[0]["ABILITY_POINT"].ToString()   );
     }
 
     // PopUp ==========
@@ -1156,6 +1382,17 @@ public class Giggle_Player : IDisposable
             {
                 Basic_buffs[for0] = 0;
             }
+        }
+
+        public void Basic_DataLoad(string _data)
+        {
+            string[] datas = _data.Split('/');
+
+            //
+            Basic_dataId        = int.Parse(datas[0]);
+            Basic_inventoryId   = int.Parse(datas[1]);
+
+            Basic_level         = int.Parse(datas[2]);
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -1430,6 +1667,28 @@ public class Giggle_Player : IDisposable
         Pinocchio_relics.Add(new Pinocchio_Relic(_dataId, inventoryId));
     }
 
+    void PinocchioRelic_NetworkDataLoad(LitJson.JsonData _datas)
+    {
+        string[] strs = _datas[0]["RELIC"].ToString().Split('|');
+        while(Pinocchio_relics.Count < strs.Length)
+        {
+            Pinocchio_relics.Add(new Pinocchio_Relic(-1,-1));
+        }
+
+        for(int for0 = 0; for0 < strs.Length; for0++)
+        {
+            Pinocchio_relics[for0].Basic_DataLoad(strs[for0]);
+        }
+
+        //
+        
+        strs = _datas[0]["RELIC_SLOT"].ToString().Split('/');
+        for(int for0 = 0; for0 < strs.Length; for0++)
+        {
+            Pinocchio_relicSlots[for0].Basic_VarInventoryId = int.Parse(strs[0]);
+        }
+    }
+
     ////////// Constructor & Destroyer  //////////
     
     void PinocchioRelic_Contructor()
@@ -1543,8 +1802,8 @@ public class Giggle_Player : IDisposable
                 LitJson.JsonData datas = callback.FlattenRows();
                 for(int for0 = 0; for0 < datas.Count; for0++)
                 {
-                    Debug.Log(datas[for0]["INVENTORY_ID"].ToString() + " " + datas[for0]["DATA_ID"].ToString());
-                    Giggle_Character.Save element = new Giggle_Character.Save(int.Parse(datas[for0]["INVENTORY_ID"].ToString().Split('|')[1]), int.Parse(datas[for0]["DATA_ID"].ToString()));
+                    Giggle_Character.Save element = new Giggle_Character.Save(datas[for0]);
+                    Marionette_list.Add(element);
                 }
 
                 Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.FORMATION;

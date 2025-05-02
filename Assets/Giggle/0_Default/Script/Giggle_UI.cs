@@ -8,12 +8,12 @@ using TMPro;
 
 namespace Giggle_UI
 {
+    // MenuBar
     [Serializable]
     public class MenuBar : IDisposable
     {
         [SerializeField] protected RectTransform    Basic_parent;
         [SerializeField] protected List<Button>     Basic_list;
-        [SerializeField] protected Transform        Basic_menuParent;
         [SerializeField] protected bool             Basic_isMenuVertical;
 
         ////////// Getter & Setter          //////////
@@ -23,7 +23,7 @@ namespace Giggle_UI
         public int      Basic_VarListCount              { get { return Basic_list.Count;    }   }
 
         ////////// Method                   //////////
-        public void Basic_Init()
+        public void Basic_Init(string _name0, string _name1)
         {
             if(Basic_list == null)
             {
@@ -54,7 +54,7 @@ namespace Giggle_UI
 
             for(int for0 = 0; for0 < Basic_VarListCount; for0++)
             {
-                Basic_GetListBtn(for0).name = "Button/BASIC/MENU_BAR/" + for0.ToString();
+                Basic_GetListBtn(for0).name = "Button/" + _name0 + "/" + _name1 + "/" + for0.ToString();
             }
         }
 
@@ -72,7 +72,6 @@ namespace Giggle_UI
 
         protected virtual void Basic_SelectMenu__Setting(int _for0, int _count)
         {
-            Basic_menuParent.Find(_for0.ToString()).gameObject.SetActive(_for0.Equals(_count));
         }
 
         ////////// Constructor & Destroyer  //////////
@@ -82,6 +81,23 @@ namespace Giggle_UI
         }
     }
 
+    public class MenuBar_SelectScene : MenuBar
+    {
+        [SerializeField] protected Transform    Basic_menuParent;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        protected override void Basic_SelectMenu__Setting(int _for0, int _count)
+        {
+            Basic_menuParent.Find(_for0.ToString()).gameObject.SetActive(_for0.Equals(_count));
+        }
+
+        ////////// Constructor & Destroyer  //////////
+    }
+
+    // ListArray
     [Serializable]
     public class ListArray : IDisposable
     {
@@ -290,14 +306,10 @@ namespace Giggle_UI
 
             Basic_AddList();
 
-            Basic_Init__SetName();
+            Basic_AddList__SetName(Basic_list[0], 0);
+            Basic_AddList__SetName(Basic_list[1], 1);
             Basic_SetListPosition(0);
             Basic_SetListPosition(1);
-        }
-
-        protected virtual void Basic_Init__SetName()
-        {
-
         }
 
         // Basic_AddList
@@ -307,7 +319,7 @@ namespace Giggle_UI
             while(whileCount < 100)
             {
                 Transform element = GameObject.Instantiate(Basic_list[0], Basic_content);
-                Basic_AddList__SetName(element.transform);
+                Basic_AddList__SetName(element.transform, Basic_list.Count - 1);
                 Basic_list.Add(element);
                 Basic_SetListPosition(Basic_list.Count - 1);
 
@@ -318,7 +330,7 @@ namespace Giggle_UI
             Basic_content.sizeDelta = new Vector2(0, (target.GetComponent<RectTransform>().sizeDelta.y * 0.5f) + 10.0f - target.localPosition.y);
         }
 
-        protected virtual void Basic_AddList__SetName(Transform _element)
+        protected virtual void Basic_AddList__SetName(Transform _element, int _num)
         {
 
         }

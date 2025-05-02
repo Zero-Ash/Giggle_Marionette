@@ -1513,6 +1513,18 @@ namespace Giggle_Character
             Basic_skillLv = 1;
         }
 
+        public Save(LitJson.JsonData _data)
+        {
+            Basic_Constructor();
+
+            Basic_inventoryId = int.Parse(_data["INVENTORY_ID"].ToString().Split('|')[1]);
+            Basic_dataId = int.Parse(_data["DATA_ID"].ToString());
+
+            Basic_level = int.Parse(_data["LEVEL"].ToString());
+            
+            Basic_skillLv = int.Parse(_data["SKILL_LV"].ToString());
+        }
+
         void Basic_Constructor()
         {
             if(Basic_equipments == null)

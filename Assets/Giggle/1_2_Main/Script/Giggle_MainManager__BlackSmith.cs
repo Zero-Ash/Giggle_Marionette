@@ -189,11 +189,7 @@ public class Giggle_MainManager__BlackSmith : MonoBehaviour
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
         
-        BasicArea1_menuBar.Basic_Init();
-        for(int for0 = 0; for0 < BasicArea1_menuBar.Basic_VarListCount; for0++)
-        {
-            BasicArea1_menuBar.Basic_GetListBtn(for0).name = "Button/BLACK_SMITH/MENU_BAR/" + for0.ToString();
-        }
+        BasicArea1_menuBar.Basic_Init("BLACK_SMITH", "MENU_BAR");
 
         Weapon_Start();
 
@@ -211,8 +207,8 @@ public class Giggle_MainManager__BlackSmith : MonoBehaviour
                     {
                         if(Giggle_ScriptBridge.Basic_VarInstance.Basic_GetIsInMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA ))
                         {
-                            Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
-                            Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
+                            //Basic_safeArea.sizeDelta        = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA );
+                            //Basic_safeArea.localPosition    = (Vector2)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION   );
 
                             phase = -1;
                         }
@@ -271,15 +267,9 @@ public class Giggle_MainManager__BlackSmith : MonoBehaviour
 
         ////////// Method                   //////////
 
-        protected override void Basic_Init__SetName()
+        protected override void Basic_AddList__SetName(Transform _element, int _num)
         {
-            Basic_list[0].Find("Button").name = "Button/BLACK_SMITH/WEAPON__SCROLL_VIEW/0";
-            Basic_list[1].Find("Button").name = "Button/BLACK_SMITH/WEAPON__SCROLL_VIEW/1";
-        }
-
-        protected override void Basic_AddList__SetName(Transform _element)
-        {
-            _element.Find("Button").name = "Button/BLACK_SMITH/WEAPON__SCROLL_VIEW/" + Basic_list.Count;
+            _element.Find("Button").name = "Button/BLACK_SMITH/WEAPON__SCROLL_VIEW/" + _num;
         }
 
         public override void Basic_ClickBtn(int _count)

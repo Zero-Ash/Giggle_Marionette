@@ -2,11 +2,11 @@ using UnityEngine;
 
 //
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using BackEnd;
-using UnityEngine.AddressableAssets;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -90,21 +90,178 @@ public class Giggle_Master : MonoBehaviour
 
     #region NETWORK
 
-    [Header("NETWORK ==================================================")]
-    [SerializeField] int   Network_initState;
-
-    ////////// Getter & Setter  //////////
-    object Network_VarInitState(params object[] _args)
+    [Serializable]
+    public class Network_Values
     {
-        //
-        return Network_initState;
+        public int Network_initState;
     }
 
+    [Header("NETWORK ==================================================")]
+    [SerializeField] int   Network_initState;
+    [SerializeField] TMPro.TextMeshProUGUI Network_tempText;
+
+    ////////// Getter & Setter  //////////
+    object Network_VarInitState(params object[] _args)  { return Network_initState; }
+
+    object Network_VarGoogleHash(params object[] _args) { return Backend.Utils.GetGoogleHash(); }
+
     ////////// Method           //////////
+    
+    object Network_GuestLogIn(params object[] _args)
+    {
+        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
+        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
+
+        //
+        Backend.BMember.GuestLogin(
+            callback =>
+            {
+                if(callback.IsSuccess())
+                {
+                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
+                    switch(callback.StatusCode)
+                    {
+                        // 최초 접속
+                        case 201:   { values.Basic_SignInCoroutinePhase = 10;   }   break;
+                        // 로그인
+                        default:    { values.Basic_SignInCoroutinePhase = 100;  }   break;
+                    }
+                }
+                else
+                {
+                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
+                }
+            });
+
+        //
+        return true;
+    }
+    
+    object Network_GuestDelete(params object[] _args)
+    {
+        //
+        Backend.BMember.DeleteGuestInfo();
+
+        //
+        return true;
+    }
+
+    object Network_UserSignUp(params object[] _args)
+    {
+        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
+        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
+        
+        //
+        Backend.Chart.GetChartContents("172424", (callback) =>
+        {
+            text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10 " + callback.StatusCode;
+
+            //
+            LitJson.JsonData datas = callback.FlattenRows();
+            Param param = new Param();
+            param.Add("RESOURCE_GOLD",  int.Parse(datas[0]["RESOURCE_GOLD"].ToString())     );
+            param.Add("RESOURCE_GACHA", int.Parse(datas[0]["RESOURCE_GACHA"].ToString())    );
+
+            param.Add("STAGE_MAX",      int.Parse(datas[0]["STAGE"].ToString()) );
+            param.Add("STAGE_SELECT",   int.Parse(datas[0]["STAGE"].ToString()) );
+            Backend.GameData.Insert("PLAYER", param);
+            
+            ////
+            //param.Clear();
+            //string[] strs0 = datas[0]["PINOCCHIO__EQUIPS"].ToString().Split('|');
+            //for(int for0 = 0; for0 < strs0.Length; for0++)
+            //{
+            //    param.Add("EQUIPS_" + for0,    strs0[for0]);
+            //}
+            //param.Add("EQUIPS_SELECT",   0);
+            //
+            //strs0 = datas[0]["PINOCCHIO__SKILLS"].ToString().Split('|');
+            //for(int for0 = 0; for0 < strs0.Length; for0++)
+            //{
+            //    string[] skills1 = strs0[for0].Split('/');
+            //    param.Add("SKILL__" + skills1[0],    int.Parse(skills1[1]));
+            //}
+            //
+            //strs0 = datas[0]["PINOCCHIO__SKILL_SLOTS"].ToString().Split('|');
+            //for(int for0 = 0; for0 < strs0.Length; for0++)
+            //{
+            //    param.Add("SKILL__SLOT" + for0, strs0[for0]);
+            //}
+            //param.Add("SKILL__SLOT_SELECT", 0);
+            //
+            //param.Add("ABILITYS",                   datas[0]["PINOCCHIO__ABILITYS"].ToString()      );
+            //param.Add("ABILITY_LEVEL",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_LEVEL"].ToString()));
+            //param.Add("ABILITY_EXP",    int.Parse(  datas[0]["PINOCCHIO__ABILITY_EXP"].ToString())  );
+            //param.Add("ABILITY_POINT",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_POINT"].ToString()));
+            //
+            //Backend.GameData.Insert("PINOCCHIO", param);
+            //
+            ////
+            //strs0 = datas[0]["MARIONETTE"].ToString().Split('/');
+            //for(int for0 = 0; for0 < strs0.Length; for0++)
+            //{
+            //    param.Clear();
+            //    param.Add("DATA_ID",        int.Parse(strs0[for0])          );
+            //    param.Add("INVENTORY_ID",   Backend.UserInDate + "|" + for0 );
+            //    param.Add("LEVEL",          1                               );
+            //    param.Add("SKILL_LV",       1                               );
+            //    Backend.GameData.Insert("MARIONETTE", param);
+            //}
+
+            //
+            values.Basic_SignInCoroutinePhase = 100;
+        });
+
+        //
+        return true;
+    }
+    
+    // Network_GuildCreate
+    object Network_GuildCreate(params object[] _args)
+    {
+        string guildName        = (string)_args[0];
+        string guildIntroduce   = (string)_args[2];
+
+        //
+        Param param = new Param();
+        param.Add("Introduce",  guildIntroduce  );
+        Backend.Guild.CreateGuildV3(
+            guildName, 10, param,
+            //
+            callback =>
+            {
+                switch(callback.StatusCode)
+                {
+                    case 204:   { Network_GuildCreate__CreateGuildV3Success(_args);  }   break;
+                }
+            });
+
+        //
+        return true;
+    }
+
+    void Network_GuildCreate__CreateGuildV3Success(params object[] _args)
+    {
+        int guildJoinType   = (int)_args[1];
+
+        bool isAuto = guildJoinType.Equals(0);
+
+        // 길드 가입방식 설정
+        Backend.Guild.SetRegistrationValueV3(isAuto,
+            //
+            callback =>
+            {
+                switch(callback.StatusCode)
+                {
+                    case 204:   {   }   break;
+                }
+            });
+    }
 
     ////////// Unity            //////////
     void Network_Start()
     {
+        Network_tempText.text = "Network_Start";
         Network_initState = -1;
 
         //
@@ -113,16 +270,24 @@ public class Giggle_Master : MonoBehaviour
             {
                 if(callback.IsSuccess())
                 {
+        Network_tempText.text = "Network_Start 1";
                     Network_initState = 1;
                 }
                 else
                 {
+        Network_tempText.text = "Network_Start 0";
                     Network_initState = 0;
                 }
             });
 
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE,    Network_VarInitState    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_GOOGLE_HASH,   Network_VarGoogleHash   );
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN,  Network_GuestLogIn  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE,  Network_GuestDelete );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP,  Network_UserSignUp  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUILD_CREATE,  Network_GuildCreate );
     }
 
     #endregion
@@ -134,7 +299,8 @@ public class Giggle_Master : MonoBehaviour
         TITLE   = 0,
         MAIN,
         DUNGEON,
-        DOCUMENT
+        DOCUMENT,
+        GUILD
     }
 
     [Header("SCENE ==================================================")]

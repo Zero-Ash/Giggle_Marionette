@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using BackEnd;
 
 public class Giggle_TitleManager : Giggle_SceneManager
 {
@@ -30,6 +29,8 @@ public class Giggle_TitleManager : Giggle_SceneManager
     [Serializable]
     public partial class UI_MainBasicData : UI_BasicData
     {
+        [SerializeField] TMPro.TextMeshProUGUI Temp_text;
+
         #region BASIC
 
         [SerializeField] Giggle_TitleManager Basic_manager;
@@ -87,7 +88,7 @@ public class Giggle_TitleManager : Giggle_SceneManager
                 }
                 
                 //
-                _phase = 100;
+                _phase = -1;
             }
         }
 
@@ -104,6 +105,7 @@ public class Giggle_TitleManager : Giggle_SceneManager
             switch(_names[2])
             {
                 case "LOG_IN":  { Title_BtnClick__LOG_IN(); }   break;
+                case "HASH":    { Title_BtnClick__HASH();   }   break;
             }
         }
 
@@ -115,18 +117,49 @@ public class Giggle_TitleManager : Giggle_SceneManager
             }
         }
 
+        void Title_BtnClick__HASH()
+        {
+            Temp_text.text = "LogIn_BtnClick__TEMP\n";
+
+            string googleHash = (string)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_GOOGLE_HASH    );
+            if(string.IsNullOrEmpty(googleHash))
+            {
+                Temp_text.text += "empty";
+            }
+            else
+            {
+                Temp_text.text += googleHash;
+            }
+        }
+
         ////////// Constructor & Destroyer  //////////
 
         #endregion
 
         #region LOG_IN
 
+        [Serializable]
+        public class LogIn_Values
+        {
+            public int Basic_SignInCoroutinePhase;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            ////////// Constructor & Destroyer  //////////
+            public LogIn_Values()
+            {
+                Basic_SignInCoroutinePhase = 0;
+            }
+        }
+
         [Header("LOG_IN ==================================================")]
-        [SerializeField] GameObject LogIn_parent;
+        [SerializeField] GameObject     LogIn_parent;
+        [SerializeField] LogIn_Values   LogIn_values;
 
         [Header("RUNNING")]
         [SerializeField] IEnumerator    LogIn_SignInCoroutine;
-        [SerializeField] int            LogIn_SignInCoroutinePhase;
 
         ////////// Getter & Setter          //////////
 
@@ -166,12 +199,12 @@ public class Giggle_TitleManager : Giggle_SceneManager
         IEnumerator LogIn_BtnClick__GUEST_SIGN_IN__Coroutine()
         {
             // 코루틴 초기화
-            LogIn_SignInCoroutinePhase = 0;
+            LogIn_values.Basic_SignInCoroutinePhase = 0;
 
             // 코루틴 실행
-            while(LogIn_SignInCoroutinePhase != -1)
+            while(LogIn_values.Basic_SignInCoroutinePhase != -1)
             {
-                switch(LogIn_SignInCoroutinePhase)
+                switch(LogIn_values.Basic_SignInCoroutinePhase)
                 {
                     case 0:     { LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0();      }   break;
                     // 최초 접속
@@ -189,52 +222,32 @@ public class Giggle_TitleManager : Giggle_SceneManager
 
         void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0()
         {
-            LogIn_SignInCoroutinePhase = 1;
+            LogIn_values.Basic_SignInCoroutinePhase = 1;
             
             //
-            Backend.BMember.GuestLogin(
-                callback =>
-                {
-                    if(callback.IsSuccess())
-                    {
-                        switch(callback.StatusCode)
-                        {
-                            // 최초 접속
-                            case 201:   { LogIn_SignInCoroutinePhase = 10;  }   break;
-                            // 로그인
-                            default:    { LogIn_SignInCoroutinePhase = 100; }   break;
-                        }
-                    }
-                });
+            Temp_text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0";
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN,
+                //
+                Temp_text, LogIn_values);
         }
 
         // 최초 접속
         void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10()
         {
-            LogIn_SignInCoroutinePhase = 11;
+            LogIn_values.Basic_SignInCoroutinePhase = 11;
 
             //
-            Backend.Chart.GetChartContents("161891", (callback) =>
-            {
-                LitJson.JsonData datas = callback.FlattenRows();
-                Param param = new Param();
-                param.Add("GOLD",       int.Parse(datas[0]["GOLD"].ToString())  );
-                param.Add("GACHA",      int.Parse(datas[0]["GACHA"].ToString()) );
-                Backend.GameData.Insert("PLAYER", param);
-                
-                param.Clear();
-                param.Add("DATA_ID",        int.Parse(datas[0]["MARIONETTE"].ToString())    );
-                param.Add("INVENTORY_ID",   Backend.UserInDate + "|" + 0);
-                Backend.GameData.Insert("MARIONETTE", param);
-
+            Temp_text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10 0";
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP,
                 //
-                LogIn_SignInCoroutinePhase = 100;
-            });
+                Temp_text, LogIn_values);
         }
 
         void LogIn_BtnClick__GUEST_SIGN_IN__Coroutine100()
         {
-            LogIn_SignInCoroutinePhase = -1;
+            LogIn_values.Basic_SignInCoroutinePhase = -1;
             
             //
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__BASIC__NETWORK_DATA_LOAD    );
@@ -248,7 +261,8 @@ public class Giggle_TitleManager : Giggle_SceneManager
         // LogIn_BtnClick__GUEST_SIGN_OUT
         void LogIn_BtnClick__GUEST_SIGN_OUT()
         {
-            Backend.BMember.DeleteGuestInfo();
+            Temp_text.text = "LogIn_BtnClick__GUEST_SIGN_OUT";
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE   );
         }
 
         void LogIn_BtnClick__TEMP()
@@ -269,6 +283,8 @@ public class Giggle_TitleManager : Giggle_SceneManager
         void LogIn_Init()
         {
             LogIn_parent.SetActive(false);
+            LogIn_values = new LogIn_Values();
+
             LogIn_SignInCoroutine = null;
         }
 
