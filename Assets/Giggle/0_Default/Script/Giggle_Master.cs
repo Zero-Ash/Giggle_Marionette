@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BackEnd;
+using UnityEngine.Networking;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -113,6 +114,8 @@ public class Giggle_Master : MonoBehaviour
         Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
 
         //
+        //StartCoroutine(Network_GuestLogIn__PostRequest());
+        
         Backend.BMember.GuestLogin(
             callback =>
             {
@@ -132,11 +135,33 @@ public class Giggle_Master : MonoBehaviour
                     text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
                 }
             });
+        
 
         //
         return true;
     }
+
+    IEnumerator Network_GuestLogIn__PostRequest()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://49.168.197.235:65200/User/Logins", "{\"username\":\"pp\",\"password\":111}", "application/json; charset=utf-8"))
+        {
+            // 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            Debug.Log("응답 데이터: " + webRequest.result);
+            switch(webRequest.result)
+            {
+                case UnityWebRequest.Result.Success:
+                {
+                    string jsonResponse = webRequest.downloadHandler.text;
+                    Debug.Log("응답 데이터: " + jsonResponse);
+                }
+                break;
+            }
+        }
+    }
     
+    //
     object Network_GuestDelete(params object[] _args)
     {
         //
