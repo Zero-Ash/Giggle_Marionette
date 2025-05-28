@@ -1042,7 +1042,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             switch(_name)
             {
                 case "ACCEL":   {                   }   break;
-                case "GACHA":   { Gacha_Reset();    }   break;
+                case "GACHA":   { Gacha_Active();   }   break;
                 case "QUEST":   { Quest_Reset();    }   break;
             }
         }
@@ -1094,6 +1094,26 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         #region GACHA
 
         [Serializable]
+        public class Gacha_Values
+        {
+            public int Basic_coroutinePhase;
+
+            public string Gacha_list;
+            public int Gacha_changeCount;
+            public int Gacha_select;
+
+            ////////// Getter & Setter          //////////
+
+            ////////// Method                   //////////
+
+            ////////// Constructor & Destroyer  //////////
+            public Gacha_Values()
+            {
+                Basic_coroutinePhase = -1;
+            }
+        }
+
+        [Serializable]
         public class Gacha_List : IDisposable
         {
             [SerializeField] Giggle_Character.Database Basic_character;
@@ -1116,13 +1136,16 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             public bool Basic_VarBackgroundActive   { set {Basic_background.SetActive(value);   }   }
 
             ////////// Method                   //////////
-            public void Basic_Gacha(List<Giggle_Character.Database> _list)
+            public void Basic_Gacha(string _varId)
             {
                 Basic_background.SetActive(false);
 
-                Debug.Log(_list.Count);
                 // TODO:나중에 가챠 조건이 생기면 여기에 기입합시다.
-                Basic_character = _list[UnityEngine.Random.Range(0, _list.Count)];
+                Basic_character
+                    = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,
+                        //
+                        int.Parse(_varId));
 
                 // UI갱신
                 while(Basic_infoModel.childCount > 0)
@@ -1132,11 +1155,12 @@ public partial class Giggle_MainManager : Giggle_SceneManager
                         //
                         Basic_infoModel.GetChild(0));
                 }
-                Giggle_Unit model = Instantiate(Basic_character.Basic_VarUnit, Basic_infoModel);
-                Basic_Gacha__ChangeModelLayer(model.transform);
-                model.transform.localPosition = Vector3.zero;
-                model.transform.localRotation = quaternion.Euler(-90,0,0);
-                model.transform.localScale = new Vector3(600, 600, 600);
+
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
+                    //
+                    Basic_character.Basic_VarId,
+                    Basic_infoModel, 400.0f);
 
                 Basic_infoName.text      = Basic_character.Basic_VarName;
                 Basic_infoType.text      = Basic_character.Basic_VarCategory.ToString();
@@ -1165,7 +1189,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
                 // Info
                 Transform element = _trans.Find("Data").Find("Info");
-                Basic_infoModel     = element.Find("Model");
+                Basic_infoModel     = element.Find("Model").Find("0");
                 Basic_infoName      = element.Find("Text (TMP)_Name").GetComponent<TMPro.TextMeshProUGUI>();
                 Basic_infoType      = element.Find("Text (TMP)_Type").GetComponent<TMPro.TextMeshProUGUI>();
                 Basic_infoAttribute = element.Find("Text (TMP)_Attribute").GetComponent<TMPro.TextMeshProUGUI>();
@@ -1199,16 +1223,14 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         }
 
         [Header("GACHA ==================================================")]
+        [SerializeField] Gacha_Values   Gacha_values;
+
         [SerializeField] List<Gacha_List>   Gacha_list;
         //
         [SerializeField] GameObject             Gacha_changeBtn;
         [SerializeField] TMPro.TextMeshProUGUI  Gacha_changeText;
         //
         [SerializeField] GameObject Gacha_selectBtn;
-
-        [Header("RUNNING")]
-        [SerializeField] int Gacha_gachaCount;
-        [SerializeField] int Gacha_select;
 
         ////////// Getter & Setter          //////////
 
@@ -1225,73 +1247,160 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
         void Gacha_BtnClick__CHARACTER(string _num)
         {
-            Gacha_select = int.Parse(_num);
-            Gacha_selectBtn.SetActive(!Gacha_select.Equals(-1));
+            Gacha_values.Gacha_select = int.Parse(_num);
+            Gacha_selectBtn.SetActive(!Gacha_values.Gacha_select.Equals(-1));
 
             //
             for(int for0 = 0; for0 < Gacha_list.Count; for0++)
             {
-                Gacha_list[for0].Basic_VarBackgroundActive = Gacha_select.Equals(for0);
+                Gacha_list[for0].Basic_VarBackgroundActive = Gacha_values.Gacha_select.Equals(for0);
             }
         }
 
         void Gacha_BtnClick__CHANGE()
         {
-            Gacha_Gacha();
+            //
+            Gacha_values.Basic_coroutinePhase = 0;
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE,
+                Gacha_BtnClick__CHANGE__Coroutine());
         }
 
+        IEnumerator Gacha_BtnClick__CHANGE__Coroutine()
+        {
+            while(Gacha_values.Basic_coroutinePhase != -1)
+            {
+                switch(Gacha_values.Basic_coroutinePhase)
+                {
+                    case 0:     { Gacha_BtnClick__CHANGE0();    }   break;
+                    case 10:    { Gacha_BtnClick__CHANGE10();   }   break;
+                }
+
+                yield return null;
+            }
+        }
+
+        void Gacha_BtnClick__CHANGE0()
+        {
+            Gacha_values.Basic_coroutinePhase = 1;
+
+            //
+            Gacha_BtnClick__CHARACTER("-1");
+            
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE,
+                //
+                Gacha_values);
+        }
+
+        void Gacha_BtnClick__CHANGE10()
+        {
+            //
+            string[] strs = Gacha_values.Gacha_list.Split('|');
+            for(int for0 = 0; for0 < Gacha_list.Count; for0++)
+            {
+                Gacha_list[for0].Basic_Gacha(strs[for0]);
+            }
+
+            Gacha_changeText.text = "Change (" + Gacha_values.Gacha_changeCount + "/3)";
+            // 가챠 교환횟수가 0이라면 버튼 비활성화
+            if(Gacha_values.Gacha_changeCount <= 0)
+            {
+                Gacha_changeBtn.SetActive(false);
+            }
+
+            //
+            Gacha_values.Basic_coroutinePhase = -1;
+        }
+
+        //
         void Gacha_BtnClick__SELECT()
         {
             Basic_parent.gameObject.SetActive(false);
 
             // TODO:스킬도 넣어줘야 합니다!
+
+            //Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            //    Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,
+            //    //
+            //    Gacha_list[Gacha_select].Basic_VarCharacterId);
+
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT,
                 //
-                Gacha_list[Gacha_select].Basic_VarCharacterId);
+                Gacha_values);
         }
         
         //
-        void Gacha_Reset()
+        void Gacha_Active()
         {
+            if(Gacha_values.Basic_coroutinePhase == -1)
+            {
+                //
+                Gacha_values.Basic_coroutinePhase = 0;
+
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE,
+                    //
+                    Gacha_Active__Coroutine());
+            }
+        }
+
+        IEnumerator Gacha_Active__Coroutine()
+        {
+            while(Gacha_values.Basic_coroutinePhase != -1)
+            {
+                switch(Gacha_values.Basic_coroutinePhase)
+                {
+                    case 0:     { Gacha_Active0();  }   break;
+                    case 10:    { Gacha_Active10(); }   break;
+                }
+
+                yield return null;
+            }
+        }
+
+        void Gacha_Active0()
+        {
+            Gacha_values.Basic_coroutinePhase = 1;
+
             //
             Gacha_changeBtn.SetActive(true);
 
-            //
-            Gacha_gachaCount = 4;
-            Gacha_Gacha();
-        }
-
-        void Gacha_Gacha()
-        {
             Gacha_BtnClick__CHARACTER("-1");
             
-            // 가챠 리스트 불러오기
-            List<Giggle_Character.Database> list
-                = (List<Giggle_Character.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
-                    Giggle_Master.ATTRIBUTE.FIRE.ToString());
-            
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,
+                //
+                Gacha_values);
+        }
+
+        void Gacha_Active10()
+        {
+            //
+            string[] strs = Gacha_values.Gacha_list.Split('|');
             for(int for0 = 0; for0 < Gacha_list.Count; for0++)
             {
-                Gacha_list[for0].Basic_Gacha(list);
+                Gacha_list[for0].Basic_Gacha(strs[for0]);
             }
 
-            // 가챠 교환횟수 차감 및 텍스트 갱신
-            Gacha_gachaCount--;
-
-            Gacha_changeText.text = "Change (" + Gacha_gachaCount + "/3)";
-
+            Gacha_changeText.text = "Change (" + Gacha_values.Gacha_changeCount + "/3)";
             // 가챠 교환횟수가 0이라면 버튼 비활성화
-            if(Gacha_gachaCount <= 0)
+            if(Gacha_values.Gacha_changeCount <= 0)
             {
                 Gacha_changeBtn.SetActive(false);
             }
+
+            //
+            Gacha_values.Basic_coroutinePhase = -1;
         }
 
         ////////// Constructor & Destroyer  //////////
         void Gacha_Init()
         {
+            Gacha_values = new Gacha_Values();
+
             Transform main = Basic_parent.Find("GACHA");
 
             // List
@@ -1316,6 +1425,65 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
                 Gacha_List element = new Gacha_List(forTrans);
                 Gacha_list[count] = element;
+            }
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Gacha_Init__Coroutine());
+        }
+
+        IEnumerator Gacha_Init__Coroutine()
+        {
+            Gacha_values.Basic_coroutinePhase = 0;
+
+            while(Gacha_values.Basic_coroutinePhase != -1)
+            {
+                switch(Gacha_values.Basic_coroutinePhase)
+                {
+                    case 0:     { Gacha_Init__Coroutine0();     }   break;
+                    case 1:     { Gacha_Init__Coroutine1();     }   break;
+                    case 10:    { Gacha_Init__Coroutine10();    }   break;
+                    case 20:    { Gacha_Init__Coroutine20();    }   break;
+                }
+
+                yield return null;
+            }
+        }
+
+        void Gacha_Init__Coroutine0()
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,0);
+
+            //
+            Gacha_values.Basic_coroutinePhase = 1;
+        }
+
+        void Gacha_Init__Coroutine1()
+        {
+            //
+            if((bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_IS_OPEN))
+            {
+                Gacha_values.Basic_coroutinePhase = 10;
+            }
+        }
+
+        void Gacha_Init__Coroutine10()
+        {
+            Gacha_values.Basic_coroutinePhase = 11;
+
+            //
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK,
+                //
+                Gacha_values);
+        }
+
+        void Gacha_Init__Coroutine20()
+        {
+            Gacha_values.Basic_coroutinePhase = -1;
+
+            if(!Gacha_values.Gacha_list.Equals("empty"))
+            {
+                Basic_Active("GACHA");
             }
         }
 

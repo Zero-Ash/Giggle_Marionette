@@ -15,7 +15,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     [SerializeField] GameObject Basic_ui;
     [SerializeField] RectTransform  Basic_safeArea;
 
-    [SerializeField] Giggle_UI.MenuBar BasicArea1_menuBar;
+    [SerializeField] Giggle_UI.MenuBar_SelectScene BasicArea1_menuBar;
 
     [Header("RUNNING")]
     [SerializeField] IEnumerator    Basic_coroutine;
@@ -207,7 +207,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 200.0f);
                     
                     finalCount = whileCount;
                 }
@@ -548,7 +548,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 200.0f);
                     
                     finalCount = whileCount;
                 }
@@ -674,7 +674,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                 Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                 //
                 data.Basic_VarDataId,
-                Mationette_infoBasic.Find("Portrait"), -90.0f, 300.0f);
+                Mationette_infoBasic.Find("Portrait"), 300.0f);
             Mationette_infoBasic.Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
             //Mationette_infoBasic.Find("Type").GetComponent<TextMeshProUGUI>().text = database.ba;
             Mationette_infoBasic.Find("Attribute").GetComponent<TextMeshProUGUI>().text = database.Basic_VarAttribute.ToString();
@@ -915,7 +915,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 200.0f);
                     
                     finalCount = whileCount;
                 }
@@ -1377,7 +1377,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 200.0f);
                     
                     finalCount = whileCount;
                 }
@@ -1529,7 +1529,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 200.0f);
                     
                     finalCount = whileCount;
                 }
@@ -1869,7 +1869,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 300.0f);
                     
                     finalCount = whileCount;
                 }
@@ -1991,7 +1991,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
                 Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                 //
                 data.Basic_VarDataId,
-                Item_infoBasic.Find("Portrait"), -90.0f, 300.0f);
+                Item_infoBasic.Find("Portrait"), 300.0f);
             Item_infoBasic.Find("Name").GetComponent<TextMeshProUGUI>().text = database.Basic_VarName;
             //Mationette_infoBasic.Find("Type").GetComponent<TextMeshProUGUI>().text = database.ba;
             //Mationette_infoBasic.Find("Attribute").GetComponent<TextMeshProUGUI>().text = database.ba;

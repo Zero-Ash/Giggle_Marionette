@@ -59,6 +59,55 @@ public class Giggle_ScriptBridge
         MASTER__NETWORK__USER_SIGN_UP,
 
         /// <summary>
+        /// 플레이어 정보 불러오기<br/>
+        /// 매개변수 : LitJson.JsonData - 차트 데이터<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__DATA_LOAD_PLAYER,
+
+        /// <summary>
+        /// 피노키오 정보 불러오기<br/>
+        /// 매개변수 : LitJson.JsonData - 차트 데이터<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__DATA_LOAD_PINOCCHIO,
+
+        /// <summary>
+        /// 마리오네트 리스트 불러오기<br/>
+        /// 매개변수 : LitJson.JsonData - 차트 데이터<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__DATA_LOAD_MARIONETTE,
+
+        /// <summary>
+        /// 가챠 체크<br/>
+        /// 매개변수 : values<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GACHA__CHECK,
+
+        /// <summary>
+        /// 가챠 선택<br/>
+        /// 매개변수 : values<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GACHA__SELECT,
+
+        /// <summary>
+        /// 가챠 실행<br/>
+        /// 매개변수 : values<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GACHA__GACHA,
+
+        /// <summary>
+        /// 가챠 재실행<br/>
+        /// 매개변수 : values<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__GACHA__CHANGE,
+
+        /// <summary>
         /// 길드 창설<br/>
         /// 매개변수 : <br/>
         /// return type : 

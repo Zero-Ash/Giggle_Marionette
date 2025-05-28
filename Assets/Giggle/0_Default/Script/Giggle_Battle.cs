@@ -1022,8 +1022,10 @@ public class Giggle_Battle : IDisposable
             Basic_type = _type;
             Basic_damage = _damage;
 
-            Basic_startPos       = Basic_owner.transform.position;
-            Basic_destinationPos = Basic_target.transform.position;
+            Basic_startPos       = Basic_owner.transform.Find("Target").Find("0").position;
+            Basic_destinationPos = Basic_target.transform.Find("Target").Find("0").position;
+            //Basic_startPos       = Basic_owner.transform.position;
+            //Basic_destinationPos = Basic_target.transform.position;
 
             Basic_timer = 0.0f;
             float distance = Vector3.Distance(Basic_startPos, Basic_destinationPos);

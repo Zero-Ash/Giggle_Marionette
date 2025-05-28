@@ -254,7 +254,7 @@ public class Giggle_DocumentManager : Giggle_SceneManager
                             Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                             //
                             list[whileCount],
-                            Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                            Basic_list[whileCount].Find("Obj"), 300.0f);
                         
                         finalCount = whileCount;
                     }

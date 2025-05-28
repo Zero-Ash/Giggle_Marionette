@@ -81,6 +81,7 @@ namespace Giggle_UI
         }
     }
 
+    [Serializable]
     public class MenuBar_SelectScene : MenuBar
     {
         [SerializeField] protected Transform    Basic_menuParent;
@@ -639,7 +640,7 @@ namespace Giggle_UI
                         Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
                         //
                         pinocchioData.Basic_VarDataId,
-                        UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+                        UI_list[_for0].Find("Obj"), 300.0f);
                 }
                 else
                 {
@@ -651,7 +652,7 @@ namespace Giggle_UI
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+                        UI_list[_for0].Find("Obj"), 300.0f);
                 }
             }
         }
@@ -662,7 +663,7 @@ namespace Giggle_UI
                 Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
                 //
                 Basic_datas[_for0].Basic_VarId,
-                UI_list[_for0].Find("Obj"), -90.0f, 300.0f);
+                UI_list[_for0].Find("Obj"), 300.0f);
 
                 //unit
         }

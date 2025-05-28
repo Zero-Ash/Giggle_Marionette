@@ -14,7 +14,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     [SerializeField] GameObject Basic_ui;
     [SerializeField] RectTransform Basic_safeArea;
 
-    [SerializeField] Giggle_UI.MenuBar BasicArea1_menuBar;
+    [SerializeField] Giggle_UI.MenuBar_SelectScene BasicArea1_menuBar;
 
     [Header("RUNNING")]
     IEnumerator Basic_coroutine;
@@ -396,7 +396,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
                         //
                         Basic_parentClass.Job_VarJobList[whileCount],
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 300.0f);
                     
                     finalCount = whileCount;
                 }
@@ -501,7 +501,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
             //
             pinocchioData.Basic_VarDataId,
-            JobArea2_objParent, -90.0f, 900.0f);
+            JobArea2_objParent, 900.0f);
     }
 
     ////////// Unity            //////////
@@ -779,7 +779,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
             //
             pinocchioData.Basic_VarDataId,
-            EquipmentArea2_objParent, -90.0f, 900.0f);
+            EquipmentArea2_objParent, 900.0f);
 
         for(int for0 = 0; for0 < EquipmentArea2_equipmentBtns.Count; for0++)
         {
@@ -1822,7 +1822,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         data.Basic_VarDataId,
-                        Basic_list[whileCount].Find("Obj"), -90.0f, 300.0f);
+                        Basic_list[whileCount].Find("Obj"), 300.0f);
                     
                     finalCount = whileCount;
                 }
@@ -2109,7 +2109,7 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
                         Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,
                         //
                         marionette.Basic_VarDataId,
-                        Ability_woodUis[for0].Find("Worker").Find("Obj"), -90.0f, 200.0f);
+                        Ability_woodUis[for0].Find("Worker").Find("Obj"), 200.0f);
                 }
 
                 // 활성화

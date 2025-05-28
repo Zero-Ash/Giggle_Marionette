@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.TextCore.Text;
 using Unity.VisualScripting;
-using BackEnd;
 
 [Serializable]
 public class Giggle_Player : IDisposable
@@ -15,21 +14,39 @@ public class Giggle_Player : IDisposable
     #region BASIC
     public enum Basic__DATA_COROUTINE_PHASE
     {
-        LOAD        = 0,
-        RESOURCE    = 10,
-        STAGE       = 20,
-        PINOCCHIO   = 30,
-        MARIONETTE  = 40,
-        FORMATION   = 50,
-        ITEM        = 60,
-        DUNGEON     = 70,
+        LOAD            = 0,
+        RESOURCE        = 10,
+        STAGE           = 20,
+        PINOCCHIO       = 30,
+        PINOCCHIO_DATA  = 32,
+        MARIONETTE      = 40,
+        MARIONETTE_DATA = 42,
+        FORMATION       = 50,
+        ITEM            = 60,
+        DUNGEON         = 70,
 
-        END         = 10000
+        END             = 10000
     }
 
-    [SerializeField]    IEnumerator                 Basic_dataCoroutine;
-    [SerializeField]    Basic__DATA_COROUTINE_PHASE Basic_dataCoroutinePhase;
-                        LitJson.JsonData            Basic_dataCoroutineDatas;
+    [Serializable]
+    public class Data_Values
+    {
+        public Basic__DATA_COROUTINE_PHASE  Basic_coroutinePhase;
+        public LitJson.JsonData             Basic_coroutineDatas;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+
+        ////////// Constructor & Destroyer  //////////
+        public Data_Values()
+        {
+            Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD;
+        }
+    }
+
+    [SerializeField]    IEnumerator Basic_dataCoroutine;
+    [SerializeField]    Data_Values Basic_dataValues;
 
     ////////// Getter & Setter          //////////
     object  Basic_IsNetworkDataLoadDoing__Bridge(params object[] _args) { return Basic_dataCoroutine != null;   }
@@ -49,20 +66,22 @@ public class Giggle_Player : IDisposable
 
     IEnumerator Basic_NetworkDataLoad__Coroutine()
     {
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD;
 
-        while(Basic_dataCoroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
+        while(Basic_dataValues.Basic_coroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
         {
-            switch(Basic_dataCoroutinePhase)
+            switch(Basic_dataValues.Basic_coroutinePhase)
             {
-                case Basic__DATA_COROUTINE_PHASE.LOAD:          { Basic_NetworkDataLoad();      }   break;
-                case Basic__DATA_COROUTINE_PHASE.RESOURCE:      { Resource_NetworkDataLoad();   }   break;
-                case Basic__DATA_COROUTINE_PHASE.STAGE:         { Stage_NetworkDataLoad();      }   break;
-                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO:     { Pinocchio_NetworkDataLoad();  }   break;
-                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:    { Marionette_NetworkDataLoad(); }   break;
-                case Basic__DATA_COROUTINE_PHASE.FORMATION:     { Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.END;   }   break;
-                case Basic__DATA_COROUTINE_PHASE.ITEM:          {                                   }   break;
-                case Basic__DATA_COROUTINE_PHASE.DUNGEON:       {                                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.LOAD:              { Basic_NetworkDataLoad();          }   break;
+                case Basic__DATA_COROUTINE_PHASE.RESOURCE:          { Resource_NetworkDataLoad();       }   break;
+                case Basic__DATA_COROUTINE_PHASE.STAGE:             { Stage_NetworkDataLoad();          }   break;
+                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO:         { Pinocchio_NetworkDataLoad();      }   break;
+                case Basic__DATA_COROUTINE_PHASE.PINOCCHIO_DATA:    { Pinocchio_NetworkDataSetting();   }   break;
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:        { Marionette_NetworkDataLoad();     }   break;
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE_DATA:   { Marionette_NetworkDataSetting();  }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION:         { Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.END;   }   break;
+                case Basic__DATA_COROUTINE_PHASE.ITEM:              {                                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.DUNGEON:           {                                   }   break;
             }
 
             //
@@ -80,23 +99,12 @@ public class Giggle_Player : IDisposable
     //
     void Basic_NetworkDataLoad()
     {
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD + 1;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.LOAD + 1;
 
-        //
-        Backend.GameData.GetMyData(
-            "PLAYER", new Where(),
-            callback =>
-            {
-                if(!callback.IsSuccess())
-                {
-                    return;
-                }
-
-                //
-                Basic_dataCoroutineDatas = callback.FlattenRows();
-
-                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.RESOURCE;
-            });
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER,
+            //
+            Basic_dataValues);
     }
 
     //
@@ -141,7 +149,6 @@ public class Giggle_Player : IDisposable
 
     [Header("RESOURCE ==================================================")]
     [SerializeField] int    Resource_gold;
-    [SerializeField] int    Resource_gacha;
 
     ////////// Getter & Setter          //////////
     
@@ -152,11 +159,10 @@ public class Giggle_Player : IDisposable
     void Resource_NetworkDataLoad()
     {
         //
-        Resource_gold   = int.Parse(Basic_dataCoroutineDatas[0]["RESOURCE_GOLD" ].ToString());
-        Resource_gacha  = int.Parse(Basic_dataCoroutineDatas[0]["RESOURCE_GACHA"].ToString());
+        Resource_gold   = int.Parse(Basic_dataValues.Basic_coroutineDatas[0]["RESOURCE_GOLD" ].ToString());
 
         //
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.STAGE;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.STAGE;
     }
 
     
@@ -254,11 +260,11 @@ public class Giggle_Player : IDisposable
     void Stage_NetworkDataLoad()
     {
         //
-        Stage_max       = int.Parse(Basic_dataCoroutineDatas[0]["STAGE_MAX"     ].ToString());
-        Stage_select    = int.Parse(Basic_dataCoroutineDatas[0]["STAGE_SELECT"  ].ToString());
+        Stage_max       = int.Parse(Basic_dataValues.Basic_coroutineDatas[0]["STAGE_MAX"    ].ToString());
+        Stage_select    = int.Parse(Basic_dataValues.Basic_coroutineDatas[0]["STAGE_SELECT" ].ToString());
 
         //
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO;
     }
     
     ////////// Constructor & Destroyer  //////////
@@ -336,33 +342,26 @@ public class Giggle_Player : IDisposable
     //
     void Pinocchio_NetworkDataLoad()
     {
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO + 1;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.PINOCCHIO + 1;
 
         //
-        Marionette_list.Clear();
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO,
+            //
+            Basic_dataValues);
+    }
+    
+    //
+    void Pinocchio_NetworkDataSetting()
+    {
+        PinocchioEquips_NetworkDataLoad(    Basic_dataValues.Basic_coroutineDatas);
+        PinocchioSkills_NetworkDataLoad(    Basic_dataValues.Basic_coroutineDatas);
+        PinocchioAttribute_NetworkDataLoad( Basic_dataValues.Basic_coroutineDatas);
+        PinocchioAbility_NetworkDataLoad(   Basic_dataValues.Basic_coroutineDatas);
+        PinocchioRelic_NetworkDataLoad(     Basic_dataValues.Basic_coroutineDatas);
 
-        Backend.GameData.GetMyData(
-            "PINOCCHIO", new Where(),
-            callback =>
-            {
-                if(!callback.IsSuccess())
-                {
-                    return;
-                }
-
-                //
-                LitJson.JsonData datas = callback.FlattenRows();
-                if(datas.Count > 0)
-                {
-                    PinocchioEquips_NetworkDataLoad(datas);
-                    PinocchioSkills_NetworkDataLoad(datas);
-                    PinocchioAttribute_NetworkDataLoad(datas);
-                    PinocchioAbility_NetworkDataLoad(datas);
-                    PinocchioRelic_NetworkDataLoad(datas);
-                }
-
-                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;
-            });
+        //
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;
     }
 
     ////////// Constructor & Destroyer  //////////
@@ -1784,30 +1783,27 @@ public class Giggle_Player : IDisposable
     
     void Marionette_NetworkDataLoad()
     {
-        Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE + 1;
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE + 1;
 
         //
         Marionette_list.Clear();
 
-        Backend.GameData.GetMyData(
-            "MARIONETTE", new Where(),
-            callback =>
-            {
-                if(!callback.IsSuccess())
-                {
-                    return;
-                }
-
-                //
-                LitJson.JsonData datas = callback.FlattenRows();
-                for(int for0 = 0; for0 < datas.Count; for0++)
-                {
-                    Giggle_Character.Save element = new Giggle_Character.Save(datas[for0]);
-                    Marionette_list.Add(element);
-                }
-
-                Basic_dataCoroutinePhase = Basic__DATA_COROUTINE_PHASE.FORMATION;
-            });
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE,
+            //
+            Basic_dataValues);
+    }
+    
+    void Marionette_NetworkDataSetting()
+    {
+        //
+        for(int for0 = 0; for0 < Basic_dataValues.Basic_coroutineDatas.Count; for0++)
+        {
+            Giggle_Character.Save element = new Giggle_Character.Save(Basic_dataValues.Basic_coroutineDatas[for0]);
+            Marionette_list.Add(element);
+        }
+        
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.FORMATION;
     }
 
     // Marionette_Add

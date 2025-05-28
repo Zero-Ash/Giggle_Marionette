@@ -107,140 +107,7 @@ public class Giggle_Master : MonoBehaviour
     object Network_VarGoogleHash(params object[] _args) { return Backend.Utils.GetGoogleHash(); }
 
     ////////// Method           //////////
-    
-    object Network_GuestLogIn(params object[] _args)
-    {
-        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
-        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
 
-        //
-        //StartCoroutine(Network_GuestLogIn__PostRequest());
-        
-        Backend.BMember.GuestLogin(
-            callback =>
-            {
-                if(callback.IsSuccess())
-                {
-                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
-                    switch(callback.StatusCode)
-                    {
-                        // 최초 접속
-                        case 201:   { values.Basic_SignInCoroutinePhase = 10;   }   break;
-                        // 로그인
-                        default:    { values.Basic_SignInCoroutinePhase = 100;  }   break;
-                    }
-                }
-                else
-                {
-                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
-                }
-            });
-        
-
-        //
-        return true;
-    }
-
-    IEnumerator Network_GuestLogIn__PostRequest()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://49.168.197.235:65200/User/Logins", "{\"username\":\"pp\",\"password\":111}", "application/json; charset=utf-8"))
-        {
-            // 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-            Debug.Log("응답 데이터: " + webRequest.result);
-            switch(webRequest.result)
-            {
-                case UnityWebRequest.Result.Success:
-                {
-                    string jsonResponse = webRequest.downloadHandler.text;
-                    Debug.Log("응답 데이터: " + jsonResponse);
-                }
-                break;
-            }
-        }
-    }
-    
-    //
-    object Network_GuestDelete(params object[] _args)
-    {
-        //
-        Backend.BMember.DeleteGuestInfo();
-
-        //
-        return true;
-    }
-
-    object Network_UserSignUp(params object[] _args)
-    {
-        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
-        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
-        
-        //
-        Backend.Chart.GetChartContents("172424", (callback) =>
-        {
-            text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10 " + callback.StatusCode;
-
-            //
-            LitJson.JsonData datas = callback.FlattenRows();
-            Param param = new Param();
-            param.Add("RESOURCE_GOLD",  int.Parse(datas[0]["RESOURCE_GOLD"].ToString())     );
-            param.Add("RESOURCE_GACHA", int.Parse(datas[0]["RESOURCE_GACHA"].ToString())    );
-
-            param.Add("STAGE_MAX",      int.Parse(datas[0]["STAGE"].ToString()) );
-            param.Add("STAGE_SELECT",   int.Parse(datas[0]["STAGE"].ToString()) );
-            Backend.GameData.Insert("PLAYER", param);
-            
-            ////
-            //param.Clear();
-            //string[] strs0 = datas[0]["PINOCCHIO__EQUIPS"].ToString().Split('|');
-            //for(int for0 = 0; for0 < strs0.Length; for0++)
-            //{
-            //    param.Add("EQUIPS_" + for0,    strs0[for0]);
-            //}
-            //param.Add("EQUIPS_SELECT",   0);
-            //
-            //strs0 = datas[0]["PINOCCHIO__SKILLS"].ToString().Split('|');
-            //for(int for0 = 0; for0 < strs0.Length; for0++)
-            //{
-            //    string[] skills1 = strs0[for0].Split('/');
-            //    param.Add("SKILL__" + skills1[0],    int.Parse(skills1[1]));
-            //}
-            //
-            //strs0 = datas[0]["PINOCCHIO__SKILL_SLOTS"].ToString().Split('|');
-            //for(int for0 = 0; for0 < strs0.Length; for0++)
-            //{
-            //    param.Add("SKILL__SLOT" + for0, strs0[for0]);
-            //}
-            //param.Add("SKILL__SLOT_SELECT", 0);
-            //
-            //param.Add("ABILITYS",                   datas[0]["PINOCCHIO__ABILITYS"].ToString()      );
-            //param.Add("ABILITY_LEVEL",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_LEVEL"].ToString()));
-            //param.Add("ABILITY_EXP",    int.Parse(  datas[0]["PINOCCHIO__ABILITY_EXP"].ToString())  );
-            //param.Add("ABILITY_POINT",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_POINT"].ToString()));
-            //
-            //Backend.GameData.Insert("PINOCCHIO", param);
-            //
-            ////
-            //strs0 = datas[0]["MARIONETTE"].ToString().Split('/');
-            //for(int for0 = 0; for0 < strs0.Length; for0++)
-            //{
-            //    param.Clear();
-            //    param.Add("DATA_ID",        int.Parse(strs0[for0])          );
-            //    param.Add("INVENTORY_ID",   Backend.UserInDate + "|" + for0 );
-            //    param.Add("LEVEL",          1                               );
-            //    param.Add("SKILL_LV",       1                               );
-            //    Backend.GameData.Insert("MARIONETTE", param);
-            //}
-
-            //
-            values.Basic_SignInCoroutinePhase = 100;
-        });
-
-        //
-        return true;
-    }
-    
     // Network_GuildCreate
     object Network_GuildCreate(params object[] _args)
     {
@@ -304,16 +171,641 @@ public class Giggle_Master : MonoBehaviour
                     Network_initState = 0;
                 }
             });
+        
+        Network_Account_Start();
+        Network_DataLoad_Start();
+        Network_Gacha_Start();
+        Network_Stage_Start();
 
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE,    Network_VarInitState    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_GOOGLE_HASH,   Network_VarGoogleHash   );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN,  Network_GuestLogIn  );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE,  Network_GuestDelete );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP,  Network_UserSignUp  );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUILD_CREATE,  Network_GuildCreate );
     }
+
+        #region ACCOUNT
+
+    public class Network_Account_LogIn
+    {
+        public string   ID;
+        public int      Market;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+    
+        ////////// Constructor & Destroyer  //////////
+    }
+
+    [SerializeField] Network_Account_LogIn  Network_Account_logIn;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    
+    object Network_Account_GuestLogIn(params object[] _args)
+    {
+        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
+        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
+
+        //
+        //StartCoroutine(Network_Account_GuestLogIn__PostRequest(_args));
+        
+        Backend.BMember.GuestLogin(
+            callback =>
+            {
+                if(callback.IsSuccess())
+                {
+                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
+                    switch(callback.StatusCode)
+                    {
+                        // 최초 접속
+                        case 201:   { values.Basic_SignInCoroutinePhase = 10;   }   break;
+                        // 로그인
+                        default:    { values.Basic_SignInCoroutinePhase = 100;  }   break;
+                    }
+                }
+                else
+                {
+                    text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
+                }
+            });
+
+        //
+        return true;
+    }
+
+    IEnumerator Network_Account_GuestLogIn__PostRequest(params object[] _args)
+    {
+        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
+
+        //
+        Network_Account_logIn.ID = "dfd3gfjhr4";
+        Network_Account_logIn.Market = 0;
+        string dataStr = JsonUtility.ToJson(Network_Account_logIn);
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://49.168.197.235:65200/User/Login", dataStr, "application/json; charset=utf-8"))
+        {
+            // 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            switch(webRequest.result)
+            {
+                case UnityWebRequest.Result.Success:
+                {
+                    Debug.Log("응답 데이터: " + webRequest.downloadHandler.text);
+
+                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                    Debug.Log(data["Result"]);
+
+                    //
+                    values.Basic_SignInCoroutinePhase = 10;
+                }
+                break;
+            }
+        }
+    }
+    
+    //
+    object Network_Account_GuestDelete(params object[] _args)
+    {
+        //
+        Backend.BMember.DeleteGuestInfo();
+
+        //
+        return true;
+    }
+
+    object Network_Account_UserSignUp(params object[] _args)
+    {
+        TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
+        Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
+        
+        //
+        Backend.Chart.GetChartContents("172424",
+            (callback) =>
+            {
+                text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine10 " + callback.StatusCode;
+
+                //
+                LitJson.JsonData datas = callback.FlattenRows();
+                Param param = new Param();
+                param.Add("RESOURCE_GOLD",  int.Parse(datas[0]["RESOURCE_GOLD"].ToString())     );
+
+                param.Add("STAGE_MAX",      int.Parse(datas[0]["STAGE"].ToString()) );
+                param.Add("STAGE_SELECT",   int.Parse(datas[0]["STAGE"].ToString()) );
+
+                Backend.GameData.Insert("PLAYER_DATA", param);
+
+                param.Clear();
+                param.Add("GACHA_COUNT",    int.Parse(datas[0]["RESOURCE_GACHA"].ToString())    );
+                param.Add("GACHA_LIST",     "empty");
+                param.Add("GACHA_CHANGE",   0);
+
+                Backend.GameData.Insert("PLAYER_GACHA", param);
+                
+                ////
+                //param.Clear();
+                //string[] strs0 = datas[0]["PINOCCHIO__EQUIPS"].ToString().Split('|');
+                //for(int for0 = 0; for0 < strs0.Length; for0++)
+                //{
+                //    param.Add("EQUIPS_" + for0,    strs0[for0]);
+                //}
+                //param.Add("EQUIPS_SELECT",   0);
+                //
+                //strs0 = datas[0]["PINOCCHIO__SKILLS"].ToString().Split('|');
+                //for(int for0 = 0; for0 < strs0.Length; for0++)
+                //{
+                //    string[] skills1 = strs0[for0].Split('/');
+                //    param.Add("SKILL__" + skills1[0],    int.Parse(skills1[1]));
+                //}
+                //
+                //strs0 = datas[0]["PINOCCHIO__SKILL_SLOTS"].ToString().Split('|');
+                //for(int for0 = 0; for0 < strs0.Length; for0++)
+                //{
+                //    param.Add("SKILL__SLOT" + for0, strs0[for0]);
+                //}
+                //param.Add("SKILL__SLOT_SELECT", 0);
+                //
+                //param.Add("ABILITYS",                   datas[0]["PINOCCHIO__ABILITYS"].ToString()      );
+                //param.Add("ABILITY_LEVEL",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_LEVEL"].ToString()));
+                //param.Add("ABILITY_EXP",    int.Parse(  datas[0]["PINOCCHIO__ABILITY_EXP"].ToString())  );
+                //param.Add("ABILITY_POINT",  int.Parse(  datas[0]["PINOCCHIO__ABILITY_POINT"].ToString()));
+                //
+                //Backend.GameData.Insert("PINOCCHIO", param);
+                //
+                ////
+                //strs0 = datas[0]["MARIONETTE"].ToString().Split('/');
+                //for(int for0 = 0; for0 < strs0.Length; for0++)
+                //{
+                //    param.Clear();
+                //    param.Add("DATA_ID",        int.Parse(strs0[for0])          );
+                //    param.Add("INVENTORY_ID",   Backend.UserInDate + "|" + for0 );
+                //    param.Add("LEVEL",          1                               );
+                //    param.Add("SKILL_LV",       1                               );
+                //    Backend.GameData.Insert("MARIONETTE", param);
+                //}
+
+                //
+                values.Basic_SignInCoroutinePhase = 100;
+            });
+
+        //
+        return true;
+    }
+
+    ////////// Unity            //////////
+    void Network_Account_Start()
+    {
+        Network_Account_logIn = new Network_Account_LogIn();
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN,  Network_Account_GuestLogIn  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE,  Network_Account_GuestDelete );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP,  Network_Account_UserSignUp  );
+    }
+
+        #endregion
+
+        #region DATA_LOAD
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    //
+    object Network_DataLoadPlayer(params object[] _args)
+    {
+        Giggle_Player.Data_Values values = (Giggle_Player.Data_Values)_args[0];
+
+        Backend.GameData.GetMyData(
+            "PLAYER_DATA", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                //
+                values.Basic_coroutineDatas = callback.FlattenRows();
+
+                values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.RESOURCE;
+            });
+
+        //
+        return true;
+    }
+
+    //
+    object Network_DataLoadPinocchio(params object[] _args)
+    {
+        Giggle_Player.Data_Values values = (Giggle_Player.Data_Values)_args[0];
+
+        Backend.GameData.GetMyData(
+            "PINOCCHIO", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.MARIONETTE;
+                    return;
+                }
+
+                //
+                values.Basic_coroutineDatas = callback.FlattenRows();
+                if(values.Basic_coroutineDatas.Count > 0)
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.PINOCCHIO_DATA;
+                }
+                else
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.MARIONETTE;
+                }
+            });
+
+        //
+        return true;
+    }
+
+    //
+    object Network_DataLoadMarionette(params object[] _args)
+    {
+        Giggle_Player.Data_Values values = (Giggle_Player.Data_Values)_args[0];
+
+        Backend.GameData.GetMyData(
+            "MARIONETTE", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.FORMATION;
+                    return;
+                }
+
+                //
+                values.Basic_coroutineDatas = callback.FlattenRows();
+
+                values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.MARIONETTE_DATA;
+            });
+
+        //
+        return true;
+    }
+
+    ////////// Unity            //////////
+    void Network_DataLoad_Start()
+    {
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER,      Network_DataLoadPlayer      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO,   Network_DataLoadPinocchio   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE,  Network_DataLoadMarionette  );
+    }
+
+        #endregion
+
+        #region GACHA
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    
+    //
+    object Network_Gacha_Check(params object[] _args)
+    {
+        Giggle_MainManager.UI_MainPopUpData.Gacha_Values values = (Giggle_MainManager.UI_MainPopUpData.Gacha_Values)_args[0];
+
+        //
+        Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
+            (callback)=>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                Network_Gacha_Check0(values, callback.FlattenRows());
+            });
+
+        //
+        return true;
+    }
+
+    void Network_Gacha_Check0(Giggle_MainManager.UI_MainPopUpData.Gacha_Values _values, LitJson.JsonData _rows)
+    {
+        string inDate = _rows[0]["inDate"].ToString();
+
+        //
+        _values.Gacha_list = _rows[0]["GACHA_LIST"].ToString();
+        _values.Gacha_changeCount = int.Parse(_rows[0]["GACHA_CHANGE"].ToString());
+
+        _values.Basic_coroutinePhase = 20;
+    }
+    
+    //
+    object Network_Gacha_Select(params object[] _args)
+    {
+        Giggle_MainManager.UI_MainPopUpData.Gacha_Values values = (Giggle_MainManager.UI_MainPopUpData.Gacha_Values)_args[0];
+
+        //
+        Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
+            (callback)=>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                Network_Gacha_Select0(values, callback.FlattenRows());
+            });
+
+        //
+        return true;
+    }
+
+    void Network_Gacha_Select0(Giggle_MainManager.UI_MainPopUpData.Gacha_Values _values, LitJson.JsonData _rowsGacha)
+    {
+        //
+        Backend.GameData.GetMyData("MARIONETTE", new Where(),
+            (callback)=>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                Network_Gacha_Select1(_values, _rowsGacha, callback.FlattenRows());
+            });
+    }
+
+    void Network_Gacha_Select1(Giggle_MainManager.UI_MainPopUpData.Gacha_Values _values, LitJson.JsonData _rowsGacha, LitJson.JsonData _rowsMarionette)
+    {
+        string[] list = _rowsGacha[0]["GACHA_LIST"].ToString().Split("|");
+
+        int inventoryId = -1;
+        for(int for0 = 0; for0 < _rowsMarionette.Count; for0++)
+        {
+            int num = int.Parse(_rowsMarionette[for0]["INVENTORY_ID"].ToString());
+            if(inventoryId < num)
+            {
+                inventoryId = num;
+            }
+        }
+        inventoryId++;
+
+        //
+        Param param = new Param();
+        param.Add("DATA_ID",        int.Parse(list[_values.Gacha_select])   );
+        param.Add("INVENTORY_ID",   inventoryId                             );
+
+        Backend.GameData.Insert("MARIONETTE", param);
+    }
+    
+    //
+    object Network_Gacha_Gacha(params object[] _args)
+    {
+        Giggle_MainManager.UI_MainPopUpData.Gacha_Values values = (Giggle_MainManager.UI_MainPopUpData.Gacha_Values)_args[0];
+
+        //
+        Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
+            (callback)=>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                Network_Gacha_Gacha0(values, callback.FlattenRows());
+            });
+
+        //
+        return true;
+    }
+
+    void Network_Gacha_Gacha0(Giggle_MainManager.UI_MainPopUpData.Gacha_Values _values, LitJson.JsonData _rows)
+    {
+        string inDate = _rows[0]["inDate"].ToString();
+        int gachaCount = int.Parse(_rows[0]["GACHA_COUNT"].ToString());
+        
+        // 가챠횟수가 0이라면 여기서 끝내기
+        if(gachaCount == 0)
+        {
+            _values.Basic_coroutinePhase = -1;
+
+            return;
+        }
+
+        Param param = new Param();
+        param.Add("GACHA_COUNT", gachaCount - 1);
+        
+        //
+        _values.Gacha_list = Network_Gacha_ListSetting();
+        param.Add("GACHA_LIST", _values.Gacha_list);
+
+        _values.Gacha_changeCount = 3;
+        param.Add("GACHA_CHANGE", _values.Gacha_changeCount);
+
+        Backend.GameData.UpdateV2("PLAYER_GACHA", inDate, Backend.UserInDate, param,
+            (callback) =>
+            {
+                if(callback.IsSuccess())
+                {
+                    _values.Basic_coroutinePhase = 10;
+                }
+                else
+                {
+                    _values.Basic_coroutinePhase = -1;
+                }
+            });
+    }
+    
+    //
+    object Network_Gacha_Change(params object[] _args)
+    {
+        Giggle_MainManager.UI_MainPopUpData.Gacha_Values values = (Giggle_MainManager.UI_MainPopUpData.Gacha_Values)_args[0];
+
+        //
+
+        //
+        Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
+            (callback)=>
+            {
+                if(!callback.IsSuccess())
+                {
+                    return;
+                }
+
+                Network_Gacha_Change0(values, callback.FlattenRows());
+            });
+
+        //
+        return true;
+    }
+
+    void Network_Gacha_Change0(Giggle_MainManager.UI_MainPopUpData.Gacha_Values _values, LitJson.JsonData _rows)
+    {
+        string inDate = _rows[0]["inDate"].ToString();
+        _values.Gacha_changeCount = int.Parse(_rows[0]["GACHA_CHANGE"].ToString());
+        
+        // 가챠횟수가 0이라면 여기서 끝내기
+        if(_values.Gacha_changeCount == 0)
+        {
+            return;
+        }
+
+        //
+        Param param = new Param();
+
+        _values.Gacha_list = Network_Gacha_ListSetting();
+        param.Add("GACHA_LIST", _values.Gacha_list);
+
+        _values.Gacha_changeCount--;
+        param.Add("GACHA_CHANGE", _values.Gacha_changeCount);
+
+        Backend.GameData.UpdateV2("PLAYER_GACHA", inDate, Backend.UserInDate, param,
+            (callback) =>
+            {
+                if(callback.IsSuccess())
+                {
+                    _values.Basic_coroutinePhase = 10;
+                }
+                else
+                {
+                    _values.Basic_coroutinePhase = -1;
+                }
+            });
+    }
+
+    //
+    string Network_Gacha_ListSetting()
+    {
+        string res = "";
+
+        // 가챠 리스트 불러오기
+        List<Giggle_Character.Database> datas
+            = (List<Giggle_Character.Database>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
+                Giggle_Master.ATTRIBUTE.FIRE.ToString());
+
+        for(int for0 = 0; for0 < 3; for0++)
+        {
+            Giggle_Character.Database data = datas[UnityEngine.Random.Range(0, datas.Count)];
+            res += data.Basic_VarId + "|";
+        }
+
+        return res;
+    }
+
+    ////////// Unity            //////////
+    void Network_Gacha_Start()
+    {
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK,  Network_Gacha_Check     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT, Network_Gacha_Select    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,  Network_Gacha_Gacha     );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change    );
+    }
+
+        #endregion
+
+        #region STAGE
+
+    public class Network_Stage_StartStage
+    {
+        public int  SK;
+        public int  SelectStage;
+        public int  Loop;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+    
+        ////////// Constructor & Destroyer  //////////
+    }
+
+    public class Network_Stage_EndStage
+    {
+        public int  SK;
+        public int  Clear;
+
+        ////////// Getter & Setter          //////////
+
+        ////////// Method                   //////////
+    
+        ////////// Constructor & Destroyer  //////////
+    }
+
+    [SerializeField] Network_Stage_StartStage   Network_Stage_startStage;
+    [SerializeField] Network_Stage_EndStage     Network_Stage_endStage;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+
+    // Stage
+    IEnumerator Network_Stage_StartStage__PostRequest()
+    {
+        Network_Stage_startStage.SK = 293458878;
+        Network_Stage_startStage.SelectStage = 0;
+        Network_Stage_startStage.Loop = 1;
+        string dataStr = JsonUtility.ToJson(Network_Stage_startStage);
+        Debug.Log("응답 데이터: " + dataStr);
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://49.168.197.235:65200/stage/StartStage", dataStr, "application/json; charset=utf-8"))
+        {
+            // 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            switch(webRequest.result)
+            {
+                case UnityWebRequest.Result.Success:
+                {
+                    string jsonResponse = webRequest.downloadHandler.text;
+                    Debug.Log("응답 데이터: " + jsonResponse);
+
+                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                    Debug.Log(data["Result"]);
+                }
+                break;
+            }
+        }
+    }
+
+    IEnumerator Network_Stage_EndStage__PostRequest()
+    {
+        Network_Stage_endStage.SK = 293458878;
+        Network_Stage_endStage.Clear = 1;
+        string dataStr = JsonUtility.ToJson(Network_Stage_endStage);
+        Debug.Log("응답 데이터: " + dataStr);
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("http://49.168.197.235:65200/stage/EndStage", dataStr, "application/json; charset=utf-8"))
+        {
+            // 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            switch(webRequest.result)
+            {
+                case UnityWebRequest.Result.Success:
+                {
+                    string jsonResponse = webRequest.downloadHandler.text;
+                    Debug.Log("응답 데이터: " + jsonResponse);
+
+                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                    Debug.Log(data["Result"]);
+                }
+                break;
+            }
+        }
+    }
+
+    ////////// Unity            //////////
+    void Network_Stage_Start()
+    {
+        Network_Stage_startStage    = new Network_Stage_StartStage();
+        Network_Stage_endStage      = new Network_Stage_EndStage();
+    }
+
+        #endregion
 
     #endregion
 
@@ -471,8 +963,7 @@ public class Giggle_Master : MonoBehaviour
     {
         int         id      = (int      )_args[0];
         Transform   parent  = (Transform)_args[1];
-        float       rot_x   = (float    )_args[2];
-        float       scale   = (float    )_args[3];
+        float       scale   = (float    )_args[2];
 
         //
         Giggle_Character.Database data
@@ -481,11 +972,11 @@ public class Giggle_Master : MonoBehaviour
                 //
                 id);
 
-        Giggle_Unit res = GameObject.Instantiate(data.Basic_VarUnit, parent);
-        UI_CharacterInstantiate__ChangeModelLayer(res.transform);
-        res.transform.localPosition = Vector3.zero;
-        res.transform.localRotation = Quaternion.Euler(rot_x,0,0);
-        res.transform.localScale = new Vector3(scale, scale, scale);
+        Transform res = Transform.Instantiate(data.Basic_VarSd, parent);
+        UI_CharacterInstantiate__ChangeModelLayer(res);
+        res.localPosition = Vector3.zero;
+        res.localRotation = Quaternion.Euler(0,0,0);
+        res.localScale = new Vector3(scale, scale, scale);
 
         //
         return res;
@@ -497,8 +988,7 @@ public class Giggle_Master : MonoBehaviour
     {
         int         id      = (int      )_args[0];
         Transform   parent  = (Transform)_args[1];
-        float       rot_x   = (float    )_args[2];
-        float       scale   = (float    )_args[3];
+        float       scale   = (float    )_args[2];
 
         //
         Giggle_Character.Database data
@@ -507,11 +997,11 @@ public class Giggle_Master : MonoBehaviour
                 //
                 id);
 
-        Giggle_Unit res = GameObject.Instantiate(data.Basic_VarUnit, parent);
-        UI_CharacterInstantiate__ChangeModelLayer(res.transform);
-        res.transform.localPosition = Vector3.zero;
-        res.transform.localRotation = Quaternion.Euler(rot_x,0,0);
-        res.transform.localScale = new Vector3(scale, scale, scale);
+        Transform res = Transform.Instantiate(data.Basic_VarSd, parent);
+        UI_CharacterInstantiate__ChangeModelLayer(res);
+        res.localPosition = Vector3.zero;
+        res.localRotation = Quaternion.Euler(0,0,0);
+        res.localScale = new Vector3(scale, scale, scale);
 
         //
         return res;
