@@ -1110,6 +1110,7 @@ public partial class Giggle_MainManager : Giggle_SceneManager
             public Gacha_Values()
             {
                 Basic_coroutinePhase = -1;
+                Gacha_list = "empty";
             }
         }
 
@@ -1319,13 +1320,6 @@ public partial class Giggle_MainManager : Giggle_SceneManager
         {
             Basic_parent.gameObject.SetActive(false);
 
-            // TODO:스킬도 넣어줘야 합니다!
-
-            //Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            //    Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,
-            //    //
-            //    Gacha_list[Gacha_select].Basic_VarCharacterId);
-
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT,
                 //
@@ -1370,10 +1364,17 @@ public partial class Giggle_MainManager : Giggle_SceneManager
 
             Gacha_BtnClick__CHARACTER("-1");
             
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,
-                //
-                Gacha_values);
+            if(Gacha_values.Gacha_list.Equals("empty"))
+            {
+                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,
+                    //
+                    Gacha_values);
+            }
+            else
+            {
+                Gacha_values.Basic_coroutinePhase = 10;
+            }
         }
 
         void Gacha_Active10()

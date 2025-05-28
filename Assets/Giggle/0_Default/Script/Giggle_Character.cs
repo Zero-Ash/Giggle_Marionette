@@ -1517,7 +1517,7 @@ namespace Giggle_Character
         {
             Basic_Constructor();
 
-            Basic_inventoryId = int.Parse(_data["INVENTORY_ID"].ToString().Split('|')[1]);
+            Basic_inventoryId = int.Parse(_data["INVENTORY_ID"].ToString());
             Basic_dataId = int.Parse(_data["DATA_ID"].ToString());
 
             Basic_level = int.Parse(_data["LEVEL"].ToString());

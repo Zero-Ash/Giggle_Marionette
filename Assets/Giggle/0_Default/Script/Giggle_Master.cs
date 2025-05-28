@@ -542,6 +542,13 @@ public class Giggle_Master : MonoBehaviour
     {
         string[] list = _rowsGacha[0]["GACHA_LIST"].ToString().Split("|");
 
+        Param param = new Param();
+        _values.Gacha_list = "empty";
+        param.Add("GACHA_LIST", _values.Gacha_list);
+
+        Backend.GameData.UpdateV2("PLAYER_GACHA", _rowsGacha[0]["inDate"].ToString(), Backend.UserInDate, param);
+
+        //
         int inventoryId = -1;
         for(int for0 = 0; for0 < _rowsMarionette.Count; for0++)
         {
@@ -554,9 +561,12 @@ public class Giggle_Master : MonoBehaviour
         inventoryId++;
 
         //
-        Param param = new Param();
+        param.Clear();
         param.Add("DATA_ID",        int.Parse(list[_values.Gacha_select])   );
         param.Add("INVENTORY_ID",   inventoryId                             );
+
+        param.Add("LEVEL",          1                                       );
+        param.Add("SKILL_LV",       1                                       );
 
         Backend.GameData.Insert("MARIONETTE", param);
     }
