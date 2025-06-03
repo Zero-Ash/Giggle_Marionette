@@ -175,6 +175,7 @@ public class Giggle_Master : MonoBehaviour
         Network_Account_Start();
         Network_DataLoad_Start();
         Network_Gacha_Start();
+        Network_Formation_Start();
         Network_Stage_Start();
 
         //
@@ -298,12 +299,24 @@ public class Giggle_Master : MonoBehaviour
 
                 Backend.GameData.Insert("PLAYER_DATA", param);
 
+                //
                 param.Clear();
                 param.Add("GACHA_COUNT",    int.Parse(datas[0]["RESOURCE_GACHA"].ToString())    );
                 param.Add("GACHA_LIST",     "empty");
                 param.Add("GACHA_CHANGE",   0);
 
                 Backend.GameData.Insert("PLAYER_GACHA", param);
+
+                //
+                param.Clear();
+                string paramName = "FORMATION_MAIN";
+                string strs = "-1|-1|-1|-1|-2|-1|-1|-1|-1";
+                for(int for0 = 0; for0 < 3; for0++)
+                {
+                    param.Add(paramName + for0, strs);
+                }
+
+                Backend.GameData.Insert("PLAYER_FORMATION", param);
                 
                 ////
                 //param.Clear();
@@ -453,6 +466,32 @@ public class Giggle_Master : MonoBehaviour
         return true;
     }
 
+    //
+    object Network_DataLoadFormation(params object[] _args)
+    {
+        Giggle_Player.Data_Values values = (Giggle_Player.Data_Values)_args[0];
+
+        Backend.GameData.GetMyData(
+            "PLAYER_FORMATION", new Where(),
+            callback =>
+            {
+                if(!callback.IsSuccess())
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.ITEM;
+                    return;
+                }
+
+                //
+                values.Basic_coroutineDatas = callback.FlattenRows();
+                Formation_inDate = values.Basic_coroutineDatas[0]["inDate"].ToString();
+
+                values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.FORMATION_DATA;
+            });
+
+        //
+        return true;
+    }
+
     ////////// Unity            //////////
     void Network_DataLoad_Start()
     {
@@ -460,6 +499,7 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER,      Network_DataLoadPlayer      );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO,   Network_DataLoadPinocchio   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE,  Network_DataLoadMarionette  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION,   Network_DataLoadFormation   );
     }
 
         #endregion
@@ -562,11 +602,13 @@ public class Giggle_Master : MonoBehaviour
 
         //
         param.Clear();
-        param.Add("DATA_ID",        int.Parse(list[_values.Gacha_select])   );
-        param.Add("INVENTORY_ID",   inventoryId                             );
+        param.Add("DATA_ID",            int.Parse(list[_values.Gacha_select])   );
+        param.Add("INVENTORY_ID",       inventoryId                             );
 
-        param.Add("LEVEL",          1                                       );
-        param.Add("SKILL_LV",       1                                       );
+        param.Add("LEVEL",              1                                       );
+        param.Add("SKILL_LV",           1                                       );
+
+        param.Add("EQUIPMENT_WEAPON",   -1                                      );
 
         Backend.GameData.Insert("MARIONETTE", param);
     }
@@ -714,6 +756,53 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT, Network_Gacha_Select    );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,  Network_Gacha_Gacha     );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change    );
+    }
+
+        #endregion
+
+
+        #region FORMATION
+    [Header("FORMATION ==========")]
+    [SerializeField] string Formation_inDate;
+
+    ////////// Getter & Setter  //////////
+
+    ////////// Method           //////////
+    
+    //
+    object Network_Formation_Save(params object[] _args)
+    {
+        Giggle_Player.Data_Values values = (Giggle_Player.Data_Values)_args[0];
+
+        //
+        string[] datas = values.Basic_coroutineString.Split('/');
+
+        Param param = new Param();
+        param.Add("FORMATION_MAIN" + datas[1], datas[0]);
+
+        Backend.GameData.UpdateV2(
+            "PLAYER_FORMATION", Formation_inDate, Backend.UserInDate, param,
+            (callback) =>
+            {
+                if(callback.IsSuccess())
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.FORMATION;
+                }
+                else
+                {
+                    values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.END;
+                }
+            });
+
+        //
+        return true;
+    }
+
+    ////////// Unity            //////////
+    void Network_Formation_Start()
+    {
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__FOAMRTION__SAVE,  Network_Formation_Save   );
     }
 
         #endregion

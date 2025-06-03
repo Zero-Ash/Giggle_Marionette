@@ -15,16 +15,28 @@ public class Giggle_Player : IDisposable
     public enum Basic__DATA_COROUTINE_PHASE
     {
         LOAD            = 0,
+
         RESOURCE        = 10,
+
         STAGE           = 20,
+
         PINOCCHIO       = 30,
         PINOCCHIO_DATA  = 32,
+
         MARIONETTE      = 40,
         MARIONETTE_DATA = 42,
+
         FORMATION       = 50,
+        FORMATION_DATA  = 52,
+
         ITEM            = 60,
+
         DUNGEON         = 70,
 
+        //
+        SAVE,
+
+        //
         END             = 10000
     }
 
@@ -33,6 +45,7 @@ public class Giggle_Player : IDisposable
     {
         public Basic__DATA_COROUTINE_PHASE  Basic_coroutinePhase;
         public LitJson.JsonData             Basic_coroutineDatas;
+        public string                       Basic_coroutineString;
 
         ////////// Getter & Setter          //////////
 
@@ -79,8 +92,9 @@ public class Giggle_Player : IDisposable
                 case Basic__DATA_COROUTINE_PHASE.PINOCCHIO_DATA:    { Pinocchio_NetworkDataSetting();   }   break;
                 case Basic__DATA_COROUTINE_PHASE.MARIONETTE:        { Marionette_NetworkDataLoad();     }   break;
                 case Basic__DATA_COROUTINE_PHASE.MARIONETTE_DATA:   { Marionette_NetworkDataSetting();  }   break;
-                case Basic__DATA_COROUTINE_PHASE.FORMATION:         { Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.END;   }   break;
-                case Basic__DATA_COROUTINE_PHASE.ITEM:              {                                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION:         { Formation_NetworkDataLoad();      }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION_DATA:    { Formation_NetworkDataSetting();   }   break;
+                case Basic__DATA_COROUTINE_PHASE.ITEM:              { Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.END;  }   break;
                 case Basic__DATA_COROUTINE_PHASE.DUNGEON:           {                                   }   break;
             }
 
@@ -1925,6 +1939,17 @@ public class Giggle_Player : IDisposable
         public List<int>    Basic_VarFormation  { get{ return Basic_formation;  }   }
 
         ////////// Method                   //////////
+        public void Basic_Load(string _data)
+        {
+            string[] strs = _data.Split('|');
+
+            // 배치되어 있다면 교체
+            for (int for0 = 0; for0 < Basic_formation.Count; for0++)
+            {
+                Basic_formation[for0] = int.Parse(strs[for0]);
+            }
+        }
+
         public void Basic_Setting(int _id, int _formation)
         {
             // 배치되어 있다면 교체
@@ -1955,7 +1980,7 @@ public class Giggle_Player : IDisposable
             {
                 Basic_formation.Add(-1);
             }
-            Basic_formation[4] = -2;    // -2는 피노키오
+            //Basic_formation[4] = -2;    // -2는 피노키오
         }
 
         public void Dispose()
@@ -1983,16 +2008,89 @@ public class Giggle_Player : IDisposable
 
     ////////// Method                   //////////
     
+    void Formation_NetworkDataLoad()
+    {
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.FORMATION + 1;
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION,
+            //
+            Basic_dataValues);
+    }
+    
+    void Formation_NetworkDataSetting()
+    {
+        //
+        for(int for0 = 0; for0 < 3; for0++)
+        {
+            Formation_list[for0].Basic_Load(Basic_dataValues.Basic_coroutineDatas[0]["FORMATION_MAIN" + for0].ToString());
+        }
+        
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.ITEM;
+    }
+    
+    // Formation_FormationSetting
     object Formation_FormationSetting(params object[] _args)
     {
-        int id          = (int)_args[0];
-        int formation   = (int)_args[1];
+        List<int> formationData = (List<int>)_args[0];
 
         //
-        Formation_list[Formation_select].Basic_Setting(id, formation);
+        for(int for0 = 0; for0 < formationData.Count; for0++)
+        {
+            Formation_list[Formation_select].Basic_Setting(formationData[for0], for0);
+        }
+
+        Basic_dataValues.Basic_coroutineString = "";
+        for(int for0 = 0; for0 < Formation_list[Formation_select].Basic_VarFormation.Count; for0++)
+        {
+            Basic_dataValues.Basic_coroutineString += Formation_list[Formation_select].Basic_VarFormation[for0] + "|";
+        }
+        Basic_dataValues.Basic_coroutineString += "/" + Formation_select;
+
+        Basic_dataCoroutine = Formation_FormationSetting__Coroutine();
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE,
+            //
+            Basic_dataCoroutine);
 
         //
         return true;
+    }
+
+    IEnumerator Formation_FormationSetting__Coroutine()
+    {
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.SAVE;
+
+        while(Basic_dataValues.Basic_coroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
+        {
+            switch(Basic_dataValues.Basic_coroutinePhase)
+            {
+                case Basic__DATA_COROUTINE_PHASE.SAVE:              { Formation_FormationSetting__Coroutine__SAVE();    }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION:         { Formation_NetworkDataLoad();                      }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION_DATA:    { Formation_NetworkDataSetting();                   }   break;
+                case Basic__DATA_COROUTINE_PHASE.ITEM:              { Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.END;  }   break;
+            }
+
+            //
+            yield return null;
+        }
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,
+            //
+            Basic_dataCoroutine);
+        Basic_dataCoroutine = null;
+    }
+
+    void Formation_FormationSetting__Coroutine__SAVE()
+    {
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.SAVE + 1;
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__NETWORK__FOAMRTION__SAVE,
+            //
+            Basic_dataValues);
     }
 
     ////////// Constructor & Destroyer  //////////

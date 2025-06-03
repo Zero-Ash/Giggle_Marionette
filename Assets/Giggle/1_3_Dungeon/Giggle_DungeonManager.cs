@@ -213,7 +213,7 @@ public class Giggle_DungeonManager : Giggle_SceneManager
                 List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__DUNGEON__GET_FORMATION);
                 for(int for0 = 0; for0 < formation.Count; for0++)
                 {
-                    Basic_datas[for0].Basic_VarId = formation[for0];
+                    Basic_datas[for0] = formation[for0];
                 }
                 Basic_manager.Formation_Reset();
 
@@ -244,8 +244,11 @@ public class Giggle_DungeonManager : Giggle_SceneManager
             ////////// Constructor & Destroyer  //////////
 
             // UI_BtnClick__Tile__Tile
-            protected override void UI_BtnClick__Tile__Tile__Change(int _count)
+            protected override bool UI_BtnClick__Tile__Tile__Change(int _count)
             {
+                bool isChange = false;
+
+                //
                 List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__DUNGEON__GET_FORMATION);
 
                 if(!formation[_count].Equals(-2))
@@ -257,12 +260,20 @@ public class Giggle_DungeonManager : Giggle_SceneManager
 
                     // UI갱신
                     Basic_Reset();
+
+                    isChange = true;
                 }
+
+                //
+                return isChange;
             }
 
             // UI_BtnClick__Tile__Change
-            protected override void UI_BtnClick__Tile__Change(int _count, int _selectMarionette)
+            protected override bool UI_BtnClick__Tile__Change(int _count, int _selectMarionette)
             {
+                bool isChange = false;
+
+                //
                 List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__DUNGEON__GET_FORMATION);
 
                 if(!formation[_count].Equals(-2))
@@ -273,7 +284,12 @@ public class Giggle_DungeonManager : Giggle_SceneManager
 
                     // UI갱신
                     Basic_Reset();
+
+                    isChange = true;
                 }
+
+                //
+                return isChange;
             }
 
             #endregion

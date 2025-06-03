@@ -80,6 +80,13 @@ public class Giggle_ScriptBridge
         MASTER__NETWORK__DATA_LOAD_MARIONETTE,
 
         /// <summary>
+        /// 진영 리스트 불러오기<br/>
+        /// 매개변수 : LitJson.JsonData - 차트 데이터<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__DATA_LOAD_FORMATION,
+
+        /// <summary>
         /// 가챠 체크<br/>
         /// 매개변수 : values<br/>
         /// return type : 
@@ -106,6 +113,14 @@ public class Giggle_ScriptBridge
         /// return type : 
         /// </summary>
         MASTER__NETWORK__GACHA__CHANGE,
+
+
+        /// <summary>
+        /// 포메이션 저장<br/>
+        /// 매개변수 : values<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__NETWORK__FOAMRTION__SAVE,
 
         /// <summary>
         /// 길드 창설<br/>
@@ -767,7 +782,7 @@ public class Giggle_ScriptBridge
 
         /// <summary>
         /// 진영 위치 변경<br/>
-        /// 매개변수 : int - 마리오네트 인벤토르 id, int - 배치할 자리<br/>
+        /// 매개변수 : List(int) - 포메이션<br/>
         /// return type :
         /// </summary>
         PLAYER__FORMATION__FORMATION_SETTING,

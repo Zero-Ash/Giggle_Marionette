@@ -39,6 +39,8 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         Basic_back.SetActive(false);
         Basic_ui.SetActive(false);
 
+        Formation_Close();
+
         //
         Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Giggle_Battle.Basic__COROUTINE_PHASE.RESET);
     }
@@ -231,7 +233,8 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
         //
         public void Basic_CheckCover()
         {
-            List<int>   formation       = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+            List<int>   formation       = Basic_uiData.Formation_VarFormation.Basic_VarDatas;
+            //List<int>   formation       = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
             List<int>   characterList   = Basic_uiData.Formation_VarMarionetteList;
 
             int whileCount = 0;
@@ -296,13 +299,17 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     [SerializeField] ScrollView_Formation               Formation_scrollView;
 
     [Header("RUNNING")]
+    [SerializeField] bool   Formaiton_isChange;
+
     [SerializeField] List<int>  Formation_marionetteList;   // inventoryId
 
     [SerializeField] int    Formation_selectFormation;
     [SerializeField] int    Formation_selectMarionette;
 
     ////////// Getter & Setter          //////////
-    public List<int> Formation_VarMarionetteList    { get { return Formation_marionetteList;    }   }
+    public Formation_Formation  Formation_VarFormation  { get { return Formation_formation; }   }
+    
+    public List<int> Formation_VarMarionetteList { get { return Formation_marionetteList; } }
 
     public ScrollView_Formation Formation_VarScrollView { get { return Formation_scrollView;    }   }
 
@@ -329,9 +336,10 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     void Formation_BtnClick__Tile(int _count)
     {
         int selectMarionette = -1;
-        if(Formation_selectMarionette != -1)    { selectMarionette = Formation_marionetteList[Formation_selectMarionette];  }
+        if (Formation_selectMarionette != -1) { selectMarionette = Formation_marionetteList[Formation_selectMarionette]; }
 
-        Formation_formation.UI_BtnClick__Tile(_count, selectMarionette);
+        Formaiton_isChange = Formation_formation.UI_BtnClick__Tile(_count, selectMarionette);
+        Formation_Reset();
     }
 
     // 
@@ -370,9 +378,7 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
 
     void Formation_BtnClick__ScrollView__Change(int _count)
     {
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-            Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-            Formation_marionetteList[_count], Formation_selectFormation);
+        Formation_formation.Basic_Change(Formation_selectFormation, Formation_marionetteList[_count]);
 
         // UI갱신
         Formation_Reset();
@@ -412,11 +418,23 @@ public class Giggle_MainManager__Marionette : MonoBehaviour
     //
     void Formation_Active()
     {
+        Formaiton_isChange = false;
+
         //
         Formation_Reset();
         Formation_formation.Basic_Reset();
 
         Formation_BtnClick__MenuBar(0);
+    }
+
+    void Formation_Close()
+    {
+        if(Formaiton_isChange)
+        {
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                Formation_formation.Basic_VarDatas);
+        }
     }
 
     //

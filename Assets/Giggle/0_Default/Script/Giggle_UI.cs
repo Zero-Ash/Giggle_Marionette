@@ -417,55 +417,24 @@ namespace Giggle_UI
             PVE
         }
 
-        [Serializable]
-        public class Basic_Data : IDisposable
-        {
-            [SerializeField] int Basic_id;
-            [SerializeField] int Basic_lv;
-
-            ////////// Getter & Setter          //////////
-
-            public int  Basic_VarId { get { return Basic_id;    } set { Basic_id = value;   }   }
-
-            public int  Basic_VarLv { get { return Basic_lv;    } set { Basic_lv = value;   }   }
-
-            ////////// Method                   //////////
-
-            public void Basic_Reset()
-            {
-                Basic_id = -1;
-                Basic_lv = -1;
-            }
-
-            ////////// Constructor & Destroyer  //////////
-
-            //
-            public Basic_Data()
-            {
-                Basic_Reset();
-            }
-
-            //
-            public void Dispose()
-            {
-            }
-        }
-
         [Header("BASIC ==================================================")]
         [SerializeField]            Basic__PLAY_TYPE    Basic_playType;
-        [SerializeField] protected  List<Basic_Data>    Basic_datas;
+        [SerializeField] protected  List<int>    Basic_datas;
 
         ////////// Getter & Setter          //////////
         public Basic__PLAY_TYPE Basic_VarPlayerType { get { return Basic_playType;  } set { Basic_playType = value; }   }
 
+        //
+        public List<int>    Basic_VarDatas  { get { return Basic_datas; }   }
+
         ////////// Method                   //////////
-        
+
         // Basic_Reset
         public void Basic_Reset()
         {
             for(int for0 = 0; for0 < Basic_datas.Count; for0++)
             {
-                Basic_datas[for0].Basic_Reset();
+                Basic_datas[for0] = -1;
             }
 
             switch(Basic_playType)
@@ -481,8 +450,16 @@ namespace Giggle_UI
             List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
             for(int for0 = 0; for0 < formation.Count; for0++)
             {
-                Basic_datas[for0].Basic_VarId = formation[for0];
+                Basic_datas[for0] = formation[for0];
             }
+        }
+
+        //
+        public void Basic_Change(int _count, int _id)
+        {
+            Basic_datas[_count] = _id;
+
+            UI_Reset();
         }
 
         //
@@ -492,11 +469,11 @@ namespace Giggle_UI
 
             if(Basic_datas == null)
             {
-                Basic_datas = new List<Basic_Data>();
+                Basic_datas = new List<int>();
             }
             while(Basic_datas.Count < 9)
             {
-                Basic_datas.Add(new Basic_Data());
+                Basic_datas.Add(-1);
             }
 
             //
@@ -531,8 +508,11 @@ namespace Giggle_UI
         
         //////////
         // UI_BtnClick__Tile
-        public void UI_BtnClick__Tile(int _count, int _selectMarionette)
+        public bool UI_BtnClick__Tile(int _count, int _selectMarionette)
         {
+            bool isChange = false;
+
+            //
             if(_count == -1)
             {
                 UI_BtnClick__Tile__Tile__Select(-1);
@@ -541,20 +521,29 @@ namespace Giggle_UI
             {
                 switch(_selectMarionette)
                 {
-                    case -1:    { UI_BtnClick__Tile__Tile(_count);                      }   break;
-                    default:    { UI_BtnClick__Tile__Change(_count, _selectMarionette); }   break;
+                    case -1:    { isChange = UI_BtnClick__Tile__Tile(_count);                       }   break;
+                    default:    { isChange = UI_BtnClick__Tile__Change(_count, _selectMarionette);  }   break;
                 }
             }
+
+            //
+            return isChange;
         }
 
         // UI_BtnClick__Tile__Tile
-        void UI_BtnClick__Tile__Tile(int _count)
+        bool UI_BtnClick__Tile__Tile(int _count)
         {
+            bool isChange = false;
+
+            //
             switch(UI_selectFormation)
             {
-                case -1:    { UI_BtnClick__Tile__Tile__Select(_count);  }   break;
-                default:    { UI_BtnClick__Tile__Tile__Change(_count);  }   break;
+                case -1:    { UI_BtnClick__Tile__Tile__Select(_count);              }   break;
+                default:    { isChange = UI_BtnClick__Tile__Tile__Change(_count);   }   break;
             }
+
+            //
+            return isChange;
         }
 
         void UI_BtnClick__Tile__Tile__Select(int _count)
@@ -568,36 +557,44 @@ namespace Giggle_UI
             UI_selectFormation = _count;
         }
 
-        protected virtual void UI_BtnClick__Tile__Tile__Change(int _count)
+        protected virtual bool UI_BtnClick__Tile__Tile__Change(int _count)
         {
-            List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+            bool isChange = false;
 
-            if(!formation[_count].Equals(-2))
+            //
+            if(!Basic_datas[_count].Equals(-2))
             {
                 //
-                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-                    formation[UI_selectFormation], _count);
+                int id = Basic_datas[UI_selectFormation];
+                Basic_datas[UI_selectFormation] = Basic_datas[_count];
+                Basic_Change(_count, id);
 
-                // UI갱신
-                Basic_Reset();
+                isChange = true;
             }
+
+            //
+            return isChange;
         }
 
         // UI_BtnClick__Tile__Change
-        protected virtual void UI_BtnClick__Tile__Change(int _count, int _selectMarionette)
+        protected virtual bool UI_BtnClick__Tile__Change(int _count, int _selectMarionette)
         {
-            List<int> formation = (List<int>)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__GET_SELECT_FORMATION);
+            bool isChange = false;
 
-            if(!formation[_count].Equals(-2))
+            //
+            if (!Basic_datas[_count].Equals(-2))
             {
-                Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
-                    _selectMarionette, _count);
+                //
+                Basic_Change(_count, _selectMarionette);
+                //Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                //    Giggle_ScriptBridge.EVENT.PLAYER__FORMATION__FORMATION_SETTING,
+                //    _selectMarionette, _count);
 
-                // UI갱신
-                Basic_Reset();
+                isChange = true;
             }
+
+            //
+            return isChange;
         }
         
         //
@@ -627,7 +624,7 @@ namespace Giggle_UI
 
         void UI_Reset__PVE(int _for0)
         {
-            int tileId = Basic_datas[_for0].Basic_VarId;
+            int tileId = Basic_datas[_for0];
             if(!tileId.Equals(-1))
             {
                 // 주인공
@@ -662,7 +659,7 @@ namespace Giggle_UI
             Giggle_Unit unit = (Giggle_Unit)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,
                 //
-                Basic_datas[_for0].Basic_VarId,
+                Basic_datas[_for0],
                 UI_list[_for0].Find("Obj"), 300.0f);
 
                 //unit

@@ -240,7 +240,8 @@ public class Giggle_Battle : IDisposable
 
     void Basic_Coroutine__SETTING_FADE_OUT()
     {
-        if((int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__UI__VAR_COROUTINE_PHASE) == 10002)
+        if( !(bool)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__BASIC__IS_NETWORK_DATA_LOAD_DOING) &&
+            ((int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MAIN__UI__VAR_COROUTINE_PHASE) == 10002))
         {
             Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_STAGE_START;
         }
