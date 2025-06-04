@@ -610,7 +610,16 @@ public class Giggle_Master : MonoBehaviour
 
         param.Add("EQUIPMENT_WEAPON",   -1                                      );
 
-        Backend.GameData.Insert("MARIONETTE", param);
+        Backend.GameData.Insert("MARIONETTE", param,
+        (callback)=>
+        {
+            if (!callback.IsSuccess())
+            {
+                return;
+            }
+
+            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__RELOAD);
+        });
     }
     
     //

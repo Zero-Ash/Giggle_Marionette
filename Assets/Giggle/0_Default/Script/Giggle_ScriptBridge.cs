@@ -746,6 +746,13 @@ public class Giggle_ScriptBridge
         PLAYER__MARIONETTE__GET_DOCUMENT,
 
         /// <summary>
+        /// 마리오네트 데이터 갱신<br/>
+        /// 매개변수 : int - 캐릭터 id<br/>
+        /// return type : 
+        /// </summary>
+        PLAYER__MARIONETTE__RELOAD,
+
+        /// <summary>
         /// 마리오네트 추가<br/>
         /// 매개변수 : int - 캐릭터 id<br/>
         /// return type : 

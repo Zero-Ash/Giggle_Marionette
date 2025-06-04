@@ -1794,7 +1794,46 @@ public class Giggle_Player : IDisposable
     object Marionette_GetDocument(params object[] _args)    { return Marionette_document;   }
 
     ////////// Method                   //////////
+
+    // Marionette_NetworkDataReload
+    object Marionette_NetworkDataReload__Script(params object[] _args)
+    {
+        Basic_dataCoroutine = Marionette_NetworkDataReload__Coroutine();
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE,
+            //
+            Basic_dataCoroutine);
+
+        //
+        return true;
+    }
+
+    IEnumerator Marionette_NetworkDataReload__Coroutine()
+    {
+        Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE;
+
+        while (Basic_dataValues.Basic_coroutinePhase != Basic__DATA_COROUTINE_PHASE.END)
+        {
+            switch (Basic_dataValues.Basic_coroutinePhase)
+            {
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE:        { Marionette_NetworkDataLoad();     }   break;
+                case Basic__DATA_COROUTINE_PHASE.MARIONETTE_DATA:   { Marionette_NetworkDataSetting();  }   break;
+                case Basic__DATA_COROUTINE_PHASE.FORMATION:         { Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.END;  }   break;
+            }
+
+            //
+            yield return null;
+        }
+
+        //
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+            Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,
+            //
+            Basic_dataCoroutine);
+        Basic_dataCoroutine = null;
+    }
     
+    //
     void Marionette_NetworkDataLoad()
     {
         Basic_dataValues.Basic_coroutinePhase = Basic__DATA_COROUTINE_PHASE.MARIONETTE + 1;
@@ -1921,8 +1960,9 @@ public class Giggle_Player : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DATA_FROM_INVENTORYID,  Marionette_GetDataFromInventoryId   );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__GET_DOCUMENT,               Marionette_GetDocument              );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,        Marionette_Add__Script          );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__CARD_EQUIP, Marionette_CardEquip__Script    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__RELOAD,     Marionette_NetworkDataReload__Script    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__ADD,        Marionette_Add__Script                  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__CARD_EQUIP, Marionette_CardEquip__Script            );
     }
 
     #endregion
