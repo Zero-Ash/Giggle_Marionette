@@ -227,6 +227,13 @@ public class Giggle_ScriptBridge
         /// </summary>
         MASTER__BATTLE__INIT,
 
+        /// <summary>
+        /// 디버그 로그<br/>
+        /// 매개변수 : string - 입력할 텍스트<br/>
+        /// return type : 
+        /// </summary>
+        MASTER__DEBUG__INPUT_TEXT,
+
         #endregion
 
         #region Giggle_Database

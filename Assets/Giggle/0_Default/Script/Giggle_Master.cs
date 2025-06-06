@@ -29,7 +29,7 @@ public class Giggle_Master : MonoBehaviour
 
     #region BASIC
     [SerializeField] Giggle_Database Basic_Database;
-    [SerializeField] Giggle_Player  Basic_player;
+    [SerializeField] Giggle_Player Basic_player;
 
     ////////// Getter & Setter  //////////
 
@@ -62,13 +62,13 @@ public class Giggle_Master : MonoBehaviour
     {
 
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__START_COROUTINE, Basic_StartCoroutine);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE,  Basic_StopCoroutine );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BASIC__STOP_COROUTINE, Basic_StopCoroutine);
 
         Application.targetFrameRate = 120;
 
         Basic_Database = new Giggle_Database(this.gameObject);
-        
-        if(Basic_player == null)
+
+        if (Basic_player == null)
         {
             Basic_player = new Giggle_Player();
         }
@@ -79,12 +79,13 @@ public class Giggle_Master : MonoBehaviour
         Garbage_Start();
         UI_Start();
         Battle_Start();
+        Debug_Start();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #endregion
@@ -98,11 +99,10 @@ public class Giggle_Master : MonoBehaviour
     }
 
     [Header("NETWORK ==================================================")]
-    [SerializeField] int   Network_initState;
-    [SerializeField] TMPro.TextMeshProUGUI Network_tempText;
+    [SerializeField] int Network_initState;
 
     ////////// Getter & Setter  //////////
-    object Network_VarInitState(params object[] _args)  { return Network_initState; }
+    object Network_VarInitState(params object[] _args) { return Network_initState; }
 
     object Network_VarGoogleHash(params object[] _args) { return Backend.Utils.GetGoogleHash(); }
 
@@ -111,20 +111,20 @@ public class Giggle_Master : MonoBehaviour
     // Network_GuildCreate
     object Network_GuildCreate(params object[] _args)
     {
-        string guildName        = (string)_args[0];
-        string guildIntroduce   = (string)_args[2];
+        string guildName = (string)_args[0];
+        string guildIntroduce = (string)_args[2];
 
         //
         Param param = new Param();
-        param.Add("Introduce",  guildIntroduce  );
+        param.Add("Introduce", guildIntroduce);
         Backend.Guild.CreateGuildV3(
             guildName, 10, param,
             //
             callback =>
             {
-                switch(callback.StatusCode)
+                switch (callback.StatusCode)
                 {
-                    case 204:   { Network_GuildCreate__CreateGuildV3Success(_args);  }   break;
+                    case 204: { Network_GuildCreate__CreateGuildV3Success(_args); } break;
                 }
             });
 
@@ -134,7 +134,7 @@ public class Giggle_Master : MonoBehaviour
 
     void Network_GuildCreate__CreateGuildV3Success(params object[] _args)
     {
-        int guildJoinType   = (int)_args[1];
+        int guildJoinType = (int)_args[1];
 
         bool isAuto = guildJoinType.Equals(0);
 
@@ -143,9 +143,9 @@ public class Giggle_Master : MonoBehaviour
             //
             callback =>
             {
-                switch(callback.StatusCode)
+                switch (callback.StatusCode)
                 {
-                    case 204:   {   }   break;
+                    case 204: { } break;
                 }
             });
     }
@@ -153,25 +153,22 @@ public class Giggle_Master : MonoBehaviour
     ////////// Unity            //////////
     void Network_Start()
     {
-        Network_tempText.text = "Network_Start";
         Network_initState = -1;
 
         //
         Backend.InitializeAsync(
             callback =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
-        Network_tempText.text = "Network_Start 1";
                     Network_initState = 1;
                 }
                 else
                 {
-        Network_tempText.text = "Network_Start 0";
                     Network_initState = 0;
                 }
             });
-        
+
         Network_Account_Start();
         Network_DataLoad_Start();
         Network_Gacha_Start();
@@ -179,32 +176,32 @@ public class Giggle_Master : MonoBehaviour
         Network_Stage_Start();
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE,    Network_VarInitState    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_GOOGLE_HASH,   Network_VarGoogleHash   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_INIT_STATE, Network_VarInitState);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__VAR_GOOGLE_HASH, Network_VarGoogleHash);
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUILD_CREATE,  Network_GuildCreate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUILD_CREATE, Network_GuildCreate);
     }
 
-        #region ACCOUNT
+    #region ACCOUNT
 
     public class Network_Account_LogIn
     {
-        public string   ID;
-        public int      Market;
+        public string ID;
+        public int Market;
 
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
-    
+
         ////////// Constructor & Destroyer  //////////
     }
 
-    [SerializeField] Network_Account_LogIn  Network_Account_logIn;
+    [SerializeField] Network_Account_LogIn Network_Account_logIn;
 
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
-    
+
     object Network_Account_GuestLogIn(params object[] _args)
     {
         TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
@@ -212,19 +209,19 @@ public class Giggle_Master : MonoBehaviour
 
         //
         //StartCoroutine(Network_Account_GuestLogIn__PostRequest(_args));
-        
+
         Backend.BMember.GuestLogin(
             callback =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
                     text.text = "LogIn_BtnClick__GUEST_SIGN_IN__Coroutine0 " + callback.StatusCode;
-                    switch(callback.StatusCode)
+                    switch (callback.StatusCode)
                     {
                         // 최초 접속
-                        case 201:   { values.Basic_SignInCoroutinePhase = 10;   }   break;
+                        case 201: { values.Basic_SignInCoroutinePhase = 10; } break;
                         // 로그인
-                        default:    { values.Basic_SignInCoroutinePhase = 100;  }   break;
+                        default: { values.Basic_SignInCoroutinePhase = 100; } break;
                     }
                 }
                 else
@@ -251,23 +248,23 @@ public class Giggle_Master : MonoBehaviour
             // 요청 보내기
             yield return webRequest.SendWebRequest();
 
-            switch(webRequest.result)
+            switch (webRequest.result)
             {
                 case UnityWebRequest.Result.Success:
-                {
-                    Debug.Log("응답 데이터: " + webRequest.downloadHandler.text);
+                    {
+                        Debug.Log("응답 데이터: " + webRequest.downloadHandler.text);
 
-                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
-                    Debug.Log(data["Result"]);
+                        LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                        Debug.Log(data["Result"]);
 
-                    //
-                    values.Basic_SignInCoroutinePhase = 10;
-                }
-                break;
+                        //
+                        values.Basic_SignInCoroutinePhase = 10;
+                    }
+                    break;
             }
         }
     }
-    
+
     //
     object Network_Account_GuestDelete(params object[] _args)
     {
@@ -282,7 +279,7 @@ public class Giggle_Master : MonoBehaviour
     {
         TMPro.TextMeshProUGUI text = (TMPro.TextMeshProUGUI)_args[0];
         Giggle_TitleManager.UI_MainBasicData.LogIn_Values values = (Giggle_TitleManager.UI_MainBasicData.LogIn_Values)_args[1];
-        
+
         //
         Backend.Chart.GetChartContents("172424",
             (callback) =>
@@ -292,18 +289,18 @@ public class Giggle_Master : MonoBehaviour
                 //
                 LitJson.JsonData datas = callback.FlattenRows();
                 Param param = new Param();
-                param.Add("RESOURCE_GOLD",  int.Parse(datas[0]["RESOURCE_GOLD"].ToString())     );
+                param.Add("RESOURCE_GOLD", int.Parse(datas[0]["RESOURCE_GOLD"].ToString()));
 
-                param.Add("STAGE_MAX",      int.Parse(datas[0]["STAGE"].ToString()) );
-                param.Add("STAGE_SELECT",   int.Parse(datas[0]["STAGE"].ToString()) );
+                param.Add("STAGE_MAX", int.Parse(datas[0]["STAGE"].ToString()));
+                param.Add("STAGE_SELECT", int.Parse(datas[0]["STAGE"].ToString()));
 
                 Backend.GameData.Insert("PLAYER_DATA", param);
 
                 //
                 param.Clear();
-                param.Add("GACHA_COUNT",    int.Parse(datas[0]["RESOURCE_GACHA"].ToString())    );
-                param.Add("GACHA_LIST",     "empty");
-                param.Add("GACHA_CHANGE",   0);
+                param.Add("GACHA_COUNT", int.Parse(datas[0]["RESOURCE_GACHA"].ToString()));
+                param.Add("GACHA_LIST", "empty");
+                param.Add("GACHA_CHANGE", 0);
 
                 Backend.GameData.Insert("PLAYER_GACHA", param);
 
@@ -311,13 +308,13 @@ public class Giggle_Master : MonoBehaviour
                 param.Clear();
                 string paramName = "FORMATION_MAIN";
                 string strs = "-1|-1|-1|-1|-2|-1|-1|-1|-1";
-                for(int for0 = 0; for0 < 3; for0++)
+                for (int for0 = 0; for0 < 3; for0++)
                 {
                     param.Add(paramName + for0, strs);
                 }
 
                 Backend.GameData.Insert("PLAYER_FORMATION", param);
-                
+
                 ////
                 //param.Clear();
                 //string[] strs0 = datas[0]["PINOCCHIO__EQUIPS"].ToString().Split('|');
@@ -374,14 +371,14 @@ public class Giggle_Master : MonoBehaviour
         Network_Account_logIn = new Network_Account_LogIn();
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN,  Network_Account_GuestLogIn  );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE,  Network_Account_GuestDelete );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP,  Network_Account_UserSignUp  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_LOG_IN, Network_Account_GuestLogIn);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUEST_DELETE, Network_Account_GuestDelete);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP, Network_Account_UserSignUp);
     }
 
-        #endregion
+    #endregion
 
-        #region DATA_LOAD
+    #region DATA_LOAD
 
     ////////// Getter & Setter  //////////
 
@@ -395,7 +392,7 @@ public class Giggle_Master : MonoBehaviour
             "PLAYER_DATA", new Where(),
             callback =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -419,7 +416,7 @@ public class Giggle_Master : MonoBehaviour
             "PINOCCHIO", new Where(),
             callback =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.MARIONETTE;
                     return;
@@ -427,7 +424,7 @@ public class Giggle_Master : MonoBehaviour
 
                 //
                 values.Basic_coroutineDatas = callback.FlattenRows();
-                if(values.Basic_coroutineDatas.Count > 0)
+                if (values.Basic_coroutineDatas.Count > 0)
                 {
                     values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.PINOCCHIO_DATA;
                 }
@@ -450,7 +447,7 @@ public class Giggle_Master : MonoBehaviour
             "MARIONETTE", new Where(),
             callback =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.FORMATION;
                     return;
@@ -475,7 +472,7 @@ public class Giggle_Master : MonoBehaviour
             "PLAYER_FORMATION", new Where(),
             callback =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.ITEM;
                     return;
@@ -496,20 +493,20 @@ public class Giggle_Master : MonoBehaviour
     void Network_DataLoad_Start()
     {
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER,      Network_DataLoadPlayer      );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO,   Network_DataLoadPinocchio   );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE,  Network_DataLoadMarionette  );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION,   Network_DataLoadFormation   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER, Network_DataLoadPlayer);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO, Network_DataLoadPinocchio);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE, Network_DataLoadMarionette);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION, Network_DataLoadFormation);
     }
 
-        #endregion
+    #endregion
 
-        #region GACHA
+    #region GACHA
 
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
-    
+
     //
     object Network_Gacha_Check(params object[] _args)
     {
@@ -517,9 +514,9 @@ public class Giggle_Master : MonoBehaviour
 
         //
         Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
-            (callback)=>
+            (callback) =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -541,7 +538,7 @@ public class Giggle_Master : MonoBehaviour
 
         _values.Basic_coroutinePhase = 20;
     }
-    
+
     //
     object Network_Gacha_Select(params object[] _args)
     {
@@ -549,9 +546,9 @@ public class Giggle_Master : MonoBehaviour
 
         //
         Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
-            (callback)=>
+            (callback) =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -567,9 +564,9 @@ public class Giggle_Master : MonoBehaviour
     {
         //
         Backend.GameData.GetMyData("MARIONETTE", new Where(),
-            (callback)=>
+            (callback) =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -590,10 +587,10 @@ public class Giggle_Master : MonoBehaviour
 
         //
         int inventoryId = -1;
-        for(int for0 = 0; for0 < _rowsMarionette.Count; for0++)
+        for (int for0 = 0; for0 < _rowsMarionette.Count; for0++)
         {
             int num = int.Parse(_rowsMarionette[for0]["INVENTORY_ID"].ToString());
-            if(inventoryId < num)
+            if (inventoryId < num)
             {
                 inventoryId = num;
             }
@@ -602,26 +599,30 @@ public class Giggle_Master : MonoBehaviour
 
         //
         param.Clear();
-        param.Add("DATA_ID",            int.Parse(list[_values.Gacha_select])   );
-        param.Add("INVENTORY_ID",       inventoryId                             );
+        param.Add("DATA_ID", int.Parse(list[_values.Gacha_select]));
+        param.Add("INVENTORY_ID", inventoryId);
 
-        param.Add("LEVEL",              1                                       );
-        param.Add("SKILL_LV",           1                                       );
+        param.Add("LEVEL", 1);
+        param.Add("SKILL_LV", 1);
 
-        param.Add("EQUIPMENT_WEAPON",   -1                                      );
+        param.Add("EQUIPMENT_WEAPON", -1);
 
         Backend.GameData.Insert("MARIONETTE", param,
-        (callback)=>
+        (callback) =>
         {
             if (!callback.IsSuccess())
             {
                 return;
             }
 
+            Debug_InputText(
+                "DATA_ID : " + param["DATA_ID"].ToString() + " / " +
+                "INVENTORY_ID : " + param["INVENTORY_ID"].ToString());
+
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__RELOAD);
         });
     }
-    
+
     //
     object Network_Gacha_Gacha(params object[] _args)
     {
@@ -629,9 +630,9 @@ public class Giggle_Master : MonoBehaviour
 
         //
         Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
-            (callback)=>
+            (callback) =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -647,9 +648,9 @@ public class Giggle_Master : MonoBehaviour
     {
         string inDate = _rows[0]["inDate"].ToString();
         int gachaCount = int.Parse(_rows[0]["GACHA_COUNT"].ToString());
-        
+
         // 가챠횟수가 0이라면 여기서 끝내기
-        if(gachaCount == 0)
+        if (gachaCount == 0)
         {
             _values.Basic_coroutinePhase = -1;
 
@@ -658,7 +659,7 @@ public class Giggle_Master : MonoBehaviour
 
         Param param = new Param();
         param.Add("GACHA_COUNT", gachaCount - 1);
-        
+
         //
         _values.Gacha_list = Network_Gacha_ListSetting();
         param.Add("GACHA_LIST", _values.Gacha_list);
@@ -669,7 +670,7 @@ public class Giggle_Master : MonoBehaviour
         Backend.GameData.UpdateV2("PLAYER_GACHA", inDate, Backend.UserInDate, param,
             (callback) =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
                     _values.Basic_coroutinePhase = 10;
                 }
@@ -679,7 +680,7 @@ public class Giggle_Master : MonoBehaviour
                 }
             });
     }
-    
+
     //
     object Network_Gacha_Change(params object[] _args)
     {
@@ -689,9 +690,9 @@ public class Giggle_Master : MonoBehaviour
 
         //
         Backend.GameData.GetMyData("PLAYER_GACHA", new Where(), 1,
-            (callback)=>
+            (callback) =>
             {
-                if(!callback.IsSuccess())
+                if (!callback.IsSuccess())
                 {
                     return;
                 }
@@ -707,9 +708,9 @@ public class Giggle_Master : MonoBehaviour
     {
         string inDate = _rows[0]["inDate"].ToString();
         _values.Gacha_changeCount = int.Parse(_rows[0]["GACHA_CHANGE"].ToString());
-        
+
         // 가챠횟수가 0이라면 여기서 끝내기
-        if(_values.Gacha_changeCount == 0)
+        if (_values.Gacha_changeCount == 0)
         {
             return;
         }
@@ -726,7 +727,7 @@ public class Giggle_Master : MonoBehaviour
         Backend.GameData.UpdateV2("PLAYER_GACHA", inDate, Backend.UserInDate, param,
             (callback) =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
                     _values.Basic_coroutinePhase = 10;
                 }
@@ -748,7 +749,7 @@ public class Giggle_Master : MonoBehaviour
                 Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_ATTRIBUTE,
                 Giggle_Master.ATTRIBUTE.FIRE.ToString());
 
-        for(int for0 = 0; for0 < 3; for0++)
+        for (int for0 = 0; for0 < 3; for0++)
         {
             Giggle_Character.Database data = datas[UnityEngine.Random.Range(0, datas.Count)];
             res += data.Basic_VarId + "|";
@@ -761,23 +762,23 @@ public class Giggle_Master : MonoBehaviour
     void Network_Gacha_Start()
     {
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK,  Network_Gacha_Check     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT, Network_Gacha_Select    );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,  Network_Gacha_Gacha     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK, Network_Gacha_Check);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT, Network_Gacha_Select);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA, Network_Gacha_Gacha);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change);
     }
 
-        #endregion
+    #endregion
 
 
-        #region FORMATION
+    #region FORMATION
     [Header("FORMATION ==========")]
     [SerializeField] string Formation_inDate;
 
     ////////// Getter & Setter  //////////
 
     ////////// Method           //////////
-    
+
     //
     object Network_Formation_Save(params object[] _args)
     {
@@ -793,7 +794,7 @@ public class Giggle_Master : MonoBehaviour
             "PLAYER_FORMATION", Formation_inDate, Backend.UserInDate, param,
             (callback) =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
                     values.Basic_coroutinePhase = Giggle_Player.Basic__DATA_COROUTINE_PHASE.FORMATION;
                 }
@@ -811,40 +812,40 @@ public class Giggle_Master : MonoBehaviour
     void Network_Formation_Start()
     {
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__FOAMRTION__SAVE,  Network_Formation_Save   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__FOAMRTION__SAVE, Network_Formation_Save);
     }
 
-        #endregion
+    #endregion
 
-        #region STAGE
+    #region STAGE
 
     public class Network_Stage_StartStage
     {
-        public int  SK;
-        public int  SelectStage;
-        public int  Loop;
+        public int SK;
+        public int SelectStage;
+        public int Loop;
 
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
-    
+
         ////////// Constructor & Destroyer  //////////
     }
 
     public class Network_Stage_EndStage
     {
-        public int  SK;
-        public int  Clear;
+        public int SK;
+        public int Clear;
 
         ////////// Getter & Setter          //////////
 
         ////////// Method                   //////////
-    
+
         ////////// Constructor & Destroyer  //////////
     }
 
-    [SerializeField] Network_Stage_StartStage   Network_Stage_startStage;
-    [SerializeField] Network_Stage_EndStage     Network_Stage_endStage;
+    [SerializeField] Network_Stage_StartStage Network_Stage_startStage;
+    [SerializeField] Network_Stage_EndStage Network_Stage_endStage;
 
     ////////// Getter & Setter  //////////
 
@@ -864,17 +865,17 @@ public class Giggle_Master : MonoBehaviour
             // 요청 보내기
             yield return webRequest.SendWebRequest();
 
-            switch(webRequest.result)
+            switch (webRequest.result)
             {
                 case UnityWebRequest.Result.Success:
-                {
-                    string jsonResponse = webRequest.downloadHandler.text;
-                    Debug.Log("응답 데이터: " + jsonResponse);
+                    {
+                        string jsonResponse = webRequest.downloadHandler.text;
+                        Debug.Log("응답 데이터: " + jsonResponse);
 
-                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
-                    Debug.Log(data["Result"]);
-                }
-                break;
+                        LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                        Debug.Log(data["Result"]);
+                    }
+                    break;
             }
         }
     }
@@ -891,17 +892,17 @@ public class Giggle_Master : MonoBehaviour
             // 요청 보내기
             yield return webRequest.SendWebRequest();
 
-            switch(webRequest.result)
+            switch (webRequest.result)
             {
                 case UnityWebRequest.Result.Success:
-                {
-                    string jsonResponse = webRequest.downloadHandler.text;
-                    Debug.Log("응답 데이터: " + jsonResponse);
+                    {
+                        string jsonResponse = webRequest.downloadHandler.text;
+                        Debug.Log("응답 데이터: " + jsonResponse);
 
-                    LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
-                    Debug.Log(data["Result"]);
-                }
-                break;
+                        LitJson.JsonData data = LitJson.JsonMapper.ToObject(webRequest.downloadHandler.text);
+                        Debug.Log(data["Result"]);
+                    }
+                    break;
             }
         }
     }
@@ -909,11 +910,11 @@ public class Giggle_Master : MonoBehaviour
     ////////// Unity            //////////
     void Network_Stage_Start()
     {
-        Network_Stage_startStage    = new Network_Stage_StartStage();
-        Network_Stage_endStage      = new Network_Stage_EndStage();
+        Network_Stage_startStage = new Network_Stage_StartStage();
+        Network_Stage_endStage = new Network_Stage_EndStage();
     }
 
-        #endregion
+    #endregion
 
     #endregion
 
@@ -921,7 +922,7 @@ public class Giggle_Master : MonoBehaviour
 
     public enum Scene_TYPE
     {
-        TITLE   = 0,
+        TITLE = 0,
         MAIN,
         DUNGEON,
         DOCUMENT,
@@ -929,13 +930,13 @@ public class Giggle_Master : MonoBehaviour
     }
 
     [Header("SCENE ==================================================")]
-    [SerializeField] GameObject         Scene_parent;
+    [SerializeField] GameObject Scene_parent;
 
-    [SerializeField] List<GameObject>   Scene_scenes;
+    [SerializeField] List<GameObject> Scene_scenes;
 
     [SerializeField] GameObject Scene_loading;
 
-    [SerializeField] Transform  Scene_cameraParent;
+    [SerializeField] Transform Scene_cameraParent;
 
     ////////// Getter & Setter  //////////
 
@@ -946,21 +947,21 @@ public class Giggle_Master : MonoBehaviour
 
         // 전체 비활성화
         Scene_loading.SetActive(true);
-        for(int for0 = 0; for0 < Scene_scenes.Count; for0++)
+        for (int for0 = 0; for0 < Scene_scenes.Count; for0++)
         {
-            if(Scene_scenes[for0] != null)
+            if (Scene_scenes[for0] != null)
             {
                 Scene_scenes[for0].GetComponent<Giggle_SceneManager>().Basic_Active(false);
             }
         }
 
         // 초기화
-        while(Scene_scenes.Count <= (int)sceneType)
+        while (Scene_scenes.Count <= (int)sceneType)
         {
             Scene_scenes.Add(null);
         }
 
-        if(Scene_scenes[(int)sceneType] == null)
+        if (Scene_scenes[(int)sceneType] == null)
         {
             Addressables.LoadAssetAsync<GameObject>("SCENE/" + sceneType.ToString()).Completed
             += handle =>
@@ -985,14 +986,14 @@ public class Giggle_Master : MonoBehaviour
     void Scene_Start()
     {
         float ratio = (float)Screen.height / (float)Screen.width;
-        for(int for0 = 0; for0 < Scene_cameraParent.childCount; for0++)
+        for (int for0 = 0; for0 < Scene_cameraParent.childCount; for0++)
         {
             Scene_cameraParent.GetChild(for0).GetComponent<Camera>().orthographicSize = ratio * 4.7f;
         }
         //Scene_cameraParent.localPosition = new Vector3(0, 0, -8.0f * ratio);
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE,  Scene_LoadScene__Script );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.SCENE__LOAD_SCENE, Scene_LoadScene__Script);
     }
 
     #endregion
@@ -1011,7 +1012,7 @@ public class Giggle_Master : MonoBehaviour
         Transform garbage = (Transform)_args[0];
 
         //
-        if(Garbage_parent == null)
+        if (Garbage_parent == null)
         {
             GameObject obj = new GameObject();
             obj.name = "garbage";
@@ -1021,7 +1022,7 @@ public class Giggle_Master : MonoBehaviour
 
         garbage.parent = Garbage_parent;
 
-        if(Garbage_parent.childCount > 100)
+        if (Garbage_parent.childCount > 100)
         {
             Destroy(Garbage_parent.gameObject);
             Garbage_parent = null;
@@ -1042,16 +1043,16 @@ public class Giggle_Master : MonoBehaviour
     #region UI
 
     [Header("UI ==================================================")]
-    [SerializeField] CanvasScaler   UI_canvasScaler;
-    [SerializeField] Camera         UI_camera;
+    [SerializeField] CanvasScaler UI_canvasScaler;
+    [SerializeField] Camera UI_camera;
 
-    [SerializeField] Vector2    UI_safeAreaSizeDelta;
-    [SerializeField] Vector2    UI_safeAreaPos;
+    [SerializeField] Vector2 UI_safeAreaSizeDelta;
+    [SerializeField] Vector2 UI_safeAreaPos;
 
     [SerializeField] Transform UI_rawImages;
 
     ////////// Getter & Setter  //////////
-    
+
     // UI_SafeArea
     object UI_SafeAreaVarSizeDelta(params object[] _args)
     {
@@ -1069,9 +1070,9 @@ public class Giggle_Master : MonoBehaviour
     // UI_PinocchioInstantiate
     object UI_PinocchioInstantiate(params object[] _args)
     {
-        int         id      = (int      )_args[0];
-        Transform   parent  = (Transform)_args[1];
-        float       scale   = (float    )_args[2];
+        int id = (int)_args[0];
+        Transform parent = (Transform)_args[1];
+        float scale = (float)_args[2];
 
         //
         Giggle_Character.Database data
@@ -1083,20 +1084,20 @@ public class Giggle_Master : MonoBehaviour
         Transform res = Transform.Instantiate(data.Basic_VarSd, parent);
         UI_CharacterInstantiate__ChangeModelLayer(res);
         res.localPosition = Vector3.zero;
-        res.localRotation = Quaternion.Euler(0,0,0);
+        res.localRotation = Quaternion.Euler(0, 0, 0);
         res.localScale = new Vector3(scale, scale, scale);
 
         //
         return res;
     }
-    
+
 
     // UI_CharacterInstantiate
     object UI_CharacterInstantiate(params object[] _args)
     {
-        int         id      = (int      )_args[0];
-        Transform   parent  = (Transform)_args[1];
-        float       scale   = (float    )_args[2];
+        int id = (int)_args[0];
+        Transform parent = (Transform)_args[1];
+        float scale = (float)_args[2];
 
         //
         Giggle_Character.Database data
@@ -1108,7 +1109,7 @@ public class Giggle_Master : MonoBehaviour
         Transform res = Transform.Instantiate(data.Basic_VarSd, parent);
         UI_CharacterInstantiate__ChangeModelLayer(res);
         res.localPosition = Vector3.zero;
-        res.localRotation = Quaternion.Euler(0,0,0);
+        res.localRotation = Quaternion.Euler(0, 0, 0);
         res.localScale = new Vector3(scale, scale, scale);
 
         //
@@ -1119,7 +1120,7 @@ public class Giggle_Master : MonoBehaviour
     {
         _parent.gameObject.layer = 6;
 
-        for(int for0 = 0; for0 < _parent.childCount; for0++)
+        for (int for0 = 0; for0 < _parent.childCount; for0++)
         {
             UI_CharacterInstantiate__ChangeModelLayer(_parent.GetChild(for0));
         }
@@ -1135,13 +1136,13 @@ public class Giggle_Master : MonoBehaviour
         canvas.worldCamera = UI_camera;
         canvas.planeDistance = 2;
         CanvasScaler cs = canvas.GetComponent<CanvasScaler>();
-        cs.matchWidthOrHeight   = UI_canvasScaler.matchWidthOrHeight;
-        cs.referenceResolution  = UI_canvasScaler.referenceResolution;
+        cs.matchWidthOrHeight = UI_canvasScaler.matchWidthOrHeight;
+        cs.referenceResolution = UI_canvasScaler.referenceResolution;
 
         //
         return true;
     }
-    
+
     // UI_ValueText
     object UI_ValueText(params object[] _args)
     {
@@ -1149,17 +1150,17 @@ public class Giggle_Master : MonoBehaviour
 
         //
         List<int> values = (List<int>)_args[0];
-        for(int for0 = values.Count - 1; for0 <= 0; for0--)
+        for (int for0 = values.Count - 1; for0 <= 0; for0--)
         {
-            if(values[for0] > 0)
+            if (values[for0] > 0)
             {
                 res = values[for0].ToString();
-                switch(for0)
+                switch (for0)
                 {
-                    case 1: { res += "K";   }   break;
-                    case 2: { res += "M";   }   break;
-                    case 3: { res += "G";   }   break;
-                    case 4: { res += "T";   }   break;
+                    case 1: { res += "K"; } break;
+                    case 2: { res += "M"; } break;
+                    case 3: { res += "G"; } break;
+                    case 4: { res += "T"; } break;
                 }
                 break;
             }
@@ -1175,9 +1176,9 @@ public class Giggle_Master : MonoBehaviour
         Transform parentTrans = (Transform)_args[0];
 
         //
-        if(UI_rawImages.childCount <= 1)
+        if (UI_rawImages.childCount <= 1)
         {
-            while(UI_rawImages.childCount < 10)
+            while (UI_rawImages.childCount < 10)
             {
                 Instantiate(UI_rawImages.GetChild(0), UI_rawImages);
             }
@@ -1219,23 +1220,23 @@ public class Giggle_Master : MonoBehaviour
         }
 
         //
-        float width     = Screen.safeArea.width     / (float)Screen.width;
-        float height    = Screen.safeArea.height    / (float)Screen.height;
+        float width = Screen.safeArea.width / (float)Screen.width;
+        float height = Screen.safeArea.height / (float)Screen.height;
         UI_safeAreaSizeDelta = new Vector2(rs.x * width, rs.y * height);
-        float posX  = Screen.safeArea.position.x - (((float)Screen.width - Screen.safeArea.width) * 0.5f);
-        float posY  = Screen.safeArea.position.y - (((float)Screen.height - Screen.safeArea.height) * 0.5f);
+        float posX = Screen.safeArea.position.x - (((float)Screen.width - Screen.safeArea.width) * 0.5f);
+        float posY = Screen.safeArea.position.y - (((float)Screen.height - Screen.safeArea.height) * 0.5f);
         float scale = UI_canvasScaler.referenceResolution.x / (float)Screen.width;
         UI_safeAreaPos = new Vector2(posX * scale, posY * scale);
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,   UI_SafeAreaVarSizeDelta );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION,     UI_SafeAreaVarPosition  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA, UI_SafeAreaVarSizeDelta);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION, UI_SafeAreaVarPosition);
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING,         UI_CanvasSetting        );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,             UI_ValueText            );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE,              UI_RawImage             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE, UI_PinocchioInstantiate);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE, UI_CharacterInstantiate);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING, UI_CanvasSetting);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT, UI_ValueText);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, UI_RawImage);
     }
 
     #endregion
@@ -1248,7 +1249,7 @@ public class Giggle_Master : MonoBehaviour
     ////////// Getter & Setter  //////////
     object Battle_VarCoroutinePhase(params object[] _args)
     {
-        if(_args.Length > 0)
+        if (_args.Length > 0)
         {
             Giggle_Battle.Basic__COROUTINE_PHASE phase = (Giggle_Battle.Basic__COROUTINE_PHASE)_args[0];
             Battle_data.Basic_VarCoroutinePhase = phase;
@@ -1298,12 +1299,12 @@ public class Giggle_Master : MonoBehaviour
     ////////// Unity            //////////
     void Battle_Start()
     {
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE,    Battle_VarCoroutinePhase    );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Battle_VarCoroutinePhase);
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL,      Battle_Accel        );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON,   Battle_SleepOn      );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF,  Battle_SleepOff     );
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__INIT,       Battle_Init__Bridge );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__ACCEL, Battle_Accel);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_ON, Battle_SleepOn);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__SLEEP_OFF, Battle_SleepOff);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__INIT, Battle_Init__Bridge);
     }
 
     // Update
@@ -1311,6 +1312,62 @@ public class Giggle_Master : MonoBehaviour
     {
 
     }
+
+    #endregion
+
+    #region DEBUG
+
+    [SerializeField] GameObject Debug_parent;
+
+    [SerializeField] TMPro.TextMeshProUGUI Debug_logText;
+
+    ////////// Getter & Setter  //////////
+
+
+    ////////// Method           //////////
+    public void Debug_BtnOn()
+    {
+        Debug_parent.SetActive(!Debug_parent.activeSelf);
+    }
+
+    //
+
+    object Debug_InputText__Bridge(params object[] _args)
+    {
+        string inputText = (string)_args[0];
+
+        //
+        Debug_InputText(inputText);
+
+        //
+        return true;
+    }
+
+    void Debug_InputText(string _inputText)
+    {
+        //
+        Debug_logText.text += "\n" + _inputText;
+
+        string[] strs = Debug_logText.text.Split('\n');
+        if (strs.Length > 20)
+        {
+            Debug_logText.text = strs[1];
+
+            for (int for0 = 2; for0 < strs.Length; for0++)
+            {
+                Debug_logText.text += "\n" + strs[for0];
+            }
+        }
+    }
+
+    ////////// Unity            //////////
+    void Debug_Start()
+    {
+        //Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__BATTLE__VAR_COROUTINE_PHASE, Battle_VarCoroutinePhase);
+
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__DEBUG__INPUT_TEXT,  Debug_InputText__Bridge);
+    }
+
 
     #endregion
 }
