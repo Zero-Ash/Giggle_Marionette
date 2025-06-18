@@ -795,18 +795,32 @@ public class Giggle_Battle : IDisposable
 
             List<int> attributeCount = new List<int>();
             attributeCount.Clear();
-            while(attributeCount.Count < (int)Giggle_Master.ATTRIBUTE.TOTAL)
+            while (attributeCount.Count < (int)Giggle_Master.ATTRIBUTE.TOTAL)
             {
                 attributeCount.Add(0);
             }
 
-            // 2. 속성 모으기
-            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            // 2. 타일 전체 체크
+            for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
             {
-                if(Basic_tiles[for0].childCount > 0)
+                if (Basic_tiles[for0].childCount > 0)
                 {
                     Transform element = Basic_tiles[for0].GetChild(0);
+
+                    // 속성 모으기
                     attributeCount[(int)element.GetComponent<Giggle_Unit>().Status_VarDatabase.Basic_VarAttribute]++;
+
+                    //
+                    for (int for1 = 0; for1 < element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_VarPassiveCount; for1++)
+                    {
+                        Giggle_Character.Save.Passive passive = element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_GetPassive(for1);
+                        Giggle_Character.Passive data
+                            = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                                //
+                                passive.Basic_VarId);
+                        data.Basic_OnStageStart(Basic_tiles, for0);
+                    }
                 }
             }
 
@@ -816,7 +830,7 @@ public class Giggle_Battle : IDisposable
 
             for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
             {
-                if(attributeCount[for0] > max)
+                if (attributeCount[for0] > max)
                 {
                     max = attributeCount[for0];
                     count = for0;
@@ -827,7 +841,7 @@ public class Giggle_Battle : IDisposable
             // 빛 속성 가중치
             max += (int)Giggle_Master.ATTRIBUTE.LIGHT;
 
-            switch(max)
+            switch (max)
             {
                 case 4:
                     {
@@ -836,15 +850,15 @@ public class Giggle_Battle : IDisposable
 
                         for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
                         {
-                            if(attributeCount[for0] > max)
+                            if (attributeCount[for0] > max)
                             {
                                 max = attributeCount[for0];
                                 count = for0;
                             }
                         }
-                        
+
                         // i. 동일 속성 4명
-                        if(max < 2)
+                        if (max < 2)
                         {
                             Basic_buff.Basic_FormationBounsSetting(1, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                         }
@@ -865,6 +879,18 @@ public class Giggle_Battle : IDisposable
                         Basic_buff.Basic_FormationBounsSetting(4, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
                     }
                     break;
+            }
+
+            //
+            //
+            for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                if (Basic_tiles[for0].childCount > 0)
+                {
+                    Transform element = Basic_tiles[for0].GetChild(0);
+
+                    element.GetComponent<Giggle_Unit>().Status_Calculate();
+                }
             }
         }
 
@@ -1085,6 +1111,7 @@ public class Giggle_Battle : IDisposable
         {
             if(Basic_target.gameObject.activeInHierarchy)
             {
+                Basic_owner.Status_AttackSuccess();
                 Basic_target.Status_Damage(Basic_damage);
             }
         }

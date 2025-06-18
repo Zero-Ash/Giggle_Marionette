@@ -17,8 +17,11 @@ public class Giggle_Unit : MonoBehaviour
     IEnumerator Basic_coroutine;
 
     ////////// Getter & Setter  //////////
+    public Giggle_Character.Save    Basic_VarSave   { get { return Basic_Save;  }   }
 
     ////////// Method           //////////
+    
+    //
     public void Basic_Init(Giggle_Battle _battle, Giggle_Character.Save _save)
     {
         Basic_Battle = _battle;
@@ -26,7 +29,7 @@ public class Giggle_Unit : MonoBehaviour
         Basic_Save = _save;
 
         Giggle_Character.Database data = null;
-        if(Basic_Save.Basic_VarSkillLv == -1)
+        if (Basic_Save.Basic_VarSkillLv == -1)
         {
             data = (Giggle_Character.Database)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
                 Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_DATA_FROM_ID,
@@ -44,7 +47,7 @@ public class Giggle_Unit : MonoBehaviour
 
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        this.transform.localScale    = Vector3.one;
+        this.transform.localScale = Vector3.one;
 
         Model_AnimatorVarSpeed = (float)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__STAGE__VAR_SPEED);
     }
@@ -181,25 +184,57 @@ public class Giggle_Unit : MonoBehaviour
     [SerializeField] Giggle_Character.Status            Status_totalStatus;
 
     [SerializeField] int Status_hp;
+    [SerializeField] int Status_mana;
+    [SerializeField] int Status_shield;
     [SerializeField] List<Status_CoolTimer> Status_coolTimers;
 
     ////////// Getter & Setter  //////////
     //
     public Giggle_Character.Database    Status_VarDatabase  { get { return Status_database; }   }
+    
+    //
+    public Giggle_Character.Status  Status_VarDatabaseStatus    { get { return Status_database.Basic_GetStatusList(Basic_Save.Basic_VarLevel);  }   }
+    
+    //
+    public Giggle_Character.Status  Status_VarBounsStatus   { get { return Status_bonusStatus; } }
 
     //
     public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
+    
+    //
+    public int  Status_VarMana  { get { return Status_mana; }   set { Status_mana = value;  }   }
 
     ////////// Method           //////////
+    //
+    public void Status_Calculate()
+    {
+        Status_totalStatus.Basic_Calculate(Status_VarDatabaseStatus, Status_equipStatus, Status_bonusStatus);
+        Status_hp = Status_totalStatus.Basic_VarHp;
+    }
+
+    //
+    public void Status_AttackSuccess()
+    {
+        for (int for0 = 0; for0 < Basic_VarSave.Basic_VarPassiveCount; for0++)
+        {
+            Giggle_Character.Save.Passive passive = Basic_VarSave.Basic_GetPassive(for0);
+            Giggle_Character.Passive data
+                = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                    //
+                    passive.Basic_VarId);
+            data.Basic_OnAttackSuccess(this);
+        }
+    }
     
     //
     public void Status_Damage(int _damage)
     {
         Status_hp -= _damage;
 
-        if(Status_hp <= 0)
+        if (Status_hp <= 0)
         {
-            if(Active_phase != Active_PHASE.DEFEAT)
+            if (Active_phase != Active_PHASE.DEFEAT)
             {
                 Active_phase = Active_PHASE.DEFEAT;
                 Model_SetMotionTime("Defeat");
@@ -207,11 +242,27 @@ public class Giggle_Unit : MonoBehaviour
 
                 Active_timer = 0.0f;
             }
+            
+            for (int for0 = 0; for0 < Basic_VarSave.Basic_VarPassiveCount; for0++)
+            {
+                Giggle_Character.Save.Passive passive = Basic_VarSave.Basic_GetPassive(for0);
+                Giggle_Character.Passive data
+                    = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                        //
+                        passive.Basic_VarId);
+                data.Basic_OnHitTaken(this);
+            }
         }
         else
         {
             //Active_phase = Active_PHASE.HIT;
         }
+    }
+
+    public void Status_ShieldCharge(int _value)
+    {
+        Status_shield += _value;
     }
 
     //
@@ -221,10 +272,9 @@ public class Giggle_Unit : MonoBehaviour
         //Status_equipStatus;
         Status_bonusStatus.Basic_BounsSetting(Status_database.Basic_VarSkillId.Equals(-1));
 
-        Status_totalStatus.Basic_Calculate(Status_database.Basic_GetStatusList(Basic_Save.Basic_VarLevel), Status_equipStatus, Status_bonusStatus);
-        Status_hp = Status_totalStatus.Basic_VarHp;
+        Status_shield = 0;
 
-        if(Status_coolTimers == null)
+        if (Status_coolTimers == null)
         {
             Status_coolTimers = new List<Status_CoolTimer>();
         }
@@ -265,6 +315,12 @@ public class Giggle_Unit : MonoBehaviour
     }
 
     ////////// Unity            //////////
+
+    #endregion
+
+    #region PASSIVE
+
+
 
     #endregion
 

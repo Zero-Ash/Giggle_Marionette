@@ -186,13 +186,6 @@ public class Giggle_ScriptBridge
         MASTER__UI__VALUE_TEXT,
 
         /// <summary>
-        /// UI RawImage<br/>
-        /// 매개변수 : Transform - 부모<br/>
-        /// return type :
-        /// </summary>
-        MASTER__UI__RAW_IMAGE,
-
-        /// <summary>
         /// 전투 진행 변경<br/>
         /// 매개변수 : Giggle_Battle.Basic__COROUTINE_PHASE - 진행시키고자 하는 단계<br/>
         /// return type : Giggle_Battle.Basic__COROUTINE_PHASE
@@ -365,6 +358,24 @@ public class Giggle_ScriptBridge
         /// return type : Giggle_Character.Skill
         /// </summary>
         DATABASE__MARIONETTE__GET_SKILL_FROM_ID,
+        /// <summary>
+        /// 마리오네트 패시브 데이터<br/>
+        /// 매개변수 : int - id<br/>
+        /// return type : Giggle_Character.Skill
+        /// </summary>
+        DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+        /// <summary>
+        /// 마리오네트 패시브 데이터<br/>
+        /// 매개변수 : int - count<br/>
+        /// return type : Giggle_Character.Skill
+        /// </summary>
+        DATABASE__MARIONETTE__GET_PASSIVE_FROM_COUNT,
+        /// <summary>
+        /// 마리오네트 패시브 갯수<br/>
+        /// 매개변수<br/>
+        /// return type : Giggle_Character.Skill
+        /// </summary>
+        DATABASE__MARIONETTE__GET_PASSIVE_COUNT,
         /// <summary>
         /// 마리오네트 별자리 데이터<br/>
         /// 매개변수 : int - id<br/>

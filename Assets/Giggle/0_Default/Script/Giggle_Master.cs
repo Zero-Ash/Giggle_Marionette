@@ -597,6 +597,8 @@ public class Giggle_Master : MonoBehaviour
         }
         inventoryId++;
 
+        int passiveCount = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_COUNT);
+
         //
         param.Clear();
         param.Add("DATA_ID", int.Parse(list[_values.Gacha_select]));
@@ -606,6 +608,10 @@ public class Giggle_Master : MonoBehaviour
         param.Add("SKILL_LV", 1);
 
         param.Add("EQUIPMENT_WEAPON", -1);
+        for (int for0 = 0; for0 < 4; for0++)
+        {
+            Network_Gacha_Select1__Passive(param, for0, passiveCount);
+        }
 
         Backend.GameData.Insert("MARIONETTE", param,
         (callback) =>
@@ -621,6 +627,26 @@ public class Giggle_Master : MonoBehaviour
 
             Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.PLAYER__MARIONETTE__RELOAD);
         });
+    }
+
+    void Network_Gacha_Select1__Passive(Param _param, int _nameCount, int _passiveCount)
+    {
+        int value = 0;
+        if (!_nameCount.Equals(0)) { value = -1; }
+
+        value = UnityEngine.Random.Range(value, _passiveCount);
+
+        if (value != -1)
+        {
+            Giggle_Character.Passive passive
+                = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_COUNT,
+                    //
+                    value);
+            value = passive.Basic_VarId;
+        }
+
+        _param.Add("PASSIVE_" + _nameCount, value);
     }
 
     //
@@ -762,9 +788,9 @@ public class Giggle_Master : MonoBehaviour
     void Network_Gacha_Start()
     {
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK, Network_Gacha_Check);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHECK,  Network_Gacha_Check );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__SELECT, Network_Gacha_Select);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA, Network_Gacha_Gacha);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__GACHA,  Network_Gacha_Gacha );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change);
     }
 
@@ -1170,29 +1196,6 @@ public class Giggle_Master : MonoBehaviour
         return res;
     }
 
-    // UI_rawImages
-    object UI_RawImage(params object[] _args)
-    {
-        Transform parentTrans = (Transform)_args[0];
-
-        //
-        if (UI_rawImages.childCount <= 1)
-        {
-            while (UI_rawImages.childCount < 10)
-            {
-                Instantiate(UI_rawImages.GetChild(0), UI_rawImages);
-            }
-        }
-
-        Transform element = UI_rawImages.GetChild(0);
-        element.parent = parentTrans;
-        element.localScale = Vector3.one;
-        element.GetComponent<RectTransform>().sizeDelta = new Vector2(3840.0f / 2160.0f * UI_canvasScaler.referenceResolution.y, UI_canvasScaler.referenceResolution.y);
-
-        //
-        return true;
-    }
-
     ////////// Unity            //////////
     void UI_Start()
     {
@@ -1229,14 +1232,13 @@ public class Giggle_Master : MonoBehaviour
         UI_safeAreaPos = new Vector2(posX * scale, posY * scale);
 
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA, UI_SafeAreaVarSizeDelta);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION, UI_SafeAreaVarPosition);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_SIZE_DELTA,   UI_SafeAreaVarSizeDelta );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__SAFE_AREA_VAR_POSITION,     UI_SafeAreaVarPosition  );
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE, UI_PinocchioInstantiate);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE, UI_CharacterInstantiate);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING, UI_CanvasSetting);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT, UI_ValueText);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, UI_RawImage);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__PINOCCHIO_INSTANTIATE,  UI_PinocchioInstantiate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CHARACTER_INSTANTIATE,  UI_CharacterInstantiate );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__CANVAS_SETTING,         UI_CanvasSetting        );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__VALUE_TEXT,             UI_ValueText            );
     }
 
     #endregion

@@ -801,6 +801,8 @@ public class Giggle_Database : IDisposable
 
     [SerializeField] List<Giggle_Character.Skill>       Marionette_skills;
 
+    [SerializeField] List<Giggle_Character.Passive>     Marionette_passives;
+
     [SerializeField] List<Giggle_Item.Constellation>    Marionette_constellations;
     [SerializeField] List<Sprite>                       Marionette_constellationStars;
 
@@ -912,6 +914,44 @@ public class Giggle_Database : IDisposable
         return res;
     }
 
+    // Marionette_passives
+    object Marionette_GetPassiveFromId(params object[] _args)
+    {
+        Giggle_Character.Passive res = null;
+
+        //
+        int id = (int)_args[0];
+        for(int for0 = 0; for0 < Marionette_passives.Count; for0++)
+        {
+            if(Marionette_passives[for0].Basic_VarId.Equals(id))
+            {
+                res = Marionette_passives[for0];
+                break;
+            }
+        }
+
+        //
+        return res;
+    }
+
+    object Marionette_GetPassiveFromCount(params object[] _args)
+    {
+        Giggle_Character.Passive res = null;
+
+        //
+        int count = (int)_args[0];
+        res = Marionette_passives[count];
+
+        //
+        return res;
+    }
+
+    object Marionette_GetPassiveCount(params object[] _args)
+    {
+        //
+        return Marionette_passives.Count;
+    }
+
     //
     object Marionette_GetConstellationFromId(params object[] _args)
     {
@@ -966,262 +1006,318 @@ public class Giggle_Database : IDisposable
 
     ////////// Method                   //////////
 
+    enum Marionette_LoadData__Coroutine__PHASE
+    {
+        CHARACTER__LIST,
+        CHARACTER__LIST__WAIT,
+        CHARACTER__LEVEL,
+        CHARACTER__LEVEL__WAIT,
+        CHARACTER__MODEL,
+        CHARACTER__MODEL__WAIT,
+
+        SKILL__LIST,
+        SKILL__LIST__WAIT,
+        SKILL__LEVEL,
+        SKILL__LEVEL__WAIT,
+
+        PASSIVE__LIST,
+        PASSIVE__LIST__WAIT,
+
+        CONSTELLATION__LIST,
+        CONSTELLATION__LIST__WAIT,
+        CONSTELLATION__VALUE,
+        CONSTELLATION__VALUE__WAIT,
+        CONSTELLATION__VALUE_LEVEL,
+        CONSTELLATION__VALUE_LEVEL__WAIT,
+        CONSTELLATION__BACKGOUND,
+        CONSTELLATION__BACKGOUND__WAIT,
+
+        CARD__LIST,
+        CARD__LIST__WAIT,
+        CARD__LEVEL,
+        CARD__LEVEL__WAIT,
+        CARD__SET,
+        CARD__SET__WAIT,
+
+        FINAL,
+        END
+    }
+
     IEnumerator Marionette_LoadData__Coroutine()
     {
         Marionette_isOpen = false;
 
         //
-        int phase = 0;
+        Marionette_LoadData__Coroutine__PHASE phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__LIST;
 
-        while (phase != -1)
+        while (phase != Marionette_LoadData__Coroutine__PHASE.END)
         {
-            switch(phase)
+            switch (phase)
             {
                 // 캐릭터 데이터
                 // 리스트
-                case 0:
+                case Marionette_LoadData__Coroutine__PHASE.CHARACTER__LIST:
                     {
-                        phase = 1;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__LIST__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 Marionette_data.Basic_SetData(data[for0]);
                             }
 
-                            phase = 2;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__LEVEL;
                         };
                     }
                     break;
                 // 캐릭터 레벨
-                case 2:
+                case Marionette_LoadData__Coroutine__PHASE.CHARACTER__LEVEL:
                     {
-                        phase = 3;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__LEVEL__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_LV").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 int id = int.Parse(data[for0]["cha_id"]);
                                 Marionette_data.Basic_GetDataFromId(id).Basic_SetStatusList(data[for0]);
                             }
 
-                            phase = 100;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__MODEL;
                         };
                     }
                     break;
                 // 캐릭터 모델링
-                case 100:
+                case Marionette_LoadData__Coroutine__PHASE.CHARACTER__MODEL:
                     {
-                        phase = 101;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CHARACTER__MODEL__WAIT;
 
                         Addressables.LoadAssetAsync<GameObject>("MARIONETTE/MODEL").Completed
                         += handle =>
                         {
                             GameObject res = handle.Result;
-                            for(int for0 = 0; for0 < res.transform.childCount; for0++)
+                            for (int for0 = 0; for0 < res.transform.childCount; for0++)
                             {
                                 Transform child = res.transform.GetChild(for0);
-                                if(child.gameObject.activeSelf)
+                                if (child.gameObject.activeSelf)
                                 {
                                     int id = int.Parse(child.name);
-                                    
-                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit   = child.Find("UNIT").GetComponent<Giggle_Unit>();
-                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarLd     = child.Find("LD");
-                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarSd     = child.Find("SD");
+
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarUnit = child.Find("UNIT").GetComponent<Giggle_Unit>();
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarLd = child.Find("LD");
+                                    Marionette_data.Basic_GetDataFromId(id).Basic_VarSd = child.Find("SD");
                                 }
                             }
 
-                            phase = 200;
+                            phase = Marionette_LoadData__Coroutine__PHASE.SKILL__LIST;
                         };
                     }
                     break;
                 // 스킬
                 // 리스트
-                case 200:
+                case Marionette_LoadData__Coroutine__PHASE.SKILL__LIST:
                     {
-                        phase = 201;
+                        phase = Marionette_LoadData__Coroutine__PHASE.SKILL__LIST__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_SKILL_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 Marionette_skills.Add(new Giggle_Character.Skill(data[for0]));
                             }
 
-                            phase = 202;
+                            phase = Marionette_LoadData__Coroutine__PHASE.SKILL__LEVEL;
                         };
                     }
                     break;
                 // 스킬 레벨
-                case 202:
+                case Marionette_LoadData__Coroutine__PHASE.SKILL__LEVEL:
                     {
-                        phase = 203;
+                        phase = Marionette_LoadData__Coroutine__PHASE.SKILL__LEVEL__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CSV_SKILL_LV").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
-                                for(int for1 = 0; for1 < Marionette_skills.Count; for1++)
+                                for (int for1 = 0; for1 < Marionette_skills.Count; for1++)
                                 {
-                                    if(Marionette_skills[for1].Basic_VarId.Equals(int.Parse(data[for0]["cha_skill_id"])))
+                                    if (Marionette_skills[for1].Basic_VarId.Equals(int.Parse(data[for0]["cha_skill_id"])))
                                     {
                                         Marionette_skills[for1].Basic_SetLvList(data[for0]);
                                     }
                                 }
                             }
 
-                            phase = 300;
+                            phase = Marionette_LoadData__Coroutine__PHASE.PASSIVE__LIST;
                         };
                     }
                     break;
-                // 별자리
-                case 300:
+                // 패시브
+                case Marionette_LoadData__Coroutine__PHASE.PASSIVE__LIST:
                     {
-                        phase = 301;
+                        phase = Marionette_LoadData__Coroutine__PHASE.PASSIVE__LIST__WAIT;
+
+                        Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/PASSIVE__CSV").Completed
+                        += handle =>
+                        {
+                            List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
+                            for (int for0 = 0; for0 < data.Count; for0++)
+                            {
+                                Marionette_passives.Add(new Giggle_Character.Passive(data[for0]));
+                            }
+
+                            phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__LIST;
+                        };
+                    }
+                    break;
+                // 
+                // 별자리
+                case Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__LIST:
+                    {
+                        phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__LIST__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 Marionette_constellations.Add(new Giggle_Item.Constellation(data[for0]));
                             }
 
-                            phase = 302;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE;
                         };
                     }
                     break;
-                case 302:
+                case Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE:
                     {
-                        phase = 303;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_VALUE").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
-                                for(int for1 = 0; for1 < Marionette_constellations.Count; for1++)
+                                for (int for1 = 0; for1 < Marionette_constellations.Count; for1++)
                                 {
-                                    if(Marionette_constellations[for1].Basic_SettingValue(data[for0]))
+                                    if (Marionette_constellations[for1].Basic_SettingValue(data[for0]))
                                     {
                                         break;
                                     }
                                 }
                             }
 
-                            phase = 304;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE_LEVEL;
                         };
                     }
                     break;
-                case 304:
+                case Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE_LEVEL:
                     {
-                        phase = 305;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__VALUE_LEVEL__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CONSTELLATION__CSV_VALUE_LV").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
-                                for(int for1 = 0; for1 < Marionette_constellations.Count; for1++)
+                                for (int for1 = 0; for1 < Marionette_constellations.Count; for1++)
                                 {
-                                    if(Marionette_constellations[for1].Basic_SettingLv(data[for0]))
+                                    if (Marionette_constellations[for1].Basic_SettingLv(data[for0]))
                                     {
                                         break;
                                     }
                                 }
                             }
 
-                            phase = 306;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__BACKGOUND;
                         };
                     }
                     break;
-                case 306:
+                case Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__BACKGOUND:
                     {
-                        phase = 307;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CONSTELLATION__BACKGOUND__WAIT;
 
                         Addressables.LoadAssetAsync<GameObject>("MARIONETTE/CONSTELLATION__BACKGROUND").Completed
                         += handle =>
                         {
-                            if(Marionette_constellationStars == null)
+                            if (Marionette_constellationStars == null)
                             {
                                 Marionette_constellationStars = new List<Sprite>();
                             }
                             Marionette_constellationStars.Clear();
-                            while(Marionette_constellationStars.Count < (int)Marionette_Constellation_STARS.TOTAL)
+                            while (Marionette_constellationStars.Count < (int)Marionette_Constellation_STARS.TOTAL)
                             {
                                 Marionette_constellationStars.Add(null);
                             }
 
                             //
                             Transform trans = handle.Result.transform;
-                            for(int for0 = 0; for0 < trans.childCount; for0++)
+                            for (int for0 = 0; for0 < trans.childCount; for0++)
                             {
                                 Transform element = trans.GetChild(for0);
-                                switch(element.name)
+                                switch (element.name)
                                 {
                                     case "Stars":
-                                    {
-                                        for(int for1 = 0; for1 < element.childCount; for1++)
                                         {
-                                            Sprite starSprite = element.GetChild(for1).GetComponent<Image>().sprite;
-                                            Marionette_Constellation_STARS starType = (Marionette_Constellation_STARS)Enum.Parse(typeof(Marionette_Constellation_STARS), starSprite.name.Split('_')[2]);
+                                            for (int for1 = 0; for1 < element.childCount; for1++)
+                                            {
+                                                Sprite starSprite = element.GetChild(for1).GetComponent<Image>().sprite;
+                                                Marionette_Constellation_STARS starType = (Marionette_Constellation_STARS)Enum.Parse(typeof(Marionette_Constellation_STARS), starSprite.name.Split('_')[2]);
 
-                                            Marionette_constellationStars[(int)starType] = starSprite;
+                                                Marionette_constellationStars[(int)starType] = starSprite;
+                                            }
                                         }
-                                    }
-                                    break;
-                                    default:    { Marionette_constellations[int.Parse(element.name.Split('_')[0]) - 1].Basic_SettingBackground(element);    }   break;
+                                        break;
+                                    default: { Marionette_constellations[int.Parse(element.name.Split('_')[0]) - 1].Basic_SettingBackground(element); } break;
                                 }
                             }
 
-                            phase = 400;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CARD__LIST;
                         };
                     }
                     break;
                 // 카드
-                case 400:
+                case Marionette_LoadData__Coroutine__PHASE.CARD__LIST:
                     {
-                        phase = 401;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CARD__LIST__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_LIST").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 Marionette_cards.Add(new Giggle_Item.Card(data[for0]));
                             }
 
-                            phase = 402;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CARD__LEVEL;
                         };
                     }
                     break;
-                case 402:
+                case Marionette_LoadData__Coroutine__PHASE.CARD__LEVEL:
                     {
-                        phase = 403;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CARD__LEVEL__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_LV").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
-                                for(int for1 = 0; for1 < Marionette_cards.Count; for1++)
+                                for (int for1 = 0; for1 < Marionette_cards.Count; for1++)
                                 {
-                                    if(Marionette_cards[for1].Basic_VarId.Equals(int.Parse(data[for0]["card_id"])))
+                                    if (Marionette_cards[for1].Basic_VarId.Equals(int.Parse(data[for0]["card_id"])))
                                     {
                                         Marionette_cards[for1].Basic_SettingLv(data[for0]);
                                         break;
@@ -1229,27 +1325,32 @@ public class Giggle_Database : IDisposable
                                 }
                             }
 
-                            phase = 404;
+                            phase = Marionette_LoadData__Coroutine__PHASE.CARD__SET;
                         };
                     }
                     break;
-                case 404:
+                case Marionette_LoadData__Coroutine__PHASE.CARD__SET:
                     {
-                        phase = 405;
+                        phase = Marionette_LoadData__Coroutine__PHASE.CARD__SET__WAIT;
 
                         Addressables.LoadAssetAsync<TextAsset>("MARIONETTE/CARD__CSV_SET").Completed
                         += handle =>
                         {
                             List<Dictionary<string, string>> data = Basic_CSVLoad(handle.Result);
-                            for(int for0 = 0; for0 < data.Count; for0++)
+                            for (int for0 = 0; for0 < data.Count; for0++)
                             {
                                 Marionette_cardSets.Add(new Giggle_Item.CardSet(data[for0]));
                             }
 
-                            phase = 402;
+                            phase = Marionette_LoadData__Coroutine__PHASE.FINAL;
                         };
+                    }
+                    break;
+                //
+                case Marionette_LoadData__Coroutine__PHASE.FINAL:
+                    {
                         Marionette_isOpen = true;
-                        phase = -1;
+                        phase = Marionette_LoadData__Coroutine__PHASE.END;
                     }
                     break;
             }
@@ -1265,6 +1366,7 @@ public class Giggle_Database : IDisposable
 
         Marionette_data             = new Character_Data();
         Marionette_skills           = new List<Giggle_Character.Skill>();
+        Marionette_passives         = new List<Giggle_Character.Passive>();
         Marionette_constellations   = new List<Giggle_Item.Constellation>();
         Marionette_cards            = new List<Giggle_Item.Card>();
         Marionette_cardSets         = new List<Giggle_Item.CardSet>();
@@ -1276,6 +1378,9 @@ public class Giggle_Database : IDisposable
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATAS_FROM_TYPE,              Marionette_GetDatasFromType             );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_DATA_FROM_ID,                 Marionette_GetDataFromId                );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_SKILL_FROM_ID,                Marionette_GetSkillFromId               );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,              Marionette_GetPassiveFromId             );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_COUNT,           Marionette_GetPassiveFromCount          );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_COUNT,                Marionette_GetPassiveCount              );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_FROM_ID,        Marionette_GetConstellationFromId       );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CONSTELLATION_STAR_FROM_TYPE, Marionette_GetConstellationStarFromType );
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_CARD_FROM_ID,                 Marionette_GetCardFromId                );

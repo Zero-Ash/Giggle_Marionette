@@ -3,6 +3,8 @@ using UnityEngine;
 //
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
+using Unity.Android.Gradle.Manifest;
 
 namespace Giggle_Character
 {
@@ -77,13 +79,13 @@ namespace Giggle_Character
 
         ////////// Getter & Setter          //////////
         // Basic_attack
-        public int  Basic_VarAttack { get { return Basic_attack;    }   }
+        public int  Basic_VarAttack { get { return Basic_attack;    }   set { Basic_attack = value; }   }
 
         // Basic_attack
-        public int  Basic_VarDefence    { get { return Basic_defence;   }   }
+        public int  Basic_VarDefence    { get { return Basic_defence;   }   set { Basic_defence = value;    }   }
 
         // Basic_hp
-        public int  Basic_VarHp { get { return Basic_hp;    }   }
+        public int  Basic_VarHp { get { return Basic_hp;    }   set { Basic_hp = value; }   }
 
         //Basic_attackSpeed
         public float    Basic_VarAttackSpeed    { get { return Basic_attackSpeed;   }   }
@@ -150,7 +152,7 @@ namespace Giggle_Character
 
         //
         //Basic_multiHit
-        public int  Basic_VarMultiHit                   { get { return Basic_multiHit;                  }   }
+        public int  Basic_VarMultiHit                   { get { return Basic_multiHit;                  } set { Basic_multiHit = value; }   }
         //Basic_multiHitDamage
         public int  Basic_VarMultiHitDamage             { get { return Basic_multiHitDamage;            }   }
         //Basic_multiHitDamageReduction
@@ -158,7 +160,7 @@ namespace Giggle_Character
 
         //
         //Basic_counterAttack
-        public int Basic_VarCounterAttack                   { get { return Basic_counterAttack;                 }   }
+        public int Basic_VarCounterAttack                   { get { return Basic_counterAttack;                 } set { Basic_counterAttack = value;    }   }
         //Basic_counterAttackDamage
         public int Basic_VarCounterAttackDamage             { get { return Basic_counterAttackDamage;           }   }
         //Basic_counterAttackDamageReduction
@@ -649,8 +651,12 @@ namespace Giggle_Character
         // (캐릭터 능력치 + 장비 종합 능력치) * ( 100% + 보너스 능력치 )
         int Basic_Calculate_Type0(int _database, int _equip, int _bouns)
         {
-            int res = _database + _equip;
-            res = (int)((float)res * (1.0f + ((float)_bouns * 0.0001f)));
+            int res = 0;
+
+            //
+            float calc = (float)_database * (float)_bouns * 0.0001f;
+
+            res = _database + _equip + (int)calc;
 
             //
             return res;
@@ -1037,6 +1043,647 @@ namespace Giggle_Character
 
     #endregion
 
+    #region PASSIVE
+
+    public enum Passive__TYPE
+    {
+        // 능력치 획득
+        Option_Attack,
+        Option_Defense,
+        Option_HP,
+        Option_Counter,
+        Option_MultiHit,
+
+        //
+        Option_MaxHP_Down,
+        Option_HealPercent,
+        Option_HPThreshold,
+
+        //
+        Option_ManaGain,
+        Option_LifeSteal,
+        Option_Stun,
+
+        //
+        Option_ManaRecovery,
+        Option_Heal,
+
+        //
+        Option_GoldGain,
+
+        //
+        Probability,
+
+        //
+        Option_HealTrigger,
+        Option_AttackSpeed,
+        Option_ShieldByMaxHP,
+        
+        //
+        NONE
+    }
+
+    public enum Passive__VALUE_TYPE
+    {
+        Percent,
+        Flat,
+        Duration
+    }
+
+    public enum Passive__TARGET
+    {
+        Self,
+
+        FrontLine,
+        BackLine,
+        SameLine,
+
+        Ally,
+        Enemy,
+        AllAllies,
+
+        Pinocchio
+    }
+
+    public enum Passive__TRIGGER
+    {
+        OnStageStart,
+        OnBattleStart,
+
+        //
+        Always,
+        OnHitTaken,
+        OnAttackSuccess,
+        OnKill,
+        OnSkillUse,
+        OnHealReceived,
+        OnAllySkillUse,
+        OnAllyDeath
+    }
+
+    [Serializable]
+    public class Passive : IDisposable
+    {
+        public class Values : IDisposable
+        {
+            [SerializeField] Passive__TYPE          Basic_type;
+            [SerializeField] Passive__TARGET        Basic_target;
+            [SerializeField] Passive__VALUE_TYPE    Basic_valueType;
+            [SerializeField] int                    Basic_value;
+
+            ////////// Getter & Setter          //////////
+            public Passive__TYPE        Basic_VarType       { get { return Basic_type;      }   }
+            
+            public Passive__TARGET      Basic_VarTarget     { get { return Basic_target;    }   }
+            
+            public Passive__VALUE_TYPE  Basic_VarValueType  { get { return Basic_valueType; }   }
+            
+            public int                  Basic_VarValue      { get { return Basic_value;     }   }
+
+            ////////// Method                   //////////
+
+            ////////// Constructor & Destroyer  //////////
+            public Values(Dictionary<string, string> _data, int _count)
+            {
+                Basic_type      = (Passive__TYPE)Enum.Parse(        typeof(Passive__TYPE),          _data["OptionType"      + _count.ToString()].ToString());
+                Basic_target    = (Passive__TARGET)Enum.Parse(      typeof(Passive__TARGET),        _data["TargetPosition"  + _count.ToString()].ToString());
+                Basic_valueType = (Passive__VALUE_TYPE)Enum.Parse(  typeof(Passive__VALUE_TYPE),    _data["ValueType"       + _count.ToString()].ToString());
+                Basic_value     = int.Parse(_data["Value" + _count.ToString()].ToString());
+            }
+
+            public void Dispose()
+            {
+
+            }
+        }
+
+        [SerializeField] int                Basic_id;
+
+        [SerializeField] List<Values>       Basic_values;
+        [SerializeField] Passive__TRIGGER   Basic_trigger;
+
+        ////////// Getter & Setter          //////////
+        public int  Basic_VarId { get { return Basic_id;    }   }
+
+        ////////// Method                   //////////
+
+        #region Basic
+
+        // 자기자신의 공격력 N% 증가
+        void Basic__Option_Attack(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0) { return; }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            Basic__Option_Attack(_count, unit);
+        }
+
+        void Basic__Option_Attack(
+            int _count,
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsStatus.Basic_VarAttack   += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarTotalStatus.Basic_VarAttack   += Basic_values[_count].Basic_VarValue; }   break;
+            }
+        }
+
+        // 자기자신의 방어력 N% 증가
+        void Basic__Option_Defense(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0) { return; }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            Basic__Option_Defense(_count, unit);
+        }
+
+        void Basic__Option_Defense(
+            int _count,
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsStatus.Basic_VarDefence   += Basic_values[_count].Basic_VarValue;    }   break;
+                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarTotalStatus.Basic_VarDefence   += Basic_values[_count].Basic_VarValue;    }   break;
+            }
+        }
+
+        // 자기자신의 체력 N% 증가
+        void Basic__Option_HP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0)   { return;   }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarHp    += Basic_values[_count].Basic_VarValue; }   break;
+            }
+        }
+
+        // 자기자신의 카운터 N% 증가
+        void Basic__Option_Counter(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0)   { return;   }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarCounterAttack += Basic_values[_count].Basic_VarValue; }   break;
+            }
+        }
+
+        // 자기자신의 다단히트 N% 증가
+        void Basic__Option_MultiHit(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0)   { return;   }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarMultiHit  += Basic_values[_count].Basic_VarValue; }   break;
+            }
+        }
+
+        bool Basic__Check()
+        {
+            bool isPass = true;
+
+            //
+            if (Basic_values.Count >= 2)
+            {
+                return isPass;
+            }
+
+            switch (Basic_values[1].Basic_VarType)
+            {
+                case Passive__TYPE.Probability: { isPass = Basic__Check__Probability(); }   break;
+            }
+
+            //
+            return isPass;
+        }
+
+        bool Basic__Check__Probability()
+        {
+            bool isPass = true;
+
+            //
+            switch (Basic_values[1].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent: { isPass = (Basic_values[1].Basic_VarValue > UnityEngine.Random.Range(0, 10000)); }   break;
+            }
+
+            //
+            return isPass;
+        }
+
+        // 자기자신의 다단히트 N% 증가
+
+        void Basic__Option_ManaGain(
+            Giggle_Unit _unit)
+        {
+            if (!Basic__Check())
+            {
+                return;
+            }
+
+            //
+            switch (Basic_values[0].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Flat: { _unit.Status_VarMana += Basic_values[0].Basic_VarValue; } break;
+            }
+        }
+
+        #endregion
+
+        #region Basic_OnStageStart
+
+        // Basic_OnStageStart
+        public void Basic_OnStageStart(
+            //
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (!Basic_trigger.Equals(Passive__TRIGGER.OnStageStart))
+            {
+                return;
+            }
+
+            for (int for0 = 0; for0 < Basic_values.Count; for0++)
+            {
+                switch (Basic_values[for0].Basic_VarTarget)
+                {
+                    case Passive__TARGET.Self:      { Basic_OnStageStart__Self(     for0, _tiles, _selfPosition);   } break;
+                    case Passive__TARGET.FrontLine: { Basic_OnStageStart__FrontLine(for0, _tiles);                  } break;
+                    case Passive__TARGET.BackLine:  { Basic_OnStageStart__BackLine( for0, _tiles);                  } break;
+                    case Passive__TARGET.SameLine:  { Basic_OnStageStart__SameLine( for0, _tiles, _selfPosition);   } break;
+                    case Passive__TARGET.Pinocchio: { Basic_OnStageStart__Pinocchio(for0, _tiles);                  } break;
+                }
+            }
+        }
+
+        //
+        // 자기자신
+        //
+
+        void Basic_OnStageStart__Self(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic__Option_Attack(     _count, _tiles, _selfPosition); }   break;
+                case Passive__TYPE.Option_Defense:  { Basic__Option_Defense(    _count, _tiles, _selfPosition); }   break;
+                case Passive__TYPE.Option_HP:       { Basic__Option_HP(         _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        //
+        // 앞라인
+        //
+
+        void Basic_OnStageStart__FrontLine(
+            int _count,
+            List<Transform> _tiles)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic_OnStageStart__FrontLine__Option_Attack(    _count, _tiles);    }   break;
+                case Passive__TYPE.Option_Defense:  { Basic_OnStageStart__FrontLine__Option_Defense(   _count, _tiles);    }   break;
+                case Passive__TYPE.Option_HP:       { Basic_OnStageStart__FrontLine__Option_HP(        _count, _tiles);    }   break;
+            }
+        }
+
+        // 앞라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnStageStart__FrontLine__Option_Attack(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_Attack(
+                _count,
+                _tiles, 2);
+            Basic__Option_Attack(
+                _count,
+                _tiles, 5);
+            Basic__Option_Attack(
+                _count,
+                _tiles, 8);
+        }
+
+        // 자신의 앞라인에 있는 마리오네트의 방어력 N% 증가
+        void Basic_OnStageStart__FrontLine__Option_Defense(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_Defense(
+                _count,
+                _tiles, 2);
+            Basic__Option_Defense(
+                _count,
+                _tiles, 5);
+            Basic__Option_Defense(
+                _count,
+                _tiles, 8);
+        }
+
+        // 자신의 앞라인에 있는 마리오네트의 체력 N% 증가
+        void Basic_OnStageStart__FrontLine__Option_HP(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_HP(
+                _count,
+                _tiles, 2);
+            Basic__Option_HP(
+                _count,
+                _tiles, 5);
+            Basic__Option_HP(
+                _count,
+                _tiles, 8);
+        }
+
+        //
+        // 뒷라인
+        //
+
+        void Basic_OnStageStart__BackLine(
+            int _count,
+            List<Transform> _tiles)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic_OnStageStart__BackLine__Option_Attack(     _count, _tiles);    }   break;
+                case Passive__TYPE.Option_Defense:  { Basic_OnStageStart__BackLine__Option_Defense(    _count, _tiles);    }   break;
+                case Passive__TYPE.Option_HP:       { Basic_OnStageStart__BackLine__Option_HP(         _count, _tiles);    }   break;
+            }
+        }
+
+        // 뒷라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnStageStart__BackLine__Option_Attack(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_Attack(
+                _count,
+                _tiles, 0);
+            Basic__Option_Attack(
+                _count,
+                _tiles, 3);
+            Basic__Option_Attack(
+                _count,
+                _tiles, 6);
+        }
+
+        // 뒷라인에 있는 마리오네트의 방어력 N% 증가
+        void Basic_OnStageStart__BackLine__Option_Defense(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_Defense(
+                _count,
+                _tiles, 0);
+            Basic__Option_Defense(
+                _count,
+                _tiles, 3);
+            Basic__Option_Defense(
+                _count,
+                _tiles, 6);
+        }
+
+        // 뒷라인에 있는 마리오네트의 체력 N% 증가
+        void Basic_OnStageStart__BackLine__Option_HP(
+            int _count,
+            List<Transform> _tiles)
+        {
+            Basic__Option_HP(
+                _count,
+                _tiles, 0);
+            Basic__Option_HP(
+                _count,
+                _tiles, 3);
+            Basic__Option_HP(
+                _count,
+                _tiles, 6);
+        }
+
+        //
+        // 자신의 라인
+        //
+
+        void Basic_OnStageStart__SameLine(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:  { Basic_OnStageStart__SameLine__Option_Attack(    _count, _tiles, _selfPosition); }   break;
+                case Passive__TYPE.Option_Defense: { Basic_OnStageStart__SameLine__Option_Defense(   _count, _tiles, _selfPosition); }   break;
+                case Passive__TYPE.Option_HP:      { Basic_OnStageStart__SameLine__Option_HP(        _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        // 자신과 같은 라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnStageStart__SameLine__Option_Attack(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            int lineValue = _selfPosition % 3;
+
+            Basic__Option_Attack(
+                _count,
+                _tiles, lineValue + 0);
+            Basic__Option_Attack(
+                _count,
+                _tiles, lineValue + 3);
+            Basic__Option_Attack(
+                _count,
+                _tiles, lineValue + 6);
+        }
+
+        // 자신과 같은 라인에 있는 마리오네트의 방어력 N% 증가
+        void Basic_OnStageStart__SameLine__Option_Defense(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            int lineValue = _selfPosition % 3;
+
+            Basic__Option_Defense(
+                _count,
+                _tiles, lineValue + 0);
+            Basic__Option_Defense(
+                _count,
+                _tiles, lineValue + 3);
+            Basic__Option_Defense(
+                _count,
+                _tiles, lineValue + 6);
+        }
+
+        // 자신과 같은 라인에 있는 마리오네트의 체력 N% 증가
+        void Basic_OnStageStart__SameLine__Option_HP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            int lineValue = _selfPosition % 3;
+
+            Basic__Option_HP(
+                _count,
+                _tiles, lineValue + 0);
+            Basic__Option_HP(
+                _count,
+                _tiles, lineValue + 3);
+            Basic__Option_HP(
+                _count,
+                _tiles, lineValue + 6);
+        }
+
+        //
+        void Basic_OnStageStart__Pinocchio(
+            int _count,
+            List<Transform> _tiles)
+        {
+            int pinocchio = -1;
+            for (int for0 = 0; for0 < _tiles.Count; for0++)
+            {
+                if (_tiles[for0].childCount <= 0)
+                {
+                    continue;
+                }
+
+                Giggle_Unit unit = _tiles[for0].GetChild(0).GetComponent<Giggle_Unit>();
+                if (!unit.Basic_VarSave.Basic_VarSkillLv.Equals(-1))
+                {
+                    continue;
+                }
+
+                pinocchio = for0;
+
+                break;
+            }
+            
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic__Option_Attack(     _count, _tiles, pinocchio); }   break;
+                case Passive__TYPE.Option_Defense:  { Basic__Option_Defense(    _count, _tiles, pinocchio); }   break;
+                case Passive__TYPE.Option_HP:       { Basic__Option_HP(         _count, _tiles, pinocchio); }   break;
+                case Passive__TYPE.Option_Counter:  { Basic__Option_Counter(    _count, _tiles, pinocchio); }   break;
+                case Passive__TYPE.Option_MultiHit: { Basic__Option_MultiHit(   _count, _tiles, pinocchio); }   break;
+            }
+        }
+
+        #endregion
+
+        #region Basic_OnHitTaken
+
+        //
+        public void Basic_OnHitTaken(
+            Giggle_Unit _unit)
+        {
+            if (!Basic_trigger.Equals(Passive__TRIGGER.OnHitTaken))
+            {
+                return;
+            }
+
+            for (int for0 = 0; for0 < Basic_values.Count; for0++)
+            {
+                switch (Basic_values[for0].Basic_VarTarget)
+                {
+                    case Passive__TARGET.Self: { Basic_OnHitTaken__Self(for0, _unit); } break;
+                }
+            }
+        }
+
+        // 자기자신
+        void Basic_OnHitTaken__Self(
+            int _count,
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Defense:  { Basic__Option_Defense(    _count, _unit); }   break;
+            }
+        }
+
+        #endregion
+
+        #region Basic_OnAttackSuccess
+
+        //
+        public void Basic_OnAttackSuccess(
+            Giggle_Unit _unit)
+        {
+            if (!Basic_trigger.Equals(Passive__TRIGGER.OnAttackSuccess))
+            {
+                return;
+            }
+
+            switch (Basic_values[0].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic__Option_Attack(     0,  _unit); }   break;
+
+                case Passive__TYPE.Option_ManaGain:     { Basic__Option_ManaGain(       _unit); }   break;
+                case Passive__TYPE.Option_LifeSteal:    { }break;
+                
+                case Passive__TYPE.Option_Stun: { }break;
+            }
+        }
+
+        #endregion
+
+        public void Basic_Buff0()
+        {
+
+        }
+
+        ////////// Constructor & Destroyer  //////////
+
+        public Passive(Dictionary<string, string> _data)
+        {
+            // Basic_id
+            Basic_id = int.Parse(_data["ID"].ToString());
+
+            // Basic_values
+            if (Basic_values == null)
+            {
+                Basic_values = new List<Values>();
+            }
+
+            for (int for0 = 1; for0 <= 2; for0++)
+            {
+                if (_data["OptionType" + for0.ToString()].ToString().Equals("-1"))
+                {
+                    break;
+                }
+
+                Basic_values.Add(new Values(_data, for0));
+            }
+
+            // Basic_trigger
+            Basic_trigger = (Passive__TRIGGER)Enum.Parse(typeof(Passive__TRIGGER), _data["TriggerType"].ToString());
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
+
+    #endregion
+
     #region ATTRIBUTE
 
     [Serializable]
@@ -1381,22 +2028,27 @@ namespace Giggle_Character
     [Serializable]
     public class Save : IDisposable
     {
-        public class Skill : IDisposable
+        public class Passive : IDisposable
         {
             [SerializeField] int    Basic_id;
             [SerializeField] int    Basic_level;
 
             ////////// Getter & Setter          //////////
-            public int  Basic_VarId     { get { return Basic_id;    } set { Basic_id = value;   }  }
+            public int Basic_VarId  { get { return Basic_id;    } set { Basic_id = value;   }  }
 
-            public int  Basic_VarLevel  { get { return Basic_level; }   }
+            public int          Basic_VarLevel  { get { return Basic_level; }   }
         
             ////////// Method                   //////////
         
             ////////// Constructor & Destroyer  //////////
-            public Skill()
+            public Passive()
             {
                 Basic_id = -1;
+            }
+
+            public Passive(LitJson.JsonData _data, int _count)
+            {
+                Basic_id = int.Parse(_data["PASSIVE_" + _count].ToString());
             }
 
             public void Dispose()
@@ -1413,6 +2065,8 @@ namespace Giggle_Character
         [SerializeField] List<int>  Basic_equipments;
         
         [SerializeField] int    Basic_skillLv;
+
+        [SerializeField] List<Passive>  Basic_passvies;
 
         [SerializeField] List<int>  Basic_contellationLvs;
 
@@ -1433,12 +2087,17 @@ namespace Giggle_Character
         public int  Basic_VarSkillLv    { get { return Basic_skillLv;   } set { Basic_skillLv = value;  }   }
 
         //
-        public int  Basic_GetConstellationLv(int _count)
+        public int      Basic_VarPassiveCount           { get { return Basic_passvies.Count;    }   }
+        
+        public Passive  Basic_GetPassive(int _count)    { return Basic_passvies[_count];            }
+
+        //
+        public int Basic_GetConstellationLv(int _count)
         {
             int res = 0;
 
             //
-            while(Basic_contellationLvs.Count <= _count)
+            while (Basic_contellationLvs.Count <= _count)
             {
                 Basic_contellationLvs.Add(1);
             }
@@ -1487,7 +2146,7 @@ namespace Giggle_Character
         }
 
         ////////// Constructor & Destroyer  //////////
-        
+
         ////////// Constructor
         //
         public Save(int _dataId)
@@ -1497,7 +2156,7 @@ namespace Giggle_Character
             Basic_dataId = _dataId;
 
             Basic_level = 1;
-            
+
             Basic_skillLv = -1;
         }
 
@@ -1509,7 +2168,7 @@ namespace Giggle_Character
             Basic_dataId = _dataId;
 
             Basic_level = 1;
-            
+
             Basic_skillLv = 1;
         }
 
@@ -1521,8 +2180,13 @@ namespace Giggle_Character
             Basic_dataId = int.Parse(_data["DATA_ID"].ToString());
 
             Basic_level = int.Parse(_data["LEVEL"].ToString());
-            
+
             Basic_skillLv = int.Parse(_data["SKILL_LV"].ToString());
+
+            for (int for0 = 0; for0 < 4; for0++)
+            {
+                Basic_passvies.Add(new Passive(_data, for0));
+            }
         }
 
         void Basic_Constructor()
@@ -1544,6 +2208,11 @@ namespace Giggle_Character
             while(Basic_cards.Count < 3)
             {
                 Basic_cards.Add(-1);
+            }
+
+            if(Basic_passvies == null)
+            {
+                Basic_passvies = new List<Passive>();
             }
         }
 

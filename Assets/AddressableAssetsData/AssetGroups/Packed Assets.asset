@@ -125,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7767f2ef8701145958025828ed4d7c97
+    m_Address: MARIONETTE/PASSIVE__CSV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 78f5aea19abf945feb3c4af35647505c
     m_Address: MARIONETTE/CONSTELLATION__CSV_VALUE
     m_ReadOnly: 0

@@ -336,9 +336,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             Basic_parentClass = _parentClass;
 
             //
-            Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Basic_rawParent);
-
-            //
             Basic_Init();
         }
 
@@ -509,7 +506,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Job_Start()
     {
         // Area2
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, JobArea2_rawParent);
 
         // Area3
         JobArea3_menuBar.Basic_Init(this);
@@ -1021,7 +1017,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
     void Equipment_Start()
     {
         // Area2
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, EquipmentArea2_rawParent);
 
         // Area3
         EquipmentArea3_menuBar.Basic_Init(this);
@@ -2046,7 +2041,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
             }
         }
 
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Ability_marionetteListScrollViewRawParent);
         Ability_marionetteList.SetActive(false);
 
         // Area3
@@ -2194,9 +2188,6 @@ public class Giggle_MainManager__Pinocchio : MonoBehaviour
 
     void Ability_Start()
     {
-        //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(Giggle_ScriptBridge.EVENT.MASTER__UI__RAW_IMAGE, Ability_woodRawParent);
-
         //
         if(Ability_marionetteListDatas == null)
         {

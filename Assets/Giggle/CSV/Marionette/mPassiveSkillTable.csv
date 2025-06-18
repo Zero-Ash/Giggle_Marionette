@@ -1,0 +1,39 @@
+index,이름,설명, 옵션1 타입,옵션1 타겟,옵션1 변수,옵션1 값, 옵션2 타입,옵션2 변수,옵션2 타겟,옵션2 값,발동 순간
+int,string,string,string,string,string,int,int,int,string,int,string
+ID,Name,Description,OptionType1,TargetPosition1,ValueType1,Value1,OptionType2,ValueType2,TargetPosition2,Value2,TriggerType
+1,공격력 증가,자신의 공격력이 1% 증가합니다.,Option_Attack,Self,Percent,100,-1,-1,-1,-1,OnStageStart
+2,방어력 증가,자신의 방어력이 1% 증가합니다.,Option_Defense,Self,Percent,100,-1,-1,-1,-1,OnStageStart
+3,체력 증가,자신의 체력이 1% 증가합니다.,Option_HP,Self,Percent,100,-1,-1,-1,-1,OnStageStart
+4,앞라인 공격력 증가,앞라인 마리오네트의 공격력이 1% 증가합니다.,Option_Attack,FrontLine,Percent,100,-1,-1,-1,-1,OnStageStart
+5,앞라인 방어력 증가,앞라인 마리오네트의 방어력이 1% 증가합니다.,Option_Defense,FrontLine,Percent,100,-1,-1,-1,-1,OnStageStart
+6,앞라인 체력 증가,앞라인 마리오네트의 체력이 1% 증가합니다.,Option_HP,FrontLine,Percent,100,-1,-1,-1,-1,OnStageStart
+7,뒷라인 공격력 증가,뒷라인 마리오네트의 공격력이 1% 증가합니다.,Option_Attack,BackLine,Percent,100,-1,-1,-1,-1,OnStageStart
+8,뒷라인 방어력 증가,뒷라인 마리오네트의 방어력이 1% 증가합니다.,Option_Defense,BackLine,Percent,100,-1,-1,-1,-1,OnStageStart
+9,뒷라인 체력 증가,뒷라인 마리오네트의 체력이 1% 증가합니다.,Option_HP,BackLine,Percent,100,-1,-1,-1,-1,OnStageStart
+10,같은 라인 공격력 증가,같은 라인 마리오네트의 공격력이 1% 증가합니다.,Option_Attack,SameLine,Percent,100,-1,-1,-1,-1,OnStageStart
+11,같은 라인 방어력 증가,같은 라인 마리오네트의 방어력이 1% 증가합니다.,Option_Defense,SameLine,Percent,100,-1,-1,-1,-1,OnStageStart
+12,같은 라인 체력 증가,같은 라인 마리오네트의 체력이 1% 증가합니다.,Option_HP,SameLine,Percent,100,-1,-1,-1,-1,OnStageStart
+13,피격 시 방어력 증가,피격 시마다 방어력이 1 증가합니다.,Option_Defense,Self,Flat,1,-1,-1,-1,-1,OnHitTaken
+14,공격 시 마나 회복,공격 성공 시 1% 확률로 마나 1만큼 획득합니다.,Option_ManaGain,Self,Flat,1,Probability,Percent,Self,100,OnAttackSuccess
+15,공격 시 공격력 증가,공격 성공 시마다 공격력이 1 증가합니다.,Option_Attack,Self,Flat,1,-1,-1,-1,-1,OnAttackSuccess
+16,흡혈 효과,공격 성공 시 1% 확률로 대미지의 1%만큼 체력 회복합니다.,Option_LifeSteal,Self,Percent,100,Probability,Percent,Self,100,OnAttackSuccess
+17,적 처치 시 골드 증가,적 처치 시 골드를 1% 추가 획득합니다.,Option_GoldGain,Self,Percent,100,-1,-1,-1,-1,OnKill
+18,공격 시 기절,공격 성공 시 1% 확률로 적군을 1초간 기절시킵니다.,Option_Stun,Enemy,Duration,1,Probability,Percent,Enemy,100,OnAttackSuccess
+19,스킬 시 마나 회복,스킬 사용 시 1% 확률로 마나 1% 회복합니다.,Option_ManaRecovery,Self,Percent,100,Probability,Percent,Self,100,OnSkillUse
+20,스킬 시 체력 회복,스킬 사용 시 1% 확률로 체력 1% 회복합니다.,Option_Heal,Self,Percent,100,Probability,Percent,Self,100,OnSkillUse
+21,체력 감소 → 공격력 증가,체력을 1% 줄이고 공격력을 1% 증가시킵니다.,Option_MaxHP_Down,Self,Percent,100,Option_Attack,Percent,Self,100,OnBattleStart
+22,체력 나눔,체력 1% 줄이고 아군 체력을 1% 증가시킵니다.,Option_MaxHP_Down,Self,Percent,100,Option_HealPercent,Percent,Ally,100,OnBattleStart
+23,체력 감소 비례 공격력 증가,체력이 1% 줄어들 때마다 공격력이 1% 증가합니다.,Option_HPThreshold,Self,Percent,100,Option_Attack,Percent,Self,100,Always
+24,회복 시 공격력 증가,체력 회복 시마다 공격력이 1% 증가합니다.,Option_HealTrigger,Self,Percent,100,Option_Attack,Percent,Self,100,OnHealReceived
+25,아군 스킬 사용 시 마나 획득,아군이 스킬을 사용할 때마다 마나를 1 회복합니다.,Option_ManaGain,Self,Flat,1,-1,-1,-1,-1,OnAllySkillUse
+26,아군 사망 시 체력 회복,아군이 사망 시 체력을 1% 회복합니다.,Option_Heal,Self,Percent,100,-1,-1,-1,-1,OnAllyDeath
+27,아군 사망 시 마나 회복,아군이 사망 시 마나를 1% 회복합니다.,Option_ManaRecovery,Self,Percent,100,-1,-1,-1,-1,OnAllyDeath
+28,스킬 시 전체 공격속도 증가,스킬 사용 시 전체 공격속도가 1% 증가합니다.,Option_AttackSpeed,AllAllies,Percent,100,-1,-1,-1,-1,OnSkillUse
+29,시작 시 앞라인 쉴드,전투 시작 시 앞라인에게 최대 체력 1%의 쉴드 부여,Option_ShieldByMaxHP,FrontLine,Percent,100,-1,-1,-1,-1,OnBattleStart
+30,시작 시 같은 라인 쉴드,전투 시작 시 같은 라인에게 최대 체력 1%의 쉴드 부여,Option_ShieldByMaxHP,SameLine,Percent,100,-1,-1,-1,-1,OnBattleStart
+31,시작 시 뒷라인 쉴드,전투 시작 시 뒷라인에게 최대 체력 1%의 쉴드 부여,Option_ShieldByMaxHP,BackLine,Percent,100,-1,-1,-1,-1,OnBattleStart
+32,피노키오 공격력 증가,피노키오의 공격력이 1% 증가합니다.,Option_Attack,Pinocchio,Percent,100,-1,-1,-1,-1,OnStageStart
+33,피노키오 방어력 증가,피노키오의 방어력이 1% 증가합니다.,Option_Defense,Pinocchio,Percent,100,-1,-1,-1,-1,OnStageStart
+34,피노키오 체력 증가,피노키오의 체력이 1% 증가합니다.,Option_HP,Pinocchio,Percent,100,-1,-1,-1,-1,OnStageStart
+35,피노키오 반격 확률 증가,피노키오의 반격 확률이 1% 증가합니다.,Option_Counter,Pinocchio,Percent,100,-1,-1,-1,-1,OnStageStart
+36,피노키오 다중사격 확률 증가,피노키오의 다중사격 확률이 1% 증가합니다.,Option_MultiHit,Pinocchio,Percent,100,-1,-1,-1,-1,OnStageStart
