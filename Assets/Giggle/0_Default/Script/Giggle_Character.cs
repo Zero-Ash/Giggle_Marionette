@@ -1260,6 +1260,68 @@ namespace Giggle_Character
             }
         }
 
+        // 자기자신의 다단히트 N% 증가
+
+        void Basic__Option_ManaGain(
+            Giggle_Unit _unit)
+        {
+            if (!Basic__Check())
+            {
+                return;
+            }
+
+            //
+            switch (Basic_values[0].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Flat: { _unit.Status_VarMana += Basic_values[0].Basic_VarValue; } break;
+            }
+        }
+        
+        // 체력을 깎는다
+        void Basic__Option_MaxHP_Down(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (_tiles[_selfPosition].childCount <= 0) { return; }
+
+            Giggle_Unit unit = _tiles[_selfPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            //
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarHp -= Basic_values[_count].Basic_VarValue;    }   break;
+            }
+        }
+
+        //
+        void Basic__Option_ShieldByMaxHP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition, int _targetPosition)
+        {
+            if (_tiles[_targetPosition].childCount <= 0) { return; }
+
+            //
+            switch (Basic_values[_count].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { Basic__Option_ShieldByMaxHP__Percent( _count, _tiles, _selfPosition, _targetPosition); }   break;
+            }
+        }
+
+        void Basic__Option_ShieldByMaxHP__Percent(
+            int _count,
+            List<Transform> _tiles, int _selfPosition, int _targetPosition)
+        {
+            // 시전자
+            Giggle_Unit selfUnit    = _tiles[_selfPosition  ].GetChild(0).GetComponent<Giggle_Unit>();
+            // 대상자
+            Giggle_Unit targetUnit  = _tiles[_targetPosition].GetChild(0).GetComponent<Giggle_Unit>();
+
+            float calc = (float)selfUnit.Status_VarTotalStatus.Basic_VarHp * (float)Basic_values[_count].Basic_VarValue * 0.0001f;
+
+            targetUnit.Status_ShieldCharge((int)calc);
+        }
+
+        //
         bool Basic__Check()
         {
             bool isPass = true;
@@ -1291,23 +1353,6 @@ namespace Giggle_Character
 
             //
             return isPass;
-        }
-
-        // 자기자신의 다단히트 N% 증가
-
-        void Basic__Option_ManaGain(
-            Giggle_Unit _unit)
-        {
-            if (!Basic__Check())
-            {
-                return;
-            }
-
-            //
-            switch (Basic_values[0].Basic_VarValueType)
-            {
-                case Passive__VALUE_TYPE.Flat: { _unit.Status_VarMana += Basic_values[0].Basic_VarValue; } break;
-            }
         }
 
         #endregion
@@ -1583,6 +1628,165 @@ namespace Giggle_Character
                 case Passive__TYPE.Option_Counter:  { Basic__Option_Counter(    _count, _tiles, pinocchio); }   break;
                 case Passive__TYPE.Option_MultiHit: { Basic__Option_MultiHit(   _count, _tiles, pinocchio); }   break;
             }
+        }
+
+        #endregion
+
+        #region Basic_OnBattleStart
+
+        public void Basic_OnBattleStart(
+            //
+            List<Transform> _tiles, int _selfPosition)
+        {
+            if (!Basic_trigger.Equals(Passive__TRIGGER.OnBattleStart))
+            {
+                return;
+            }
+
+            for (int for0 = 0; for0 < Basic_values.Count; for0++)
+            {
+                switch (Basic_values[for0].Basic_VarTarget)
+                {
+                    case Passive__TARGET.Self:      { Basic_OnBattleStart__Self(        for0, _tiles, _selfPosition );  } break;
+                    case Passive__TARGET.Ally:      { Basic_OnBattleStart__Ally(        for0, _tiles, _selfPosition );  } break;
+                    case Passive__TARGET.FrontLine: { Basic_OnBattleStart__FrontLine(   for0, _tiles, _selfPosition );  } break;
+                    case Passive__TARGET.BackLine:  { Basic_OnBattleStart__BackLine(    for0, _tiles, _selfPosition );  } break;
+                    case Passive__TARGET.SameLine:  { Basic_OnBattleStart__SameLine(    for0, _tiles, _selfPosition );  } break;
+                }
+            }
+        }
+
+        //
+        // 자기자신
+        //
+
+        void Basic_OnBattleStart__Self(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:       { Basic__Option_Attack(     _count, _tiles, _selfPosition); }   break;
+                case Passive__TYPE.Option_MaxHP_Down:   { Basic__Option_MaxHP_Down( _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        //
+        // 동맹
+        //
+
+        void Basic_OnBattleStart__Ally(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_HealPercent:  { Basic_OnBattleStart__Ally__Option_HealPercent(    _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        void Basic_OnBattleStart__Ally__Option_HealPercent(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            for (int for0 = 0; for0 < _tiles.Count; for0++)
+            {
+                if (for0.Equals(_selfPosition)) { continue; }
+
+                Basic__Option_HP(_count, _tiles, for0);
+            }
+        }
+
+        //
+        // 앞라인
+        //
+
+        void Basic_OnBattleStart__FrontLine(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_ShieldByMaxHP:    { Basic_OnBattleStart__FrontLine__Option_ShieldByMaxHP( _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        // 앞라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnBattleStart__FrontLine__Option_ShieldByMaxHP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 2);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 5);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 8);
+        }
+
+        //
+        // 뒷라인
+        //
+
+        void Basic_OnBattleStart__BackLine(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_ShieldByMaxHP:   { Basic_OnBattleStart__BackLine__Option_ShieldByMaxHP(   _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        // 뒷라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnBattleStart__BackLine__Option_ShieldByMaxHP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 0);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 3);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, 6);
+        }
+
+        //
+        // 자신의 라인
+        //
+
+        void Basic_OnBattleStart__SameLine(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            switch (Basic_values[_count].Basic_VarType)
+            {
+                case Passive__TYPE.Option_ShieldByMaxHP:    { Basic_OnStageStart__SameLine__Option_ShieldByMaxHP(   _count, _tiles, _selfPosition); }   break;
+            }
+        }
+
+        // 자신과 같은 라인에 있는 마리오네트의 공격력 N% 증가
+        void Basic_OnStageStart__SameLine__Option_ShieldByMaxHP(
+            int _count,
+            List<Transform> _tiles, int _selfPosition)
+        {
+            int lineValue = _selfPosition % 3;
+
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, lineValue + 0);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, lineValue + 3);
+            Basic__Option_ShieldByMaxHP(
+                _count,
+                _tiles, _selfPosition, lineValue + 6);
         }
 
         #endregion

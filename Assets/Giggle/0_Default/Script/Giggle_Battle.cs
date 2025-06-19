@@ -446,7 +446,7 @@ public class Giggle_Battle : IDisposable
             whileCount++;
         }
 
-        Formation_Ally.Basic_BuffSetting();
+        Formation_Ally.Basic_BuffStageStart();
 
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_ENEMY_START;
     }
@@ -511,7 +511,7 @@ public class Giggle_Battle : IDisposable
             unit.Basic_Init(this, save);
         }
 
-        Formation_Enemy.Basic_BuffSetting();
+        Formation_Enemy.Basic_BuffStageStart();
 
         //
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.SETTING_POWER_SAVING;
@@ -607,6 +607,10 @@ public class Giggle_Battle : IDisposable
 
     void Basic_Coroutine__ACTIVE_MOVE_END()
     {
+        // 이동 종료 후, 패시브 체크
+        Formation_Ally.Basic_BuffStageStart();
+
+        //
         Basic_coroutinePhase = Basic__COROUTINE_PHASE.ACTIVE_BATTLE;
     }
 
@@ -788,7 +792,7 @@ public class Giggle_Battle : IDisposable
         }
 
         // 버프 계산
-        public void Basic_BuffSetting()
+        public void Basic_BuffStageStart()
         {
             // 1. 초기화
             Basic_buff.Basic_Reset();
@@ -894,15 +898,37 @@ public class Giggle_Battle : IDisposable
             }
         }
 
+        public void Basic_BuffBattleStart()
+        {
+            for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            {
+                if (Basic_tiles[for0].childCount > 0)
+                {
+                    Transform element = Basic_tiles[for0].GetChild(0);
+                    //
+                    for (int for1 = 0; for1 < element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_VarPassiveCount; for1++)
+                    {
+                        Giggle_Character.Save.Passive passive = element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_GetPassive(for1);
+                        Giggle_Character.Passive data
+                            = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                                //
+                                passive.Basic_VarId);
+                        data.Basic_OnBattleStart(Basic_tiles, for0);
+                    }
+                }
+            }
+        }
+
         //
         public void Basic_PowerSaving()
         {
-            for(int for0 = 0; for0 < Basic_tiles.Count; for0++)
+            for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
             {
-                for(int for1 = 0; for1 < Basic_tiles[for0].childCount; for1++)
+                for (int for1 = 0; for1 < Basic_tiles[for0].childCount; for1++)
                 {
                     Giggle_Unit element = Basic_tiles[for0].GetChild(for1).GetComponent<Giggle_Unit>();
-                    if(element != null)
+                    if (element != null)
                     {
                         element.Model_View();
                     }
