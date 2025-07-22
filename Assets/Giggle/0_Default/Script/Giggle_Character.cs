@@ -94,15 +94,15 @@ namespace Giggle_Character
         //Basic_cirticalChance
         public int  Basic_VarCriticalChance             { get { return Basic_criticalChance;            }   }
         //Basic_cirticalDamage
-        public int  Basic_VarCriticalDamage             { get { return Basic_criticalDamage;            }   }
+        public int  Basic_VarCriticalDamage             { get { return Basic_criticalDamage;            }   set { Basic_criticalDamage = value;             }   }
         //Basic_criticalDamageReduction
-        public int  Basic_VarCriticalDamageReduction    { get { return Basic_criticalDamageReduction;   }   }
+        public int  Basic_VarCriticalDamageReduction    { get { return Basic_criticalDamageReduction;   }   set { Basic_criticalDamageReduction = value;    }   }
 
         //
         //Basic_luckyChance
         public int  Basic_VarLuckyChance    { get { return Basic_luckyChance;   }   }
         //Basic_luckyDamage
-        public int  Basic_VarLuckyDamage    { get { return Basic_luckyDamage;   }   }
+        public int  Basic_VarLuckyDamage    { get { return Basic_luckyDamage;   }   set { Basic_luckyDamage = value;    }   }
 
         //
         //Basic_damageTakenReduction
@@ -124,19 +124,19 @@ namespace Giggle_Character
 
         //
         //Basic_allDamageIncrease
-        public int  Basic_VarAllDamageIncrease  { get { return Basic_allDamageIncrease; }   }
+        public int  Basic_VarAllDamageIncrease  { get { return Basic_allDamageIncrease; }   set { Basic_allDamageIncrease = value;  }   }
 
         //
         //Basic_normalMonsterDamageIncrease
-        public int  Basic_VarNormalMonsterDamageIncrease    { get { return Basic_normalMonsterDamageIncrease;   }   }
+        public int  Basic_VarNormalMonsterDamageIncrease    { get { return Basic_normalMonsterDamageIncrease;   }   set { Basic_normalMonsterDamageIncrease = value;    }   }
         //Basic_bossDamageIncrease
-        public int  Basic_VarBossDamageIncrease             { get { return Basic_bossDamageIncrease;            }   }
+        public int  Basic_VarBossDamageIncrease             { get { return Basic_bossDamageIncrease;            }   set { Basic_bossDamageIncrease = value; }   }
 
         //
         //Basic_skillCooldownReduction
         public int  Basic_VarSkillCooldownReduction { get { return Basic_skillCooldownReduction;    }   }
         //Basic_skillDamageIncrease
-        public int  Basic_VarSkillDamageIncrease    { get { return Basic_skillDamageIncrease;       }   }
+        public int  Basic_VarSkillDamageIncrease    { get { return Basic_skillDamageIncrease;       }   set { Basic_skillDamageIncrease = value;    }   }
         //Basic_skillDamageReduction
         public int  Basic_VarSkillDamageReduction   { get { return Basic_skillDamageReduction;      }   }
         //Basic_skillCritical
@@ -152,9 +152,9 @@ namespace Giggle_Character
 
         //
         //Basic_multiHit
-        public int  Basic_VarMultiHit                   { get { return Basic_multiHit;                  } set { Basic_multiHit = value; }   }
+        public int  Basic_VarMultiHit                   { get { return Basic_multiHit;                  } set { Basic_multiHit = value;         }   }
         //Basic_multiHitDamage
-        public int  Basic_VarMultiHitDamage             { get { return Basic_multiHitDamage;            }   }
+        public int  Basic_VarMultiHitDamage             { get { return Basic_multiHitDamage;            } set { Basic_multiHitDamage = value;   }   }
         //Basic_multiHitDamageReduction
         public int  Basic_VarMultiHitDamageReduction    { get { return Basic_multiHitDamageReduction;   }   }
 
@@ -357,312 +357,362 @@ namespace Giggle_Character
 
         #region Basic_Calculate
 
-        public void Basic_Calculate(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate(Status _database, Status _equipStatus, Status _bonusPercentStatus, Status _bounsFlatStatus, Status _bounsAlwaysStatus)
         {
             //
-            Basic_Calculate_Attack( _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_Attack( _database,  _equipStatus,   _bonusPercentStatus, _bounsFlatStatus, _bounsAlwaysStatus   );
             
             //
-            Basic_Calculate_Defence(    _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_Defence(    _database,  _equipStatus,   _bonusPercentStatus, _bounsFlatStatus, _bounsAlwaysStatus   );
             
             //
-            Basic_Calculate_Hp( _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_Hp( _database,  _equipStatus,   _bonusPercentStatus, _bounsFlatStatus, _bounsAlwaysStatus   );
             
             //
             Basic_Calculate_AttackSpeed(
-                _database, _equipStatus, _bonusStatus);
+                _database, _equipStatus, _bonusPercentStatus);
             
             //
-            Basic_Calculate_CriticalChance(         _database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_CriticalDamage(         _database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_CriticalDamageReduction(_database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_CriticalChance(         _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_CriticalDamage(         _database,  _equipStatus,   _bonusPercentStatus    );
+            Basic_Calculate_CriticalDamageReduction(_database,  _equipStatus,   _bonusPercentStatus    );
             
             //
-            Basic_Calculate_LuckyChance(_database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_LuckyDamage(_database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_LuckyChance(_database,  _equipStatus,   _bonusPercentStatus    );
+            Basic_Calculate_LuckyDamage(_database,  _equipStatus,   _bonusPercentStatus    );
             
             //
-            Basic_Calculate_DamageTakenReduction(   _database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_DamageIncrease(         _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_DamageTakenReduction(   _database,  _equipStatus,   _bonusPercentStatus    );
+            Basic_Calculate_DamageIncrease(         _database,  _equipStatus,   _bonusPercentStatus    );
             
             //
-            Basic_Calculate_HpRegenPerSecond(   _database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_HpRegenAmount(      _database,  _equipStatus,   _bonusStatus    );
-            Basic_Calculate_HpLifeSteal(        _database,  _equipStatus,   _bonusStatus    );
+            Basic_Calculate_HpRegenPerSecond(   _database,  _equipStatus,   _bonusPercentStatus    );
+            Basic_Calculate_HpRegenAmount(      _database,  _equipStatus,   _bonusPercentStatus    );
+            Basic_Calculate_HpLifeSteal(        _database,  _equipStatus,   _bonusPercentStatus    );
             
             //
-            Basic_Calculate_GoldGainIncrease(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_GoldGainIncrease(_database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_AllDamageIncrease(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_AllDamageIncrease(_database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_NormalMonsterDamageIncrease(_database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_BossDamageIncrease(         _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_NormalMonsterDamageIncrease(_database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_BossDamageIncrease(         _database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_SkillCooldownReduction( _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_SkillDamageIncrease(    _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_SkillDamageReduction(   _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_SkillCritical(          _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_SkillCriticalDamage(    _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_SkillCooldownReduction( _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_SkillDamageIncrease(    _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_SkillDamageReduction(   _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_SkillCritical(          _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_SkillCriticalDamage(    _database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_Stun(           _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_StunResistance( _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_Stun(           _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_StunResistance( _database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_MultiHit(               _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_MultiHitDamage(         _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_MultiHitDamageReduction(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_MultiHit(               _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_MultiHitDamage(         _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_MultiHitDamageReduction(_database,  _equipStatus,   _bonusPercentStatus);
 
             //
-            Basic_Calculate_CounterAttack(                  _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_CounterAttackDamage(            _database,  _equipStatus,   _bonusStatus);
-            Basic_Calculate_CounterAttackDamageReduction(   _database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_CounterAttack(                  _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_CounterAttackDamage(            _database,  _equipStatus,   _bonusPercentStatus);
+            Basic_Calculate_CounterAttackDamageReduction(   _database,  _equipStatus,   _bonusPercentStatus);
             
             //
-            Basic_Calculate_Evasion(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_Evasion(_database,  _equipStatus,   _bonusPercentStatus);
             
             //
-            Basic_Calculate_Accuracy(_database,  _equipStatus,   _bonusStatus);
+            Basic_Calculate_Accuracy(_database,  _equipStatus,   _bonusPercentStatus);
         }
 
         //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_Attack(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_Attack(Status _database, Status _equipStatus, Status _bonusPercentStatus, Status _bounsFlatStatus, Status _bounsAlwaysStatus)
         {
-            Basic_attack = Basic_Calculate_Type0(_database.Basic_VarAttack, _equipStatus.Basic_VarAttack,   _bonusStatus.Basic_VarAttack    );
+            Basic_attack = Basic_Calculate_Type0(_database.Basic_VarAttack, _equipStatus.Basic_VarAttack,   _bonusPercentStatus.Basic_VarAttack,     _bounsFlatStatus.Basic_VarAttack,  _bounsAlwaysStatus.Basic_VarAttack);
         }
 
         //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_Defence(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_Defence(Status _database, Status _equipStatus, Status _bonusPercentStatus, Status _bounsFlatStatus, Status _bounsAlwaysStatus)
         {
-            Basic_defence = Basic_Calculate_Type0(_database.Basic_VarDefence, _equipStatus.Basic_VarDefence, _bonusStatus.Basic_VarDefence);
+            Basic_defence = Basic_Calculate_Type0(_database.Basic_VarDefence, _equipStatus.Basic_VarDefence, _bonusPercentStatus.Basic_VarDefence,  _bounsFlatStatus.Basic_VarDefence,  _bounsAlwaysStatus.Basic_VarDefence);
         }
 
         //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_Hp(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_Hp(Status _database, Status _equipStatus, Status _bonusPercentStatus, Status _bounsFlatStatus, Status _bounsAlwaysStatus)
         {
-            Basic_hp = Basic_Calculate_Type0(_database.Basic_VarHp, _equipStatus.Basic_VarHp, _bonusStatus.Basic_VarHp);
+            Basic_hp = Basic_Calculate_Type0(_database.Basic_VarHp, _equipStatus.Basic_VarHp, _bonusPercentStatus.Basic_VarHp, _bounsFlatStatus.Basic_VarHp,     _bounsAlwaysStatus.Basic_VarHp);
         }
 
         //
         //TODO:전투 미적용 
         public void Basic_Calculate_AttackSpeed(
-            Status _database, Status _equipStatus, Status _bonusStatus)
+            Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
             Basic_attackSpeed = _database.Basic_VarAttackSpeed + _equipStatus.Basic_VarAttackSpeed;
-            Basic_attackSpeed *= (100.0f + _bonusStatus.Basic_VarAttackSpeed) * 0.01f;
+            Basic_attackSpeed *= (100.0f + _bonusPercentStatus.Basic_VarAttackSpeed) * 0.01f;
 
             //TODO:아이템 타입에 따른 공격속도 조절. 아이템의 정보가 업데이트 되는 날 작업 
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_CriticalChance(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_CriticalChance(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_criticalChance = _database.Basic_VarCriticalChance + _equipStatus.Basic_VarCriticalChance + _bonusStatus.Basic_VarCriticalChance;
+            Basic_criticalChance = _database.Basic_VarCriticalChance + _equipStatus.Basic_VarCriticalChance + _bonusPercentStatus.Basic_VarCriticalChance;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_CriticalDamage(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_CriticalDamage(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_criticalDamage = 100 + _database.Basic_VarCriticalDamage + _equipStatus.Basic_VarCriticalDamage + _bonusStatus.Basic_VarCriticalDamage;
+            Basic_criticalDamage = 100 + _database.Basic_VarCriticalDamage + _equipStatus.Basic_VarCriticalDamage + _bonusPercentStatus.Basic_VarCriticalDamage;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_CriticalDamageReduction(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_CriticalDamageReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_criticalDamageReduction = 100 + _database.Basic_VarCriticalDamageReduction + _equipStatus.Basic_VarCriticalDamageReduction + _bonusStatus.Basic_VarCriticalDamageReduction;
-        }
-
-        //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_LuckyChance(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_luckyChance =_database.Basic_VarLuckyChance + _equipStatus.Basic_VarLuckyChance + _bonusStatus.Basic_VarLuckyChance;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_LuckyDamage(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_luckyDamage = 150 + _database.Basic_VarLuckyDamage + _equipStatus.Basic_VarLuckyDamage + _bonusStatus.Basic_VarLuckyDamage;
+            Basic_criticalDamageReduction = 100 + _database.Basic_VarCriticalDamageReduction + _equipStatus.Basic_VarCriticalDamageReduction + _bonusPercentStatus.Basic_VarCriticalDamageReduction;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_DamageTakenReduction(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_LuckyChance(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_damageTakenReduction = _database.Basic_VarDamageTakenReduction + _equipStatus.Basic_VarDamageTakenReduction + _bonusStatus.Basic_VarDamageTakenReduction;
+            Basic_luckyChance =_database.Basic_VarLuckyChance + _equipStatus.Basic_VarLuckyChance + _bonusPercentStatus.Basic_VarLuckyChance;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_DamageIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_LuckyDamage(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_damageIncrease = _database.Basic_VarDamageIncrease + _equipStatus.Basic_VarDamageIncrease + _bonusStatus.Basic_VarDamageIncrease;
-        }
-
-        //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_HpRegenPerSecond(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_hpRegenPerSecond = _database.Basic_VarHpRegenPerSecond + _equipStatus.Basic_VarHpRegenPerSecond + _bonusStatus.Basic_VarHpRegenPerSecond;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_HpRegenAmount(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_hpRegenAmount = _database.Basic_VarHpRegenAmount + _equipStatus.Basic_VarHpRegenAmount + _bonusStatus.Basic_VarHpRegenAmount;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_HpLifeSteal(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_hpLifeSteal = _database.Basic_VarHpLifeSteal + _equipStatus.Basic_VarHpLifeSteal + _bonusStatus.Basic_VarHpLifeSteal;
+            Basic_luckyDamage = 150 + _database.Basic_VarLuckyDamage + _equipStatus.Basic_VarLuckyDamage + _bonusPercentStatus.Basic_VarLuckyDamage;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_GoldGainIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_DamageTakenReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_goldGainIncrease = _database.Basic_VarGoldGainIncrease + _equipStatus.Basic_VarGoldGainIncrease + _bonusStatus.Basic_VarGoldGainIncrease;
+            Basic_damageTakenReduction = _database.Basic_VarDamageTakenReduction + _equipStatus.Basic_VarDamageTakenReduction + _bonusPercentStatus.Basic_VarDamageTakenReduction;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_DamageIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_damageIncrease = _database.Basic_VarDamageIncrease + _equipStatus.Basic_VarDamageIncrease + _bonusPercentStatus.Basic_VarDamageIncrease;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_AllDamageIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_HpRegenPerSecond(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_allDamageIncrease = _database.Basic_VarAllDamageIncrease + _equipStatus.Basic_VarAllDamageIncrease + _bonusStatus.Basic_VarAllDamageIncrease;
+            Basic_hpRegenPerSecond = _database.Basic_VarHpRegenPerSecond + _equipStatus.Basic_VarHpRegenPerSecond + _bonusPercentStatus.Basic_VarHpRegenPerSecond;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_HpRegenAmount(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_hpRegenAmount = _database.Basic_VarHpRegenAmount + _equipStatus.Basic_VarHpRegenAmount + _bonusPercentStatus.Basic_VarHpRegenAmount;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_HpLifeSteal(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_hpLifeSteal = _database.Basic_VarHpLifeSteal + _equipStatus.Basic_VarHpLifeSteal + _bonusPercentStatus.Basic_VarHpLifeSteal;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_NormalMonsterDamageIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_GoldGainIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_normalMonsterDamageIncrease = _database.Basic_VarNormalMonsterDamageIncrease + _equipStatus.Basic_VarNormalMonsterDamageIncrease + _bonusStatus.Basic_VarNormalMonsterDamageIncrease;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_BossDamageIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_bossDamageIncrease = _database.Basic_VarBossDamageIncrease + _equipStatus.Basic_VarBossDamageIncrease + _bonusStatus.Basic_VarBossDamageIncrease;
+            Basic_goldGainIncrease = _database.Basic_VarGoldGainIncrease + _equipStatus.Basic_VarGoldGainIncrease + _bonusPercentStatus.Basic_VarGoldGainIncrease;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_SkillCooldownReduction(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_AllDamageIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_skillCooldownReduction = _database.Basic_VarSkillCooldownReduction + _equipStatus.Basic_VarSkillCooldownReduction + _bonusStatus.Basic_VarSkillCooldownReduction;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_SkillDamageIncrease(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_skillDamageIncrease = _database.Basic_VarSkillDamageIncrease + _equipStatus.Basic_VarSkillDamageIncrease + _bonusStatus.Basic_VarSkillDamageIncrease;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_SkillDamageReduction(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_skillDamageReduction = _database.Basic_VarSkillDamageReduction + _equipStatus.Basic_VarSkillDamageReduction + _bonusStatus.Basic_VarSkillDamageReduction;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_SkillCritical(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_skillCritical = _database.Basic_VarSkillCritical + _equipStatus.Basic_VarSkillCritical + _bonusStatus.Basic_VarSkillCritical;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_SkillCriticalDamage(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_skillCriticalDamage = 100 + _database.Basic_VarSkillCriticalDamage + _equipStatus.Basic_VarSkillCriticalDamage + _bonusStatus.Basic_VarSkillCriticalDamage;
+            Basic_allDamageIncrease = _database.Basic_VarAllDamageIncrease + _equipStatus.Basic_VarAllDamageIncrease + _bonusPercentStatus.Basic_VarAllDamageIncrease;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_Stun(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_NormalMonsterDamageIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_stun = _database.Basic_VarStun + _equipStatus.Basic_VarStun + _bonusStatus.Basic_VarStun;
+            Basic_normalMonsterDamageIncrease = _database.Basic_VarNormalMonsterDamageIncrease + _equipStatus.Basic_VarNormalMonsterDamageIncrease + _bonusPercentStatus.Basic_VarNormalMonsterDamageIncrease;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_StunResistance(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_BossDamageIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_stunResistance = _database.Basic_VarStunResistance + _equipStatus.Basic_VarStunResistance + _bonusStatus.Basic_VarStunResistance;
-        }
-
-        //
-        //TODO:전투 미적용 
-        public void Basic_Calculate_MultiHit(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_multiHit = _database.Basic_VarMultiHit + _equipStatus.Basic_VarMultiHit + _bonusStatus.Basic_VarMultiHit;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_MultiHitDamage(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_multiHitDamage = 100 + _database.Basic_VarMultiHitDamage + _equipStatus.Basic_VarMultiHitDamage + _bonusStatus.Basic_VarMultiHitDamage;
-        }
-
-        //TODO:전투 미적용 
-        public void Basic_Calculate_MultiHitDamageReduction(Status _database, Status _equipStatus, Status _bonusStatus)
-        {
-            Basic_multiHitDamageReduction = _database.Basic_VarMultiHitDamageReduction + _equipStatus.Basic_VarMultiHitDamageReduction + _bonusStatus.Basic_VarMultiHitDamageReduction;
+            Basic_bossDamageIncrease = _database.Basic_VarBossDamageIncrease + _equipStatus.Basic_VarBossDamageIncrease + _bonusPercentStatus.Basic_VarBossDamageIncrease;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_CounterAttack(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_SkillCooldownReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_counterAttack = _database.Basic_VarCounterAttack + _equipStatus.Basic_VarCounterAttack + _bonusStatus.Basic_VarCounterAttack;
+            Basic_skillCooldownReduction = _database.Basic_VarSkillCooldownReduction + _equipStatus.Basic_VarSkillCooldownReduction + _bonusPercentStatus.Basic_VarSkillCooldownReduction;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_CounterAttackDamage(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_SkillDamageIncrease(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_counterAttackDamage = 100 + _database.Basic_VarCounterAttackDamage + _equipStatus.Basic_VarCounterAttackDamage + _bonusStatus.Basic_VarCounterAttackDamage;
+            Basic_skillDamageIncrease = _database.Basic_VarSkillDamageIncrease + _equipStatus.Basic_VarSkillDamageIncrease + _bonusPercentStatus.Basic_VarSkillDamageIncrease;
         }
 
         //TODO:전투 미적용 
-        public void Basic_Calculate_CounterAttackDamageReduction(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_SkillDamageReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_counterAttackDamageReduction = _database.Basic_VarCounterAttackDamageReduction + _equipStatus.Basic_VarCounterAttackDamageReduction + _bonusStatus.Basic_VarCounterAttackDamageReduction;
+            Basic_skillDamageReduction = _database.Basic_VarSkillDamageReduction + _equipStatus.Basic_VarSkillDamageReduction + _bonusPercentStatus.Basic_VarSkillDamageReduction;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_SkillCritical(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_skillCritical = _database.Basic_VarSkillCritical + _equipStatus.Basic_VarSkillCritical + _bonusPercentStatus.Basic_VarSkillCritical;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_SkillCriticalDamage(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_skillCriticalDamage = 100 + _database.Basic_VarSkillCriticalDamage + _equipStatus.Basic_VarSkillCriticalDamage + _bonusPercentStatus.Basic_VarSkillCriticalDamage;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_Evasion(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_Stun(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_evasion = _database.Basic_VarEvasion + _equipStatus.Basic_VarEvasion + _bonusStatus.Basic_VarEvasion;
+            Basic_stun = _database.Basic_VarStun + _equipStatus.Basic_VarStun + _bonusPercentStatus.Basic_VarStun;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_StunResistance(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_stunResistance = _database.Basic_VarStunResistance + _equipStatus.Basic_VarStunResistance + _bonusPercentStatus.Basic_VarStunResistance;
         }
 
         //
         //TODO:전투 미적용 
-        public void Basic_Calculate_Accuracy(Status _database, Status _equipStatus, Status _bonusStatus)
+        public void Basic_Calculate_MultiHit(Status _database, Status _equipStatus, Status _bonusPercentStatus)
         {
-            Basic_accuracy = _database.Basic_VarAccuracy + _equipStatus.Basic_VarAccuracy + _bonusStatus.Basic_VarAccuracy;
+            Basic_multiHit = _database.Basic_VarMultiHit + _equipStatus.Basic_VarMultiHit + _bonusPercentStatus.Basic_VarMultiHit;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_MultiHitDamage(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_multiHitDamage = 100 + _database.Basic_VarMultiHitDamage + _equipStatus.Basic_VarMultiHitDamage + _bonusPercentStatus.Basic_VarMultiHitDamage;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_MultiHitDamageReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_multiHitDamageReduction = _database.Basic_VarMultiHitDamageReduction + _equipStatus.Basic_VarMultiHitDamageReduction + _bonusPercentStatus.Basic_VarMultiHitDamageReduction;
+        }
+
+        //
+        //TODO:전투 미적용 
+        public void Basic_Calculate_CounterAttack(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_counterAttack = _database.Basic_VarCounterAttack + _equipStatus.Basic_VarCounterAttack + _bonusPercentStatus.Basic_VarCounterAttack;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_CounterAttackDamage(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_counterAttackDamage = 100 + _database.Basic_VarCounterAttackDamage + _equipStatus.Basic_VarCounterAttackDamage + _bonusPercentStatus.Basic_VarCounterAttackDamage;
+        }
+
+        //TODO:전투 미적용 
+        public void Basic_Calculate_CounterAttackDamageReduction(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_counterAttackDamageReduction = _database.Basic_VarCounterAttackDamageReduction + _equipStatus.Basic_VarCounterAttackDamageReduction + _bonusPercentStatus.Basic_VarCounterAttackDamageReduction;
+        }
+
+        //
+        //TODO:전투 미적용 
+        public void Basic_Calculate_Evasion(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_evasion = _database.Basic_VarEvasion + _equipStatus.Basic_VarEvasion + _bonusPercentStatus.Basic_VarEvasion;
+        }
+
+        //
+        //TODO:전투 미적용 
+        public void Basic_Calculate_Accuracy(Status _database, Status _equipStatus, Status _bonusPercentStatus)
+        {
+            Basic_accuracy = _database.Basic_VarAccuracy + _equipStatus.Basic_VarAccuracy + _bonusPercentStatus.Basic_VarAccuracy;
         }
 
         // 계산식 
         // (캐릭터 능력치 + 장비 종합 능력치) * ( 100% + 보너스 능력치 )
-        int Basic_Calculate_Type0(int _database, int _equip, int _bouns)
+        int Basic_Calculate_Type0(int _database, int _equip, int _bounsPercent, int _bounsFlat, int _bounsAlways)
         {
             int res = 0;
 
             //
-            float calc = (float)_database * (float)_bouns * 0.0001f;
+            float calc = (float)_database * (float)(_bounsPercent + _bounsAlways) * 0.0001f;
 
-            res = _database + _equip + (int)calc;
+            res = _database + _equip + (int)calc + _bounsFlat;
 
             //
             return res;
         }
 
         #endregion
+
+        public void Basic_Plus(Status _status)
+        {
+            Basic_attack    += _status.Basic_VarAttack;
+
+            Basic_defence   += _status.Basic_VarDefence;
+
+            Basic_hp    += _status.Basic_VarHp;
+
+            Basic_attackSpeed   += _status.Basic_VarAttackSpeed;
+
+            Basic_criticalChance            += _status.Basic_VarCriticalChance;
+            Basic_criticalDamage            += _status.Basic_VarCriticalDamage;
+            Basic_criticalDamageReduction   += _status.Basic_VarCriticalDamageReduction;
+
+            Basic_luckyChance   += _status.Basic_VarLuckyChance;
+            Basic_luckyDamage   += _status.Basic_VarLuckyDamage;
+
+            Basic_damageTakenReduction  += _status.Basic_VarDamageTakenReduction;
+            Basic_damageIncrease        += _status.Basic_VarDamageIncrease;
+
+            Basic_hpRegenPerSecond  += _status.Basic_VarHpRegenPerSecond;
+            Basic_hpRegenAmount     += _status.Basic_VarHpRegenAmount;
+            Basic_hpLifeSteal       += _status.Basic_VarHpLifeSteal;
+
+            Basic_goldGainIncrease  += _status.Basic_VarGoldGainIncrease;
+
+            Basic_allDamageIncrease += _status.Basic_VarAllDamageIncrease;
+
+            Basic_normalMonsterDamageIncrease   += _status.Basic_VarNormalMonsterDamageIncrease;
+            Basic_bossDamageIncrease            += _status.Basic_VarBossDamageIncrease;
+
+            Basic_skillCooldownReduction    += _status.Basic_VarSkillCooldownReduction;
+            Basic_skillDamageIncrease       += _status.Basic_VarSkillDamageIncrease;
+            Basic_skillDamageReduction      += _status.Basic_VarSkillDamageReduction;
+            Basic_skillCritical             += _status.Basic_VarSkillCritical;
+            Basic_skillCriticalDamage       += _status.Basic_VarSkillCriticalDamage;
+
+            Basic_stun              += _status.Basic_VarStun;
+            Basic_stunResistance    += _status.Basic_stunResistance;
+
+            Basic_multiHit                  += _status.Basic_VarMultiHit;
+            Basic_multiHitDamage            += _status.Basic_VarMultiHitDamage;
+            Basic_multiHitDamageReduction   += _status.Basic_VarMultiHitDamageReduction;
+
+            Basic_counterAttack                 += _status.Basic_VarCounterAttack;
+            Basic_counterAttackDamage           += _status.Basic_VarCounterAttackDamage;
+            Basic_counterAttackDamageReduction  += _status.Basic_VarCounterAttackDamageReduction;
+
+            Basic_evasion += _status.Basic_VarEvasion;
+
+            Basic_accuracy += _status.Basic_VarAccuracy;
+        }
 
         ////////// Constructor & Destroyer  //////////
         //
@@ -1187,8 +1237,8 @@ namespace Giggle_Character
         {
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsStatus.Basic_VarAttack   += Basic_values[_count].Basic_VarValue; }   break;
-                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarTotalStatus.Basic_VarAttack   += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsPercentStatus.Basic_VarAttack    += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarBonusFlatStatus.Basic_VarAttack       += Basic_values[_count].Basic_VarValue; }   break;
             }
         }
 
@@ -1210,8 +1260,8 @@ namespace Giggle_Character
         {
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsStatus.Basic_VarDefence   += Basic_values[_count].Basic_VarValue;    }   break;
-                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarTotalStatus.Basic_VarDefence   += Basic_values[_count].Basic_VarValue;    }   break;
+                case Passive__VALUE_TYPE.Percent:   { _unit.Status_VarBounsPercentStatus.Basic_VarDefence   += Basic_values[_count].Basic_VarValue;    }   break;
+                case Passive__VALUE_TYPE.Flat:      { _unit.Status_VarBonusFlatStatus.Basic_VarDefence      += Basic_values[_count].Basic_VarValue;    }   break;
             }
         }
 
@@ -1226,7 +1276,7 @@ namespace Giggle_Character
 
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarHp    += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsPercentStatus.Basic_VarHp += Basic_values[_count].Basic_VarValue; }   break;
             }
         }
 
@@ -1241,7 +1291,7 @@ namespace Giggle_Character
 
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarCounterAttack += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsPercentStatus.Basic_VarCounterAttack += Basic_values[_count].Basic_VarValue; }   break;
             }
         }
 
@@ -1256,7 +1306,7 @@ namespace Giggle_Character
 
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarMultiHit  += Basic_values[_count].Basic_VarValue; }   break;
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsPercentStatus.Basic_VarMultiHit  += Basic_values[_count].Basic_VarValue; }   break;
             }
         }
 
@@ -1276,6 +1326,30 @@ namespace Giggle_Character
                 case Passive__VALUE_TYPE.Flat: { _unit.Status_VarMana += Basic_values[0].Basic_VarValue; } break;
             }
         }
+
+        //
+        void Basic__Option_LifeSteal(
+            Giggle_Unit _unit)
+        {
+            if (!Basic__Check())
+            {
+                return;
+            }
+
+            //
+            switch (Basic_values[0].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:   { _unit.Status_Heal(Basic__Option_LifeSteal__Percent(_unit));   }   break;
+            }
+        }
+
+        int Basic__Option_LifeSteal__Percent(
+            Giggle_Unit _unit)
+        {
+            float res = (float)_unit.Status_VarTotalStatus.Basic_VarHp * (float)Basic_values[0].Basic_VarValue * 0.0001f;
+
+            return (int)res;
+        }
         
         // 체력을 깎는다
         void Basic__Option_MaxHP_Down(
@@ -1289,7 +1363,7 @@ namespace Giggle_Character
             //
             switch (Basic_values[_count].Basic_VarValueType)
             {
-                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsStatus.Basic_VarHp -= Basic_values[_count].Basic_VarValue;    }   break;
+                case Passive__VALUE_TYPE.Percent:   { unit.Status_VarBounsPercentStatus.Basic_VarHp -= Basic_values[_count].Basic_VarValue;    }   break;
             }
         }
 
@@ -1327,7 +1401,7 @@ namespace Giggle_Character
             bool isPass = true;
 
             //
-            if (Basic_values.Count >= 2)
+            if (Basic_values.Count < 2)
             {
                 return isPass;
             }
@@ -1828,7 +1902,7 @@ namespace Giggle_Character
 
         //
         public void Basic_OnAttackSuccess(
-            Giggle_Unit _unit)
+            Giggle_Unit _unit, Giggle_Unit _enemy)
         {
             if (!Basic_trigger.Equals(Passive__TRIGGER.OnAttackSuccess))
             {
@@ -1837,21 +1911,104 @@ namespace Giggle_Character
 
             switch (Basic_values[0].Basic_VarType)
             {
-                case Passive__TYPE.Option_Attack:   { Basic__Option_Attack(     0,  _unit); }   break;
+                case Passive__TYPE.Option_Attack:       { Basic__Option_Attack( 0,  _unit); }   break;
 
-                case Passive__TYPE.Option_ManaGain:     { Basic__Option_ManaGain(       _unit); }   break;
-                case Passive__TYPE.Option_LifeSteal:    { }break;
+                case Passive__TYPE.Option_ManaGain:     { Basic__Option_ManaGain(   _unit); }   break;
+                case Passive__TYPE.Option_LifeSteal:    { Basic__Option_LifeSteal(  _unit); }   break;
                 
-                case Passive__TYPE.Option_Stun: { }break;
+                case Passive__TYPE.Option_Stun:         { Basic_OnAttackSuccess__Option_Stun(_enemy);   }   break;
+            }
+        }
+
+        // TODO:상태이상이 구현되면 같이 편집
+        void Basic_OnAttackSuccess__Option_Stun(
+            Giggle_Unit _enemy)
+        {
+            if (!Basic__Check())
+            {
+                return;
+            }
+
+            //
+            switch (Basic_values[0].Basic_VarValueType)
+            {
+                //case Passive__VALUE_TYPE.Percent:   { _enemy.Status_Heal(Basic__Option_LifeSteal__Percent(_unit));   }   break;
             }
         }
 
         #endregion
 
-        public void Basic_Buff0()
-        {
+        #region Basic_Always
 
+        //
+        public void Basic_Always(
+            Giggle_Unit _unit)
+        {
+            if (!Basic_trigger.Equals(Passive__TRIGGER.Always))
+            {
+                return;
+            }
+
+            switch (Basic_values[0].Basic_VarTarget)
+            {
+                case Passive__TARGET.Self:  { Basic_Always__Self(   _unit); }   break;
+            }
         }
+
+        //
+        // 자기자신
+        //
+
+        void Basic_Always__Self(
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[0].Basic_VarType)
+            {
+                case Passive__TYPE.Option_HPThreshold:  { Basic_Always__Self__Option_HPThreshold(_unit);    }   break;
+            }
+        }
+
+        // 체력이 N0% 줄어들 때마다 공격력이 N1% 증가합니다.
+        void Basic_Always__Self__Option_HPThreshold(
+            Giggle_Unit _unit)
+        {
+            float fCalc = (float)(_unit.Status_VarTotalStatus.Basic_VarHp - _unit.Status_VarHp) / (float)_unit.Status_VarTotalStatus.Basic_VarHp;
+            fCalc *= 10000.0f;
+            int calc = (int)fCalc;
+            calc /= Basic_values[0].Basic_VarValue;
+
+            switch (Basic_values[1].Basic_VarTarget)
+            {
+                case Passive__TARGET.Self:  { Basic_Always__Self__Option_HPThreshold__Self(calc, _unit);    }   break;
+            }
+        }
+
+        void Basic_Always__Self__Option_HPThreshold__Self(
+            int _value,
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[1].Basic_VarType)
+            {
+                case Passive__TYPE.Option_Attack:   { Basic_Always__Self__Option_HPThreshold__Self__Option_Attack(_value, _unit);   }   break;
+            }
+        }
+
+        void Basic_Always__Self__Option_HPThreshold__Self__Option_Attack(
+            int _value,
+            Giggle_Unit _unit)
+        {
+            switch (Basic_values[1].Basic_VarValueType)
+            {
+                case Passive__VALUE_TYPE.Percent:
+                    {
+                        _unit.Status_VarBounsAlwaysStatus.Basic_VarAttack += _value * Basic_values[1].Basic_VarValue;
+                        _unit.Status_CalculateAtk();
+                    }
+                    break;
+            }
+        }
+
+        #endregion
 
         ////////// Constructor & Destroyer  //////////
 
@@ -2063,8 +2220,25 @@ namespace Giggle_Character
         [SerializeField] List<AbilityClass> Basic_classList;
 
         ////////// Getter & Setter          //////////
-        //
+        // AbilityClass
         public AbilityClass Basic_GetListFromCount(int _count)  { return Basic_classList[_count];   }
+
+        public AbilityClass Basic_GetListFromId(int _id)
+        {
+            AbilityClass res = null;
+
+            for (int for0 = 0; for0 < Basic_classList.Count; for0++)
+            {
+                if (Basic_classList[for0].Basic_VarId.Equals(_id))
+                {
+                    res = Basic_classList[for0];
+                    break;
+                }
+            }
+
+            return res;
+        }
+
         public AbilityClass Basic_GetRandomData
         {
             get
@@ -2073,7 +2247,8 @@ namespace Giggle_Character
             }
         }
 
-        public int          Basic_VarListCount                  { get { return Basic_classList.Count;   }   }
+        //
+        public int  Basic_VarListCount  { get { return Basic_classList.Count;   }   }
 
         ////////// Method                   //////////
         public void Basic_Add(Dictionary<string, string> _data)

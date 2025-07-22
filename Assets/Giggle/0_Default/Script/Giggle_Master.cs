@@ -6,8 +6,13 @@ using UnityEngine.AddressableAssets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BackEnd;
 using UnityEngine.Networking;
+//using Unity.Services.Core;
+//using Unity.Services.Lobbies;
+//using Unity.Services.Lobbies.Models;
+//using Unity.Services.Authentication;
 
 public class Giggle_Master : MonoBehaviour
 {
@@ -113,7 +118,7 @@ public class Giggle_Master : MonoBehaviour
     {
         string guildName = (string)_args[0];
         string guildIntroduce = (string)_args[2];
-
+        
         //
         Param param = new Param();
         param.Add("Introduce", guildIntroduce);
@@ -182,7 +187,7 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GUILD_CREATE, Network_GuildCreate);
     }
 
-    #region ACCOUNT
+        #region ACCOUNT
 
     public class Network_Account_LogIn
     {
@@ -376,9 +381,9 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__USER_SIGN_UP, Network_Account_UserSignUp);
     }
 
-    #endregion
+        #endregion
 
-    #region DATA_LOAD
+        #region DATA_LOAD
 
     ////////// Getter & Setter  //////////
 
@@ -493,15 +498,15 @@ public class Giggle_Master : MonoBehaviour
     void Network_DataLoad_Start()
     {
         //
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER, Network_DataLoadPlayer);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO, Network_DataLoadPinocchio);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE, Network_DataLoadMarionette);
-        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION, Network_DataLoadFormation);
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PLAYER,      Network_DataLoadPlayer      );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_PINOCCHIO,   Network_DataLoadPinocchio   );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_MARIONETTE,  Network_DataLoadMarionette  );
+        Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__DATA_LOAD_FORMATION,   Network_DataLoadFormation   );
     }
 
-    #endregion
+        #endregion
 
-    #region GACHA
+        #region GACHA
 
     ////////// Getter & Setter  //////////
 
@@ -794,10 +799,9 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__GACHA__CHANGE, Network_Gacha_Change);
     }
 
-    #endregion
+        #endregion
 
-
-    #region FORMATION
+        #region FORMATION
     [Header("FORMATION ==========")]
     [SerializeField] string Formation_inDate;
 
@@ -841,9 +845,9 @@ public class Giggle_Master : MonoBehaviour
         Giggle_ScriptBridge.Basic_VarInstance.Basic_SetMethod(Giggle_ScriptBridge.EVENT.MASTER__NETWORK__FOAMRTION__SAVE, Network_Formation_Save);
     }
 
-    #endregion
+        #endregion
 
-    #region STAGE
+        #region STAGE
 
     public class Network_Stage_StartStage
     {
@@ -940,7 +944,35 @@ public class Giggle_Master : MonoBehaviour
         Network_Stage_endStage = new Network_Stage_EndStage();
     }
 
-    #endregion
+        #endregion
+
+        #region GUILD_BATTLE
+    //[SerializeField] Lobby  Network_lobby;
+//
+    //////////// Getter & Setter  //////////
+//
+    //////////// Method           //////////
+    //// 로비에 인증하기
+    //async void Network_Authenticate()
+    //{
+    //    InitializationOptions initializationOptions = new InitializationOptions();
+    //    initializationOptions.SetProfile(Backend.UserInDate);
+//
+    //    await UnityServices.InitializeAsync(initializationOptions);
+    //    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    //}
+//
+    ////
+    //object Network_GuildBattle__Join(params object[] _args)
+    //{
+//
+    //    //
+    //    return true;
+    //}
+
+    ////////// Unity            //////////
+    
+        #endregion
 
     #endregion
 

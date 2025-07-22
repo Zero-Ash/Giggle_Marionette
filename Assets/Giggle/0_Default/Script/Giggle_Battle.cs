@@ -792,6 +792,7 @@ public class Giggle_Battle : IDisposable
         }
 
         // 버프 계산
+        // Basic_BuffStageStart
         public void Basic_BuffStageStart()
         {
             // 1. 초기화
@@ -807,83 +808,62 @@ public class Giggle_Battle : IDisposable
             // 2. 타일 전체 체크
             for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
             {
-                if (Basic_tiles[for0].childCount > 0)
+                // 타일에 캐릭터가 있는 지 여부
+                if (Basic_tiles[for0].childCount <= 0)
                 {
-                    Transform element = Basic_tiles[for0].GetChild(0);
-
-                    // 속성 모으기
-                    attributeCount[(int)element.GetComponent<Giggle_Unit>().Status_VarDatabase.Basic_VarAttribute]++;
-
-                    //
-                    for (int for1 = 0; for1 < element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_VarPassiveCount; for1++)
-                    {
-                        Giggle_Character.Save.Passive passive = element.GetComponent<Giggle_Unit>().Basic_VarSave.Basic_GetPassive(for1);
-                        Giggle_Character.Passive data
-                            = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                                Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
-                                //
-                                passive.Basic_VarId);
-                        data.Basic_OnStageStart(Basic_tiles, for0);
-                    }
+                    continue;
                 }
+
+                Transform element = Basic_tiles[for0].GetChild(0);
+
+                // 속성
+                Basic_BuffStageStart__Attribute_2(element.GetComponent<Giggle_Unit>(), ref attributeCount);
+
+                // 패시브
+                Basic_BuffStageStart__Passive_2(element.GetComponent<Giggle_Unit>(), for0);
             }
 
             // 3. 계산 시작
             int max = 0;
             int count = 0;
 
-            for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
-            {
-                if (attributeCount[for0] > max)
-                {
-                    max = attributeCount[for0];
-                    count = for0;
-                }
-            }
+            Basic_BuffStageStart__Attribute_3(
+                attributeCount,
+                ref max, ref count);
 
+            // 다른 속성 체크를 위해 현 속성 갯수 소멸
             attributeCount[count] = 0;
             // 빛 속성 가중치
-            max += (int)Giggle_Master.ATTRIBUTE.LIGHT;
+            max += attributeCount[(int)Giggle_Master.ATTRIBUTE.LIGHT];
 
+            int BounsType = 0;
             switch (max)
             {
                 case 4:
                     {
-                        max = 0;
-                        count = 0;
-
-                        for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
-                        {
-                            if (attributeCount[for0] > max)
-                            {
-                                max = attributeCount[for0];
-                                count = for0;
-                            }
-                        }
+                        Basic_BuffStageStart__Attribute_3(
+                            attributeCount,
+                            ref max, ref count);
 
                         // i. 동일 속성 4명
-                        if (max < 2)
-                        {
-                            Basic_buff.Basic_FormationBounsSetting(1, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
-                        }
+                        if (max < 2) { BounsType = 1; }
                         // ii. 동일 속성 4명, 다른 속성 2명
-                        else
-                        {
-                            Basic_buff.Basic_FormationBounsSetting(2, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
-                        }
+                        else { BounsType = 2; }
                     }
                     break;
                 case 5:
                     {
-                        Basic_buff.Basic_FormationBounsSetting(3, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
+                        BounsType = 3;
                     }
                     break;
                 case 6:
                     {
-                        Basic_buff.Basic_FormationBounsSetting(4, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
+                        BounsType = 4;
                     }
                     break;
             }
+
+            Basic_buff.Basic_FormationBounsSetting(BounsType, attributeCount[(int)Giggle_Master.ATTRIBUTE.DARK]);
 
             //
             //
@@ -893,11 +873,50 @@ public class Giggle_Battle : IDisposable
                 {
                     Transform element = Basic_tiles[for0].GetChild(0);
 
-                    element.GetComponent<Giggle_Unit>().Status_Calculate();
+                    element.GetComponent<Giggle_Unit>().Status_VarBounsPercentStatus.Basic_Plus(Basic_buff);
+                    element.GetComponent<Giggle_Unit>().Status_CalculateAll();
                 }
             }
         }
 
+        void Basic_BuffStageStart__Attribute_2(Giggle_Unit _unit, ref List<int> _attributeCount)
+        {
+            // 속성 모으기
+            _attributeCount[(int)_unit.Status_VarDatabase.Basic_VarAttribute]++;
+        }
+
+        void Basic_BuffStageStart__Attribute_3(
+            List<int> _attributeCount,
+            ref int _max, ref int _count)
+        {
+            _max = 0;
+            _count = 0;
+
+            for (int for0 = 0; for0 <= (int)Giggle_Master.ATTRIBUTE.EARTH; for0++)
+            {
+                if (_attributeCount[for0] > _max)
+                {
+                    _max = _attributeCount[for0];
+                    _count = for0;
+                }
+            }
+        }
+
+        void Basic_BuffStageStart__Passive_2(Giggle_Unit _unit, int _position)
+        {
+            for (int for0 = 0; for0 < _unit.Basic_VarSave.Basic_VarPassiveCount; for0++)
+            {
+                Giggle_Character.Save.Passive passive = _unit.Basic_VarSave.Basic_GetPassive(for0);
+                Giggle_Character.Passive data
+                    = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                        //
+                        passive.Basic_VarId);
+                data.Basic_OnStageStart(Basic_tiles, _position);
+            }
+        }
+
+        // Basic_BuffBattleStart
         public void Basic_BuffBattleStart()
         {
             for (int for0 = 0; for0 < Basic_tiles.Count; for0++)
@@ -1065,6 +1084,7 @@ public class Giggle_Battle : IDisposable
         public bool Basic_IsReady   { get{ return !Basic_obj.activeSelf;    }   }
 
         ////////// Method                   //////////
+        // Basic_Launch
         public void Basic_Launch(
             Giggle_Unit _owner, Giggle_Unit _target,
             TYPE _type, int _damage)
@@ -1073,7 +1093,8 @@ public class Giggle_Battle : IDisposable
             Basic_target = _target;
 
             Basic_type = _type;
-            Basic_damage = _damage;
+            // 데미지
+            Basic_Launch__Damage(_damage);
 
             Basic_startPos       = Basic_owner.transform.Find("Target").Find("0").position;
             Basic_destinationPos = Basic_target.transform.Find("Target").Find("0").position;
@@ -1102,31 +1123,62 @@ public class Giggle_Battle : IDisposable
             Basic_obj.SetActive(true);
         }
 
+        void Basic_Launch__Damage(int _damage)
+        {
+            // 속성에 따른 데미지도 계산한다.
+            bool isAdd = false;
+
+            Giggle_Master.ATTRIBUTE ownerAttribute  = Basic_owner.Status_VarDatabase.Basic_VarAttribute;
+            Giggle_Master.ATTRIBUTE targetAttribute = Basic_target.Status_VarDatabase.Basic_VarAttribute;
+            
+            switch (ownerAttribute)
+            {
+                case Giggle_Master.ATTRIBUTE.FIRE:  { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.EARTH) ) { isAdd = true;   }   }   break;
+                case Giggle_Master.ATTRIBUTE.EARTH: { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.WIND)  ) { isAdd = true;   }   }   break;
+                case Giggle_Master.ATTRIBUTE.WIND:  { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.WATER) ) { isAdd = true;   }   }   break;
+                case Giggle_Master.ATTRIBUTE.WATER: { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.FIRE)  ) { isAdd = true;   }   }   break;
+                
+                case Giggle_Master.ATTRIBUTE.LIGHT: { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.DARK)  ) { isAdd = true;   }   }   break;
+                case Giggle_Master.ATTRIBUTE.DARK:  { if (targetAttribute.Equals(Giggle_Master.ATTRIBUTE.LIGHT) ) { isAdd = true;   }   }   break;
+            }
+
+            if (isAdd)
+            {
+                float calc = (float)_damage;
+                calc *= 1.25f;
+                Basic_damage = (int)calc;
+            }
+            else
+            {
+                Basic_damage = _damage;
+            }
+        }
+
         // Basic_Coroutine
         public void Basic_Coroutine(Giggle_Battle _manager, float _deltaTime)
         {
-            if(Basic_obj.activeSelf)
+            if (Basic_obj.activeSelf)
             {
                 // 시간 진행
                 Basic_timer += _deltaTime;
 
-                if(Basic_timer >= Basic_time)
+                if (Basic_timer >= Basic_time)
                 {
                     Basic_timer = Basic_time;
-                    
-                    switch(Basic_type)
+
+                    switch (Basic_type)
                     {
-                        case TYPE.NORMAL:       { Basic_Coroutine__Arrive_NORMAL();                                     }   break;
-                        case TYPE.FIRE_BALL:    { Basic_Coroutine__Arrive_FIRE_BALL(_manager, Basic_destinationPos);    }   break;
+                        case TYPE.NORMAL: { Basic_Coroutine__Arrive_NORMAL(); } break;
+                        case TYPE.FIRE_BALL: { Basic_Coroutine__Arrive_FIRE_BALL(_manager, Basic_destinationPos); } break;
                     }
 
                     // 비활성화
                     Basic_obj.SetActive(false);
                 }
-                    
-                switch(Basic_type)
+
+                switch (Basic_type)
                 {
-                    case TYPE.SPLIT:    {   }   break;
+                    case TYPE.SPLIT: { } break;
                 }
 
                 Basic_obj.transform.position = Vector3.Lerp(Basic_startPos, Basic_destinationPos, Basic_timer / Basic_time);
@@ -1137,7 +1189,7 @@ public class Giggle_Battle : IDisposable
         {
             if(Basic_target.gameObject.activeInHierarchy)
             {
-                Basic_owner.Status_AttackSuccess();
+                Basic_owner.Status_AttackSuccess(Basic_target);
                 Basic_target.Status_Damage(Basic_damage);
             }
         }

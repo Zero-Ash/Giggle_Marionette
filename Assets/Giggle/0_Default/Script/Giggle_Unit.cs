@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Spine.Unity;
+using Giggle_Character;
 
 public class Giggle_Unit : MonoBehaviour
 {
@@ -83,6 +84,7 @@ public class Giggle_Unit : MonoBehaviour
     void Basic_Coroutine__ACTIVE_BATTLE(float _time)
     {
         Status_Coroutine(_time);
+        Passive_Coroutine();
         Active_Coroutine(_time);
     }
 
@@ -179,7 +181,11 @@ public class Giggle_Unit : MonoBehaviour
     // 장비 능력치
     [SerializeField] Giggle_Character.Status            Status_equipStatus;
     // 보너스 능력치 ( %로 저장 )
-    [SerializeField] Giggle_Character.Status            Status_bonusStatus;
+    [SerializeField] Giggle_Character.Status            Status_bonusPercentStatus;
+    // 보너스 능력치 ( %로 저장 )
+    [SerializeField] Giggle_Character.Status            Status_bonusFlatStatus;
+    // 보너스 능력치 ( %로 저장 )
+    [SerializeField] Giggle_Character.Status            Status_bonusAlwaysStatus;
     // 능력치들을 종합한 최종 능력치 ( 게임에서 사용되는 능력치 )
     [SerializeField] Giggle_Character.Status            Status_totalStatus;
 
@@ -196,24 +202,147 @@ public class Giggle_Unit : MonoBehaviour
     public Giggle_Character.Status  Status_VarDatabaseStatus    { get { return Status_database.Basic_GetStatusList(Basic_Save.Basic_VarLevel);  }   }
     
     //
-    public Giggle_Character.Status  Status_VarBounsStatus   { get { return Status_bonusStatus; } }
+    public Giggle_Character.Status  Status_VarBounsPercentStatus    { get { return Status_bonusPercentStatus;   }   }
+    
+    //
+    public Giggle_Character.Status Status_VarBonusFlatStatus        { get { return Status_bonusFlatStatus;      }   }
+    
+    //
+    public Giggle_Character.Status  Status_VarBounsAlwaysStatus { get { return Status_bonusAlwaysStatus; } }
 
     //
     public Giggle_Character.Status  Status_VarTotalStatus   { get { return Status_totalStatus;  }   }
+
+    //
+    public int Status_VarHp { get { return Status_hp;   }   }
     
     //
-    public int  Status_VarMana  { get { return Status_mana; }   set { Status_mana = value;  }   }
+    public int Status_VarMana { get { return Status_mana; } set { Status_mana = value; } }
 
     ////////// Method           //////////
+    // Status_CalculateAll
+    #region Status_CalculateAll
+
     //
-    public void Status_Calculate()
+    public void Status_CalculateAll()
     {
-        Status_totalStatus.Basic_Calculate(Status_VarDatabaseStatus, Status_equipStatus, Status_bonusStatus);
+        Status_CalculateAll__Pinocchio();
+
+        Status_totalStatus.Basic_Calculate(Status_VarDatabaseStatus, Status_equipStatus, Status_bonusPercentStatus, Status_bonusFlatStatus, Status_bonusAlwaysStatus);
         Status_hp = Status_totalStatus.Basic_VarHp;
     }
 
+    // 피노키오일 때 버프 추가
+    void Status_CalculateAll__Pinocchio()
+    {
+        if (!Basic_Save.Basic_VarSkillLv.Equals(-1))
+        {
+            return;
+        }
+
+        Status_CalculateAll__Pinocchio__Attribute();
+        Status_CalculateAll__Pinocchio__Ability();
+        Status_CalculateAll__Pinocchio__Relic();
+    }
+
+    // 특성
+    void Status_CalculateAll__Pinocchio__Attribute()
+    {
+        for (int for0 = 0; for0 < (int)Giggle_Player.ATTRIBUTE_TYPE.TOTAL; for0++)
+        {
+            Giggle_Player.Attribute_Data datas
+                = (Giggle_Player.Attribute_Data)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ATTRIBUTE_VAR_FROM_TYPE,
+                    //
+                    (Giggle_Player.ATTRIBUTE_TYPE)for0);
+                    
+            for (int for1 = 0; for1 < datas.Basic_VarListCount; for1++)
+            {
+                Giggle_Player.Pinocchio_Skill skill = datas.Basic_GetListFromCount(for1);
+
+                if (skill.Basic_VarLv.Equals(0))
+                {
+                    continue;
+                }
+
+                Giggle_Character.Attribute skillData
+                    = (Giggle_Character.Attribute)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                        Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ATTRIBUTE_FROM_ID,
+                        //
+                        (Giggle_Player.ATTRIBUTE_TYPE)for0, skill.Basic_VarId);
+
+                Giggle_Character.Attribute_Lv attributeLv = skillData.Basic_VarLvFromCount(skill.Basic_VarLv - 1);
+                switch (attributeLv.Basic_VarAbility)
+                {
+                    case Giggle_Character.Attribute_Lv.ABILITY.ATTACK_PER:  { Status_bonusPercentStatus.Basic_VarAttack     += attributeLv.Basic_VarAbilityValue; } break;
+                    case Giggle_Character.Attribute_Lv.ABILITY.DEFENCE_PER: { Status_bonusPercentStatus.Basic_VarDefence    += attributeLv.Basic_VarAbilityValue; } break;
+                    case Giggle_Character.Attribute_Lv.ABILITY.HP_PER:      { Status_bonusPercentStatus.Basic_VarHp         += attributeLv.Basic_VarAbilityValue; } break;
+                }
+            }
+        }
+    }
+
+    // 재능
+    void Status_CalculateAll__Pinocchio__Ability()
+    {
+        int count
+            = (int)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITYS_COUNT);
+        for (int for0 = 0; for0 < count; for0++)
+        {
+            Giggle_Player.Pinocchio_Ability save
+                = (Giggle_Player.Pinocchio_Ability)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.PLAYER__PINOCCHIO__ABILITY_GET_ABILITY_FROM_COUNT,
+                    //
+                    for0);
+
+            // 지정되어 있는 지 여부
+            if (save.Basic_VarId.Equals(-1))
+            {
+                continue;
+            }
+
+            Giggle_Character.Ability database
+                = (Giggle_Character.Ability)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__PINOCCHIO__GET_ABILITYS_FROM_GRADE,
+                    //
+                    save.Basic_VarGrade);
+            Giggle_Character.AbilityClass databaseClass = database.Basic_GetListFromId(save.Basic_VarId);
+
+            switch (databaseClass.Basic_VarType)
+            {
+                case AbilityClass.TYPE.ATTACK_PER:                      { Status_bonusPercentStatus.Basic_VarAttack                         += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.DEFENCE_PER:                     { Status_bonusPercentStatus.Basic_VarDefence                        += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.HP_PER:                          { Status_bonusPercentStatus.Basic_VarHp                             += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.SKILL_DAMAGE_PER:                { Status_bonusPercentStatus.Basic_VarSkillDamageIncrease            += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.MULTI_DAMAGE_PER:                { Status_bonusPercentStatus.Basic_VarMultiHitDamage                 += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.COUNTER_ATTACK_PER:              { Status_bonusPercentStatus.Basic_VarCounterAttack                  += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.CRITICAL_DAMAGE_PER:             { Status_bonusPercentStatus.Basic_VarCriticalDamage                 += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.CRITICAL_DAMAGE_REDUCTION_PER:   { Status_bonusPercentStatus.Basic_VarCriticalDamageReduction        += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.BOSS_DAMAGE_PER:                 { Status_bonusPercentStatus.Basic_VarBossDamageIncrease             += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.NORMAL_DAMAGE_PER:               { Status_bonusPercentStatus.Basic_VarNormalMonsterDamageIncrease    += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.ALL_DAMAGE_PER:                  { Status_bonusPercentStatus.Basic_VarAllDamageIncrease              += (int)(save.Basic_VarValue);  } break;
+                case AbilityClass.TYPE.LUCKY_DAMAGE_PER:                { Status_bonusPercentStatus.Basic_VarLuckyDamage                    += (int)(save.Basic_VarValue);  } break;
+            }
+        }
+    }
+
+    // 유물
+    void Status_CalculateAll__Pinocchio__Relic()
+    {
+
+    }
+
+    #endregion
+
+    // Status_CalculateAtk
+    public void Status_CalculateAtk()
+    {
+        Status_totalStatus.Basic_Calculate_Attack(Status_VarDatabaseStatus, Status_equipStatus, Status_bonusPercentStatus, Status_bonusFlatStatus, Status_bonusAlwaysStatus);
+    }
+
     //
-    public void Status_AttackSuccess()
+    public void Status_AttackSuccess(Giggle_Unit _enemy)
     {
         for (int for0 = 0; for0 < Basic_VarSave.Basic_VarPassiveCount; for0++)
         {
@@ -223,43 +352,78 @@ public class Giggle_Unit : MonoBehaviour
                     Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
                     //
                     passive.Basic_VarId);
-            data.Basic_OnAttackSuccess(this);
+            data.Basic_OnAttackSuccess(this, _enemy);
         }
     }
-    
+
     //
     public void Status_Damage(int _damage)
     {
-        Status_hp -= _damage;
+        int damage = _damage;
 
-        if (Status_hp <= 0)
+        // 쉴드 경감
+        if (Status_shield > 0)
         {
-            if (Active_phase != Active_PHASE.DEFEAT)
+            if (Status_shield >= damage)
             {
-                Active_phase = Active_PHASE.DEFEAT;
-                Model_SetMotionTime("Defeat");
-                Model_SetMotion();
-
-                Active_timer = 0.0f;
+                Status_shield -= damage;
+                damage = 0;
             }
-            
-            for (int for0 = 0; for0 < Basic_VarSave.Basic_VarPassiveCount; for0++)
+            else
             {
-                Giggle_Character.Save.Passive passive = Basic_VarSave.Basic_GetPassive(for0);
-                Giggle_Character.Passive data
-                    = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
-                        Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
-                        //
-                        passive.Basic_VarId);
-                data.Basic_OnHitTaken(this);
+                damage -= Status_shield;
+                Status_shield = 0;
             }
         }
-        else
+
+        // 체력 경감
+        // 진행여부 체크
+        if (damage > 0)
         {
-            //Active_phase = Active_PHASE.HIT;
+            Status_hp -= _damage;
+
+            if (Status_hp <= 0)
+            {
+                if (Active_phase != Active_PHASE.DEFEAT)
+                {
+                    Active_phase = Active_PHASE.DEFEAT;
+                    Model_SetMotionTime("Defeat");
+                    Model_SetMotion();
+
+                    Active_timer = 0.0f;
+                }
+            }
+            else
+            {
+                //Active_phase = Active_PHASE.HIT;
+            }
+        }
+
+        // 패시브
+        for (int for0 = 0; for0 < Basic_VarSave.Basic_VarPassiveCount; for0++)
+        {
+            Giggle_Character.Save.Passive passive = Basic_VarSave.Basic_GetPassive(for0);
+            Giggle_Character.Passive data
+                = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                    //
+                    passive.Basic_VarId);
+            data.Basic_OnHitTaken(this);
         }
     }
 
+    //
+    public void Status_Heal(int _value)
+    {
+        Status_hp += _value;
+
+        if (Status_hp > Status_totalStatus.Basic_VarHp)
+        {
+            Status_hp = Status_totalStatus.Basic_VarHp;
+        }
+    }
+
+    //
     public void Status_ShieldCharge(int _value)
     {
         Status_shield += _value;
@@ -270,7 +434,7 @@ public class Giggle_Unit : MonoBehaviour
     {
         Status_database = _database;
         //Status_equipStatus;
-        Status_bonusStatus.Basic_BounsSetting(Status_database.Basic_VarSkillId.Equals(-1));
+        Status_bonusPercentStatus.Basic_BounsSetting(Status_database.Basic_VarSkillId.Equals(-1));
 
         Status_shield = 0;
 
@@ -320,7 +484,26 @@ public class Giggle_Unit : MonoBehaviour
 
     #region PASSIVE
 
+    ////////// Getter & Setter  //////////
 
+    ////////// Method           //////////
+    void Passive_Coroutine()
+    {
+        Status_bonusAlwaysStatus.Basic_Reset();
+        //
+        for (int for1 = 0; for1 < Basic_VarSave.Basic_VarPassiveCount; for1++)
+        {
+            Giggle_Character.Save.Passive passive = Basic_VarSave.Basic_GetPassive(for1);
+            Giggle_Character.Passive data
+                = (Giggle_Character.Passive)Giggle_ScriptBridge.Basic_VarInstance.Basic_GetMethod(
+                    Giggle_ScriptBridge.EVENT.DATABASE__MARIONETTE__GET_PASSIVE_FROM_ID,
+                    //
+                    passive.Basic_VarId);
+            data.Basic_Always(this);
+        }
+    }
+
+    ////////// Unity            //////////
 
     #endregion
 
